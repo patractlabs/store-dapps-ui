@@ -3100,7 +3100,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/register": ^7.12.10
     "@babel/runtime": ^7.12.5
-    "@patract/dev": ^0.5.12
+    "@patract/dev": ^0.5.15
     "@types/jest": ^26.0.20
     "@types/node": ^14.14.20
     "@types/react": ^17.0.0
@@ -3111,9 +3111,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@patract/dev@npm:^0.5.12":
-  version: 0.5.12
-  resolution: "@patract/dev@npm:0.5.12"
+"@patract/dev@npm:^0.5.15":
+  version: 0.5.15
+  resolution: "@patract/dev@npm:0.5.15"
   dependencies:
     "@babel/cli": ^7.12.1
     "@babel/core": ^7.12.3
@@ -3204,7 +3204,7 @@ __metadata:
     polkadot-exec-vuepress: scripts/polkadot-exec-vuepress.js
     polkadot-exec-webpack: scripts/polkadot-exec-webpack.js
     redspot-dev-build-tsc: scripts/redspot-dev-build-tsc.js
-  checksum: b2a580c0724ba4db875875fe492963215defea27edddbe1b1fbc35346fcc3ec341ac9ca56366f1c140fcd27f66e06df7d5766e82b23b1b42230ac91d6edaa38c
+  checksum: 98f301c1fe7dc61bcc97884e180ef486ee46b4f087e544f06220ee0d8aeb2adaa3af0db5d029f7d51f168375435abfa19321b44abf1c796d7040fcb4baeee3cd
   languageName: node
   linkType: hard
 
