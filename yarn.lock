@@ -3145,6 +3145,7 @@ __metadata:
     "@patract/ui-components": 0.1.0
     react: ^17.0.1
     react-dom: ^17.0.1
+    react-hook-form: ^6.14.1
     react-scripts: 4.0.1
   languageName: unknown
   linkType: soft
@@ -3179,6 +3180,7 @@ __metadata:
     "@emotion/react": ^11.1.4
     "@emotion/styled": ^11.0.0
     framer-motion: ^3.2.1
+    react-hook-form: ^6.14.1
   languageName: unknown
   linkType: soft
 
@@ -15849,6 +15851,15 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.8.0
   checksum: f181d6413d7c2881d26382c746bf1ee08a4cd1146f776a3acbb1614beb7c7323bc0271cfadbf44e60eb676bdd554e091179c40272a0cdde02b4916742a7efe59
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^6.14.1":
+  version: 6.14.1
+  resolution: "react-hook-form@npm:6.14.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17
+  checksum: 3e5a11674affea8403e17db8b1211fbe7d01f392abc84b7336df8a5ccb829f19cf4d1144dfb641ef62f0b496a66d87ec906d26402411df778540d3a1018f2dbc
   languageName: node
   linkType: hard
 
