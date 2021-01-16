@@ -39,6 +39,10 @@ export const theme = extendTheme({
       }
     }
   },
+  fonts: {
+    heading: 'system-ui, sans-serif',
+    body: 'system-ui, sans-serif'
+  },
   styles: {
     global: {
       /**
