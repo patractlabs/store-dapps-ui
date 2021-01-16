@@ -1,15 +1,30 @@
 import React from 'react';
 import { Input } from '@chakra-ui/react';
-import { Controller } from 'react-hook-form';
+import { Controller, FieldError } from 'react-hook-form';
 
 export type InputTextControllerProps = Omit<
   React.ComponentProps<typeof Controller> & React.ComponentProps<typeof Input>,
   'render'
->;
+> & {
+  error?: FieldError;
+  errorColor?: string;
+};
 
 export const InputTextController: React.FC<InputTextControllerProps> = (props) => {
-  const { name, render, as, defaultValue, control, rules, onFocus, ...inputProps } = props;
+  const {
+    errorColor = 'red.500',
+    error,
+    name,
+    render,
+    as,
+    defaultValue,
+    control,
+    rules,
+    onFocus,
+    ...inputProps
+  } = props;
 
+  console.log('哈哈哈')
   return (
     <Controller
       name={name}
@@ -17,7 +32,9 @@ export const InputTextController: React.FC<InputTextControllerProps> = (props) =
       defaultValue={defaultValue}
       rules={rules}
       onFocus={onFocus}
-      render={({ ref, ...field }) => <Input ref={ref} {...field} {...inputProps} />}
+      render={({ ref, ...field }) => (
+        <Input color={inputProps.color || (error ? errorColor : undefined)} ref={ref} {...field} {...inputProps} />
+      )}
     />
   );
 };

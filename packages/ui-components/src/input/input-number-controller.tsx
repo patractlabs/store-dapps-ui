@@ -15,17 +15,22 @@ export const InputNumberController: React.FC<InputNumberControllerProps> = (prop
     ...rest
   };
 
+  const pattern = new RegExp(inputProps.pattern);
+
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={defaultValue}
-      rules={rules}
+      rules={{
+        pattern: pattern,
+        ...rules
+      }}
       onFocus={onFocus}
       render={({ onChange, ref, ...field }) => (
         <Input
           onChange={(e) => {
-            if (e.target.value === '' || new RegExp(inputProps.pattern).test(e.target.value)) {
+            if (e.target.value === '' || pattern.test(e.target.value)) {
               onChange(e);
             }
           }}
