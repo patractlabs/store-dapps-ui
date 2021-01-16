@@ -3,6 +3,10 @@ import { extendTheme } from '@chakra-ui/react';
  *
  */
 export const theme = extendTheme({
+  fonts: {
+    heading: 'system-ui, sans-serif',
+    body: 'system-ui, sans-serif'
+  },
   styles: {
     global: {
       /**
@@ -11,7 +15,7 @@ export const theme = extendTheme({
       html: {
         lineHeight: 1.5,
         WebkitTextSizeAdjust: '100%',
-        fontFamily: 'system-ui, sans-serif',
+        fontFamily: 'system-ui, sans-serif'
       },
       body: {
         position: 'relative',
