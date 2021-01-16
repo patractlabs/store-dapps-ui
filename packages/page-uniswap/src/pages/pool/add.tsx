@@ -24,8 +24,8 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const options = [{ value: 'usdt', label: 'USDT' }];
   const selectStyles = {
     container: (styles: any) => ({ ...styles, display: 'inline-block', width: '155px' }),
-    control: (styles: any) => ({ ...styles, borderRadius: '0 4px 4px 0', borderColor: '#0058FA' }),
-    // input: (styles: any) => ({ ...styles, width: '155px' })
+    control: (styles: any) => ({ ...styles, borderRadius: '0 4px 4px 0', borderColor: '#0058FA', borderLeft: '0' }),
+    valueContainer: (styles: any) => ({ ...styles, paddingTop: '3px', paddingBottom: '3px' })
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -52,11 +52,15 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               focusBorderColor='#0058FA'
               sx={{
                 w: '309px',
+                h: '45px',
+                fontSize: '18px',
+                bgColor: '#FFFFFF',
                 borderRadius: '4px 0 0 4px',
                 border: '1px solid',
                 borderColor: '#0058FA',
-                borderRight: 'none',
-                _hover: { borderColor: '#0058FA' }
+                borderRight: '0',
+                _hover: { borderColor: '#0058FA' },
+                _focus: { boxShadow: 'none' }
               }}
             />
             <Select defaultValue={options[0]} label='Single select' options={options} styles={selectStyles} />

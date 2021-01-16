@@ -3,6 +3,42 @@ import { extendTheme } from '@chakra-ui/react';
  *
  */
 export const theme = extendTheme({
+  components: {
+    Table: {
+      variants: {
+        simple: {
+          table: {
+            color: '#666666'
+          },
+          thead: {
+            bgColor: '#F4F4F4',
+            boxShadow:
+              '0px 2px 4px 0px rgba(0, 0, 0, 0.05), 0px 1px 0px 0px rgba(0, 0, 0, 0.09), 0px -1px 0px 0px rgba(0, 0, 0, 0.05)'
+          },
+          th: {
+            color: '#666666',
+            textTransform: 'none',
+            borderColor: 'transparent'
+          }
+        }
+      },
+      sizes: {
+        small: {
+          table: {
+            fontSize: '12px'
+          },
+          th: {
+            fontSize: '12px',
+            fontWeight: '400',
+            padding: '9px 8px',
+          },
+          td: {
+            padding: '22px 8px'
+          }
+        }
+      }
+    }
+  },
   styles: {
     global: {
       /**
@@ -11,7 +47,7 @@ export const theme = extendTheme({
       html: {
         lineHeight: 1.5,
         WebkitTextSizeAdjust: '100%',
-        fontFamily: 'system-ui, sans-serif',
+        fontFamily: 'system-ui, sans-serif'
       },
       body: {
         position: 'relative',

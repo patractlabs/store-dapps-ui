@@ -8,31 +8,14 @@ import {
   Thead,
   Tbody,
   Tr,
-  Th as ChakraTh,
-  Td as ChakraTd,
+  Th,
+  Td,
   useDisclosure,
-  TableColumnHeaderProps,
-  TableCellProps,
   ButtonProps
 } from '@chakra-ui/react';
 import Add from './add';
 import Withdraw from './withdraw';
 
-const Th = ({ sx, ...rest }: TableColumnHeaderProps) => (
-  <ChakraTh
-    sx={{
-      textTransform: 'none',
-      fontSize: '12px',
-      fontWeight: '400',
-      px: '8px',
-      ...sx
-    }}
-    {...rest}
-  />
-);
-const Td = ({ sx, ...rest }: TableCellProps) => (
-  <ChakraTd sx={{ px: '8px', ...sx }} {...rest} />
-);
 const TdLink = ({ sx, ...rest }: ButtonProps) => (
   <Button variant='link' sx={{ fontSize: '12px', fontWeight: '400', ...sx }} {...rest} />
 );
@@ -55,8 +38,8 @@ const Pool = () => {
         <Heading as='h3' sx={{ fontSize: '16px', lineHeight: '20px', fontWeight: 400, py: '16px', px: '14px' }}>
           List
         </Heading>
-        <Table sx={{ color: '#666666', fontSize: '12px' }}>
-          <Thead sx={{ bgColor: '#F4F4F4' }}>
+        <Table variant="simple" size="small">
+          <Thead>
             <Tr>
               <Th>Pair</Th>
               <Th>From Token Address</Th>
@@ -89,7 +72,7 @@ const Pool = () => {
           </Tbody>
         </Table>
       </Box>
-      <Add isOpen={true} onClose={onAddClose} />
+      <Add isOpen={isAddOpen} onClose={onAddClose} />
       <Withdraw isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
     </Layout>
   );
