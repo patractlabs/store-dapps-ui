@@ -72,7 +72,7 @@ const Pool = () => {
           </Tbody>
         </Table>
       </Box>
-      <Add isOpen={isAddOpen} onClose={onAddClose} />
+      <Add isOpen={true} onClose={onAddClose} />
       <Withdraw isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
     </Layout>
   );

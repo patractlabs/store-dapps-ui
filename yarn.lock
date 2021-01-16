@@ -1887,6 +1887,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@chakra-ui/icons@npm:1.0.3"
+  dependencies:
+    "@chakra-ui/icon": 1.0.3
+    "@types/react": ^17.0.0
+  peerDependencies:
+    "@chakra-ui/system": ">=1.0.0"
+    react: ">=16.8.6"
+  checksum: e7d8dee16671850002e1af72f8e9ea964ee055124d4df9e2e8d8ff8084698f95a194e6a5bacf2d85bfcec4bf0ecb2939c9ff5447768ed348ea4cdf4c6fb281c9
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:1.0.3":
   version: 1.0.3
   resolution: "@chakra-ui/image@npm:1.0.3"
@@ -3230,6 +3243,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/polyfill": ^7.12.1
     "@babel/runtime": ^7.12.5
+    "@chakra-ui/icons": ^1.0.3
     "@patract/ui-components": 0.1.0
     "@types/react-router-dom": ^5.1.7
     "@types/react-select": ^3.1.2

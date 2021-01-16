@@ -3,12 +3,8 @@ import {
   Center,
   FormControl,
   FormLabel,
-  FormHelperText,
+  Image,
   Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,15 +14,41 @@ import {
   ModalFooter,
   Button
 } from '@chakra-ui/react';
+import { TriangleDownIcon } from '@chakra-ui/icons';
 import Select from 'react-select';
+import USDTIcon from '../../images/usdt.png';
 
 const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const options = [{ value: 'usdt', label: 'USDT' }];
+  const options = [
+    { value: 'usdt', label: 'USDT', icon: USDTIcon },
+    { value: 'eth', label: 'ETH', icon: USDTIcon }
+  ];
   const selectStyles = {
-    container: (styles: any) => ({ ...styles, display: 'inline-block', width: '155px' }),
-    control: (styles: any) => ({ ...styles, borderRadius: '0 4px 4px 0', borderColor: '#0058FA', borderLeft: '0' }),
-    valueContainer: (styles: any) => ({ ...styles, paddingTop: '3px', paddingBottom: '3px' })
+    container: (styles: any) => ({ ...styles, display: 'inline-block', verticalAlign: 'top', width: '111px' }),
+    control: (styles: any) => ({
+      ...styles,
+      borderRadius: '0 4px 4px 0',
+      borderColor: '#0058FA',
+      borderLeft: '0',
+      boxShadow: 'none',
+      ':hover': { borderColor: '#0058FA' }
+    }),
+    valueContainer: (styles: any) => ({ ...styles, padding: '5px 0' }),
+    singleValue: (styles: any) => ({
+      ...styles,
+      fontSize: '18px',
+      lineHeight: '25px',
+      background: '#E1E9FF',
+      borderRadius: '4px',
+      minWidth: '74px',
+      padding: '5px 0',
+      textAlign: 'center'
+    }),
+    indicatorSeparator: (styles: any) => ({ ...styles, display: 'none' })
   };
+
+  const dropdownIndicator = () => <TriangleDownIcon sx={{ color: '#0058FA' }} />;
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -52,18 +74,37 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               focusBorderColor='#0058FA'
               sx={{
                 w: '309px',
-                h: '45px',
+                h: '44px',
                 fontSize: '18px',
                 bgColor: '#FFFFFF',
                 borderRadius: '4px 0 0 4px',
                 border: '1px solid',
                 borderColor: '#0058FA',
                 borderRight: '0',
+                verticalAlign: 'top',
                 _hover: { borderColor: '#0058FA' },
                 _focus: { boxShadow: 'none' }
               }}
             />
-            <Select defaultValue={options[0]} label='Single select' options={options} styles={selectStyles} />
+            <Image
+              src={USDTIcon}
+              sx={{
+                display: 'inline-block',
+                w: '44px',
+                h: '44px',
+                borderTop: '1px solid',
+                borderBottom: '1px solid',
+                borderColor: '#0058FA',
+                bgColor: '#FFFFFF'
+              }}
+            />
+            <Select
+              defaultValue={options[0]}
+              label='Single select'
+              options={options}
+              styles={selectStyles}
+              dropdownIndicator={dropdownIndicator}
+            />
           </FormControl>
         </ModalBody>
 
