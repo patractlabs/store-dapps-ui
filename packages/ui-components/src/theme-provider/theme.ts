@@ -30,10 +30,22 @@ export const theme = extendTheme({
           th: {
             fontSize: '12px',
             fontWeight: '400',
-            padding: '9px 8px',
+            padding: '9px 8px'
           },
           td: {
             padding: '22px 8px'
+          }
+        }
+      }
+    },
+    Modal: {
+      variants: {
+        common: {
+          header: {
+            textAlign: 'center',
+          },
+          closeButton: {
+            top: '0.75rem'
           }
         }
       }

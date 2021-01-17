@@ -7,6 +7,7 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.12.5",
     "@chakra-ui/icons": "^1.0.3",
+    "@patract/react-hooks": "0.1.0",
     "@patract/ui-components": "0.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -18,7 +19,8 @@
     "build": "parcel build public/index.html"
   },
   "alias": {
-    "@patract/ui-components": "../ui-components/src"
+    "@patract/ui-components": "../ui-components/src",
+    "@patract/react-hooks": "../react-hooks/src"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",

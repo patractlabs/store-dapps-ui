@@ -1,5 +1,8 @@
 {
   "name": "@patract/react-hooks",
   "version": "0.1.0",
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "@chakra-ui/react": "^1.1.4"
+  }
 }

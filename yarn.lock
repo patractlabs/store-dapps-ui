@@ -2909,6 +2909,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/polyfill": ^7.12.1
     "@babel/runtime": ^7.12.5
+    "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
     react: ^17.0.1
     react-dom: ^17.0.1
@@ -2924,6 +2925,7 @@ __metadata:
     "@babel/polyfill": ^7.12.1
     "@babel/runtime": ^7.12.5
     "@chakra-ui/icons": ^1.0.3
+    "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
     "@types/react-router-dom": ^5.1.7
     "@types/react-select": ^3.1.2
@@ -2935,9 +2937,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@patract/react-hooks@workspace:packages/react-hooks":
+"@patract/react-hooks@0.1.0, @patract/react-hooks@workspace:packages/react-hooks":
   version: 0.0.0-use.local
   resolution: "@patract/react-hooks@workspace:packages/react-hooks"
+  dependencies:
+    "@chakra-ui/react": ^1.1.4
   languageName: unknown
   linkType: soft
 

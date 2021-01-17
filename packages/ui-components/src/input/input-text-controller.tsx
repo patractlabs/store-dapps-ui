@@ -24,7 +24,6 @@ export const InputTextController: React.FC<InputTextControllerProps> = (props) =
     ...inputProps
   } = props;
 
-  console.log('哈哈哈')
   return (
     <Controller
       name={name}
