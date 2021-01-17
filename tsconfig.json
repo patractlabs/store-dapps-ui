@@ -14,6 +14,8 @@
       "@patract/ui-components/*": [ "packages/ui-components/src/*" ],
       "@patract/react-hooks": [ "packages/react-hooks/src" ],
       "@patract/react-hooks/*": [ "packages/react-hooks/src/*" ],
+      "@patract/react-components": [ "packages/react-components/src" ],
+      "@patract/react-components/*": [ "packages/react-components/src/*" ],
     },
     "skipLibCheck": true,
     "typeRoots": [
