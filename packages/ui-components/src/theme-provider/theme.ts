@@ -3,7 +3,42 @@ import { extendTheme } from '@chakra-ui/react';
  *
  */
 export const theme = extendTheme({
+  textStyles: {
+    'form-label': {
+      fontSize: '13px',
+      fontWeight: '400',
+      color: '#666666',
+      lineHeight: '24px'
+    }
+  },
+  colors: {
+    brand: {
+      primary: '#0058FA',
+      grey: '#666666'
+    },
+    primary: {
+      500: '#0058FA'
+    }
+  },
   components: {
+    Button: {
+      baseStyle: {
+        borderRadius: '2px',
+        fontWeight: '500',
+        fontSize: '14px',
+        lineHeight: '20px'
+      },
+      sizes: {
+        md: { h: '32px' }
+      }
+    },
+    FormLabel: {
+      baseStyle: {
+        display: 'flex',
+        margin: '0 0 7px 0',
+        justifyContent: 'space-between'
+      }
+    },
     Table: {
       variants: {
         simple: {

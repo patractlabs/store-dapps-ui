@@ -2932,6 +2932,7 @@ __metadata:
     parcel-bundler: ^1.12.4
     react: ^17.0.1
     react-dom: ^17.0.1
+    react-hook-form: ^6.14.1
     react-router-dom: ^5.2.0
     react-select: ^3.2.0
   languageName: unknown
