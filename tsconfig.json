@@ -1,25 +1,22 @@
 {
   "extends": "@patract/dev/config/tsconfig.json",
-  "exclude": [
-    "build/**/*",
-    "**/build/**/*"
-  ],
+  "exclude": ["build/**/*", "**/build/**/*"],
   "compilerOptions": {
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "@patract/page-uniswap": [ "packages/page-uniswap/src" ],
-      "@patract/page-uniswap/*": [ "packages/page-uniswap/src/*" ],
-      "@patract/ui-components": [ "packages/ui-components/src" ],
-      "@patract/ui-components/*": [ "packages/ui-components/src/*" ],
-      "@patract/react-hooks": [ "packages/react-hooks/src" ],
-      "@patract/react-hooks/*": [ "packages/react-hooks/src/*" ],
-      "@patract/react-components": [ "packages/react-components/src" ],
-      "@patract/react-components/*": [ "packages/react-components/src/*" ],
+      "@patract/page-uniswap": ["packages/page-uniswap/src"],
+      "@patract/page-uniswap/*": ["packages/page-uniswap/src/*"],
+      "@patract/ui-components": ["packages/ui-components/src"],
+      "@patract/ui-components/*": ["packages/ui-components/src/*"],
+      "@patract/react-hooks": ["packages/react-hooks/src"],
+      "@patract/react-hooks/*": ["packages/react-hooks/src/*"],
+      "@patract/react-components": ["packages/react-components/src"],
+      "@patract/react-components/*": ["packages/react-components/src/*"],
+      "@patract/utils": ["packages/utils/src"],
+      "@patract/utils/*": ["packages/utils/src/*"]
     },
     "skipLibCheck": true,
-    "typeRoots": [
-      "./node_modules/@types",
-    ]
+    "typeRoots": ["./node_modules/@types"]
   }
 }

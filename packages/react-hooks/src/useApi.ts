@@ -1,8 +1,6 @@
-import type { ApiProps } from '@polkadot/react-api/types';
-
+import { ApiContext } from '@patract/react-components/api/api-context';
+import type { ApiProps } from '@patract/react-components/api/types';
 import { useContext } from 'react';
-
-import { ApiContext } from '@polkadot/react-api';
 
 export function useApi(): ApiProps {
   return useContext(ApiContext);
