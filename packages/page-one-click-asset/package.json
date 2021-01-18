@@ -17,6 +17,8 @@
   },
   "alias": {
     "@patract/ui-components": "../ui-components/src",
-    "@patract/react-hooks": "../react-hooks/src"
+    "@patract/react-hooks": "../react-hooks/src",
+    "@patract/react-components": "../react-components/src",
+    "@patract/utils": "../utils/src"
   }
 }
