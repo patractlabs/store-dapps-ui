@@ -15,6 +15,7 @@ import {
   FormControl,
   FormLabel
 } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
 import InputSelect, { MenuOption } from '../../components/input-select';
 import USDTIcon from '../../images/usdt.png';
@@ -140,6 +141,12 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               </Flex>
             </FormControl>
           </Flex>
+          <Center>
+            <Text sx={{ color: 'red.600', mt: '24px', fontSize: '14px' }}>
+              <InfoOutlineIcon sx={{ mr: '9px' }}/>
+              Insufficient USDT balance！
+            </Text>
+          </Center>
         </ModalBody>
 
         <ModalFooter sx={{ justifyContent: 'center' }}>

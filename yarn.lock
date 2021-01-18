@@ -2938,6 +2938,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@patract/react-components@workspace:packages/react-components":
+  version: 0.0.0-use.local
+  resolution: "@patract/react-components@workspace:packages/react-components"
+  dependencies:
+    "@babel/core": ^7.0.0
+  languageName: unknown
+  linkType: soft
+
 "@patract/react-hooks@0.1.0, @patract/react-hooks@workspace:packages/react-hooks":
   version: 0.0.0-use.local
   resolution: "@patract/react-hooks@workspace:packages/react-hooks"

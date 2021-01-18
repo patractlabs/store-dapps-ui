@@ -19,6 +19,7 @@ import {
   FormLabel,
   Text
 } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
 import { InputNumberController } from '@patract/ui-components';
 import InputSelect, { MenuOption } from '../../components/input-select';
@@ -131,7 +132,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               defaultValue=''
             />
           </FormControl>
-          <FormControl sx={{ mb: '24px' }}>
+          <FormControl>
             <InputSelect
               frontLabel='You will receive (estimated)'
               options={options}
@@ -141,6 +142,12 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               defaultValue=''
             />
           </FormControl>
+          <Center>
+            <Text sx={{ color: 'red.600', mt: '24px', fontSize: '14px' }}>
+              <InfoOutlineIcon sx={{ mr: '9px' }}/>
+              Insufficient USDT balance！
+            </Text>
+          </Center>
         </ModalBody>
 
         <ModalFooter sx={{ justifyContent: 'center' }}>
