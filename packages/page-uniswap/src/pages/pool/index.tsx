@@ -1,5 +1,4 @@
 import React from 'react';
-import Layout from '../../components/layout';
 import {
   Box,
   Button,
@@ -15,6 +14,7 @@ import {
   Flex
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
+import Layout from '../../components/layout';
 import Add from './add';
 import Withdraw from './withdraw';
 import CreatePair from './create-pair';

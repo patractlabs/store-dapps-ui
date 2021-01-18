@@ -168,9 +168,9 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
 };
 
 const InputSelect: React.FC<InputSelectProps> = (props) => {
-  const { frontLabel, backLabel, options, inputName, selectName, control, defaultValue } = props;
-  const [selected, setSelect] = useState(options[0]);
+  const { frontLabel, backLabel, options, inputName, selectName, control, watch, defaultValue, defaultOption } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const selected = watch([selectName])[selectName]);
 
   const MenuSelect = (
     <Box
@@ -224,14 +224,13 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
           <Controller
             name={selectName}
             control={control}
-            defaultValue={options[0]}
+            defaultValue={defaultOption || options[0] || {}}
             render={({ onChange }) => (
               <Menu
                 options={options}
                 onSelect={(option) => {
                   onClose();
                   onChange(option);
-                  setSelect(option);
                 }}
               />
             )}

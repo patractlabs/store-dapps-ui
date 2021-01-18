@@ -2933,6 +2933,7 @@ __metadata:
     react: ^17.0.1
     react-dom: ^17.0.1
     react-hook-form: ^6.14.1
+    react-icons: ^4.1.0
     react-router-dom: ^5.2.0
     react-select: ^3.2.0
   languageName: unknown
@@ -12339,6 +12340,15 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.8.0 || ^17
   checksum: 3e5a11674affea8403e17db8b1211fbe7d01f392abc84b7336df8a5ccb829f19cf4d1144dfb641ef62f0b496a66d87ec906d26402411df778540d3a1018f2dbc
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "react-icons@npm:4.1.0"
+  peerDependencies:
+    react: "*"
+  checksum: 08d768e9c20a061a11de6c0050f0b199451b83592ef2fdb1add9f1f14ff6f356e1950621c3fd257f18383bb917e04577d03740b9be0754046bc435e7897141f9
   languageName: node
   linkType: hard
 

@@ -29,7 +29,7 @@ const defaultValues = {
   input_1: '',
   select_1: options[0],
   input_2: '',
-  select_2: options[0]
+  select_2: options[1]
 };
 
 const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -62,7 +62,9 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               inputName='input_1'
               selectName='select_1'
               control={control}
+              watch={watch}
               defaultValue=''
+              defaultOption={defaultValues.select_1}
             />
           </FormControl>
           <FormControl sx={{ mb: '24px' }}>
@@ -73,7 +75,9 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               inputName='input_2'
               selectName='select_2'
               control={control}
+              watch={watch}
               defaultValue=''
+              defaultOption={defaultValues.select_2}
             />
           </FormControl>
           <Flex>

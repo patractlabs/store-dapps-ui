@@ -31,7 +31,7 @@ const options: Array<MenuOption> = [
 ];
 
 const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { control } = useForm();
+  const { control, watch } = useForm();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -129,7 +129,9 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               inputName='input_1'
               selectName='select_1'
               control={control}
+              watch={watch}
               defaultValue=''
+              defaultOption={options[0]}
             />
           </FormControl>
           <FormControl>
@@ -139,7 +141,9 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               inputName='input_2'
               selectName='select_2'
               control={control}
+              watch={watch}
               defaultValue=''
+              defaultOption={options[1]}
             />
           </FormControl>
           <Center>

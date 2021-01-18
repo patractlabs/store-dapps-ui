@@ -21,7 +21,7 @@ const options: Array<MenuOption> = [
 ];
 
 const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { control } = useForm();
+  const { control, watch } = useForm();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -48,7 +48,9 @@ const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
               inputName='from_input'
               selectName='from_select'
               control={control}
+              watch={watch}
               defaultValue=''
+              defaultOption={options[0]}
             />
           </FormControl>
           <FormControl sx={{ mb: '24px' }}>
@@ -58,7 +60,9 @@ const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
               inputName='to_input'
               selectName='to_select'
               control={control}
+              watch={watch}
               defaultValue=''
+              defaultOption={options[1]}
             />
           </FormControl>
         </ModalBody>
