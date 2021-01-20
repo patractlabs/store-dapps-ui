@@ -1,8 +1,17 @@
 import React from 'react';
 import { Flex, Icon } from '@chakra-ui/react';
 import { FaPencilAlt, FaEraser, FaReply, FaUndoAlt } from 'react-icons/fa';
+import { PaintMode } from './index';
 
-const ToolBar: React.FC = () => {
+type ToolbarProps = {
+  paintMode: PaintMode;
+  onPenClick: () => void;
+  onEraserClick: () => void;
+  onRevert: () => void;
+  onRefresh: () => void;
+};
+
+const ToolBar: React.FC<ToolbarProps> = ({ paintMode, onPenClick, onEraserClick, onRevert, onRefresh }) => {
   return (
     <Flex
       sx={{
@@ -14,12 +23,44 @@ const ToolBar: React.FC = () => {
         borderRadius: '8px'
       }}
     >
-      <Icon as={FaPencilAlt} sx={{ w: '30px', h: '30px', color: '#ABB4D0', cursor: 'pointer' }} />
-      <Icon as={FaEraser} sx={{ w: '30px', h: '30px', color: '#ABB4D0', cursor: 'pointer' }} />
-      <Icon as={FaReply} sx={{ w: '30px', h: '30px', color: '#ABB4D0', cursor: 'pointer' }} />
       <Icon
+        onClick={onPenClick}
+        as={FaPencilAlt}
+        sx={{
+          w: '30px',
+          h: '30px',
+          color: `${paintMode === 'pen' ? `#FF7700` : '#ABB4D0'}`,
+          cursor: 'pointer',
+          _hover: { color: '#FF7700' }
+        }}
+      />
+      <Icon
+        onClick={onEraserClick}
+        as={FaEraser}
+        sx={{
+          w: '30px',
+          h: '30px',
+          color: `${paintMode === 'eraser' ? `#FF7700` : '#ABB4D0'}`,
+          cursor: 'pointer',
+          _hover: { color: '#FF7700' }
+        }}
+      />
+      <Icon
+        onClick={onRevert}
+        as={FaReply}
+        sx={{ w: '30px', h: '30px', color: '#ABB4D0', cursor: 'pointer', _hover: { color: '#FF7700' } }}
+      />
+      <Icon
+        onClick={onRefresh}
         as={FaUndoAlt}
-        sx={{ w: '30px', h: '30px', color: '#ABB4D0', transform: 'scaleX(-1)', cursor: 'pointer' }}
+        sx={{
+          w: '30px',
+          h: '30px',
+          color: '#ABB4D0',
+          transform: 'scaleX(-1)',
+          cursor: 'pointer',
+          _hover: { color: '#FF7700' }
+        }}
       />
     </Flex>
   );
