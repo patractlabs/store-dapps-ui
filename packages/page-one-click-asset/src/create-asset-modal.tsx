@@ -1,22 +1,20 @@
 import {
   Button,
-  Container,
-  ModalContent,
-  ModalCloseButton,
-  ModalHeader,
-  ModalBody,
   Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
   ModalOverlay,
   SimpleGrid
 } from '@chakra-ui/react';
 import { InputNumberController, InputTextController } from '@patract/ui-components';
-
-import React, { useRef } from 'react';
-import { useForm, useController, UseControllerProps } from 'react-hook-form';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { TokenType, TokenTypesField } from './token-types-field';
 
 export type CreateAssetModalProps = {
@@ -34,7 +32,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
   });
 
   return (
-    <Modal motionPreset="none" variant='common' isOpen={isOpen} autoFocus={false} onClose={onClose}>
+    <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={onClose}>
       <ModalOverlay />
       <ModalContent maxW='3xl' border='1px' borderColor='gray.200' borderRadius='20px'>
         <ModalHeader>Add Token</ModalHeader>
