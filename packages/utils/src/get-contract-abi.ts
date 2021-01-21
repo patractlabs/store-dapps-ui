@@ -1,4 +1,4 @@
-import { api } from '@patract/react-components/api/api';
+import { api } from '@patract/react-components/api';
 import { Abi } from '@polkadot/api-contract';
 import type { AnyJson } from '@polkadot/types/types';
 import { getAddressMeta } from './get-address-meta';

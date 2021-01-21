@@ -4,7 +4,7 @@
   "main": "index.js",
   "dependencies": {
     "@patract/react-components": "workspace:packages/react-components",
-    "@polkadot/api-contract": "^3.4.1",
+    "@polkadot/api-contract": "^3.5.1",
     "@polkadot/ui-keyring": "^0.66.2"
   },
   "alias": {

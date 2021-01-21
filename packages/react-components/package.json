@@ -5,7 +5,7 @@
   "dependencies": {
     "@babel/core": "^7.0.0",
     "@patract/utils": "workspace:packages/utils",
-    "@polkadot/api": "^3.4.1",
+    "@polkadot/api": "^3.5.1",
     "@polkadot/extension-dapp": "^0.36.1",
     "@polkadot/extension-inject": "^0.36.1"
   },

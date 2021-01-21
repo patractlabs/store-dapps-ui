@@ -171,7 +171,7 @@ async function loadOnReady(
   };
 }
 
-function Api({ children, store, url }: Props): React.ReactElement<Props> | null {
+export const Api = React.memo(function Api({ children, store, url }: Props): React.ReactElement<Props> | null {
   const { queuePayload, queueSetTxStatus } = useContext(StatusContext);
   const [state, setState] = useState<ApiState>(({
     hasInjectedAccounts: false,
@@ -192,8 +192,17 @@ function Api({ children, store, url }: Props): React.ReactElement<Props> | null 
     const provider = new WsProvider(url);
     const signer = new ApiSigner(registry, queuePayload, queueSetTxStatus);
 
-    api = new ApiPromise({ provider, registry, signer });
+    api = new ApiPromise({
+      provider,
+      registry,
+      signer,
+      types: {
+        Address: 'MultiAddress',
+        LookupSource: 'MultiAddress'
+      }
+    });
 
+    console.log(api);
     api.on('connected', () => setIsApiConnected(true));
     api.on('disconnected', () => setIsApiConnected(false));
     api.on('error', (error: Error) => setApiError(error.message));
@@ -220,6 +229,4 @@ function Api({ children, store, url }: Props): React.ReactElement<Props> | null 
   }
 
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
-}
-
-export default React.memo(Api);
+});
