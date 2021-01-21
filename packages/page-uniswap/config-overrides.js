@@ -2,7 +2,7 @@ const { override } = require('customize-cra');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const path = require('path');
 
-const findPackages = require('./scripts/findPackages');
+const findPackages = require('../../scripts/findPackages');
 
 const packages = findPackages();
 

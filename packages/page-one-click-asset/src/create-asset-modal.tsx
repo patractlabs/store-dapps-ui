@@ -16,6 +16,7 @@ import { InputNumberController, InputTextController } from '@patract/ui-componen
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { TokenType, TokenTypesField } from './token-types-field';
+import { useApi, useModal } from '@patract/react-hooks';
 
 export type CreateAssetModalProps = {
   isOpen: boolean;
@@ -30,6 +31,10 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
   const deploy = handleSubmit((data) => {
     console.log(data);
   });
+
+  const { isApiReady } = useApi();
+
+  console.log('isApiReady', isApiReady);
 
   return (
     <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={onClose}>

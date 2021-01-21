@@ -16,6 +16,7 @@
       "@patract/utils": ["packages/utils/src"],
       "@patract/utils/*": ["packages/utils/src/*"]
     },
+    "noUnusedLocals": false,
     "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types"]
   }
