@@ -6,8 +6,8 @@ import Pixel from './pages/pixel';
 function App() {
   return (
     <ThemeProvider>
-        <Header />
-        <Pixel />
+      <Header />
+      <Pixel />
     </ThemeProvider>
   );
 }

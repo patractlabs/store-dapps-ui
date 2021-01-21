@@ -2939,14 +2939,27 @@ __metadata:
     "@chakra-ui/icons": ^1.0.3
     "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
-    "@types/react-router-dom": ^5.1.7
-    "@types/react-select": ^3.1.2
     parcel-bundler: ^1.12.4
     react: ^17.0.1
     react-dom: ^17.0.1
-    react-hook-form: ^6.14.1
     react-icons: ^4.1.0
-    react-router-dom: ^5.2.0
+  languageName: unknown
+  linkType: soft
+
+"@patract/page-pk@workspace:packages/page-pk":
+  version: 0.0.0-use.local
+  resolution: "@patract/page-pk@workspace:packages/page-pk"
+  dependencies:
+    "@babel/core": ^7.12.10
+    "@babel/polyfill": ^7.12.1
+    "@babel/runtime": ^7.12.5
+    "@chakra-ui/icons": ^1.0.3
+    "@patract/react-hooks": 0.1.0
+    "@patract/ui-components": 0.1.0
+    parcel-bundler: ^1.12.4
+    react: ^17.0.1
+    react-dom: ^17.0.1
+    react-icons: ^4.1.0
   languageName: unknown
   linkType: soft
 
