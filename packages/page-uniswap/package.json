@@ -16,18 +16,11 @@
     "react-router-dom": "^5.2.0"
   },
   "scripts": {
-    "start": "parcel public/index.html",
-    "build": "parcel build public/index.html"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build"
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
-    "@types/react-select": "^3.1.2",
-    "parcel-bundler": "^1.12.4"
-  },
-  "alias": {
-    "@patract/ui-components": "../ui-components/src",
-    "@patract/react-hooks": "../react-hooks/src",
-    "@patract/react-components": "../react-components/src",
-    "@patract/utils": "../utils/src"
+    "@types/react-select": "^3.1.2"
   }
 }

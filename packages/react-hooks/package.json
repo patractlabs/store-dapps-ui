@@ -6,11 +6,5 @@
     "@chakra-ui/react": "^1.1.4",
     "react": "^17.0.1",
     "styled-components": "^5.2.1"
-  },
-  "alias": {
-    "@patract/ui-components": "../ui-components/src",
-    "@patract/react-hooks": "../react-hooks/src",
-    "@patract/react-components": "../react-components/src",
-    "@patract/utils": "../utils/src"
   }
 }

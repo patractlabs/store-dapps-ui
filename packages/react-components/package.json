@@ -8,11 +8,5 @@
     "@polkadot/api": "^3.5.1",
     "@polkadot/extension-dapp": "^0.36.1",
     "@polkadot/extension-inject": "^0.36.1"
-  },
-  "alias": {
-    "@patract/ui-components": "../ui-components/src",
-    "@patract/react-hooks": "../react-hooks/src",
-    "@patract/react-components": "../react-components/src",
-    "@patract/utils": "../utils/src"
   }
 }

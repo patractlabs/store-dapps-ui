@@ -1,1 +1,0 @@
-import '@patract/dev/react-app'
