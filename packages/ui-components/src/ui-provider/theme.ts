@@ -17,7 +17,8 @@ export const theme = extendTheme({
       grey: '#666666'
     },
     primary: {
-      500: '#0058FA'
+      500: '#0058FA',
+      600: '#000000'
     }
   },
   sizes: {
@@ -95,6 +96,9 @@ export const theme = extendTheme({
   },
   styles: {
     global: {
+      'html, body, #root': {
+        height: '100%'
+      },
       /**
        * normalize.css
        */

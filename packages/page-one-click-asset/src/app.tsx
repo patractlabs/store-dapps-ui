@@ -1,7 +1,7 @@
 import { useApi, useModal } from '@patract/react-hooks';
+import { Button, PageHeader, PageLayout, PageMain } from '@patract/ui-components';
 import React from 'react';
 import { CreateAssetModal } from './create-asset-modal';
-import { Header, Box, Button, Container } from '@patract/ui-components';
 
 export const App = () => {
   const { isOpen, onOpen, onClose } = useModal();
@@ -11,13 +11,13 @@ export const App = () => {
   console.log(isApiReady);
 
   return (
-    <Box>
-      <Header title='Patra Asset' />
-      <Container maxW='75rem'>
-        <Button onClick={onOpen}>add asset</Button>
+    <PageLayout>
+      <PageHeader title='Patra Asset' />
+      <PageMain>
+        <Button onClick={onOpen}>Create Asset</Button>
         <CreateAssetModal isOpen={isOpen} onClose={onClose} />
-      </Container>
-    </Box>
+      </PageMain>
+    </PageLayout>
   );
 };
 

@@ -33,14 +33,13 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
     console.log(data);
   });
 
-
   console.log('isApiReady', isApiReady);
 
   return (
     <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={onClose}>
       <ModalOverlay />
       <ModalContent maxW='3xl' border='1px' borderColor='gray.200' borderRadius='20px'>
-        <ModalHeader>Add Token</ModalHeader>
+        <ModalHeader>Create Asset</ModalHeader>
         <ModalCloseButton />
         <ModalBody padding={8}>
           <SimpleGrid column={1} spacing='8'>
@@ -109,7 +108,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
               </Flex>
             </FormControl>
             <FormControl>
-              <Button width='full' size='lg' colorScheme='pink' onClick={deploy}>
+              <Button width='full' size='lg' colorScheme='blue' onClick={deploy}>
                 发币
               </Button>
             </FormControl>
