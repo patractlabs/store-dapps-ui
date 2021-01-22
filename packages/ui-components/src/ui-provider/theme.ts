@@ -20,6 +20,9 @@ export const theme = extendTheme({
       500: '#0058FA'
     }
   },
+  sizes: {
+    max: '75rem'
+  },
   components: {
     Button: {
       baseStyle: {
@@ -77,7 +80,7 @@ export const theme = extendTheme({
       variants: {
         common: {
           header: {
-            textAlign: 'center',
+            textAlign: 'center'
           },
           closeButton: {
             top: '0.75rem'

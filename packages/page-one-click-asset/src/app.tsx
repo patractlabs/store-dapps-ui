@@ -1,20 +1,23 @@
-import { Button } from '@chakra-ui/react';
 import { useApi, useModal } from '@patract/react-hooks';
-import { ThemeProvider } from '@patract/ui-components';
 import React from 'react';
 import { CreateAssetModal } from './create-asset-modal';
-import { Api } from '@patract/react-components';
+import { Header, Box, Button, Container } from '@patract/ui-components';
 
 export const App = () => {
   const { isOpen, onOpen, onClose } = useModal();
 
+  const { isApiReady } = useApi();
+
+  console.log(isApiReady);
+
   return (
-    <ThemeProvider>
-      <Api url='ws://192.168.50.10:9944'>
+    <Box>
+      <Header title='Patra Asset' />
+      <Container maxW='75rem'>
         <Button onClick={onOpen}>add asset</Button>
         <CreateAssetModal isOpen={isOpen} onClose={onClose} />
-      </Api>
-    </ThemeProvider>
+      </Container>
+    </Box>
   );
 };
 

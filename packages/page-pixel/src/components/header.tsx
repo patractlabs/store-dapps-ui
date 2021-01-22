@@ -12,9 +12,7 @@ const Header = () => {
                 as='h1'
                 sx={{
                   fontSize: '24px',
-                  fontWeight: 500,
-                  lineHeight: '51px',
-                  fontFamily: 'PingFangSC-Medium, PingFang SC'
+                  fontWeight: 500
                 }}
               >
                 Patra Pixle

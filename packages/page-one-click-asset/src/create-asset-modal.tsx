@@ -27,12 +27,12 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
   const { control, errors, handleSubmit } = useForm({
     defaultValues: { tokenType: TokenType.erc20_1, tokenName: '', tokenSymbol: '', tokenPrecision: '', tokenSupply: '' }
   });
+  const { isApiReady } = useApi();
 
   const deploy = handleSubmit((data) => {
     console.log(data);
   });
 
-  const { isApiReady } = useApi();
 
   console.log('isApiReady', isApiReady);
 
