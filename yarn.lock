@@ -3359,6 +3359,7 @@ __metadata:
     "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
     react: ^17.0.1
+    react-app-rewired: ^2.1.8
     react-dom: ^17.0.1
     react-icons: ^4.1.0
   languageName: unknown
@@ -3375,6 +3376,7 @@ __metadata:
     "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
     react: ^17.0.1
+    react-app-rewired: ^2.1.8
     react-dom: ^17.0.1
     react-icons: ^4.1.0
   languageName: unknown
@@ -3393,6 +3395,7 @@ __metadata:
     "@types/react-router-dom": ^5.1.7
     "@types/react-select": ^3.1.2
     react: ^17.0.1
+    react-app-rewired: ^2.1.8
     react-dom: ^17.0.1
     react-hook-form: ^6.14.1
     react-icons: ^4.1.0
@@ -16683,7 +16686,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-app-rewired@npm:^2.1.5":
+"react-app-rewired@npm:^2.1.5, react-app-rewired@npm:^2.1.8":
   version: 2.1.8
   resolution: "react-app-rewired@npm:2.1.8"
   dependencies:
