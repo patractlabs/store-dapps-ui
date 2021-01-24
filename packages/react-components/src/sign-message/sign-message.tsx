@@ -14,6 +14,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
+  ModalOverlay,
   SimpleGrid,
   Stack
 } from '@patract/ui-components';
@@ -133,6 +134,7 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
 
   return (
     <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={onClose}>
+      <ModalOverlay />
       <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
         <ModalHeader>Confirm</ModalHeader>
         <ModalCloseButton />
