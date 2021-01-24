@@ -15,7 +15,7 @@ services:
   page-pk:
     restart: on-failure
     build:
-      context: .
+      context: packages/page-pk
       dockerfile: docker/Dockerfile
     volumes:
       - "./packages/page-pk:/app"
@@ -25,7 +25,7 @@ services:
   page-uniswap:
     restart: on-failure
     build:
-      context: .
+      context: packages/page-uniswap
       dockerfile: docker/Dockerfile
     volumes:
       - "./packages/page-uniswap:/app"
@@ -35,7 +35,7 @@ services:
   page-pixel:
     restart: on-failure
     build:
-      context: .
+      context: packages/page-pixel
       dockerfile: docker/Dockerfile
     volumes:
       - "./packages/page-pixel:/app"
