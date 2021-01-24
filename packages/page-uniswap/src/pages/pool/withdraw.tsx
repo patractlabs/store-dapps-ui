@@ -47,7 +47,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
 
   const onSliderChange = useCallback((value: number) => {
     setValue('withdraw_token', value * balance / 100);
-  }, []);
+  }, [setValue]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
