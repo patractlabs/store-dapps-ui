@@ -168,7 +168,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
         </SimpleGrid>
         <FormControl>
           <Stack direction='row' spacing={4} justifyContent='flex-end'>
-            <Button colorScheme='blue' variant='outline' onClick={resetView}>
+            <Button colorScheme='blue' variant='outline' onClick={resetView} isDisabled={isLoading}>
               Prev
             </Button>
             <Button colorScheme='blue' onClick={confirmDeploy} isLoading={isLoading}>
