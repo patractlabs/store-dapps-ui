@@ -1,3 +1,0 @@
-patraswap.test.dapps.patract.cn {
-    reverse_proxy localhost:8002
-}
