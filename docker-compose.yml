@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  caddy: 
+    image: caddy:2.2.1-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - Caddyfile:/etc/caddy/Caddyfile
+      - caddy:/data
+
+  page-pk:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+        volumes:
+          - "./packages/page-pk:/app"
+      ports:
+        - "1234:8001"
+
+  page-uniswap:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+        volumes:
+          - "./packages/page-uniswap:/app"
+      ports:
+        - "1234:8002"
+
+  page-pixel:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+        volumes:
+          - "./packages/page-uniswap:/app"
+      ports:
+        - "1234:8003"
+  
+volumes:
+  caddy:
