@@ -23,7 +23,7 @@ export const InputNumberController: React.FC<InputNumberControllerProps> = (prop
       control={control}
       defaultValue={defaultValue}
       rules={{
-        pattern: pattern,
+        pattern,
         ...rules
       }}
       onFocus={onFocus}
