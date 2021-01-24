@@ -20,8 +20,15 @@ const options: Array<MenuOption> = [
   { value: 'eth', label: 'ETH', icon: USDTIcon, fullName: 'Ethereum', address: 'GAneP4k…fJEfs', balance: 150000.9912 }
 ];
 
+const defaultValues = {
+  from_input: '',
+  from_select: options[0],
+  to_input: '',
+  to_select: options[1]
+};
+
 const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { control, watch } = useForm();
+  const { control, watch } = useForm({ defaultValues });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

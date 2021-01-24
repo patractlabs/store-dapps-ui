@@ -11,6 +11,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Portal,
   useDisclosure
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
@@ -33,6 +34,7 @@ export type InputSelectProps = {
   control: any;
   inputName: string;
   selectName: string;
+  usePortal?: boolean;
 } & Omit<React.ComponentProps<typeof Controller>, 'render'>;
 
 const ValueContainer = ({ selectOption }: { selectOption: MenuOption }) => (
@@ -168,7 +170,18 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
 };
 
 const InputSelect: React.FC<InputSelectProps> = (props) => {
-  const { frontLabel, backLabel, options, inputName, selectName, control, watch, defaultValue, defaultOption } = props;
+  const {
+    frontLabel,
+    backLabel,
+    options,
+    inputName,
+    selectName,
+    control,
+    watch,
+    defaultValue,
+    defaultOption,
+    usePortal = false
+  } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selected = watch([selectName])[selectName];
 
@@ -191,6 +204,25 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
         <TriangleDownIcon sx={{ verticalAlign: 'top', w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
       </Center>
     </Box>
+  );
+
+  const content = (
+    <PopoverContent sx={{ w: '464px', left: '-226px', top: '-6px', zIndex: 'dropdown' }}>
+      <Controller
+        name={selectName}
+        control={control}
+        defaultValue={defaultOption || options[0] || {}}
+        render={({ onChange }) => (
+          <Menu
+            options={options}
+            onSelect={(option) => {
+              onClose();
+              onChange(option);
+            }}
+          />
+        )}
+      />
+    </PopoverContent>
   );
 
   return (
@@ -220,22 +252,7 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
       />
       <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
         <PopoverTrigger>{MenuSelect}</PopoverTrigger>
-        <PopoverContent sx={{ w: '464px', left: '-226px', top: '-6px' }}>
-          <Controller
-            name={selectName}
-            control={control}
-            defaultValue={defaultOption || options[0] || {}}
-            render={({ onChange }) => (
-              <Menu
-                options={options}
-                onSelect={(option) => {
-                  onClose();
-                  onChange(option);
-                }}
-              />
-            )}
-          />
-        </PopoverContent>
+        {usePortal ? <Portal>{content}</Portal> : content}
       </Popover>
     </React.Fragment>
   );

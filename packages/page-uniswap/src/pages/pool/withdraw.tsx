@@ -30,8 +30,15 @@ const options: Array<MenuOption> = [
   { value: 'eth', label: 'ETH', icon: USDTIcon, fullName: 'Ethereum', address: 'GAneP4k…fJEfs', balance: 150000.9912 }
 ];
 
+const defaultValues = {
+  input_1: '',
+  select_1: options[0],
+  input_2: '',
+  select_2: options[1]
+};
+
 const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { control, watch } = useForm();
+  const { control, watch } = useForm({ defaultValues });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

@@ -31,7 +31,7 @@ const Swap = () => {
 
   return (
     <Layout>
-      <Box sx={{ bgColor: '#FFFFFF', borderRadius: '8px', p: '24px 0 150px' }}>
+      <Box sx={{ bgColor: '#FFFFFF', borderRadius: '8px', p: '24px 0 150px', mt: '60px' }}>
         <Center>
           <Box
             sx={{
@@ -52,6 +52,7 @@ const Swap = () => {
                 watch={watch}
                 defaultValue=''
                 defaultOption={defaultValues.from_select}
+                usePortal={true}
               />
             </FormControl>
               <Icon
@@ -85,6 +86,7 @@ const Swap = () => {
                 watch={watch}
                 defaultValue=''
                 defaultOption={defaultValues.to_select}
+                usePortal={true}
               />
             </FormControl>
             <Box

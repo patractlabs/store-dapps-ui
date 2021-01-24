@@ -38,7 +38,7 @@ const Pool = () => {
             fontWeight: '500',
             lineHeight: '20px',
             color: 'brand.primary',
-            mb: '14px'
+            my: '14px'
           }}
           onClick={onCreatePairOpen}
         >
