@@ -124,7 +124,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
   if (!values) return null;
 
   return (
-    <ModalContent maxW='xl' border='1px' borderColor='gray.200' borderRadius='20px'>
+    <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
       <ModalHeader>Confirm</ModalHeader>
       <ModalCloseButton />
       <ModalBody padding={8}>

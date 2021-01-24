@@ -1,28 +1,30 @@
-import { useModal } from '@patract/react-hooks';
 import { AddIcon } from '@chakra-ui/icons';
+import { useModal } from '@patract/react-hooks';
 import {
+  Box,
   Button,
-  PageHeader,
+  Center,
+  CircularProgress,
   Flex,
+  PageHeader,
   PageLayout,
   PageMain,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
-  Tr,
-  Box,
-  Center,
-  CircularProgress,
-  Text
+  Tr
 } from '@patract/ui-components';
+import { truncated } from '@patract/utils';
 import React, { useMemo } from 'react';
 import Erc20fixed from './contracts/erc20fixed.json';
 import Erc20mintable from './contracts/erc20mintable.json';
 import { CreateAssetModal } from './create-asset-modal';
+import { IssueAssetButton } from './issue-asset-button';
 import { useAssetList, useQueryContracts } from './hooks';
-import { truncated } from '@patract/utils';
+
 export const App = () => {
   const { isOpen, onOpen, onClose } = useModal();
 
@@ -44,7 +46,7 @@ export const App = () => {
     });
   }, [data]);
 
-  const { data: list, loading } = useAssetList(contractList);
+  const { data: list, loading, forceUpdate } = useAssetList(contractList);
 
   return (
     <PageLayout>
@@ -78,7 +80,9 @@ export const App = () => {
                   <Td>{item.tokenDecimals}</Td>
                   <Td>{item.totalSupply}</Td>
                   <Td>
-                    <Button size='sm'>issue</Button>
+                    {item.codeHash === Erc20mintable.source.hash ? (
+                      <IssueAssetButton contractAddress={item.address} updateView={forceUpdate} />
+                    ) : null}
                   </Td>
                 </Tr>
               ))}
