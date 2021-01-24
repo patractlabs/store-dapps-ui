@@ -14,7 +14,7 @@ import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defau
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { StatusContext } from '../status/status-context';
 import ApiContext from './api-context';
-import { ApiSigner } from './api-signer';
+import { ApiSigner } from '../signer/signers/api-signer';
 import { registry } from './type-registry';
 import type { ApiProps, ApiState } from './types';
 

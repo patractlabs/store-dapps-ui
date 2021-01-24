@@ -17,6 +17,7 @@ export class ApiSigner implements Signer {
   }
 
   public async signPayload(payload: SignerPayloadJSON): Promise<SignerResult> {
+    console.log('signPayload')
     return new Promise((resolve, reject): void => {
       this.#queuePayload(this.#registry, payload, (id: number, result: SignerResult | null): void => {
         if (result) {
