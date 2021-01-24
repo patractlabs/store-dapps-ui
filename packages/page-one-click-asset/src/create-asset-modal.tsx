@@ -36,13 +36,13 @@ export type FieldValues = {
   tokenType: TokenType;
   tokenName: string;
   tokenSymbol: string;
-  tokenPrecision: string;
+  tokenDecimals: string;
   tokenSupply: string;
 };
 
 export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onClose }) => {
   const { control, errors, handleSubmit, reset } = useForm<FieldValues>({
-    defaultValues: { tokenType: TokenType.erc20_1, tokenName: '', tokenSymbol: '', tokenPrecision: '', tokenSupply: '' }
+    defaultValues: { tokenType: TokenType.erc20_1, tokenName: '', tokenSymbol: '', tokenDecimals: '', tokenSupply: '' }
   });
 
   const [modalView, setModalView] = useState<ModalView>(ModalView.create);
@@ -53,7 +53,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
     try {
       const abi = new Abi(getTokenAbi(data.tokenType));
 
-      abi.constructors[0].toU8a([data.tokenSupply, data.tokenSymbol, data.tokenName, data.tokenPrecision]);
+      abi.constructors[0].toU8a([data.tokenSupply, data.tokenSymbol, data.tokenName, data.tokenDecimals]);
 
       setConfirmValues(data);
       setModalView(ModalView.confirm);
@@ -127,7 +127,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
                   <InputNumberController
                     control={control}
                     maxWidth='2xs'
-                    name='tokenPrecision'
+                    name='tokenDecimals'
                     pattern='^[0-9]{0,2}$'
                     rules={{ required: true }}
                   />

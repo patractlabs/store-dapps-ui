@@ -15,9 +15,16 @@ export const getTokenTypeName = (type: TokenType) => {
   return TokenTypeName[type];
 };
 
-export const getTokenAbi = (type: TokenType) => {
-  return {
-    [TokenType.erc20_1]: Erc20fixed,
-    [TokenType.erc20_2]: Erc20mintable
-  }[type];
+export const getTokenAbi = (type: TokenType | string) => {
+  if (type === TokenType.erc20_1) {
+    return Erc20fixed;
+  } else if (type === TokenType.erc20_2) {
+    return Erc20mintable;
+  } else if (type === Erc20fixed.source.hash) {
+    return Erc20fixed;
+  } else if (type === Erc20mintable.source.hash) {
+    return Erc20mintable;
+  } else {
+    throw new Error('Unexpected');
+  }
 };

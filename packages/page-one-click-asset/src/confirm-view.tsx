@@ -69,7 +69,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
         values.tokenSupply,
         values.tokenSymbol,
         values.tokenName,
-        values.tokenPrecision
+        values.tokenDecimals
       );
 
       const signer = new AccountSigner(
@@ -159,7 +159,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
           </Flex>
           <Flex justifyContent='space-between'>
             <Box color='gray.500'>Token Precision</Box>
-            <Box fontWeight='medium'>{values.tokenPrecision}</Box>
+            <Box fontWeight='medium'>{values.tokenDecimals}</Box>
           </Flex>
           <Flex justifyContent='space-between'>
             <Box color='gray.500'>Initial Supply</Box>

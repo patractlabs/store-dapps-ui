@@ -201,7 +201,6 @@ export const Api = React.memo(function Api({ children, store, url }: Props): Rea
       }
     });
 
-    console.log(api);
     api.on('connected', () => setIsApiConnected(true));
     api.on('disconnected', () => setIsApiConnected(false));
     api.on('error', (error: Error) => setApiError(error.message));

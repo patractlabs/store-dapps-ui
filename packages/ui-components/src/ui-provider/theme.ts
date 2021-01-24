@@ -46,18 +46,16 @@ export const theme = extendTheme({
     Table: {
       variants: {
         simple: {
-          table: {
-            color: '#666666'
-          },
-          thead: {
-            bgColor: '#F4F4F4',
-            boxShadow:
-              '0px 2px 4px 0px rgba(0, 0, 0, 0.05), 0px 1px 0px 0px rgba(0, 0, 0, 0.09), 0px -1px 0px 0px rgba(0, 0, 0, 0.05)'
-          },
+          // table: {
+          //   color: '#666666'
+          // },
+          // thead: {
+          //   bgColor: '#F4F4F4',
+          //   boxShadow:
+          //     '0px 2px 4px 0px rgba(0, 0, 0, 0.05), 0px 1px 0px 0px rgba(0, 0, 0, 0.09), 0px -1px 0px 0px rgba(0, 0, 0, 0.05)'
+          // },
           th: {
-            color: '#666666',
             textTransform: 'none',
-            borderColor: 'transparent'
           }
         },
         pk: {
@@ -75,7 +73,7 @@ export const theme = extendTheme({
             fontWeight: '600',
             py: '7px',
             border: '1px solid #FFFFFF',
-            bgColor: '#ABB4D0',
+            bgColor: '#ABB4D0'
           },
           tbody: {
             color: '#999999'
@@ -114,6 +112,19 @@ export const theme = extendTheme({
           td: {
             padding: '22px 8px'
           }
+        },
+        md: {
+          table: {
+            fontSize: '14px'
+          },
+          // th: {
+          //   fontSize: '12px',
+          //   fontWeight: '400',
+          //   padding: '9px 8px'
+          // },
+          // td: {
+          //   padding: '22px 8px'
+          // }
         }
       }
     },
