@@ -10,7 +10,7 @@ COPY yarn.lock \
 
 WORKDIR /app
 
-RUN NODE_ENV=production yarn install --network-timeout 1000000 --modules-folder $NODE_PATH
+RUN NODE_ENV=development yarn install --network-timeout 1000000 --modules-folder $NODE_PATH
 
 COPY . /app/
 
