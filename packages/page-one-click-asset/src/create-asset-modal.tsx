@@ -1,28 +1,26 @@
+import { useToast } from '@patract/react-hooks';
 import {
   Button,
   Flex,
   FormControl,
   FormHelperText,
   FormLabel,
+  InputNumberController,
+  InputTextController,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
-  Stack,
-  StatGroup,
-  Box
+  SimpleGrid
 } from '@patract/ui-components';
-import { InputNumberController, InputTextController } from '@patract/ui-components';
-import React, { useMemo, useState } from 'react';
-import { BlueprintPromise, Abi } from '@polkadot/api-contract';
+import { Abi } from '@polkadot/api-contract';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TokenType, TokenTypesField, TokenTypeName } from './token-types-field';
-import { useApi, useModal } from '@patract/react-hooks';
-import Erc20fixed from './contracts/erc20fixed.json';
-import Erc20mintable from './contracts/erc20mintable.json';
+import { ConfirmView } from './confirm-view';
+import { getTokenAbi, TokenType } from './token-types';
+import { TokenTypesField } from './token-types-field';
 
 export type CreateAssetModalProps = {
   isOpen: boolean;
@@ -34,17 +32,12 @@ enum ModalView {
   confirm = 'confirm'
 }
 
-type FieldValues = {
+export type FieldValues = {
   tokenType: TokenType;
   tokenName: string;
   tokenSymbol: string;
   tokenPrecision: string;
   tokenSupply: string;
-};
-
-const AbiJSONS = {
-  [TokenType.erc20_1]: Erc20fixed,
-  [TokenType.erc20_2]: Erc20mintable
 };
 
 export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onClose }) => {
@@ -54,47 +47,30 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
 
   const [modalView, setModalView] = useState<ModalView>(ModalView.create);
   const [confirmValues, setConfirmValues] = useState<FieldValues | null>(null);
-
-  const { isApiReady, api } = useApi();
+  const toast = useToast();
 
   const deploy = handleSubmit((data) => {
-    setModalView(ModalView.confirm);
+    try {
+      const abi = new Abi(getTokenAbi(data.tokenType));
 
-    const abi = new Abi(AbiJSONS[data.tokenType]);
+      abi.constructors[0].toU8a([data.tokenSupply, data.tokenSymbol, data.tokenName, data.tokenPrecision]);
 
-    abi.constructors[0].toU8a([data.tokenSupply, data.tokenSymbol, data.tokenName, data.tokenPrecision]);
-
-    setConfirmValues(data);
+      setConfirmValues(data);
+      setModalView(ModalView.confirm);
+    } catch (error) {
+      toast({
+        title: 'Create Asset',
+        description: error?.message,
+        status: 'error'
+      });
+      setConfirmValues(null);
+    }
   });
 
   const resetView = () => {
     setModalView(ModalView.create);
     reset();
     setConfirmValues(null);
-  };
-
-  const confirmDeploy = () => {
-    if (!confirmValues) {
-      resetView();
-      return;
-    }
-
-    const abiJSON = AbiJSONS[confirmValues.tokenType];
-
-    const blueprint = new BlueprintPromise(api, abiJSON, abiJSON.source.hash);
-
-    const data = blueprint.tx['erc20,new'](
-      {
-        gasLimit: '10000000000000',
-        value: '10000000000000'
-      },
-      confirmValues.tokenSupply,
-      confirmValues.tokenSymbol,
-      confirmValues.tokenName,
-      confirmValues.tokenPrecision
-    ).signAndSend('3gGPnhZnwLXxX9nZfLY2moFdjLvBMVDVMbqRMTKZPbkXQuNA', (result) => {
-      console.log(result);
-    });
   };
 
   const handleClose = () => {
@@ -183,45 +159,8 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
             </SimpleGrid>
           </ModalBody>
         </ModalContent>
-      ) : modalView === ModalView.confirm ? (
-        <ModalContent maxW='md' border='1px' borderColor='gray.200' borderRadius='20px'>
-          <ModalHeader>Confirm</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody padding={8}>
-            <SimpleGrid mb='4'>
-              <Flex justifyContent='space-between'>
-                <Box color='gray.500'>Token Type</Box>
-                <Box fontWeight='medium'>{confirmValues && TokenTypeName[confirmValues.tokenType]}</Box>
-              </Flex>
-              <Flex justifyContent='space-between'>
-                <Box color='gray.500'>Token Name</Box>
-                <Box fontWeight='medium'>{confirmValues?.tokenName}</Box>
-              </Flex>
-              <Flex justifyContent='space-between'>
-                <Box color='gray.500'>Token Symbol</Box>
-                <Box fontWeight='medium'>{confirmValues?.tokenSymbol}</Box>
-              </Flex>
-              <Flex justifyContent='space-between'>
-                <Box color='gray.500'>Token Precision</Box>
-                <Box fontWeight='medium'>{confirmValues?.tokenPrecision}</Box>
-              </Flex>
-              <Flex justifyContent='space-between'>
-                <Box color='gray.500'>Initial Supply</Box>
-                <Box fontWeight='medium'>{confirmValues?.tokenSupply}</Box>
-              </Flex>
-            </SimpleGrid>
-            <FormControl>
-              <Stack direction='row' spacing={4} justifyContent='flex-end'>
-                <Button colorScheme='blue' variant='outline' onClick={resetView}>
-                  Prev
-                </Button>
-                <Button colorScheme='blue' onClick={confirmDeploy}>
-                  Confirm
-                </Button>
-              </Stack>
-            </FormControl>
-          </ModalBody>
-        </ModalContent>
+      ) : modalView === ModalView.confirm && confirmValues ? (
+        <ConfirmView values={confirmValues} resetView={resetView} onClose={handleClose} />
       ) : null}
     </Modal>
   );
