@@ -8,8 +8,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - Caddyfile:/etc/caddy/Caddyfile
-      - caddy:/data
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
 
   page-pk:
     restart: on-failure
@@ -42,4 +44,5 @@ services:
       - "1234:8003"
   
 volumes:
-  caddy:
+  caddy_data:
+  caddy_config:
