@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "author": "ii-ii-ii",
   "license": "MIT",
-
   "resolutions": {
     "jest": "24.9.0",
     "babel-jest": "24.9.0",
