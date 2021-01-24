@@ -12,7 +12,6 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
-
   page-pk:
     restart: on-failure
     build:
@@ -39,7 +38,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     volumes:
-      - "./packages/page-uniswap:/app"
+      - "./packages/page-pixel:/app"
     ports:
       - "1234:8003"
   
