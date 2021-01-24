@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -31,14 +31,23 @@ const options: Array<MenuOption> = [
 ];
 
 const defaultValues = {
+  withdraw_token: 1,
   input_1: '',
   select_1: options[0],
   input_2: '',
   select_2: options[1]
 };
 
+const balance = 15;
+
 const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { control, watch } = useForm({ defaultValues });
+  const { control, watch, setValue } = useForm({ defaultValues });
+  const { withdraw_token } = watch(['withdraw_token']);
+  const percentage = Math.ceil(withdraw_token * 100 / 15);
+
+  const onSliderChange = useCallback((value: number) => {
+    setValue('withdraw_token', value * balance / 100);
+  }, [setValue]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -61,13 +70,14 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
           <FormControl sx={{ mb: '24px' }}>
             <FormLabel textStyle='form-label'>
               <span>Withdraw LP Token</span>
-              <span>Balance: 15</span>
+              <span>Balance: {balance}</span>
             </FormLabel>
             <InputNumberController
               name='withdraw_token'
               control={control}
-              defaultValue=''
+              defaultValue={defaultValues.withdraw_token}
               focusBorderColor='#0058FA'
+              max={balance}
               sx={{
                 w: '309px',
                 h: '44px',
@@ -95,7 +105,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               }}
             >
               <Center>
-                <Text
+                <Box
                   sx={{
                     verticalAlign: 'top',
                     background: '#E1E9FF',
@@ -111,10 +121,10 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
                   <Text sx={{ display: 'inline-block', fontSize: '12px', lineHeight: '24px', color: 'brand.grey' }}>
                     (USDT-ETH)
                   </Text>
-                </Text>
+                </Box>
               </Center>
             </Box>
-            <Slider defaultValue={25} sx={{ mt: '10px' }}>
+            <Slider value={percentage} sx={{ mt: '10px' }} onChange={onSliderChange} focusThumbOnChange={false}>
               <SliderTrack>
                 <SliderFilledTrack bg='#25A17C' />
               </SliderTrack>

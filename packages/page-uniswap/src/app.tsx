@@ -12,7 +12,7 @@ function App() {
         <Header />
         <Switch>
           <Route exact path='/'>
-            <Redirect to="/swap" />
+            <Redirect to='/swap' />
           </Route>
           <Route path='/swap'>
             <Swap />
