@@ -4,8 +4,7 @@ ENV NODE_PATH=/node_modules
 ENV PATH="${PATH}:/node_modules/.bin"
 RUN mkdir ${NODE_PATH}
 
-COPY yarn.lock \
-  package.json \
+COPY package.json \
   /app/
 
 WORKDIR /app
