@@ -4,12 +4,15 @@
 import { useApi } from '@patract/react-hooks';
 import { getContractAbi } from '@patract/utils';
 import { SubmittableResult } from '@polkadot/api';
+import type { Registry } from '@polkadot/types/types';
+
 import type { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 import type { Bytes } from '@polkadot/types';
 import type { DispatchError } from '@polkadot/types/interfaces';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import type { ITuple, SignerPayloadJSON } from '@polkadot/types/types';
 import React, { useCallback, useRef, useState } from 'react';
+import { register } from 'ts-node';
 import { STATUS_COMPLETE } from './constants';
 import { QueueProvider } from './status-context';
 import type {
@@ -152,7 +155,6 @@ function extractEvents(result?: SubmittableResult): ActionStatus[] {
 }
 
 function Queue({ children }: Props): React.ReactElement<Props> {
-  const { api } = useApi();
   const [stqueue, _setStQueue] = useState<QueueStatus[]>([]);
   const [txqueue, _setTxQueue] = useState<QueueTx[]>([]);
   const stRef = useRef(stqueue);
@@ -217,19 +219,19 @@ function Queue({ children }: Props): React.ReactElement<Props> {
     addToTxQueue
   ]);
   const queuePayload = useCallback(
-    (payload: SignerPayloadJSON, signerCb: SignerCallback): void =>
+    (registry: Registry, payload: SignerPayloadJSON, signerCb: SignerCallback): void =>
       addToTxQueue({
         accountId: payload.address,
         // this is not great, but the Extrinsic we don't need a submittable
-        extrinsic: (api.createType(
+        extrinsic: (registry.createType(
           'Extrinsic',
-          { method: api.createType('Call', payload.method) },
+          { method: registry.createType('Call', payload.method) },
           { version: payload.version }
         ) as unknown) as SubmittableExtrinsic,
         payload,
         signerCb
       }),
-    [api, addToTxQueue]
+    [addToTxQueue]
   );
   const queueRpc = useCallback((value: PartialQueueTxRpc): void => addToTxQueue({ ...value }), [addToTxQueue]);
   const queueSetTxStatus = useCallback(

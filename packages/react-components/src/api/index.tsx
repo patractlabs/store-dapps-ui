@@ -18,6 +18,7 @@ import { ApiSigner } from './api-signer';
 import { registry } from './type-registry';
 import type { ApiProps, ApiState } from './types';
 
+
 interface Props {
   children: React.ReactNode;
   url?: string;
@@ -124,8 +125,6 @@ async function loadOnReady(
   const tokenSymbol = properties.tokenSymbol.unwrapOr(undefined)?.toString();
   const tokenDecimals = properties.tokenDecimals.unwrapOr(DEFAULT_DECIMALS).toNumber();
   const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
-
-  console.log(`chain: ${systemChain} (${systemChainType.toString()}), ${JSON.stringify(properties)}`);
 
   // explicitly override the ss58Format as specified
   registry.setChainProperties(registry.createType('ChainProperties', { ss58Format, tokenDecimals, tokenSymbol }));

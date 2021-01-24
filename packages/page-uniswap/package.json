@@ -21,6 +21,19 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
-    "@types/react-select": "^3.1.2"
+    "@types/react-select": "^3.1.2",
+    "react-app-rewired": "^2.1.8"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
