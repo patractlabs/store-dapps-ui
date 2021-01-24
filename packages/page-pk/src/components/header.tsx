@@ -7,7 +7,7 @@ const Header = () => {
       <nav>
         <Box h='51px' w='100%'>
           <Container maxW='1440px' p={0}>
-            <Flex sx={{ alignItems: 'center' }}>a
+            <Flex sx={{ alignItems: 'center' }}>
               <Heading
                 as='h1'
                 sx={{

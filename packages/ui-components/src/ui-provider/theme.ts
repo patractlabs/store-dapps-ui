@@ -18,7 +18,7 @@ export const theme = extendTheme({
     },
     primary: {
       500: '#0058FA',
-      600: '#000000'
+      600: '#2B6CB0'
     }
   },
   sizes: {
@@ -58,6 +58,46 @@ export const theme = extendTheme({
             color: '#666666',
             textTransform: 'none',
             borderColor: 'transparent'
+          }
+        },
+        pk: {
+          table: {
+            color: '#999999'
+          },
+          thead: {
+            color: '#FFFFFF'
+          },
+          th: {
+            textTransform: 'capitalize',
+            textAlign: 'center',
+            fontSize: '16px',
+            lineHeight: '16px',
+            fontWeight: '600',
+            py: '7px',
+            border: '1px solid #FFFFFF',
+            bgColor: '#ABB4D0',
+          },
+          tbody: {
+            color: '#999999'
+          },
+          tr: {
+            fontSize: '12px',
+            lineHeight: '1',
+            _even: {
+              bgColor: '#F7F9FF'
+            },
+            _odd: {
+              bgColor: '#EFF2F8'
+            }
+          },
+          td: {
+            border: '1px solid rgba(171, 180, 208, 0.22)',
+            px: 0,
+            textAlign: 'center',
+            borderTop: '0',
+            borderBottom: '0',
+            h: '60px',
+            verticalAlign: 'middle'
           }
         }
       },
