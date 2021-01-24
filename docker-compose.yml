@@ -15,8 +15,8 @@ services:
   page-pk:
     restart: on-failure
     build:
-      context: packages/page-pk
-      dockerfile: /docker/Dockerfile
+      context: ./packages/page-pk
+      dockerfile: $PWD/docker/Dockerfile
     volumes:
       - "./packages/page-pk:/app"
     ports:
@@ -25,8 +25,8 @@ services:
   page-uniswap:
     restart: on-failure
     build:
-      context: packages/page-uniswap
-      dockerfile: /docker/Dockerfile
+      context: ./packages/page-uniswap
+      dockerfile: $PWD/docker/Dockerfile
     volumes:
       - "./packages/page-uniswap:/app"
     ports:
@@ -35,8 +35,8 @@ services:
   page-pixel:
     restart: on-failure
     build:
-      context: packages/page-pixel
-      dockerfile: /docker/Dockerfile
+      context: ./packages/page-pixel
+      dockerfile: $PWD/docker/Dockerfile
     volumes:
       - "./packages/page-pixel:/app"
     ports:
