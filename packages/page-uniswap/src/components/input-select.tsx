@@ -96,7 +96,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
         <ul>
           {options
             .filter(
-              ({ label, fullName }) => label.toLowerCase().indexOf(inputValue) >= 0 || fullName.indexOf(inputValue) >= 0
+              ({ label, fullName }) => label.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0 || fullName.indexOf(inputValue) >= 0
             )
             .map((option) => (
               <Box

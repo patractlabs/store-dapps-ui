@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link as ReachLink, useLocation } from 'react-router-dom';
 import { Box, Container, Flex, Heading, Link } from '@chakra-ui/react';
+import AccountSelect from './account-select';
 
 const NavLink = ({ url, text, isActive }: { url: string; text: string, isActive: boolean }) => (
   <Link
@@ -40,20 +41,23 @@ const Header = () => {
     <header>
       <nav>
         <Box h='51px' w='100%'>
-          <Container maxW='1440px' p={0}>
-            <Flex sx={{ alignItems: 'center' }}>
-              <Heading
-                as='h1'
-                sx={{
-                  fontSize: '24px',
-                  fontWeight: 500
-                }}
-              >
-                Patra Swap
-              </Heading>
-              <Box sx={{ h: '27px', w: '1px', bgColor: '#E6E6E6', ml: '38px', mr: '78px' }} />
-              <NavLink url='/swap' text='Swap' isActive={pathname === '/swap'} />
-              <NavLink url='/pool' text='Pool' isActive={pathname === '/pool'} />
+          <Container sx={{ p: '0 16px', maxW: '1440px' }}>
+            <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+              <Flex sx={{ alignItems: 'center' }}>
+                <Heading
+                  as='h1'
+                  sx={{
+                    fontSize: '24px',
+                    fontWeight: 500
+                  }}
+                >
+                  Patra Swap
+                </Heading>
+                <Box sx={{ h: '27px', w: '1px', bgColor: '#E6E6E6', ml: '38px', mr: '78px' }} />
+                <NavLink url='/swap' text='Swap' isActive={pathname === '/swap'} />
+                <NavLink url='/pool' text='Pool' isActive={pathname === '/pool'} />
+              </Flex>
+              <AccountSelect />
             </Flex>
           </Container>
         </Box>
