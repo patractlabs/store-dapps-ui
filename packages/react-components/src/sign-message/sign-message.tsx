@@ -1,5 +1,5 @@
 import AccountSigner from '@patract/react-components/signer/signers/account-signer';
-import { useApi, useToast } from '@patract/react-hooks';
+import { useApi, useToast, useAccount } from '@patract/react-hooks';
 import {
   Box,
   Button,
@@ -16,9 +16,10 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
-  Stack
+  Stack,
+  Text
 } from '@patract/ui-components';
-import { handleTxResults, parseAmount } from '@patract/utils';
+import { handleTxResults, parseAmount, getSigner } from '@patract/utils';
 import { ContractPromise } from '@polkadot/api-contract';
 import { keyring } from '@polkadot/ui-keyring';
 import React, { useState } from 'react';
@@ -59,6 +60,7 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
   });
 
   const { api } = useApi();
+  const { currentAccount } = useAccount();
 
   const toast = useToast({
     title
@@ -69,6 +71,8 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
   const confirm = handleSubmit(async (data) => {
     setIsLoading(true);
 
+    let toastId: any;
+    
     try {
       const value = parseAmount(data.value);
       const gasLimit = data.gasLimit;
@@ -81,14 +85,11 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
         ...fields.map(({ value, content }) => value ?? content)
       );
 
-      const signer = new AccountSigner(
-        api.registry,
-        keyring.getPair('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY')
-      );
+      const signer = await getSigner(api.registry, currentAccount);
 
-      await tx.signAsync('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', { signer: signer });
+      await tx.signAsync(currentAccount, { signer });
 
-      const toastId = toast({
+      toastId = toast({
         status: 'info',
         description: 'Ready...',
         duration: null
@@ -122,6 +123,7 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
       );
     } catch (error) {
       console.error(error);
+      toastId && toast.close(toastId);
       toast({
         status: 'error',
         description: error?.message
@@ -140,6 +142,10 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
         <ModalCloseButton />
         <ModalBody padding={8}>
           <SimpleGrid spacing='4'>
+            <FormControl as='fieldset'>
+              <FormLabel as='legend'>Account</FormLabel>
+              <Text>{currentAccount}</Text>
+            </FormControl>
             <FormControl as='fieldset'>
               <FormLabel as='legend'>Value</FormLabel>
               <InputAmountController control={control} name='value' error={errors.value} rules={{ required: true }} />

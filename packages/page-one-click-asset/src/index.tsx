@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Api, Queue, GraphqlProvider } from '@patract/react-components';
+import { Api, Queue, GraphqlProvider, AccountProvider } from '@patract/react-components';
 import { UIProvider } from '@patract/ui-components';
 
 import ReactDOM from 'react-dom';
@@ -12,7 +12,9 @@ ReactDOM.render(
       <UIProvider>
         <Queue>
           <Api url='wss://ws.staging.jupiter.patract.cn'>
-            <App />
+            <AccountProvider>
+              <App />
+            </AccountProvider>
           </Api>
         </Queue>
       </UIProvider>

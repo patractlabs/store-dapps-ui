@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading } from '@chakra-ui/react';
+import { Box, Container, AccountSelect, Flex, Heading } from '@patract/ui-components';
 import React from 'react';
 
 export type PageHeaderProps = {
@@ -8,7 +8,7 @@ export type PageHeaderProps = {
 export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title }) => {
   return (
     <Box maxW='full' as='header' p={0} background='white'>
-      <Container display="flex" maxW='max' alignItems='center'>
+      <Container display='flex' maxW='max' alignItems='center'>
         <Heading as='h1' fontSize='2xl' fontWeight='medium' py={4}>
           {title}
         </Heading>
@@ -21,7 +21,11 @@ export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title }) => {
             height: 5
           }}
         ></Box>
-        <nav />
+        <Box as='nav' flex='1'></Box>
+
+        <Box>
+          <AccountSelect />
+        </Box>
       </Container>
     </Box>
   );

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Flex, Popover, PopoverTrigger, PopoverContent, Text, useDisclosure } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import type { Account } from '@patract/react-components/account/types';
+import { Box, Flex, Popover, PopoverContent, PopoverTrigger, Text, useDisclosure } from '@chakra-ui/react';
 import { useAccount } from '@patract/react-hooks';
+import { truncated } from '@patract/utils';
+import type { KeyringPair } from '@polkadot/keyring/types';
+import React, { useEffect } from 'react';
 
 export const AccountSelect: React.FC = () => {
-  const { accountList, currentAccount } = useAccount();
+  const { accountList, currentAccount, setCurrentAccount } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selected, setSelected] = useState<Account>();
 
-  const onSelect = (account: Account) => {
+  const onSelect = (account: KeyringPair) => {
     onClose();
-    setSelected(account);
+    setCurrentAccount(account.address);
   };
 
   useEffect(() => {
-    setSelected(currentAccount);
+    setCurrentAccount(currentAccount);
   }, [currentAccount]);
 
   return (
@@ -46,14 +46,14 @@ export const AccountSelect: React.FC = () => {
               left: '42px'
             }}
           >
-            {selected && selected.address}
+            {truncated(currentAccount)}
           </Text>
           <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
         </Flex>
       </PopoverTrigger>
       <PopoverContent sx={{ w: '250px', left: '56px', top: '-6px', zIndex: 'dropdown' }}>
         <ul>
-          {accountList.map((account) => (
+          {accountList?.map((account) => (
             <Box
               as='li'
               key={account.address}
@@ -64,11 +64,10 @@ export const AccountSelect: React.FC = () => {
                 sx={{
                   display: 'inline-block',
                   color: 'brand.primary',
-                  fontSize: '14px',
-                  lineHeight: '25px'
+                  fontSize: '14px'
                 }}
               >
-                {account.address}
+                {truncated(account.address)}
               </Text>
             </Box>
           ))}

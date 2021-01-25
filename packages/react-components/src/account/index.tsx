@@ -1,26 +1,35 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { AccountProvider } from './account-context';
-import { Account as AccountType } from './types';
+import React, { useState, useReducer, useEffect, useMemo } from 'react';
+import { AccountContext } from './account-context';
+import { useApi } from '@patract/react-hooks';
+import { keyring } from '@polkadot/ui-keyring';
 
-export const Account: React.FC<{ url: string }> = ({ url, children }) => {
-  const [accountList, setAccountList] = useState<AccountType[]>([]);
-  const [currentAccount, setCurrentAccount] = useState<AccountType>();
+export const AccountProvider: React.FC = ({ children }) => {
+  const { isApiReady } = useApi();
+  const [currentAccount, setCurrentAccount] = useState<string>('');
+  const [count, forceUpdate] = useReducer((x) => x + 1, 1);
+
+  const accountList = useMemo(() => {
+    if (!isApiReady) return;
+    return keyring.getPairs();
+  }, [isApiReady, count]);
 
   useEffect(() => {
-    Promise.resolve([{ address: 'GAnePsafe2WREfJEfs' }, { address: 'WEFsdf2sufhsaudfE5s' }]).then((data) => {
-      setAccountList(data);
-      setCurrentAccount(data[0]);
-    });
-  }, [url]);
+    if (!accountList?.length) return;
+
+    if (!currentAccount) {
+      setCurrentAccount(accountList[0].address);
+    }
+  }, [accountList, currentAccount]);
 
   const value = useMemo(
     () => ({
       accountList,
       currentAccount,
-      setCurrentAccount
+      setCurrentAccount,
+      updateAccounts: forceUpdate
     }),
-    [accountList, currentAccount, setCurrentAccount]
+    [accountList, currentAccount, setCurrentAccount, forceUpdate]
   );
 
-  return <AccountProvider value={value}>{children}</AccountProvider>;
+  return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 };

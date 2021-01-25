@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { useModal } from '@patract/react-hooks';
+import { useModal, useAccount } from '@patract/react-hooks';
 import {
   Box,
   Button,
@@ -27,9 +27,10 @@ import { useAssetList, useQueryContracts } from './hooks';
 
 export const App = () => {
   const { isOpen, onOpen, onClose } = useModal();
+  const { currentAccount } = useAccount();
 
   const { data } = useQueryContracts(
-    '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+    currentAccount,
     Erc20fixed.source.hash,
     Erc20mintable.source.hash
   );

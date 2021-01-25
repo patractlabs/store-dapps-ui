@@ -1,9 +1,8 @@
-export type Account = {
-  address: string;
-};
+import type { KeyringPair } from '@polkadot/keyring/types';
 
 export type AccountProps = {
-  accountList: Account[];
-  currentAccount?: Account;
-  setCurrentAccount: (account: Account) => void;
+  accountList?: KeyringPair[];
+  currentAccount: string;
+  setCurrentAccount: (account: string) => void;
+  updateAccounts: () => void;
 };

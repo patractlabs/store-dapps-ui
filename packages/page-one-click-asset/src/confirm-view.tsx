@@ -1,30 +1,29 @@
 import AccountSigner from '@patract/react-components/signer/signers/account-signer';
-import { useApi } from '@patract/react-hooks';
+import { useAccount, useApi, useToast } from '@patract/react-hooks';
 import {
   Box,
   Button,
+  Divider,
   Flex,
   FormControl,
+  FormLabel,
+  Text,
+  InputAmountController,
+  InputNumberController,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   SimpleGrid,
-  Stack,
-  Divider,
-  InputAmountController,
-  InputNumberController,
-  FormLabel
+  Stack
 } from '@patract/ui-components';
-import { handleTxResults } from '@patract/utils';
+import { handleTxResults, parseAmount, getSigner } from '@patract/utils';
 import { BlueprintPromise } from '@polkadot/api-contract';
 import { keyring } from '@polkadot/ui-keyring';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import type { FieldValues } from './create-asset-modal';
 import { getTokenAbi, getTokenTypeName } from './token-types';
-import { useForm } from 'react-hook-form';
-import { useToast } from '@patract/react-hooks';
-import { parseAmount, formatAmount } from '@patract/utils';
 
 type ConfirmViewProps = {
   values: FieldValues;
@@ -42,6 +41,8 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
     defaultValues: { value: '10.0', gasLimit: '200000000000' }
   });
 
+  const { currentAccount } = useAccount();
+
   const { api } = useApi();
 
   const toast = useToast({
@@ -52,6 +53,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
 
   const confirmDeploy = handleSubmit(async (data) => {
     setIsLoading(true);
+    let toastId: any;
 
     try {
       const value = parseAmount(data.value);
@@ -72,14 +74,11 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
         values.tokenDecimals
       );
 
-      const signer = new AccountSigner(
-        api.registry,
-        keyring.getPair('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY')
-      );
+      const signer = await getSigner(api.registry, currentAccount);
 
-      await tx.signAsync('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', { signer: signer });
+      await tx.signAsync(currentAccount, { signer });
 
-      const toastId = toast({
+      toastId = toast({
         status: 'info',
         description: 'Ready...',
         duration: null
@@ -113,6 +112,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
       );
     } catch (error) {
       console.error(error);
+      toastId && toast.close(toastId)
       toast({
         status: 'error',
         description: error?.message
@@ -129,6 +129,10 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
       <ModalCloseButton />
       <ModalBody padding={8}>
         <SimpleGrid spacing='4'>
+          <FormControl as='fieldset'>
+            <FormLabel as='legend'>Account</FormLabel>
+            <Text>{currentAccount}</Text>
+          </FormControl>
           <FormControl as='fieldset'>
             <FormLabel as='legend'>Value</FormLabel>
             <InputAmountController control={control} name='value' error={errors.value} rules={{ required: true }} />
