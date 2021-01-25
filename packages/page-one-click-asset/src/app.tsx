@@ -29,7 +29,7 @@ export const App = () => {
   const { isOpen, onOpen, onClose } = useModal();
 
   const { data } = useQueryContracts(
-    '3gGPnhZnwLXxX9nZfLY2moFdjLvBMVDVMbqRMTKZPbkXQuNA',
+    '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
     Erc20fixed.source.hash,
     Erc20mintable.source.hash
   );
