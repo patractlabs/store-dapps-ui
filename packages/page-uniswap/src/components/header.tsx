@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as ReachLink, useLocation } from 'react-router-dom';
 import { Box, Container, Flex, Heading, Link } from '@chakra-ui/react';
-import AccountSelect from './account-select';
+import { AccountSelect } from '@patract/ui-components';
 
 const NavLink = ({ url, text, isActive }: { url: string; text: string, isActive: boolean }) => (
   <Link

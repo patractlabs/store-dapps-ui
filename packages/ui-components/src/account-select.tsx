@@ -4,7 +4,7 @@ import { TriangleDownIcon } from '@chakra-ui/icons';
 import type { Account } from '@patract/react-components/account/types';
 import { useAccount } from '@patract/react-hooks';
 
-const AccountSelect: React.FC = () => {
+export const AccountSelect: React.FC = () => {
   const { accountList, currentAccount } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selected, setSelected] = useState<Account>();
@@ -51,7 +51,7 @@ const AccountSelect: React.FC = () => {
           <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
         </Flex>
       </PopoverTrigger>
-      <PopoverContent sx={{ w: '250px', left: '36px', top: '-6px', zIndex: 'dropdown' }}>
+      <PopoverContent sx={{ w: '250px', left: '56px', top: '-6px', zIndex: 'dropdown' }}>
         <ul>
           {accountList.map((account) => (
             <Box
@@ -77,5 +77,3 @@ const AccountSelect: React.FC = () => {
     </Popover>
   );
 };
-
-export default AccountSelect;
