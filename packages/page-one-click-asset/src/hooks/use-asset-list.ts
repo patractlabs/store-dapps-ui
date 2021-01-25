@@ -1,7 +1,7 @@
 import { useApi } from '@patract/react-hooks';
 import { ContractPromise } from '@polkadot/api-contract';
 import { getTokenAbi } from '../token-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
 type AssetListItem = {
   id: string;
@@ -22,6 +22,7 @@ export const useAssetList = (
     codeHash: string;
   }[]
 ) => {
+  const [count, forceUpdate] = useReducer((x) => x + 1, 0);
   const { isApiReady, api } = useApi();
   const [result, setResult] = useState<AssetListItem[] | undefined>();
   const [loading, setLoading] = useState(false);
@@ -62,7 +63,7 @@ export const useAssetList = (
     ).finally(() => {
       setLoading(false);
     });
-  }, [isApiReady, api, contractList]);
+  }, [isApiReady, api, contractList, count]);
 
   useEffect(() => {
     setLoading(true);
@@ -74,6 +75,7 @@ export const useAssetList = (
 
   return {
     data: result,
-    loading
+    loading,
+    forceUpdate
   };
 };

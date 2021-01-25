@@ -82,7 +82,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
     <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={handleClose}>
       <ModalOverlay />
       {modalView === ModalView.create ? (
-        <ModalContent maxW='3xl' border='1px' borderColor='gray.200' borderRadius='20px'>
+        <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
           <ModalHeader>Create Asset</ModalHeader>
           <ModalCloseButton />
           <ModalBody padding={8}>
@@ -101,7 +101,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
                     error={errors.tokenName}
                     rules={{ required: true, pattern: /^\w*$/ }}
                   />
-                  <FormHelperText maxW='xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
+                  <FormHelperText maxW='2xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
                     代币的名称。1-28 个符号。可接受英文字母、数字、字符、空格和连字符。
                   </FormHelperText>
                 </Flex>
@@ -116,7 +116,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
                     error={errors.tokenSymbol}
                     rules={{ required: true, pattern: /^\w*$/ }}
                   />
-                  <FormHelperText maxW='xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
+                  <FormHelperText maxW='2xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
                     1-10个字符（例如 ETH、BTC、BAT 等）。不能包括空格，可以包括英文字母、数字字符等。
                   </FormHelperText>
                 </Flex>
@@ -131,7 +131,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
                     pattern='^[0-9]{0,2}$'
                     rules={{ required: true }}
                   />
-                  <FormHelperText maxW='xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
+                  <FormHelperText maxW='2xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
                     定义代币的小数位数。接受0-18个数字。
                   </FormHelperText>
                 </Flex>
@@ -146,7 +146,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
                     pattern='^[0-9]{0,16}$'
                     rules={{ required: true }}
                   />
-                  <FormHelperText maxW='xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
+                  <FormHelperText maxW='2xs' mt='0' color={errors.tokenName ? 'red.500' : 'gray.500'}>
                     初始量需要生成的代币数量,最小数量是1, 最大是1000000000000000.
                   </FormHelperText>
                 </Flex>
