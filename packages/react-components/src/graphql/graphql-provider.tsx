@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 import { createClient } from './client';
 
 const linkConfig = {
-  http: 'http://192.168.50.10:8080/v1/graphql',
-  ws: 'ws://192.168.50.10:8080/v1/graphql'
+  http: 'https://wss://ws.staging.jupiter.patract.cn/v1/graphql',
+  ws: 'wss://wss://ws.staging.jupiter.patract.cn/v1/graphql'
 };
 
 export const GraphqlProvider: React.FC = ({ children }) => {
