@@ -9,7 +9,6 @@ function App() {
   return (
     <UIProvider>
       <Router>
-        <Header />
         <Switch>
           <Route exact path='/'>
             <Redirect to='/swap' />

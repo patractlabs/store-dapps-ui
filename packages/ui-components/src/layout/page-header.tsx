@@ -3,9 +3,10 @@ import React from 'react';
 
 export type PageHeaderProps = {
   title: React.ReactNode;
+  navLinks?: React.ReactNode;
 };
 
-export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title }) => {
+export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title, navLinks }) => {
   return (
     <Box maxW='full' as='header' p={0} background='white'>
       <Container display='flex' maxW='max' alignItems='center'>
@@ -21,8 +22,9 @@ export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title }) => {
             height: 5
           }}
         ></Box>
-        <Box as='nav' flex='1'></Box>
-
+        <Box as='nav' flex='1' ml="57px">
+          {navLinks}
+        </Box>
         <Box>
           <AccountSelect />
         </Box>

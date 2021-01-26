@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link as ReachLink, useLocation } from 'react-router-dom';
-import { Box, Container, Flex, Heading, Link } from '@chakra-ui/react';
-import { AccountSelect } from '@patract/ui-components';
+import { Link, Flex } from '@chakra-ui/react';
+import { PageHeader } from '@patract/ui-components';
 
-const NavLink = ({ url, text, isActive }: { url: string; text: string, isActive: boolean }) => (
+const NavLink = ({ url, text, isActive }: { url: string; text: string; isActive: boolean }) => (
   <Link
     as={ReachLink}
     to={url}
@@ -12,23 +12,27 @@ const NavLink = ({ url, text, isActive }: { url: string; text: string, isActive:
       fontSize: '16px',
       fontWeight: '400',
       color: '#0058FA',
-      lineHeight: '51px',
+      lineHeight: '60px',
       px: '25px',
       mr: '70px',
       _hover: {
         textDecoration: 'none'
       }
     }}
-    _after={ isActive ? {
-      position: 'absolute',
-      content: '""',
-      height: '4px',
-      borderRadius: '2px',
-      w: '100%',
-      bgColor: '#0058FA',
-      bottom: 0,
-      left: 0
-    } : {}}
+    _after={
+      isActive
+        ? {
+            position: 'absolute',
+            content: '""',
+            height: '4px',
+            borderRadius: '2px',
+            w: '100%',
+            bgColor: '#0058FA',
+            bottom: 0,
+            left: 0
+          }
+        : {}
+    }
   >
     {text}
   </Link>
@@ -36,33 +40,17 @@ const NavLink = ({ url, text, isActive }: { url: string; text: string, isActive:
 
 const Header = () => {
   const { pathname } = useLocation();
-  
+
   return (
-    <header>
-      <nav>
-        <Box h='51px' w='100%'>
-          <Container sx={{ p: '0 16px', maxW: '1440px' }}>
-            <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-              <Flex sx={{ alignItems: 'center' }}>
-                <Heading
-                  as='h1'
-                  sx={{
-                    fontSize: '24px',
-                    fontWeight: 500
-                  }}
-                >
-                  Patra Swap
-                </Heading>
-                <Box sx={{ h: '27px', w: '1px', bgColor: '#E6E6E6', ml: '38px', mr: '78px' }} />
-                <NavLink url='/swap' text='Swap' isActive={pathname === '/swap'} />
-                <NavLink url='/pool' text='Pool' isActive={pathname === '/pool'} />
-              </Flex>
-              <AccountSelect />
-            </Flex>
-          </Container>
-        </Box>
-      </nav>
-    </header>
+    <PageHeader
+      title='Patra Swap'
+      navLinks={
+        <Flex>
+          <NavLink url='/swap' text='Swap' isActive={pathname === '/swap'} />
+          <NavLink url='/pool' text='Pool' isActive={pathname === '/pool'} />
+        </Flex>
+      }
+    />
   );
 };
 
