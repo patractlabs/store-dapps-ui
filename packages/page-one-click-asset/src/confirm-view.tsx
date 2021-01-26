@@ -1,4 +1,3 @@
-import AccountSigner from '@patract/react-components/signer/signers/account-signer';
 import { useAccount, useApi, useToast } from '@patract/react-hooks';
 import {
   Box,
@@ -7,7 +6,6 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Text,
   InputAmountController,
   InputNumberController,
   ModalBody,
@@ -15,11 +13,11 @@ import {
   ModalContent,
   ModalHeader,
   SimpleGrid,
-  Stack
+  Stack,
+  Text
 } from '@patract/ui-components';
-import { handleTxResults, parseAmount, getSigner } from '@patract/utils';
+import { getSigner, handleTxResults, parseAmount } from '@patract/utils';
 import { BlueprintPromise } from '@polkadot/api-contract';
-import { keyring } from '@polkadot/ui-keyring';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { FieldValues } from './create-asset-modal';
@@ -74,6 +72,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
         values.tokenDecimals
       );
 
+      // @ts-ignore
       const signer = await getSigner(api.registry, currentAccount);
 
       await tx.signAsync(currentAccount, { signer });
@@ -112,7 +111,7 @@ export const ConfirmView: React.FC<ConfirmViewProps> = ({ values, resetView, onC
       );
     } catch (error) {
       console.error(error);
-      toastId && toast.close(toastId)
+      toastId && toast.close(toastId);
       toast({
         status: 'error',
         description: error?.message
