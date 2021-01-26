@@ -1,13 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Api, Queue, GraphqlProvider, AccountProvider } from '@patract/react-components';
+import { UIProvider } from '@patract/ui-components';
 import App from './app';
-import { AccountProvider } from '@patract/react-components';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AccountProvider>
-      <App />
-    </AccountProvider>
+    <GraphqlProvider>
+      <UIProvider>
+        <Queue>
+          <Api url='wss://ws.staging.jupiter.patract.cn'>
+            <AccountProvider>
+              <App />
+            </AccountProvider>
+          </Api>
+        </Queue>
+      </UIProvider>
+    </GraphqlProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

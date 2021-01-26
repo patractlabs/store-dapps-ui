@@ -51,7 +51,7 @@ export const AccountSelect: React.FC = () => {
           <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
         </Flex>
       </PopoverTrigger>
-      <PopoverContent sx={{ w: '250px', left: '56px', top: '-6px', zIndex: 'dropdown' }}>
+      <PopoverContent sx={{ w: '250px', left: '35px', top: '-6px', zIndex: 'dropdown' }}>
         <ul>
           {accountList?.map((account) => (
             <Box
