@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { Flex, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Text, Icon, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { PageLayout, PageHeader, PageMain } from '@patract/ui-components';
+import { PageLayout, PageHeader, PageMain, ApiReady } from '@patract/ui-components';
 import tableData from './data';
 import { FaRegHandRock, FaRegHandPaper, FaRegHandPeace, FaChessBoard } from 'react-icons/fa';
 import { BsFillEyeFill } from 'react-icons/bs';
@@ -222,59 +222,61 @@ const PK: React.FC = () => {
     <PageLayout>
       <PageHeader title='Patra PK' />
       <PageMain>
-        <Flex flexDirection='row-reverse'>
-          <Button
+        <ApiReady>
+          <Flex flexDirection='row-reverse'>
+            <Button
+              sx={{
+                textAlign: 'right',
+                fontSize: '14px',
+                fontWeight: '500',
+                lineHeight: '20px',
+                color: 'brand.primary',
+                my: '14px'
+              }}
+              onClick={onCreateGameOpen}
+            >
+              <AddIcon sx={{ mr: '10px' }} />
+              Create Game
+            </Button>
+          </Flex>
+          <Box
             sx={{
-              textAlign: 'right',
-              fontSize: '14px',
-              fontWeight: '500',
-              lineHeight: '20px',
-              color: 'brand.primary',
-              my: '14px'
+              border: '1px solid #E0E0E0',
+              borderRadius: '8px',
+              bgColor: '#FFFFFF',
+              py: '19px',
+              px: '16px'
             }}
-            onClick={onCreateGameOpen}
           >
-            <AddIcon sx={{ mr: '10px' }} />
-            Create Game
-          </Button>
-        </Flex>
-        <Box
-          sx={{
-            border: '1px solid #E0E0E0',
-            borderRadius: '8px',
-            bgColor: '#FFFFFF',
-            py: '19px',
-            px: '16px'
-          }}
-        >
-          <Table variant='pk'>
-            <Thead>
-              <Tr>
-                <Th px='13px'>ID</Th>
-                <Th colSpan={4}>Creater</Th>
-                <Th>Value</Th>
-                <Th colSpan={2}>Joiner</Th>
-                <Th px='0'>Operation</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <FirstRowTd></FirstRowTd>
-                <FirstRowTd>Hash</FirstRowTd>
-                <FirstRowTd>Salt</FirstRowTd>
-                <FirstRowTd>Account</FirstRowTd>
-                <FirstRowTd w='77px'>Choice</FirstRowTd>
-                <FirstRowTd>Dot</FirstRowTd>
-                <FirstRowTd w='77px'>Choice</FirstRowTd>
-                <FirstRowTd>Account</FirstRowTd>
-                <FirstRowTd></FirstRowTd>
-              </Tr>
-              {tableData.map((game) => renderGameRow(game, operations))}
-            </Tbody>
-          </Table>
-        </Box>
-        <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
-        <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
+            <Table variant='pk'>
+              <Thead>
+                <Tr>
+                  <Th px='13px'>ID</Th>
+                  <Th colSpan={4}>Creater</Th>
+                  <Th>Value</Th>
+                  <Th colSpan={2}>Joiner</Th>
+                  <Th px='0'>Operation</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <FirstRowTd></FirstRowTd>
+                  <FirstRowTd>Hash</FirstRowTd>
+                  <FirstRowTd>Salt</FirstRowTd>
+                  <FirstRowTd>Account</FirstRowTd>
+                  <FirstRowTd w='77px'>Choice</FirstRowTd>
+                  <FirstRowTd>Dot</FirstRowTd>
+                  <FirstRowTd w='77px'>Choice</FirstRowTd>
+                  <FirstRowTd>Account</FirstRowTd>
+                  <FirstRowTd></FirstRowTd>
+                </Tr>
+                {tableData.map((game) => renderGameRow(game, operations))}
+              </Tbody>
+            </Table>
+          </Box>
+          <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
+          <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
+        </ApiReady>
       </PageMain>
     </PageLayout>
   );
