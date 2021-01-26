@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { Flex, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Text, Icon, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import Layout from '../../components/layout';
+import { PageLayout, PageHeader, PageMain } from '@patract/ui-components';
 import tableData from './data';
 import { FaRegHandRock, FaRegHandPaper, FaRegHandPeace, FaChessBoard } from 'react-icons/fa';
 import { BsFillEyeFill } from 'react-icons/bs';
@@ -150,7 +150,9 @@ const renderOperations = (operations: any, status: GameStatus, expireTime?: numb
   if (status === 'wait_for_join') {
     return (
       <Flex direction='column'>
-        <TdButton colorScheme='blue' onClick={operations.onJoinGameOpen}>Join</TdButton>
+        <TdButton colorScheme='blue' onClick={operations.onJoinGameOpen}>
+          Join
+        </TdButton>
         <TdButton colorScheme='blue'>Invite robot</TdButton>
         <TdButton colorScheme='red'>Delete</TdButton>
       </Flex>
@@ -211,67 +213,70 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
 const PK: React.FC = () => {
   const { isOpen: isCreateGameOpen, onOpen: onCreateGameOpen, onClose: onCreateGameClose } = useDisclosure();
   const { isOpen: isJoinGameOpen, onOpen: onJoinGameOpen, onClose: onJoinGameClose } = useDisclosure();
-  
+
   const operations = {
     onJoinGameOpen
-  }
+  };
 
   return (
-    <Layout>
-      <Flex flexDirection='row-reverse'>
-        <Button
+    <PageLayout>
+      <PageHeader title='Patra PK' />
+      <PageMain>
+        <Flex flexDirection='row-reverse'>
+          <Button
+            sx={{
+              textAlign: 'right',
+              fontSize: '14px',
+              fontWeight: '500',
+              lineHeight: '20px',
+              color: 'brand.primary',
+              my: '14px'
+            }}
+            onClick={onCreateGameOpen}
+          >
+            <AddIcon sx={{ mr: '10px' }} />
+            Create Game
+          </Button>
+        </Flex>
+        <Box
           sx={{
-            textAlign: 'right',
-            fontSize: '14px',
-            fontWeight: '500',
-            lineHeight: '20px',
-            color: 'brand.primary',
-            my: '14px'
+            border: '1px solid #E0E0E0',
+            borderRadius: '8px',
+            bgColor: '#FFFFFF',
+            py: '19px',
+            px: '16px'
           }}
-          onClick={onCreateGameOpen}
         >
-          <AddIcon sx={{ mr: '10px' }} />
-          Create Game
-        </Button>
-      </Flex>
-      <Box
-        sx={{
-          border: '1px solid #E0E0E0',
-          borderRadius: '8px',
-          bgColor: '#FFFFFF',
-          py: '19px',
-          px: '16px'
-        }}
-      >
-        <Table variant='pk'>
-          <Thead>
-            <Tr>
-              <Th px='13px'>ID</Th>
-              <Th colSpan={4}>Creater</Th>
-              <Th>Value</Th>
-              <Th colSpan={2}>Joiner</Th>
-              <Th px='0'>Operation</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <FirstRowTd></FirstRowTd>
-              <FirstRowTd>Hash</FirstRowTd>
-              <FirstRowTd>Salt</FirstRowTd>
-              <FirstRowTd>Account</FirstRowTd>
-              <FirstRowTd w='77px'>Choice</FirstRowTd>
-              <FirstRowTd>Dot</FirstRowTd>
-              <FirstRowTd w='77px'>Choice</FirstRowTd>
-              <FirstRowTd>Account</FirstRowTd>
-              <FirstRowTd></FirstRowTd>
-            </Tr>
-            {tableData.map((game) => renderGameRow(game, operations))}
-          </Tbody>
-        </Table>
-      </Box>
-      <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
-      <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
-    </Layout>
+          <Table variant='pk'>
+            <Thead>
+              <Tr>
+                <Th px='13px'>ID</Th>
+                <Th colSpan={4}>Creater</Th>
+                <Th>Value</Th>
+                <Th colSpan={2}>Joiner</Th>
+                <Th px='0'>Operation</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <FirstRowTd></FirstRowTd>
+                <FirstRowTd>Hash</FirstRowTd>
+                <FirstRowTd>Salt</FirstRowTd>
+                <FirstRowTd>Account</FirstRowTd>
+                <FirstRowTd w='77px'>Choice</FirstRowTd>
+                <FirstRowTd>Dot</FirstRowTd>
+                <FirstRowTd w='77px'>Choice</FirstRowTd>
+                <FirstRowTd>Account</FirstRowTd>
+                <FirstRowTd></FirstRowTd>
+              </Tr>
+              {tableData.map((game) => renderGameRow(game, operations))}
+            </Tbody>
+          </Table>
+        </Box>
+        <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
+        <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
+      </PageMain>
+    </PageLayout>
   );
 };
 
