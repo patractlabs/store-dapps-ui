@@ -1,5 +1,4 @@
 import React from 'react';
-import '@patract/store-sdk/dapp'
 
 import { Api, Queue, GraphqlProvider, AccountProvider } from '@patract/react-components';
 import { UIProvider } from '@patract/ui-components';

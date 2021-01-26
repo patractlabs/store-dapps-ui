@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "dependencies": {
-    "@chakra-ui/react": "^1.1.4",
+    "@chakra-ui/react": "^1.1.6",
     "react": "^17.0.1"
   }
 }
