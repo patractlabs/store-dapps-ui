@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Center, Text, Spinner } from '@chakra-ui/react';
+import { Box, Center, Text } from '@chakra-ui/react';
 import { PageLayout, PageHeader, PageMain, ApiReady } from '@patract/ui-components';
-import { useApi } from '@patract/react-hooks';
 import ToolBar from './tool-bar';
 import Palette from './palette';
 import Canvas from './canvas';
@@ -17,7 +16,6 @@ export let canvasObj: Canvas = emptyCanvasObj;
 export let paintHistory: Array<string> = [JSON.stringify(emptyCanvasObj)];
 
 const Pixel: React.FC = () => {
-  const { isApiReady } = useApi();
   const [color, setColor] = useState(1);
   const [paintMode, setPaintMode] = useState<PaintMode>('pen');
 

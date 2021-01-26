@@ -1,11 +1,12 @@
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import { Box, Flex, Popover, PopoverContent, PopoverTrigger, Text, useDisclosure } from '@chakra-ui/react';
-import { useAccount } from '@patract/react-hooks';
+import { Box, Flex, Popover, PopoverContent, PopoverTrigger, Text, Spinner, useDisclosure } from '@chakra-ui/react';
+import { useAccount, useApi } from '@patract/react-hooks';
 import { truncated } from '@patract/utils';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import React, { useEffect } from 'react';
 
 export const AccountSelect: React.FC = () => {
+  const { isApiReady } = useApi();
   const { accountList, currentAccount, setCurrentAccount } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -48,31 +49,37 @@ export const AccountSelect: React.FC = () => {
           >
             {truncated(currentAccount)}
           </Text>
-          <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
+          {!isApiReady ? (
+            <Spinner color='blue.500' />
+          ) : (
+            <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
+          )}
         </Flex>
       </PopoverTrigger>
-      <PopoverContent sx={{ w: '250px', left: '35px', top: '-6px', zIndex: 'dropdown' }}>
-        <ul>
-          {accountList?.map((account) => (
-            <Box
-              as='li'
-              key={account.address}
-              sx={{ listStyle: 'none', p: '3px 10px', cursor: 'pointer', _hover: { bgColor: '#E4EDFF' } }}
-              onClick={onSelect.bind(null, account)}
-            >
-              <Text
-                sx={{
-                  display: 'inline-block',
-                  color: 'brand.primary',
-                  fontSize: '14px'
-                }}
+      {isApiReady && (
+        <PopoverContent sx={{ w: '250px', left: '35px', top: '-6px', zIndex: 'dropdown' }}>
+          <ul>
+            {accountList?.map((account) => (
+              <Box
+                as='li'
+                key={account.address}
+                sx={{ listStyle: 'none', p: '3px 10px', cursor: 'pointer', _hover: { bgColor: '#E4EDFF' } }}
+                onClick={onSelect.bind(null, account)}
               >
-                {truncated(account.address)}
-              </Text>
-            </Box>
-          ))}
-        </ul>
-      </PopoverContent>
+                <Text
+                  sx={{
+                    display: 'inline-block',
+                    color: 'brand.primary',
+                    fontSize: '14px'
+                  }}
+                >
+                  {truncated(account.address)}
+                </Text>
+              </Box>
+            ))}
+          </ul>
+        </PopoverContent>
+      )}
     </Popover>
   );
 };
