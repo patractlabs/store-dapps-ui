@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Account } from '@patract/react-components';
+import { AccountProvider } from '@patract/react-components';
 import App from './app';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Account url="">
+    <AccountProvider>
       <App />
-    </Account>
+    </AccountProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
