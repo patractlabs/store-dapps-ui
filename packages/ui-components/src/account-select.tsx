@@ -1,9 +1,20 @@
+import React, { useEffect } from 'react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import { Box, Flex, Popover, PopoverContent, PopoverTrigger, Text, Spinner, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+  Spinner,
+  useDisclosure
+} from '@chakra-ui/react';
 import { useAccount, useApi } from '@patract/react-hooks';
 import { truncated } from '@patract/utils';
 import type { KeyringPair } from '@polkadot/keyring/types';
-import React, { useEffect } from 'react';
+import { IdentityIcon } from '@patract/ui-components';
 
 export const AccountSelect: React.FC = () => {
   const { isApiReady } = useApi();
@@ -33,48 +44,56 @@ export const AccountSelect: React.FC = () => {
             borderColor: 'gray.300',
             cursor: 'pointer',
             bgColor: '#FFFFFF',
-            px: '16px'
+            px: '8px',
+            _hover: {
+              borderColor: 'gray.400'
+            },
+            _focus: {
+              borderColor: 'gray.400'
+            }
           }}
         >
-          <Text
-            sx={{
-              display: 'inline-block',
-              verticalAlign: 'top',
-              fontSize: '16x',
-              lineHeight: '25px',
-              minWidth: '74px',
-              padding: '5px 0',
-              left: '42px'
-            }}
-          >
-            {truncated(currentAccount)}
-          </Text>
           {!isApiReady ? (
-            <Spinner color='blue.500' />
+            <Center sx={{ flexGrow: '1' }}>
+              <Spinner color='blue.500' />
+            </Center>
           ) : (
-            <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
+            <>
+              <Flex
+                sx={{
+                  flexGrow: '1',
+                  verticalAlign: 'top',
+                  fontSize: '14px',
+                  lineHeight: '25px',
+                  minWidth: '74px',
+                  padding: '5px 0',
+                  left: '42px'
+                }}
+              >
+                <IdentityIcon value={currentAccount} />
+                <Text sx={{ flexGrow: '1', ml: '8px' }}>{currentAccount.slice(0, 6)}</Text>
+                <Text sx={{ color: 'gray.400' }}>{truncated(currentAccount)}</Text>
+              </Flex>
+              <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
+            </>
           )}
         </Flex>
       </PopoverTrigger>
       {isApiReady && (
-        <PopoverContent sx={{ w: '250px', left: '35px', top: '-6px', zIndex: 'dropdown' }}>
+        <PopoverContent sx={{ w: '250px', left: '36px', top: '-6px', zIndex: 'dropdown' }}>
           <ul>
             {accountList?.map((account) => (
               <Box
                 as='li'
                 key={account.address}
-                sx={{ listStyle: 'none', p: '3px 10px', cursor: 'pointer', _hover: { bgColor: '#E4EDFF' } }}
+                sx={{ listStyle: 'none', p: '5px 10px', cursor: 'pointer', _hover: { bgColor: 'gray.100' } }}
                 onClick={onSelect.bind(null, account)}
               >
-                <Text
-                  sx={{
-                    display: 'inline-block',
-                    color: 'brand.primary',
-                    fontSize: '14px'
-                  }}
-                >
-                  {truncated(account.address)}
-                </Text>
+                <Flex sx={{ fontSize: '14px' }}>
+                  <IdentityIcon value={account.address} />
+                  <Text sx={{ flexGrow: '1', ml: '8px' }}>{account.address.slice(0, 6)}</Text>
+                  <Text sx={{ color: 'gray.400' }}>{truncated(account.address)}</Text>
+                </Flex>
               </Box>
             ))}
           </ul>
