@@ -54,9 +54,9 @@ export const AccountSelect: React.FC = () => {
           }}
         >
           {!isApiReady ? (
-            <Center sx={{ flexGrow: '1' }}>
-              <Spinner color='blue.500' />
-            </Center>
+            <Flex sx={{ flex: '1', flexDirection: 'row-reverse' }}>
+              <Spinner size='sm' color='blue.500' />
+            </Flex>
           ) : (
             <>
               <Flex

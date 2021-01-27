@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Center, Text } from '@chakra-ui/react';
-import { PageLayout, PageHeader, PageMain, ApiReady } from '@patract/ui-components';
+import { PageLayout, PageHeader, PageMain } from '@patract/ui-components';
 import ToolBar from './tool-bar';
 import Palette from './palette';
 import Canvas from './canvas';
@@ -72,25 +72,23 @@ const Pixel: React.FC = () => {
     <PageLayout>
       <PageHeader title='Patra Pixle' />
       <PageMain>
-        <ApiReady>
-            <Box sx={{ position: 'absolute', mt: '18px' }}>
-              <Text sx={{ color: 'brand.grey' }}>1 Pixel = 1 DOT</Text>
-              <Text sx={{ color: 'brand.primary' }}>Pool ：567 DOT</Text>
-            </Box>
-            <Center sx={{ display: 'inline-flex', w: '100%', m: '18px 0 34px' }}>
-              <ToolBar
-                paintMode={paintMode}
-                onPenClick={onPenClick}
-                onEraserClick={onEraserClick}
-                onRevert={onRevert}
-                onRefresh={onRefresh}
-              />
-            </Center>
-            <Canvas paintMode={paintMode} color={color} />
-            <Box as='aside' aria-label='palette' sx={{ position: 'absolute', h: '100%', right: '0', top: '60px' }}>
-              <Palette color={color} onColorChange={setColor} />
-            </Box>
-          </ApiReady>
+        <Box sx={{ position: 'absolute', mt: '18px' }}>
+          <Text sx={{ color: 'brand.grey' }}>1 Pixel = 1 DOT</Text>
+          <Text sx={{ color: 'brand.primary' }}>Pool ：567 DOT</Text>
+        </Box>
+        <Center sx={{ display: 'inline-flex', w: '100%', m: '18px 0 34px' }}>
+          <ToolBar
+            paintMode={paintMode}
+            onPenClick={onPenClick}
+            onEraserClick={onEraserClick}
+            onRevert={onRevert}
+            onRefresh={onRefresh}
+          />
+        </Center>
+        <Canvas paintMode={paintMode} color={color} />
+        <Box as='aside' aria-label='palette' sx={{ position: 'absolute', h: '100%', right: '0', top: '60px' }}>
+          <Palette color={color} onColorChange={setColor} />
+        </Box>
       </PageMain>
     </PageLayout>
   );
