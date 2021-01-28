@@ -70,10 +70,12 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel, editingId }
       const canvasHex = canvasListArray[Number(editingId)];
       if (canvasHex) {
         paintCanvas(hex2Canvas(api.registry, canvasHex));
+        paintHistory.length = 0;
+        paintHistory.push(JSON.stringify(canvasObj));
       }
       getPixel();
     }
-  }, [getPixel]);
+  }, [api.registry, editingId, getPixel]);
 
   return (
     <Center sx={{ w: '100%', borderRadius: '8px', p: '10px 0 24px' }}>
