@@ -9,8 +9,9 @@ import {
   ModalFooter,
   Button,
   Center,
-  FormControl
-} from '@chakra-ui/react';
+  FormControl,
+  SimpleGrid
+} from '@patract/ui-components';
 import { useForm } from 'react-hook-form';
 import InputSelect, { MenuOption } from '../../components/input-select';
 import USDTIcon from '../../images/usdt.png';
@@ -33,45 +34,38 @@ const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent sx={{ w: '624px', maxW: 'auto' }}>
-        <ModalHeader
-          sx={{
-            color: '#0058FA',
-            fontSize: '16px',
-            fontWeight: '500',
-            lineHeight: '24px',
-            py: '13px',
-            boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)'
-          }}
-        >
+      <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
+        <ModalHeader>
           <Center>Create a pair</Center>
         </ModalHeader>
-        <ModalCloseButton sx={{ color: '#999999' }} />
-        <ModalBody sx={{ bgColor: '#F8F8F8', pt: '40px', pb: '20px', pl: '76px', pr: '84px' }}>
-          <FormControl sx={{ mb: '24px' }}>
-            <InputSelect
-              frontLabel='From'
-              options={options}
-              inputName='from_input'
-              selectName='from_select'
-              control={control}
-              watch={watch}
-              defaultValue=''
-              defaultOption={options[0]}
-            />
-          </FormControl>
-          <FormControl sx={{ mb: '24px' }}>
-            <InputSelect
-              frontLabel='To'
-              options={options}
-              inputName='to_input'
-              selectName='to_select'
-              control={control}
-              watch={watch}
-              defaultValue=''
-              defaultOption={options[1]}
-            />
-          </FormControl>
+        <ModalCloseButton />
+        <ModalBody padding={8}>
+          <SimpleGrid column={1} spacing='8'>
+            <FormControl>
+              <InputSelect
+                frontLabel='From'
+                options={options}
+                inputName='from_input'
+                selectName='from_select'
+                control={control}
+                watch={watch}
+                defaultValue=''
+                defaultOption={options[0]}
+              />
+            </FormControl>
+            <FormControl>
+              <InputSelect
+                frontLabel='To'
+                options={options}
+                inputName='to_input'
+                selectName='to_select'
+                control={control}
+                watch={watch}
+                defaultValue=''
+                defaultOption={options[1]}
+              />
+            </FormControl>
+          </SimpleGrid>
         </ModalBody>
 
         <ModalFooter sx={{ justifyContent: 'center' }}>

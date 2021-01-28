@@ -6,3 +6,4 @@ export * from './useToast';
 export * from './useTxStatus';
 export * from './useAccount';
 export * from './useWeight';
+export * from './useContract';

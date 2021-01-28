@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
-import { Center } from '@chakra-ui/react';
 import { useApi } from '@patract/react-hooks';
-import { paletteColors } from './palette';
-import { canvasObj, paintHistory, paintCanvas, PaintMode } from './index';
+import { Center } from '@patract/ui-components';
+import React, { useCallback, useEffect } from 'react';
 import { hex2Canvas } from '../../utils';
+import { canvasObj, paintCanvas, paintHistory, PaintMode } from './paint';
+import { paletteColors } from './palette';
 
 type CanvasProps = {
   paintMode: PaintMode;
@@ -71,8 +71,9 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel, editingId }
       if (canvasHex) {
         paintCanvas(hex2Canvas(api.registry, canvasHex));
       }
+      getPixel();
     }
-  }, []);
+  }, [getPixel]);
 
   return (
     <Center sx={{ w: '100%', borderRadius: '8px', p: '10px 0 24px' }}>

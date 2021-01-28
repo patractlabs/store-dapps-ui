@@ -4,6 +4,7 @@ import { Center, Spinner } from '@chakra-ui/react';
 
 export const ApiReady: React.FC = ({ children }) => {
   const { isApiReady } = useApi();
+
   if (!isApiReady)
     return (
       <Center sx={{ mt: 'calc(40vh - 60px)' }}>

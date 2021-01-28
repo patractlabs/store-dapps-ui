@@ -96,7 +96,8 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
         <ul>
           {options
             .filter(
-              ({ label, fullName }) => label.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0 || fullName.indexOf(inputValue) >= 0
+              ({ label, fullName }) =>
+                label.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0 || fullName.indexOf(inputValue) >= 0
             )
             .map((option) => (
               <Box
@@ -187,13 +188,13 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
 
   const MenuSelect = (
     <Box
+      borderColor='gray.200'
       sx={{
         display: 'inline-block',
         verticalAlign: 'top',
         width: '155px',
         border: '1px solid',
         borderRadius: '0 4px 4px 0',
-        borderColor: '#0058FA',
         borderLeft: '0',
         cursor: 'pointer',
         bgColor: '#FFFFFF'
@@ -236,6 +237,7 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
         control={control}
         defaultValue={defaultValue}
         focusBorderColor='#0058FA'
+        borderColor='gray.200'
         sx={{
           w: '309px',
           h: '44px',
@@ -243,7 +245,6 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
           bgColor: '#FFFFFF',
           borderRadius: '4px 0 0 4px',
           border: '1px solid',
-          borderColor: '#0058FA',
           borderRight: '0',
           verticalAlign: 'top',
           _hover: { borderColor: '#0058FA' },

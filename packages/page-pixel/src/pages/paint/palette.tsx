@@ -1,5 +1,5 @@
+import { Box, Flex, Heading } from '@patract/ui-components';
 import React from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
 
 type PaletteProps = {
   color: number;
@@ -55,7 +55,7 @@ const Palette: React.FC<PaletteProps> = ({ color, onColorChange }) => {
               borderRadius: '50%',
               bgColor: hex,
               mb: '10px',
-              border: color === index + 1 ? '2px solid #000000' : (hex === '#FFFFFF' ? '1px solid #ABB4D0' : 'none'),
+              border: color === index + 1 ? '2px solid #000000' : hex === '#FFFFFF' ? '1px solid #ABB4D0' : 'none',
               _odd: { mr: '10px' }
             }}
           ></Box>

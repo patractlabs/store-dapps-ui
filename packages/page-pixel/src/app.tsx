@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { UIProvider } from '@patract/ui-components';
-import Paint from './pages/paint';
+import { PaintIndex } from './pages/paint';
 import CanvasList from './pages/canvas-list';
 
 function App() {
@@ -16,10 +16,10 @@ function App() {
             <CanvasList />
           </Route>
           <Route path='/paint/:editingId'>
-            <Paint />
+            <PaintIndex />
           </Route>
           <Route path='/paint' exact>
-            <Paint />
+            <PaintIndex />
           </Route>
         </Switch>
       </Router>

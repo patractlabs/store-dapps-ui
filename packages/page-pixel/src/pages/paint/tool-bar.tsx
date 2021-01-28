@@ -1,7 +1,7 @@
+import { Flex, Icon } from '@patract/ui-components';
 import React from 'react';
-import { Flex, Icon } from '@chakra-ui/react';
-import { FaPencilAlt, FaEraser, FaReply, FaUndoAlt } from 'react-icons/fa';
-import { PaintMode } from './index';
+import { FaEraser, FaPencilAlt, FaReply, FaUndoAlt } from 'react-icons/fa';
+import { PaintMode } from './paint';
 
 type ToolbarProps = {
   paintMode: PaintMode;

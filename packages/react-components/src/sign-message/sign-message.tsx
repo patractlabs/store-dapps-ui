@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   InputAmountController,
   InputNumberController,
@@ -17,12 +18,13 @@ import {
   ModalOverlay,
   SimpleGrid,
   Stack,
-  Text
+  Text,
+  Switch
 } from '@patract/ui-components';
 import { handleTxResults, parseAmount, getSigner } from '@patract/utils';
 import { ContractPromise } from '@polkadot/api-contract';
 import { keyring } from '@polkadot/ui-keyring';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 type ConfirmFieldValues = {
@@ -40,8 +42,9 @@ export type SignMessageModalProps = {
   contract: ContractPromise;
   method: string;
   fields: SignMessageFields;
-  onBack: () => void;
-  onClose: () => void;
+  onBack?: () => void;
+  onCancel: () => void;
+  onSubmit: () => void;
   title: string;
   isOpen: boolean;
 };
@@ -53,11 +56,15 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
   title,
   fields,
   onBack,
-  onClose
+  onCancel,
+  onSubmit
 }) => {
-  const { control, errors, handleSubmit } = useForm<ConfirmFieldValues>({
+  const { setValue, control, errors, handleSubmit, getValues } = useForm<ConfirmFieldValues>({
     defaultValues: { value: '0', gasLimit: '200000000000' }
   });
+
+  const [estimatedWeight, setEstimatedWeight] = useState<any>();
+  const [estimated, setEstimated] = useState(true);
 
   const { api } = useApi();
   const { currentAccount } = useAccount();
@@ -72,7 +79,7 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
     setIsLoading(true);
 
     let toastId: any;
-    
+
     try {
       const value = parseAmount(data.value);
       const gasLimit = data.gasLimit;
@@ -112,7 +119,7 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
                 description: r.find(({ status }) => status === 'success')?.message,
                 duration: 5000
               });
-              onClose();
+              onSubmit();
             }
           },
           (): void => {
@@ -132,10 +139,30 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
     }
   });
 
+  useEffect(() => {
+    if (estimated) {
+      setValue('gasLimit', estimatedWeight);
+    }
+  }, [estimated, estimatedWeight]);
+
+  useEffect((): void => {
+    if (!currentAccount || !method) return;
+
+    contract.query[method](
+      currentAccount,
+      { gasLimit: -1, value: getValues('value') },
+      ...fields.map(({ value, content }) => value ?? content)
+    )
+      .then(({ gasConsumed, result }) => {
+        setEstimatedWeight(result.isOk ? gasConsumed : null);
+      })
+      .catch(() => setEstimatedWeight(null));
+  }, [currentAccount, contract, method, fields]);
+
   if (!fields) return null;
 
   return (
-    <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={onClose}>
+    <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={onCancel}>
       <ModalOverlay />
       <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
         <ModalHeader>Confirm</ModalHeader>
@@ -153,11 +180,22 @@ export const SignMessageModal: React.FC<SignMessageModalProps> = ({
             <FormControl as='fieldset'>
               <FormLabel as='legend'>GasLimit</FormLabel>
               <InputNumberController
+                isDisabled={estimated}
                 control={control}
                 name='gasLimit'
                 error={errors.gasLimit}
                 rules={{ required: true, pattern: '^[0-9]*$' }}
               />
+              <FormHelperText>
+                <Flex alignContent='center'>
+                  <Box as='span' mt='2px'>
+                    Estimated Gas: {estimatedWeight && estimatedWeight.toString()}
+                  </Box>
+                  <Box as='span' ml='2'>
+                    <Switch isChecked={estimated} onChange={(value) => setEstimated(!estimated)} size='md' />
+                  </Box>
+                </Flex>
+              </FormHelperText>
             </FormControl>
           </SimpleGrid>
           <Divider my='4' />

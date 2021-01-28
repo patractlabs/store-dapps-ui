@@ -113,7 +113,8 @@ export const IssueAssetModal: React.FC<IssueAssetModalProps> = ({ contractAddres
       title={'Confrim Issue'}
       contract={contract}
       onBack={resetView}
-      onClose={handleClose}
+      onSubmit={handleClose}
+      onCancel={handleClose}
     />
   ) : null;
 };

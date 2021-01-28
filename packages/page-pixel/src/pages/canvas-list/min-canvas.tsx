@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { paletteColors } from '../paint/palette';
-import { Canvas } from '../paint/index';
+import { Canvas } from '../paint/paint';
 
 const MiniCanvas: React.FC<{ canvasObj: Canvas }> = ({ canvasObj }) => {
   return (

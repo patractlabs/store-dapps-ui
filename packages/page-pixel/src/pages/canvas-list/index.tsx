@@ -23,7 +23,7 @@ const CanvasList: React.FC = () => {
 
   return (
     <PageLayout>
-      <PageHeader title='Patra Pixle' />
+      <PageHeader title='Patra Pixel' />
       <PageMain>
         <Center sx={{ mt: '18px' }}>
           <Box sx={{ w: '992px' }}>
