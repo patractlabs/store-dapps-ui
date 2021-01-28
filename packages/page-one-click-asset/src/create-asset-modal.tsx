@@ -153,7 +153,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
               </FormControl>
               <FormControl>
                 <Button width='full' size='lg' colorScheme='blue' onClick={deploy}>
-                  发币
+                  Issue
                 </Button>
               </FormControl>
             </SimpleGrid>
