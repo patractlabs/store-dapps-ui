@@ -5,7 +5,7 @@ import { Canvas } from '../paint/index';
 
 const MiniCanvas: React.FC<{ canvasObj: Canvas }> = ({ canvasObj }) => {
   return (
-    <Box sx={{ w: '100%', borderRadius: '8px', border: '1px solid', borderColor: 'gray.300' }}>
+    <Box sx={{ w: '100%' }}>
       <table>
         <tbody>
           {canvasObj.map((row, rowIndex) => (

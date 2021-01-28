@@ -5,7 +5,7 @@ export type PageLayoutProps = {};
 
 export const PageLayout: React.FC<PageLayoutProps> = React.memo(({ children }) => {
   return (
-    <Container maxW='full' minH='100vh' background='#f8f9fa' p={0} display='flex' flexDirection='column'>
+    <Container maxW='full' minH='100vh' background='#F1F3F6' p={0} display='flex' flexDirection='column'>
       {children}
     </Container>
   );

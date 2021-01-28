@@ -38,11 +38,11 @@ export const paletteColors = [
 
 const Palette: React.FC<PaletteProps> = ({ color, onColorChange }) => {
   return (
-    <Box sx={{ w: '122px', bgColor: '#FFFFFF', p: '23px 0', h: '100%' }}>
+    <Box sx={{ w: '122px', p: '23px 0', h: '100%', bgColor: '#FFFFFF' }}>
       <Heading as='h3' sx={{ fontSize: '16px', lineHeight: '22px', textAlign: 'center', mb: '16px' }}>
         Color Palette
       </Heading>
-      <Flex as='ul' sx={{ flexWrap: 'wrap', p: '0 16px' }}>
+      <Flex as='ul' sx={{ flexWrap: 'wrap', p: '0 16px', bgColor: '#FFFFFF' }}>
         {paletteColors.slice(1).map((hex, index) => (
           <Box
             key={hex}

@@ -2,9 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageLayout, PageHeader, PageMain } from '@patract/ui-components';
 import { useApi } from '@patract/react-hooks';
-import { Box, HStack, Icon, Center } from '@chakra-ui/react';
+import { Box, Icon, Center } from '@chakra-ui/react';
 import MiniCanvas from './min-canvas';
 import { FaPlusCircle } from 'react-icons/fa';
+import { hex2Canvas } from '../../utils';
 
 const CanvasList: React.FC = () => {
   const { api } = useApi();
@@ -12,18 +13,12 @@ const CanvasList: React.FC = () => {
   const canvasListBuffer = localStorage.getItem('canvas-list') || '[]';
   const canvasListArray = JSON.parse(canvasListBuffer);
 
-  const hex2Canvas = (hex: string) => {
-    const x = (api.registry as any)
-      .createType('Vec<[u8; 160]>', hex)
-      .toArray()
-      .map((x: any) => {
-        return [...x];
-      });
-    return x;
-  };
-
   const createNew = () => {
     history.push('/paint');
+  };
+
+  const editPaint = (index: number) => {
+    history.push(`/paint/${index}`);
   };
 
   return (
@@ -35,16 +30,24 @@ const CanvasList: React.FC = () => {
             {canvasListArray.map((canvasHex: string, index: number) => (
               <Box
                 key={index}
+                onClick={editPaint.bind(null, index)}
                 sx={{
                   display: 'inline-block',
                   w: '320px',
                   h: '180px',
                   mr: (index + 1) % 3 === 0 ? '0' : '16px',
                   mb: '16px',
-                  verticalAlign: 'top'
+                  verticalAlign: 'top',
+                  cursor: 'pointer',
+                  borderRadius: '8px',
+                  border: '1px solid',
+                  borderColor: 'gray.300',
+                  _hover: {
+                    borderColor: 'gray.500'
+                  }
                 }}
               >
-                <MiniCanvas canvasObj={hex2Canvas(canvasHex)} />
+                <MiniCanvas canvasObj={hex2Canvas(api.registry, canvasHex)} />
               </Box>
             ))}
             <Box

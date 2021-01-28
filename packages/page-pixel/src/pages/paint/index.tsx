@@ -1,13 +1,13 @@
-import React, { useCallback, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Box, Button, Center, Text } from '@chakra-ui/react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { Box, Button, Center, Text, Spinner } from '@chakra-ui/react';
 import { PageLayout, PageHeader, PageMain } from '@patract/ui-components';
-import { Vec } from '@polkadot/types';
 import { useApi } from '@patract/react-hooks';
 import ToolBar from './tool-bar';
 import Palette from './palette';
 import Canvas from './canvas';
 import { paletteColors } from './palette';
+import { canvas2Hex, hex2Canvas } from '../../utils';
 
 export type PaintMode = 'pen' | 'eraser';
 export type Canvas = Array<Array<number>>;
@@ -18,12 +18,34 @@ const emptyCanvasObj: Canvas = new Array(HEIGHT_FIELD).fill(0).map(() => new Arr
 export let canvasObj: Canvas = emptyCanvasObj;
 export let paintHistory: Array<string> = [JSON.stringify(emptyCanvasObj)];
 
+export const paintAll = () => {
+  for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
+    for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
+      const cellNode = document.getElementById(`${yAxis}-${xAxis}`);
+      if (cellNode) {
+        const color = canvasObj[yAxis][xAxis];
+        if (cellNode.style.backgroundColor !== paletteColors[color]) {
+          cellNode.style.backgroundColor = paletteColors[color];
+        }
+      }
+    }
+  }
+};
+
+export const paintCanvas = (obj: Canvas) => {
+  canvasObj = obj;
+  paintAll();
+}
+
 const Paint: React.FC = () => {
+  const { editingId } = useParams<{ editingId: string }>();
   const [color, setColor] = useState(1);
   const pixelRef = useRef<HTMLSpanElement>(null);
   const [paintMode, setPaintMode] = useState<PaintMode>('pen');
   const { api } = useApi();
   const history = useHistory();
+  const [saving, setSaving] = useState(false);
+  const isEditing = typeof Number(editingId) === 'number';
 
   const onPenClick = () => {
     setPaintMode('pen');
@@ -43,22 +65,22 @@ const Paint: React.FC = () => {
     }
   };
 
-  const paintAll = () => {
-    for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
-      for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
-        const cellNode = document.getElementById(`${yAxis}-${xAxis}`);
-        if (cellNode) {
-          const color = canvasObj[yAxis][xAxis];
-          if (cellNode.style.backgroundColor !== paletteColors[color]) {
-            cellNode.style.backgroundColor = paletteColors[color];
+  const getPixel = useCallback(() => {
+    if (pixelRef.current) {
+      let pixels = 0;
+      for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
+        for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
+          if (canvasObj[yAxis][xAxis] !== 0) {
+            pixels += 1;
           }
         }
       }
+      pixelRef.current.innerText = pixels.toString();
     }
-  };
+  }, [pixelRef]);
 
   const onRefresh = useCallback(() => {
-    let wantToClear = window.confirm('\nWARNING MESSAGE:\n\n' + 'Do you want to clear the design canvas?');
+    const wantToClear = window.confirm('\nWARNING MESSAGE:\n\nDo you want to clear the design canvas?');
     if (wantToClear) {
       canvasObj = emptyCanvasObj;
       getPixel();
@@ -74,39 +96,20 @@ const Paint: React.FC = () => {
     } else {
       return;
     }
-  }, []);
-
-  const getPixel = useCallback(() => {
-    if (pixelRef.current) {
-      let pixels = 0;
-      for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
-        for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
-          if (canvasObj[yAxis][xAxis] !== 0) {
-            pixels += 1;
-          }
-        }
-      }
-      pixelRef.current.innerText = pixels.toString();
-    }
-  }, [pixelRef]);
-
-  const canvas2Hex = (obj: Canvas) => {
-    const vector = new Vec(
-      api.registry,
-      (api.registry as any).createClass('[u8; 160]'),
-      obj.map((x) => {
-        return Uint8Array.from(x);
-      })
-    );
-    return vector.toHex();
-  };
+  }, [getPixel]);
 
   const savePaint = () => {
+    if (isEditing) {
+      const wantToCreate = window.confirm('Saving will create a new painting, are you sure?');
+      if (!wantToCreate) return;
+    }
+    setSaving(true);
     const canvasListBuffer = localStorage.getItem('canvas-list') || '[]';
     const canvasListArray = JSON.parse(canvasListBuffer);
-    canvasListArray.push(canvas2Hex(canvasObj));
+    canvasListArray.push(canvas2Hex(api.registry, canvasObj));
     localStorage.setItem('canvas-list', JSON.stringify(canvasListArray));
     history.push('/list');
+    setSaving(false);
   };
 
   return (
@@ -128,11 +131,11 @@ const Paint: React.FC = () => {
               You have covered <span ref={pixelRef}>0</span> pixels
             </Text>
             <Button colorScheme='primary' sx={{ ml: '10px' }} onClick={savePaint}>
-              Confirm
+              {saving ?  <Spinner size='sm' color='white' /> : 'Confirm'}
             </Button>
           </Box>
         </Box>
-        <Canvas paintMode={paintMode} color={color} getPixel={getPixel} />
+        <Canvas paintMode={paintMode} color={color} getPixel={getPixel} editingId={Number(editingId)} />
         <Box as='aside' aria-label='palette' sx={{ position: 'absolute', h: '100%', right: '0', top: '60px' }}>
           <Palette color={color} onColorChange={setColor} />
         </Box>

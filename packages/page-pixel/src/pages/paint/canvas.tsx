@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
 import { Center } from '@chakra-ui/react';
 import { useApi } from '@patract/react-hooks';
-import { Vec } from '@polkadot/types';
 import { paletteColors } from './palette';
-import { canvasObj, paintHistory, PaintMode } from './index';
+import { canvasObj, paintHistory, paintCanvas, PaintMode } from './index';
+import { hex2Canvas } from '../../utils';
 
 type CanvasProps = {
   paintMode: PaintMode;
   color: number;
   getPixel: () => void;
+  editingId?: number;
 };
 
 let isMouseDown = false;
@@ -26,8 +27,9 @@ const snapshot = () => {
   paintHistory.push(JSON.stringify(canvasObj));
 };
 
-const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel }) => {
+const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel, editingId }) => {
   const { api } = useApi();
+
   const onMouseDown = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       isMouseDown = true;
@@ -52,12 +54,23 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel }) => {
       getPixel();
       isMouseDown = false;
     }
-  }, []);
+  }, [getPixel]);
 
   const onMouseLeave = useCallback(() => {
     if (isMouseDown) {
       snapshot();
       getPixel();
+    }
+  }, [getPixel]);
+
+  useEffect(() => {
+    if (typeof editingId === 'number') {
+      const canvasListBuffer = localStorage.getItem('canvas-list') || '[]';
+      const canvasListArray = JSON.parse(canvasListBuffer);
+      const canvasHex = canvasListArray[Number(editingId)];
+      if (canvasHex) {
+        paintCanvas(hex2Canvas(api.registry, canvasHex));
+      }
     }
   }, []);
 

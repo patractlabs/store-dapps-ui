@@ -15,7 +15,10 @@ function App() {
           <Route path='/list'>
             <CanvasList />
           </Route>
-          <Route path='/paint'>
+          <Route path='/paint/:editingId'>
+            <Paint />
+          </Route>
+          <Route path='/paint' exact>
             <Paint />
           </Route>
         </Switch>
