@@ -3,7 +3,7 @@ import { useApi, useModal } from '@patract/react-hooks';
 import { Box, Button, Center, Spinner, Text } from '@patract/ui-components';
 import React, { useCallback, useRef, useState, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { usePixelContract } from '../../hooks/usePixelContract';
+import { usePixelContract } from '../../hooks/use-pixel-contract';
 import { canvas2Hex } from '../../utils';
 import Canvas from './canvas';
 import Palette, { paletteColors } from './palette';
