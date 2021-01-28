@@ -1,11 +1,14 @@
-import React, { useCallback } from 'react';
-import { Box } from '@chakra-ui/react';
+import React, { useCallback, useEffect } from 'react';
+import { Center } from '@chakra-ui/react';
+import { useApi } from '@patract/react-hooks';
+import { Vec } from '@polkadot/types';
 import { paletteColors } from './palette';
 import { canvasObj, paintHistory, PaintMode } from './index';
 
 type CanvasProps = {
   paintMode: PaintMode;
   color: number;
+  getPixel: () => void;
 };
 
 let isMouseDown = false;
@@ -23,7 +26,8 @@ const snapshot = () => {
   paintHistory.push(JSON.stringify(canvasObj));
 };
 
-const Canvas: React.FC<CanvasProps> = ({ paintMode, color }) => {
+const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel }) => {
+  const { api } = useApi();
   const onMouseDown = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       isMouseDown = true;
@@ -45,6 +49,7 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color }) => {
   const onMouseUp = useCallback(() => {
     if (isMouseDown) {
       snapshot();
+      getPixel();
       isMouseDown = false;
     }
   }, []);
@@ -52,13 +57,19 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color }) => {
   const onMouseLeave = useCallback(() => {
     if (isMouseDown) {
       snapshot();
-      isMouseDown = false;
+      getPixel();
     }
   }, []);
 
   return (
-    <Box sx={{ w: '100%', bgColor: 'rgba(171, 180, 208, 0.14)', borderRadius: '8px', p: '10px 72px 24px' }}>
-      <table onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseLeave}>
+    <Center sx={{ w: '100%', borderRadius: '8px', p: '10px 0 24px' }}>
+      <table
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseLeave}
+        style={{ background: '#FFFFFF' }}
+      >
         <tbody>
           {canvasObj.map((row, rowIndex) => (
             <tr key={rowIndex}>
@@ -69,8 +80,8 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color }) => {
                   data-xaxis={columnIndex}
                   data-yaxis={rowIndex}
                   style={{
-                    width: '6px',
-                    height: '6px',
+                    width: '7px',
+                    height: '7px',
                     border: '1px solid rgba(171, 180, 208, 0.30)'
                   }}
                 ></td>
@@ -79,7 +90,7 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color }) => {
           ))}
         </tbody>
       </table>
-    </Box>
+    </Center>
   );
 };
 

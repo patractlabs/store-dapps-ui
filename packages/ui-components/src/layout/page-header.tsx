@@ -1,5 +1,7 @@
-import { Box, Container, AccountSelect, Flex, Heading } from '@patract/ui-components';
 import React from 'react';
+import { Link } from '@chakra-ui/react';
+import { Link as ReachLink } from 'react-router-dom';
+import { Box, Container, AccountSelect, Heading } from '@patract/ui-components';
 
 export type PageHeaderProps = {
   title: React.ReactNode;
@@ -11,7 +13,9 @@ export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title, navLin
     <Box maxW='full' as='header' p={0} background='white'>
       <Container display='flex' maxW='max' alignItems='center'>
         <Heading as='h1' fontSize='2xl' fontWeight='medium' py={4}>
-          {title}
+          <Link as={ReachLink} to='/'>
+            {title}
+          </Link>
         </Heading>
         <Box
           as='div'
@@ -22,7 +26,7 @@ export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title, navLin
             height: 5
           }}
         ></Box>
-        <Box as='nav' flex='1' ml="57px">
+        <Box as='nav' flex='1' ml='57px'>
           {navLinks}
         </Box>
         <Box>

@@ -1,11 +1,25 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { UIProvider } from '@patract/ui-components';
-import Pixel from './pages/pixel';
+import Paint from './pages/paint';
+import CanvasList from './pages/canvas-list';
 
 function App() {
   return (
     <UIProvider>
-      <Pixel />
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+            <Redirect to='/list' />
+          </Route>
+          <Route path='/list'>
+            <CanvasList />
+          </Route>
+          <Route path='/paint'>
+            <Paint />
+          </Route>
+        </Switch>
+      </Router>
     </UIProvider>
   );
 }

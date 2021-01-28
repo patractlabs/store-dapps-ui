@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { UIProvider } from '@patract/ui-components';
-import Header from './components/header';
 import Swap from './pages/swap';
 import Pool from './pages/pool';
 
