@@ -6,6 +6,7 @@
     "@babel/core": "^7.12.10",
     "@babel/polyfill": "^7.12.1",
     "@babel/runtime": "^7.12.5",
+    "@material-ui/core": "^4.11.3",
     "@patract/react-hooks": "0.1.0",
     "@polkadot/api-contract": "^3.5.1",
     "react": "^17.0.1",
