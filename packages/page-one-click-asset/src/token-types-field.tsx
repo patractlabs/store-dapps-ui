@@ -17,13 +17,13 @@ export const TokenTypesField: React.FC<TokenTypesFieldProps> = ({ control, name 
             <Flex w='100%' justifyContent='space-between' height='6' alignItems='center'>
               <Radio value={TokenType.erc20_1}>{getTokenTypeName(TokenType.erc20_1)}</Radio>
               <FormHelperText maxW='2xs' mt='0' color='gray.500'>
-                Create a gross supply when the contract is deployed so that the supply amount is constant and never increases.
+                Fixed supply of erc20 contracts
               </FormHelperText>
             </Flex>
             <Flex w='100%' justifyContent='space-between' height='6' alignItems='center'>
               <Radio value={TokenType.erc20_2}>{getTokenTypeName(TokenType.erc20_2)}</Radio>
               <FormHelperText maxW='2xs' mt='0' color='gray.500'>
-                The initial supply is created when the contract is deployed and only you have the permission to add more tokens later.
+                Erc20 contracts that can be issued
               </FormHelperText>
             </Flex>
           </VStack>
