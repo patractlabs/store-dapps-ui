@@ -13,14 +13,6 @@ export const AccountProvider: React.FC = ({ children }) => {
     return keyring.getPairs();
   }, [isApiReady, count]);
 
-  useEffect(() => {
-    if (!accountList?.length) return;
-
-    if (!currentAccount) {
-      setCurrentAccount(accountList[0].address);
-    }
-  }, [accountList, currentAccount]);
-
   const value = useMemo(
     () => ({
       accountList,
