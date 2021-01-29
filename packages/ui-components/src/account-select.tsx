@@ -24,11 +24,17 @@ export const AccountSelect: React.FC = () => {
   const onSelect = (account: KeyringPair) => {
     onClose();
     setCurrentAccount(account.address);
+    localStorage.setItem('current-account', account.address);
   };
 
   useEffect(() => {
-    setCurrentAccount(currentAccount);
-  }, [currentAccount]);
+    const storedAccount = localStorage.getItem('current-account');
+    if (storedAccount && accountList?.some(account => account.address === storedAccount)) {
+      setCurrentAccount(storedAccount);
+    } else if (accountList && accountList.length > 0){
+      setCurrentAccount(accountList[0].address);
+    }
+  }, [accountList]);
 
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
