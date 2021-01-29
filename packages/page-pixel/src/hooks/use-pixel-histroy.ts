@@ -18,7 +18,7 @@ export const usePixelHistroy = () => {
         setData(data.output?.toJSON());
       }
     });
-  }, [currentAccount]);
+  }, [contract, currentAccount]);
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -39,7 +39,7 @@ export const usePixelHistroy = () => {
         setResult(arr.filter((x) => x));
       });
     }
-  }, [data]);
+  }, [contract, data, currentAccount]);
 
   console.log(result);
   return result;

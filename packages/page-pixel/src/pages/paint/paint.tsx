@@ -1,7 +1,7 @@
 import { SignMessageModal } from '@patract/react-components';
 import { useApi, useModal } from '@patract/react-hooks';
 import { Box, Button, Center, Spinner, Text } from '@patract/ui-components';
-import React, { useCallback, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { usePixelContract } from '../../hooks/use-pixel-contract';
 import { canvas2Hex } from '../../utils';
