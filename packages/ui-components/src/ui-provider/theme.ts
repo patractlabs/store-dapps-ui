@@ -55,7 +55,7 @@ export const theme = extendTheme({
           //     '0px 2px 4px 0px rgba(0, 0, 0, 0.05), 0px 1px 0px 0px rgba(0, 0, 0, 0.09), 0px -1px 0px 0px rgba(0, 0, 0, 0.05)'
           // },
           th: {
-            textTransform: 'none',
+            textTransform: 'none'
           }
         },
         pk: {
@@ -116,7 +116,7 @@ export const theme = extendTheme({
         md: {
           table: {
             fontSize: '14px'
-          },
+          }
           // th: {
           //   fontSize: '12px',
           //   fontWeight: '400',
@@ -265,7 +265,7 @@ export const theme = extendTheme({
         outline: 'none',
         boxShadow: 'none'
       },
-      'select::-ms-expand': { display: 'none' }
+      'select::-ms-expand': { display: 'none' },
     }
   }
 });

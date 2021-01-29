@@ -13,7 +13,8 @@ import {
   ModalBody,
   ModalFooter,
   FormControl,
-  FormLabel
+  FormLabel,
+  Stack
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
@@ -39,21 +40,10 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent sx={{ w: '624px', maxW: 'auto' }}>
-        <ModalHeader
-          sx={{
-            color: '#0058FA',
-            fontSize: '16px',
-            fontWeight: '500',
-            lineHeight: '24px',
-            py: '13px',
-            boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)'
-          }}
-        >
-          <Center>Add Liquidity</Center>
-        </ModalHeader>
-        <ModalCloseButton sx={{ color: '#999999' }} />
-        <ModalBody sx={{ bgColor: '#F8F8F8', pt: '40px', pb: '20px', pl: '76px', pr: '84px' }}>
+      <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
+        <ModalHeader>Add Liquidity</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
           <FormControl sx={{ mb: '24px' }}>
             <InputSelect
               frontLabel='Input'
@@ -145,18 +135,20 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               </Flex>
             </FormControl>
           </Flex>
-          <Center>
+          {/* <Center>
             <Text sx={{ color: 'red.600', mt: '24px', fontSize: '14px' }}>
-              <InfoOutlineIcon sx={{ mr: '9px' }}/>
+              <InfoOutlineIcon sx={{ mr: '9px' }} />
               Insufficient USDT balance！
             </Text>
-          </Center>
+          </Center> */}
         </ModalBody>
 
-        <ModalFooter sx={{ justifyContent: 'center' }}>
-          <Button onClick={onClose} colorScheme='primary'>
-            Confirm
-          </Button>
+        <ModalFooter py={8}>
+          <Stack direction='row' spacing={4} justifyContent='flex-end'>
+            <Button colorScheme='blue' onClick={onClose}>
+              Submit
+            </Button>
+          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>

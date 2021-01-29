@@ -16,6 +16,7 @@ import {
   SliderThumb,
   Box,
   Flex,
+  Stack,
   FormLabel,
   Text
 } from '@chakra-ui/react';
@@ -43,30 +44,22 @@ const balance = 15;
 const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const { control, watch, setValue } = useForm({ defaultValues });
   const { withdraw_token } = watch(['withdraw_token']);
-  const percentage = Math.ceil(withdraw_token * 100 / 15);
+  const percentage = Math.ceil((withdraw_token * 100) / 15);
 
-  const onSliderChange = useCallback((value: number) => {
-    setValue('withdraw_token', value * balance / 100);
-  }, [setValue]);
+  const onSliderChange = useCallback(
+    (value: number) => {
+      setValue('withdraw_token', (value * balance) / 100);
+    },
+    [setValue]
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent sx={{ w: '624px', maxW: 'auto' }}>
-        <ModalHeader
-          sx={{
-            color: '#0058FA',
-            fontSize: '16px',
-            fontWeight: '500',
-            lineHeight: '24px',
-            py: '13px',
-            boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)'
-          }}
-        >
-          <Center>Withdraw Liquidity</Center>
-        </ModalHeader>
-        <ModalCloseButton sx={{ color: '#999999' }} />
-        <ModalBody sx={{ bgColor: '#F8F8F8', pt: '40px', pb: '20px', pl: '76px', pr: '84px' }}>
+      <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
+        <ModalHeader>Withdraw Liquidity</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
           <FormControl sx={{ mb: '24px' }}>
             <FormLabel textStyle='form-label'>
               <span>Withdraw LP Token</span>
@@ -76,32 +69,27 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               name='withdraw_token'
               control={control}
               defaultValue={defaultValues.withdraw_token}
-              focusBorderColor='#0058FA'
               max={balance}
               sx={{
-                w: '309px',
+                w: 'calc(100% - 160px)',
                 h: '44px',
                 fontSize: '18px',
-                bgColor: '#FFFFFF',
                 borderRadius: '4px 0 0 4px',
-                border: '1px solid',
-                borderColor: '#0058FA',
                 borderRight: '0',
                 verticalAlign: 'top',
-                _hover: { borderColor: '#0058FA' },
                 _focus: { boxShadow: 'none' }
               }}
             />
             <Box
+              width='160px'
+              border='1px solid'
+              borderColor='gray.200'
               sx={{
                 display: 'inline-block',
                 verticalAlign: 'top',
-                width: '155px',
                 border: '1px solid',
                 borderRadius: '0 4px 4px 0',
-                borderColor: '#0058FA',
-                borderLeft: '0',
-                bgColor: '#FFFFFF'
+                borderLeft: '0'
               }}
             >
               <Center>
@@ -163,18 +151,20 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               defaultOption={options[1]}
             />
           </FormControl>
-          <Center>
+          {/* <Center>
             <Text sx={{ color: 'red.600', mt: '24px', fontSize: '14px' }}>
-              <InfoOutlineIcon sx={{ mr: '9px' }}/>
+              <InfoOutlineIcon sx={{ mr: '9px' }} />
               Insufficient USDT balance！
             </Text>
-          </Center>
+          </Center> */}
         </ModalBody>
 
-        <ModalFooter sx={{ justifyContent: 'center' }}>
-          <Button onClick={onClose} colorScheme='primary'>
-            Confirm
-          </Button>
+        <ModalFooter py={8}>
+          <Stack direction='row' spacing={4} justifyContent='flex-end'>
+            <Button colorScheme='blue' onClick={onClose}>
+              Submit
+            </Button>
+          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>

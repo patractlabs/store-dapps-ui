@@ -12,7 +12,8 @@ import {
   PopoverTrigger,
   PopoverContent,
   Portal,
-  useDisclosure
+  useDisclosure,
+  Flex
 } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 import { Controller } from 'react-hook-form';
@@ -32,6 +33,8 @@ export type InputSelectProps = {
   backLabel?: string;
   options: Array<MenuOption>;
   control: any;
+  onChangeValue?: (value: string) => void;
+  onChangeOption?: (value: any) => void;
   inputName: string;
   selectName: string;
   usePortal?: boolean;
@@ -90,7 +93,11 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
       </Box>
       <Divider />
       <Box sx={{ py: '16px' }}>
-        <Heading as='h4' sx={{ fontSize: '16px', fontWeight: '500', lineHeight: '22px', mb: '8px', ml: '18px' }}>
+        <Heading
+          as='h4'
+          color='black'
+          sx={{ fontSize: '16px', fontWeight: '500', lineHeight: '22px', mb: '8px', ml: '18px' }}
+        >
           Token name
         </Heading>
         <ul>
@@ -103,11 +110,11 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
               <Box
                 as='li'
                 key={option.fullName}
-                sx={{ listStyle: 'none', py: '3px', cursor: 'pointer', _hover: { bgColor: '#E4EDFF' } }}
+                sx={{ listStyle: 'none', py: '3px', cursor: 'pointer' }}
                 onClick={onSelect.bind(null, option)}
               >
-                <Center sx={{ px: '18px' }}>
-                  <Image
+                <Flex sx={{ px: '18px' }} alignItems='center'>
+                  {/* <Image
                     src={option.icon}
                     sx={{
                       display: 'inline-block',
@@ -116,14 +123,13 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
                       bgColor: '#FFFFFF',
                       mr: '12px'
                     }}
-                  />
+                  /> */}
                   <Text
+                    color='gray.600'
                     sx={{
                       display: 'inline-block',
                       w: '50px',
-                      color: 'brand.primary',
-                      fontSize: '18px',
-                      lineHeight: '25px'
+                      fontSize: '18px'
                     }}
                   >
                     {option.label}
@@ -161,7 +167,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
                   >
                     {option.balance}
                   </Text>
-                </Center>
+                </Flex>
               </Box>
             ))}
         </ul>
@@ -181,19 +187,21 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
     watch,
     defaultValue,
     defaultOption,
-    usePortal = false
+    usePortal = false,
+    onChangeValue,
+    onChangeOption
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const selected = watch([selectName])[selectName];
 
   const MenuSelect = (
     <Box
+      border='1px solid'
       borderColor='gray.200'
+      width='160px'
       sx={{
         display: 'inline-block',
         verticalAlign: 'top',
-        width: '155px',
-        border: '1px solid',
         borderRadius: '0 4px 4px 0',
         borderLeft: '0',
         cursor: 'pointer',
@@ -219,6 +227,7 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
             onSelect={(option) => {
               onClose();
               onChange(option);
+              onChangeOption && onChangeOption(option);
             }}
           />
         )}
@@ -235,19 +244,13 @@ const InputSelect: React.FC<InputSelectProps> = (props) => {
       <InputNumberController
         name={inputName}
         control={control}
+        onChange={onChangeValue}
         defaultValue={defaultValue}
-        focusBorderColor='#0058FA'
-        borderColor='gray.200'
         sx={{
-          w: '309px',
+          w: 'calc(100% - 160px)',
           h: '44px',
-          fontSize: '18px',
-          bgColor: '#FFFFFF',
           borderRadius: '4px 0 0 4px',
-          border: '1px solid',
           borderRight: '0',
-          verticalAlign: 'top',
-          _hover: { borderColor: '#0058FA' },
           _focus: { boxShadow: 'none' }
         }}
       />

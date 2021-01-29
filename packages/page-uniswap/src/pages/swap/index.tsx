@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Center, Flex, FormControl, Text, Icon } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { FiRepeat } from 'react-icons/fi';
@@ -7,6 +7,7 @@ import { PageLayout, PageMain } from '@patract/ui-components';
 import Header from '../../components/header';
 import InputSelect, { MenuOption } from '../../components/input-select';
 import USDTIcon from '../../images/usdt.png';
+import { handleInputChange } from 'react-select/src/utils';
 
 const options: Array<MenuOption> = [
   { value: 'usdt', label: 'USDT', icon: USDTIcon, fullName: 'Tether', address: 'GAneP4k…fJEfs', balance: 0 },
@@ -20,8 +21,13 @@ const defaultValues = {
   to_select: options[1]
 };
 
+const price = 0.1;
+
 const Swap = () => {
-  const { control, watch, setValue } = useForm({ defaultValues });
+  const { control, watch, setValue, handleSubmit } = useForm({ defaultValues });
+  const [estimatedTo, setEstimatedTo] = useState<string | null>();
+  const [estimatedFrom, setEstimatedFrom] = useState<string | null>();
+  
   let { from_select, to_select } = watch(['from_select', 'to_select']);
 
   const swapFromTo = () => {
@@ -30,14 +36,30 @@ const Swap = () => {
     setValue('to_select', to_select);
   };
 
+  const submit = handleSubmit(() => {});
+
   return (
     <PageLayout>
       <Header />
       <PageMain>
         <Center mt='10'>
-          <Box background='white' border='1px solid' borderColor='gray.200' borderRadius='20px' p={[10, 20]}>
+          <Box
+            maxW='2xl'
+            width='2xl'
+            background='white'
+            border='1px solid'
+            borderColor='gray.200'
+            borderRadius='20px'
+            p={[10, 20]}
+          >
             <FormControl sx={{ mb: '24px' }}>
               <InputSelect
+                onChangeOption={(option) => {
+                  console.log(option);
+                }}
+                onChangeValue={(value) => {
+                  console.log(value);
+                }}
                 frontLabel='From'
                 options={options}
                 inputName='from_input'
@@ -107,17 +129,11 @@ const Swap = () => {
                 </Center>
               </Flex>
             </Box>
-            <Center>
-              <Text sx={{ color: 'red.600', mb: '24px', fontSize: '14px' }}>
-                <InfoOutlineIcon sx={{ mr: '9px' }} />
-                Insufficient USDT balance！
-              </Text>
-            </Center>
-            <Center>
-              <Button colorScheme='primary' sx={{ w: '224px', h: '45px', fontSize: '18px', lineHeight: '25px' }}>
-                Confirm
+            <FormControl>
+              <Button width='full' size='lg' colorScheme='blue' onClick={submit}>
+                Swap
               </Button>
-            </Center>
+            </FormControl>
           </Box>
         </Center>
       </PageMain>
