@@ -9,9 +9,10 @@ export const usePixelHistroy = () => {
   const { currentAccount } = useAccount();
   const [data, setData] = useState<any>();
   const [result, setResult] = useState<any[]>(empty);
-
   useEffect(() => {
+    console.log('currentAccount', currentAccount);
     contract.query.balanceOf(currentAccount, {}, currentAccount).then((data) => {
+      console.log('data===', data);
       if (data.output?.isEmpty) {
         setData(null);
       } else {
@@ -38,6 +39,8 @@ export const usePixelHistroy = () => {
       ).then((arr) => {
         setResult(arr.filter((x) => x));
       });
+    } else {
+      setResult(empty);
     }
   }, [contract, data, currentAccount]);
 

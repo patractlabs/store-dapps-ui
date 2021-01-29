@@ -17,7 +17,6 @@ export const canvas2Hex = (registry: any, obj: Canvas) => {
 };
 
 export const hex2Canvas = (registry: any, encode: string) => {
-  console.log('encode', encode)
   try {
     const hex = window.atob(encode);
 
