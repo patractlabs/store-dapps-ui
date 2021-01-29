@@ -8,7 +8,7 @@ const tableData: Array<GameInfo> = [
       hash: '0x23f071a3d536d74…',
       salt: '0x23f071a…3d536d74',
       revealed: false,
-      account: 'E5PpL…j3grz',
+      account: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
       choice: null,
         value: 1,
 
@@ -23,7 +23,7 @@ const tableData: Array<GameInfo> = [
       hash: '0x23f071a3d536d74…',
       salt: '0x23f071a…3d536d74',
       revealed: false,
-      account: 'E5PpL…j3grz',
+      account: '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY',
       choice: null,
       value: 1
     },
@@ -37,13 +37,13 @@ const tableData: Array<GameInfo> = [
       hash: '0x23f071a3d536d74…',
       salt: null,
       revealed: false,
-      account: 'E5PpL…j3grz',
+      account: '5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy',
       choice: null,
       value: 1,
     },
     joiner: {
       choice: 'scissors',
-      account: 'E5PpL…j3grz',
+      account: '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
       value: 1
     },
     winner: null,
@@ -56,13 +56,13 @@ const tableData: Array<GameInfo> = [
       hash: '0x23f071a3d536d74…',
       salt: '0x23f071a…3d536d74',
       revealed: true,
-      account: 'E5PpL…j3grz',
+      account: '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
       choice: 'scissors',
       value: 1,
     },
     joiner: {
       choice: 'scissors',
-      account: 'E5PpL…j3grz',
+      account: '5Cr56wqg25wVVMKsSQr16SrYiNb9u7Jn6wpNYC25ZmaUoxPG',
       value: 1
     },
     winner: 'even',
@@ -74,7 +74,7 @@ const tableData: Array<GameInfo> = [
       hash: '0x23f071a3d536d74…',
       salt: '0x23f071a…3d536d74',
       revealed: true,
-      account: 'E5PpL…j3grz',
+      account: '5Cr56wqg25wVVMKsSQr16SrYiNb9u7Jn6wpNYC25ZmaUoxPG',
       choice: 'rock',
       value: 1,
     },

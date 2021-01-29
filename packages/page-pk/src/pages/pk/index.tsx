@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { Flex, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Text, Icon, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { PageLayout, PageHeader, PageMain } from '@patract/ui-components';
+import { PageLayout, PageHeader, PageMain, Account } from '@patract/ui-components';
 import tableData from './data';
 import { FaRegHandRock, FaRegHandPaper, FaRegHandPeace, FaChessBoard } from 'react-icons/fa';
 import { BsFillEyeFill } from 'react-icons/bs';
@@ -182,7 +182,9 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
         {creater.salt ? creater.salt : '~'}
         <Text>{!creater.revealed && '(Unrevealed)'}</Text>
       </Td>
-      <Td>{creater.account}</Td>
+      <Td sx={{ px: '3', textAlign: 'left' }}>
+        <Account value={creater.account} />
+      </Td>
       <Td sx={{ position: 'relative' }}>
         {renderTag(winner, 'creater')}
         {renderChoice(creater.choice, 'creater')}
@@ -204,7 +206,7 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
         {renderTag(winner, 'joiner')}
         {renderChoice(joinerChoice, 'joiner')}
       </Td>
-      <Td>{joinerAccount}</Td>
+      <Td sx={{ px: '3', textAlign: 'left' }}>{joinerAccount && <Account value={joinerAccount} />}</Td>
       <Td>{renderOperations(operations, status, expireTime)}</Td>
     </Tr>
   );
@@ -238,41 +240,31 @@ const PK: React.FC = () => {
             Create Game
           </Button>
         </Flex>
-        <Box
-          sx={{
-            border: '1px solid #E0E0E0',
-            borderRadius: '8px',
-            bgColor: '#FFFFFF',
-            py: '19px',
-            px: '16px'
-          }}
-        >
-          <Table variant='pk'>
-            <Thead>
-              <Tr>
-                <Th px='13px'>ID</Th>
-                <Th colSpan={4}>Creater</Th>
-                <Th>Value</Th>
-                <Th colSpan={2}>Joiner</Th>
-                <Th px='0'>Operation</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <FirstRowTd></FirstRowTd>
-                <FirstRowTd>Hash</FirstRowTd>
-                <FirstRowTd>Salt</FirstRowTd>
-                <FirstRowTd>Account</FirstRowTd>
-                <FirstRowTd w='77px'>Choice</FirstRowTd>
-                <FirstRowTd>Dot</FirstRowTd>
-                <FirstRowTd w='77px'>Choice</FirstRowTd>
-                <FirstRowTd>Account</FirstRowTd>
-                <FirstRowTd></FirstRowTd>
-              </Tr>
-              {tableData.map((game) => renderGameRow(game, operations))}
-            </Tbody>
-          </Table>
-        </Box>
+        <Table variant='pk' sx={{ borderBottom: '1px solid rgba(171, 180, 208, 0.22)' }}>
+          <Thead>
+            <Tr>
+              <Th px='13px'>ID</Th>
+              <Th colSpan={4}>Creater</Th>
+              <Th>Value</Th>
+              <Th colSpan={2}>Joiner</Th>
+              <Th px='0'>Operation</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <FirstRowTd></FirstRowTd>
+              <FirstRowTd>Hash</FirstRowTd>
+              <FirstRowTd>Salt</FirstRowTd>
+              <FirstRowTd w='200px'>Account</FirstRowTd>
+              <FirstRowTd w='77px'>Choice</FirstRowTd>
+              <FirstRowTd>Dot</FirstRowTd>
+              <FirstRowTd w='77px'>Choice</FirstRowTd>
+              <FirstRowTd w='200px'>Account</FirstRowTd>
+              <FirstRowTd></FirstRowTd>
+            </Tr>
+            {tableData.map((game) => renderGameRow(game, operations))}
+          </Tbody>
+        </Table>
         <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
         <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
       </PageMain>

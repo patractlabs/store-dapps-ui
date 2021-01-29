@@ -4,5 +4,6 @@ export * from './ui-provider';
 export * from './account-select';
 export * from './api-ready';
 export * from './identity-icon';
+export * from './account';
 
 export * from '@chakra-ui/react';

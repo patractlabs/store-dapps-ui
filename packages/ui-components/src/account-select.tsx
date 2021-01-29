@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Center,
   Flex,
   Popover,
   PopoverContent,
@@ -20,6 +19,7 @@ export const AccountSelect: React.FC = () => {
   const { isApiReady } = useApi();
   const { accountList, currentAccount, setCurrentAccount } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const current = accountList?.filter(account => account.address === currentAccount)[0];
 
   const onSelect = (account: KeyringPair) => {
     onClose();
@@ -43,7 +43,7 @@ export const AccountSelect: React.FC = () => {
           sx={{
             justifyContent: 'space-between',
             alignItems: 'center',
-            width: '250px',
+            minW: '250px',
             h: '40px',
             border: '1px solid',
             borderRadius: '4px',
@@ -77,7 +77,7 @@ export const AccountSelect: React.FC = () => {
                 }}
               >
                 <IdentityIcon value={currentAccount} />
-                <Text sx={{ flexGrow: '1', ml: '8px' }}>{currentAccount.slice(0, 6)}</Text>
+                <Text sx={{ flexGrow: '1', mx: '8px' }}>{current?.meta.name as string}</Text>
                 <Text sx={{ color: 'gray.400' }}>{truncated(currentAccount)}</Text>
               </Flex>
               <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
@@ -86,7 +86,7 @@ export const AccountSelect: React.FC = () => {
         </Flex>
       </PopoverTrigger>
       {isApiReady && (
-        <PopoverContent sx={{ w: '250px', left: '36px', top: '-6px', zIndex: 'dropdown' }}>
+        <PopoverContent sx={{ minW: '250px', left: '0', top: '-6px', zIndex: 'dropdown' }}>
           <ul>
             {accountList?.map((account) => (
               <Box
@@ -97,7 +97,7 @@ export const AccountSelect: React.FC = () => {
               >
                 <Flex sx={{ fontSize: '14px' }}>
                   <IdentityIcon value={account.address} />
-                  <Text sx={{ flexGrow: '1', ml: '8px' }}>{account.address.slice(0, 6)}</Text>
+                  <Text sx={{ flexGrow: '1', ml: '8px' }}>{account.meta.name as string}</Text>
                   <Text sx={{ color: 'gray.400' }}>{truncated(account.address)}</Text>
                 </Flex>
               </Box>
