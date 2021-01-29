@@ -17,14 +17,21 @@ export const canvas2Hex = (registry: any, obj: Canvas) => {
 };
 
 export const hex2Canvas = (registry: any, encode: string) => {
-  const hex = window.atob(encode);
+  console.log('encode', encode)
+  try {
+    const hex = window.atob(encode);
 
-  const inflate = pako.inflate(hexToU8a(hex));
+    const inflate = pako.inflate(hexToU8a(hex));
 
-  return registry
-    .createType('Vec<[u8; 160]>', u8aToHex(inflate))
-    .toArray()
-    .map((x: any) => {
-      return [...x];
-    });
+    return registry
+      .createType('Vec<[u8; 160]>', u8aToHex(inflate))
+      .toArray()
+      .map((x: any) => {
+        return [...x];
+      });
+  } catch (error) {
+    console.log(error);
+
+    return null;
+  }
 };

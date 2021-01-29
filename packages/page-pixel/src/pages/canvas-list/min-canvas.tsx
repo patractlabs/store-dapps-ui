@@ -4,6 +4,7 @@ import { paletteColors } from '../paint/palette';
 import { Canvas } from '../paint/paint';
 
 const MiniCanvas: React.FC<{ canvasObj: Canvas }> = ({ canvasObj }) => {
+  if (!canvasObj) return null;
   return (
     <Box sx={{ w: '100%' }}>
       <table>
