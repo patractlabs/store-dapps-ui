@@ -12,7 +12,9 @@ type AddressProps = {
 export const Address: React.FC<AddressProps> = ({ value, type, ...rest }) => {
   const { accountList } = useAccount();
 
-  let account = accountList?.filter((account) => account.address === value)[0];
+  if (!value) return null;
+
+  const account = accountList?.filter((account) => account.address === value)[0];
   const name = account ? account.meta.name : truncated(value);
 
   return (

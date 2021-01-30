@@ -1,16 +1,36 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { Box, Button, ButtonProps, Flex, Table, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react';
+import { useModal, useContractQuery } from '@patract/react-hooks';
+import {
+  Address,
+  Amount,
+  Box,
+  Button,
+  ButtonProps,
+  Flex,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Center,
+  CircularProgress
+} from '@patract/ui-components';
 import React from 'react';
 import Add from './add';
 import CreatePair from './create-pair';
 import Withdraw from './withdraw';
+import { usePairList } from '../../hooks/usePairList';
+import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
 
 const TdLink = ({ sx, ...rest }: ButtonProps) => <Button size='sm' mr='4' {...rest} />;
 
 export const PoolList = () => {
-  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useDisclosure();
-  const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useDisclosure();
-  const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useDisclosure();
+  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
+  const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
+  const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
+  const { data, loading } = usePairList();
+  const lpBalance = useLPtokenBalance();
 
   return (
     <Box>
@@ -34,25 +54,46 @@ export const PoolList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>name from/name to</Td>
-              <Td>GAneP4k…fJEfs</Td>
-              <Td>E5PpL…j3grz</Td>
-              <Td>10000 USDT</Td>
-              <Td>1000 pDOT</Td>
-              <Td>70000000</Td>
-              <Td>20000000</Td>
-              <Td>
-                <TdLink sx={{ color: '#285AF8' }} onClick={onAddOpen}>
-                  Add
-                </TdLink>
-                <TdLink sx={{ color: '#25A17C' }} onClick={onWithdrawOpen}>
-                  Withdraw
-                </TdLink>
-              </Td>
-            </Tr>
+            {data.map((item, index) => (
+              <Tr key={index}>
+                <Td>
+                  {item.from_name}/{item.to_name}
+                </Td>
+                <Td>
+                  <Address value={item.from} />
+                </Td>
+                <Td>
+                  <Address value={item.to} />
+                </Td>
+                <Td>
+                  <Amount value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_name} />
+                </Td>
+                <Td>
+                  <Amount value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_name} />
+                </Td>
+                <Td>
+                  <Amount value={item.lp_token_supply} decimals={18} postfix='LPT' />
+                </Td>
+                <Td>
+                  <Amount value={lpBalance} decimals={18} postfix='LPT' />
+                </Td>
+                <Td>
+                  <TdLink sx={{ color: '#285AF8' }} onClick={onAddOpen}>
+                    Add
+                  </TdLink>
+                  <TdLink sx={{ color: '#25A17C' }} onClick={onWithdrawOpen}>
+                    Withdraw
+                  </TdLink>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
+        {(!data.length && loading) && (
+          <Center p={16}>
+            <CircularProgress isIndeterminate color='blue.300' />
+          </Center>
+        )}
       </Box>
       <Add isOpen={isAddOpen} onClose={onAddClose} />
       <Withdraw isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
