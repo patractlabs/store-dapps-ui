@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
   Modal,
@@ -124,7 +124,7 @@ const CreateGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
   useEffect(() => {
     updateHash({});
-  }, [selectedChoice]);
+  }, [updateHash, selectedChoice]);
 
   return (
     <>
@@ -134,7 +134,7 @@ const CreateGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
           <ModalHeader
             sx={{
               color: '#0058FA',
-              fontSize: '16px',
+              fontSize: 'md',
               fontWeight: '500',
               lineHeight: '24px',
               py: '13px',
@@ -213,9 +213,9 @@ const CreateGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                   bgColor: 'red.50',
                   borderRadius: '4px',
                   p: '5px 15px',
-                  fontSize: '12px',
+                  fontSize: 'xs',
                   textAlign: 'center',
-                  mt: '8px'
+                  mt: '2'
                 }}
               >
                 This will generate a random number as salt to encrypt your on-chain choice. The joiner won't see your
@@ -226,11 +226,11 @@ const CreateGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
               sx={{
                 bgColor: '#FFFFFF',
                 p: '14px 12px',
-                mb: '10px',
+                mb: '2.5',
                 borderRadius: '0 0 8px 8px',
                 w: '100%',
                 color: 'green.500',
-                fontSize: '12px',
+                fontSize: 'xs',
                 lineHeight: '17px'
               }}
             >
@@ -250,10 +250,10 @@ const CreateGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
               </Center>
             </Box>
 
-            <Text sx={{ color: 'gray.400', fontSize: '12px' }}>Balance: 10</Text>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: 10</Text>
             <HStack maxW='320px' alignItems='center'>
               <InputGroup size='sm' sx={{ bgColor: 'white', w: '347px' }}>
-                <Input {...input} sx={{ fontSize: '18px', h: '40px', borderRight: '0',  w: '277px' }} />
+                <Input {...input} sx={{ fontSize: 'lg', h: '40px', borderRight: '0',  w: '277px' }} />
                 <InputRightAddon children={<Tag colorScheme='blue'>DOT</Tag>} sx={{ h: '40px', bg: 'transparent' }} />
               </InputGroup>
               <Button
@@ -289,8 +289,8 @@ const CreateGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 bgColor: 'red.50',
                 borderRadius: '4px',
                 p: '5px 15px',
-                fontSize: '14px',
-                mt: '8px'
+                fontSize: 'sm',
+                mt: '2'
               }}
             >
               <p>

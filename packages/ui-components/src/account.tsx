@@ -20,7 +20,7 @@ export const Account: React.FC<AccountProps> = ({ value, type, ...rest }) => {
         sx={{
           display: 'inline-flex',
           verticalAlign: 'top',
-          fontSize: '14px',
+          fontSize: 'sm',
           lineHeight: '25px',
         }}
       >

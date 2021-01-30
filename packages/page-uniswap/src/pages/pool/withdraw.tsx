@@ -73,7 +73,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               sx={{
                 w: 'calc(100% - 160px)',
                 h: '44px',
-                fontSize: '18px',
+                fontSize: 'lg',
                 borderRadius: '4px 0 0 4px',
                 borderRight: '0',
                 verticalAlign: 'top',
@@ -105,14 +105,14 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
                     my: '5px'
                   }}
                 >
-                  <Text sx={{ display: 'inline-block', fontSize: '18px', lineHeight: '24px', mr: '3px' }}>LP</Text>
-                  <Text sx={{ display: 'inline-block', fontSize: '12px', lineHeight: '24px', color: 'brand.grey' }}>
+                  <Text sx={{ display: 'inline-block', fontSize: 'lg', lineHeight: '24px', mr: '3px' }}>LP</Text>
+                  <Text sx={{ display: 'inline-block', fontSize: 'xs', lineHeight: '24px', color: 'brand.grey' }}>
                     (USDT-ETH)
                   </Text>
                 </Box>
               </Center>
             </Box>
-            <Slider value={percentage} sx={{ mt: '10px' }} onChange={onSliderChange} focusThumbOnChange={false}>
+            <Slider value={percentage} sx={{ mt: '2.5' }} onChange={onSliderChange} focusThumbOnChange={false}>
               <SliderTrack>
                 <SliderFilledTrack bg='#25A17C' />
               </SliderTrack>
@@ -127,7 +127,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               </SliderThumb>
             </Slider>
           </FormControl>
-          <FormControl sx={{ mb: '24px' }}>
+          <FormControl sx={{ mb: '6' }}>
             <InputSelect
               frontLabel='You will receive (estimated)'
               options={options}
@@ -152,7 +152,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
             />
           </FormControl>
           {/* <Center>
-            <Text sx={{ color: 'red.600', mt: '24px', fontSize: '14px' }}>
+            <Text sx={{ color: 'red.600', mt: '6', fontSize: 'sm' }}>
               <InfoOutlineIcon sx={{ mr: '9px' }} />
               Insufficient USDT balance！
             </Text>

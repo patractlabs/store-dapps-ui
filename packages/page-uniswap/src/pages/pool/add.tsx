@@ -83,20 +83,20 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               >
                 <Box>
                   <Center>
-                    <Text sx={{ fontSize: '14px', fontWeight: '500' }}>722.224</Text>
+                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>722.224</Text>
                   </Center>
                   <Center>
-                    <Text sx={{ color: 'brand.grey', fontSize: '12px' }}>
+                    <Text sx={{ color: 'brand.grey', fontSize: 'sx' }}>
                       {select_1.label} per {select_2.label}
                     </Text>
                   </Center>
                 </Box>
                 <Box>
                   <Center>
-                    <Text sx={{ fontSize: '14px', fontWeight: '500' }}>0.000885129</Text>
+                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>0.000885129</Text>
                   </Center>
                   <Center>
-                    <Text sx={{ color: 'brand.grey', fontSize: '12px' }}>
+                    <Text sx={{ color: 'brand.grey', fontSize: 'sx' }}>
                       {select_2.label} per {select_1.label}
                     </Text>
                   </Center>
@@ -118,25 +118,25 @@ const Add = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
               >
                 <Box>
                   <Center>
-                    <Text sx={{ fontSize: '14px', fontWeight: '500' }}>15</Text>
+                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>15</Text>
                   </Center>
                   <Center>
-                    <Text sx={{ color: 'brand.grey', fontSize: '12px' }}>You will receive</Text>
+                    <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>You will receive</Text>
                   </Center>
                 </Box>
                 <Box>
                   <Center>
-                    <Text sx={{ fontSize: '14px', fontWeight: '500' }}>150</Text>
+                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>150</Text>
                   </Center>
                   <Center>
-                    <Text sx={{ color: 'brand.grey', fontSize: '12px' }}>Total supply</Text>
+                    <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>Total supply</Text>
                   </Center>
                 </Box>
               </Flex>
             </FormControl>
           </Flex>
           {/* <Center>
-            <Text sx={{ color: 'red.600', mt: '24px', fontSize: '14px' }}>
+            <Text sx={{ color: 'red.600', mt: '6', fontSize: 'sm' }}>
               <InfoOutlineIcon sx={{ mr: '9px' }} />
               Insufficient USDT balance！
             </Text>

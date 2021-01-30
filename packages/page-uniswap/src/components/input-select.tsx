@@ -55,8 +55,8 @@ const ValueContainer = ({ selectOption }: { selectOption: MenuOption }) => (
       sx={{
         display: 'inline-block',
         verticalAlign: 'top',
-        fontSize: '18px',
-        lineHeight: '25px',
+        fontSize: 'lg',
+        lineHeight: 'short',
         background: '#E1E9FF',
         borderRadius: '4px',
         minWidth: '74px',
@@ -75,7 +75,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
   return (
     <React.Fragment>
       <Box sx={{ p: '16px 18px' }}>
-        <Heading as='h4' sx={{ fontSize: '16px', fontWeight: '500', lineHeight: '22px', mb: '8px' }}>
+        <Heading as='h4' sx={{ fontSize: 'md', fontWeight: 'medium', lineHeight: 'short', mb: '2' }}>
           Select a token
         </Heading>
         <Input
@@ -92,11 +92,11 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
         />
       </Box>
       <Divider />
-      <Box sx={{ py: '16px' }}>
+      <Box sx={{ py: '4' }}>
         <Heading
           as='h4'
           color='black'
-          sx={{ fontSize: '16px', fontWeight: '500', lineHeight: '22px', mb: '8px', ml: '18px' }}
+          sx={{ fontSize: 'md', fontWeight: 'medium', lineHeight: 'short', mb: '2', ml: '18px' }}
         >
           Token name
         </Heading>
@@ -129,7 +129,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
                     sx={{
                       display: 'inline-block',
                       w: '50px',
-                      fontSize: '18px'
+                      fontSize: 'lg'
                     }}
                   >
                     {option.label}
@@ -139,7 +139,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
                       display: 'inline-block',
                       color: 'brand.grey',
                       w: '74px',
-                      fontSize: '12px',
+                      fontSize: 'lg',
                       lineHeight: '17px'
                     }}
                   >
@@ -150,7 +150,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
                       display: 'inline-block',
                       color: 'brand.grey',
                       w: '101px',
-                      fontSize: '12px',
+                      fontSize: 'xs',
                       lineHeight: '17px'
                     }}
                   >
@@ -160,7 +160,7 @@ const Menu = ({ options, onSelect }: { options: Array<MenuOption>; onSelect: (me
                     sx={{
                       display: 'inline-block',
                       w: '138px',
-                      fontSize: '16px',
+                      fontSize: 'md',
                       lineHeight: '22px',
                       textAlign: 'right'
                     }}
