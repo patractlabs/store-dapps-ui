@@ -43,6 +43,16 @@ export const theme = extendTheme({
         justifyContent: 'space-between'
       }
     },
+    Popover: {
+      variants: {
+        responsive: {
+          popper: {
+            maxWidth: 'unset',
+            width: 'unset'
+          }
+        }
+      }
+    },
     Table: {
       variants: {
         simple: {
@@ -265,7 +275,7 @@ export const theme = extendTheme({
         outline: 'none',
         boxShadow: 'none'
       },
-      'select::-ms-expand': { display: 'none' },
+      'select::-ms-expand': { display: 'none' }
     }
   }
 });

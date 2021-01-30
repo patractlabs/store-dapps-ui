@@ -1,15 +1,6 @@
 import React, { useEffect } from 'react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Flex,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Text,
-  Spinner,
-  useDisclosure
-} from '@chakra-ui/react';
+import { Box, Flex, Popover, PopoverContent, PopoverTrigger, Text, Spinner, useDisclosure } from '@chakra-ui/react';
 import { useAccount, useApi } from '@patract/react-hooks';
 import { truncated } from '@patract/utils';
 import type { KeyringPair } from '@polkadot/keyring/types';
@@ -19,7 +10,7 @@ export const AccountSelect: React.FC = () => {
   const { isApiReady } = useApi();
   const { accountList, currentAccount, setCurrentAccount } = useAccount();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const current = accountList?.filter(account => account.address === currentAccount)[0];
+  const current = accountList?.filter((account) => account.address === currentAccount)[0];
 
   const onSelect = (account: KeyringPair) => {
     onClose();
@@ -29,21 +20,22 @@ export const AccountSelect: React.FC = () => {
 
   useEffect(() => {
     const storedAccount = localStorage.getItem('current-account');
-    if (storedAccount && accountList?.some(account => account.address === storedAccount)) {
+    if (storedAccount && accountList?.some((account) => account.address === storedAccount)) {
       setCurrentAccount(storedAccount);
-    } else if (accountList && accountList.length > 0){
+    } else if (accountList && accountList.length > 0) {
       setCurrentAccount(accountList[0].address);
     }
   }, [accountList]);
 
   return (
-    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
+    <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose} variant='responsive'>
       <PopoverTrigger>
         <Flex
           sx={{
+            textTransform: 'uppercase',
             justifyContent: 'space-between',
             alignItems: 'center',
-            minW: '250px',
+            minW: 'sm',
             h: '40px',
             border: '1px solid',
             borderRadius: '4px',
@@ -86,7 +78,10 @@ export const AccountSelect: React.FC = () => {
         </Flex>
       </PopoverTrigger>
       {isApiReady && (
-        <PopoverContent sx={{ minW: '250px', left: '0', top: '-6px', zIndex: 'dropdown' }}>
+        <PopoverContent
+          maxW='sm'
+          sx={{ textTransform: 'uppercase', minW: 'sm', left: '0', top: '-6px', zIndex: 'dropdown' }}
+        >
           <ul>
             {accountList?.map((account) => (
               <Box

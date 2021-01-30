@@ -1,11 +1,27 @@
-import React, { ComponentProps } from 'react';
-import { Flex, Button, Box, Table, Thead, Tbody, Tr, Th, Td, Text, Icon, useDisclosure } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { PageLayout, PageHeader, PageMain, Account } from '@patract/ui-components';
-import tableData from './data';
-import { FaChessBoard } from 'react-icons/fa';
+import { useModal } from '@patract/react-hooks';
+import {
+  Address,
+  Box,
+  Button,
+  Flex,
+  Icon,
+  PageHeader,
+  PageLayout,
+  PageMain,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr
+} from '@patract/ui-components';
+import React, { ComponentProps } from 'react';
 import { BsFillEyeFill } from 'react-icons/bs';
+import { FaChessBoard, FaRegHandPaper, FaRegHandPeace, FaRegHandRock } from 'react-icons/fa';
 import CreateGame from './create-game';
+import tableData from './data';
 import JoinGame from './join-game';
 import { PaperImage, ScissorsImage, RockImage } from '../../images/';
 
@@ -183,7 +199,7 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
         <Text>{!creater.revealed && '(Unrevealed)'}</Text>
       </Td>
       <Td sx={{ px: '3', textAlign: 'left' }}>
-        <Account value={creater.account} />
+        <Address value={creater.account} />
       </Td>
       <Td sx={{ position: 'relative' }}>
         {renderTag(winner, 'creater')}
@@ -214,15 +230,15 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
           {winner && winner !== 'even' && (winner === 'joiner' ? `(+${joinerValue})` : `(-${joinerValue})`)}
         </Box>
       </Td>
-      <Td sx={{ px: '3', textAlign: 'left' }}>{joinerAccount && <Account value={joinerAccount} />}</Td>
+      <Td sx={{ px: '3', textAlign: 'left' }}>{joinerAccount && <Address value={joinerAccount} />}</Td>
       <Td>{renderOperations(operations, status, expireTime)}</Td>
     </Tr>
   );
 };
 
 const PK: React.FC = () => {
-  const { isOpen: isCreateGameOpen, onOpen: onCreateGameOpen, onClose: onCreateGameClose } = useDisclosure();
-  const { isOpen: isJoinGameOpen, onOpen: onJoinGameOpen, onClose: onJoinGameClose } = useDisclosure();
+  const { isOpen: isCreateGameOpen, onOpen: onCreateGameOpen, onClose: onCreateGameClose } = useModal();
+  const { isOpen: isJoinGameOpen, onOpen: onJoinGameOpen, onClose: onJoinGameClose } = useModal();
 
   const operations = {
     onJoinGameOpen
