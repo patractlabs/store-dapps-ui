@@ -122,6 +122,7 @@ const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater'
 
 const renderChoice = (choice: GameChoice, role: 'creater' | 'joiner') => {
   const imageStyle = {
+    display: 'inline-block',
     w: '6',
     h: '6',
     color: 'orange.800',
@@ -186,6 +187,11 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
       </Td>
       <Td sx={{ position: 'relative' }}>
         {renderTag(winner, 'creater')}
+        {creater.choice && (
+          <Box sx={{ display: 'inline-block', verticalAlign: 'top', m: '2px 8px 0 0', minW: '24px' }}>
+            {winner && winner !== 'even' && (winner === 'creater' ? `(+${creater.value})` : `(-${creater.value})`)}
+          </Box>
+        )}
         {renderChoice(creater.choice, 'creater')}
       </Td>
       <Td>
@@ -204,6 +210,9 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
       <Td sx={{ position: 'relative' }}>
         {renderTag(winner, 'joiner')}
         {renderChoice(joinerChoice, 'joiner')}
+        <Box sx={{ display: 'inline-block', verticalAlign: 'top', m: '2px 0 0 8px', minW: '24px' }}>
+          {winner && winner !== 'even' && (winner === 'joiner' ? `(+${joinerValue})` : `(-${joinerValue})`)}
+        </Box>
       </Td>
       <Td sx={{ px: '3', textAlign: 'left' }}>{joinerAccount && <Account value={joinerAccount} />}</Td>
       <Td>{renderOperations(operations, status, expireTime)}</Td>
