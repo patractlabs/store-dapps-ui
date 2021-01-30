@@ -28,10 +28,10 @@ const JoinGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
         <ModalHeader
           sx={{
             color: '#0058FA',
-            fontSize: '16px',
-            fontWeight: '500',
-            lineHeight: '24px',
-            py: '13px',
+            fontSize: 'md',
+            fontWeight: 'medium',
+            lineHeight: 'base',
+            py: '3',
             boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)'
           }}
         >
@@ -93,9 +93,9 @@ const JoinGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
             </Box>
           </HStack>
 
-          <Text sx={{ color: 'gray.400', fontSize: '12px' }}>Balance: 10</Text>
+          <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: 10</Text>
           <InputGroup size='sm' sx={{ bgColor: 'white', mt: '4px' }}>
-            <Input sx={{ fontSize: '18px', h: '40px', borderRight: '0', w: '350px' }} />
+            <Input sx={{ fontSize: 'lg', h: '40px', borderRight: '0', w: '350px' }} />
             <InputRightAddon children={<Tag colorScheme='blue'>DOT</Tag>} sx={{ h: '40px', bg: 'transparent' }} />
           </InputGroup>
 
@@ -107,7 +107,7 @@ const JoinGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               bgColor: 'red.50',
               borderRadius: '4px',
               p: '5px 15px',
-              fontSize: '14px',
+              fontSize: 'sm',
               mt: '8px'
             }}
           >

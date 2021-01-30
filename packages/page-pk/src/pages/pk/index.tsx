@@ -23,8 +23,9 @@ import { FaChessBoard, FaRegHandPaper, FaRegHandPeace, FaRegHandRock } from 'rea
 import CreateGame from './create-game';
 import tableData from './data';
 import JoinGame from './join-game';
+import { PaperImage, ScissorsImage, RockImage } from '../../images/';
 
-export type GameChoice = 'scissors' | 'rock' | 'paper' | null | undefined;
+export type GameChoice = 'Scissors' | 'Rock' | 'Paper' | null | undefined;
 export type GameStatus = 'wait_for_join' | 'wait_for_reveal' | 'closed' | 'punished' | 'expired' | 'waiting';
 export type GameInfo = {
   id: string;
@@ -61,7 +62,7 @@ const FirstRowTd: React.FC<ComponentProps<typeof Td>> = ({ children, ...rest }) 
 );
 
 const TdButton: React.FC<ComponentProps<typeof Button>> = ({ children, ...rest }) => (
-  <Button variant='link' sx={{ fontSize: '12px', fontWeight: '300' }} {...rest}>
+  <Button variant='link' sx={{ fontSize: 'xs', fontWeight: '300' }} {...rest}>
     {children}
   </Button>
 );
@@ -136,21 +137,19 @@ const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater'
 };
 
 const renderChoice = (choice: GameChoice, role: 'creater' | 'joiner') => {
-  const iconStyle = {
+  const imageStyle = {
     w: '6',
     h: '6',
     color: 'orange.800',
     ...(role === 'creater'
-      ? {
-          transform: 'rotate(90deg)'
-        }
+      ? {}
       : {
-          transform: 'scaleY(-1) rotate(-90deg)'
+          transform: 'scaleY(-1) rotate(180deg)'
         })
   };
-  if (choice === 'rock') return <Icon as={FaRegHandRock} sx={iconStyle} />;
-  if (choice === 'paper') return <Icon as={FaRegHandPaper} sx={iconStyle} />;
-  if (choice === 'scissors') return <Icon as={FaRegHandPeace} sx={iconStyle} />;
+  if (choice === 'Rock') return <RockImage sx={imageStyle} />;
+  if (choice === 'Paper') return <PaperImage sx={imageStyle} />;
+  if (choice === 'Scissors') return <ScissorsImage sx={imageStyle} />;
   if (!choice && role === 'creater') {
     return (
       <Flex sx={{ alignItems: 'center', mx: '10px' }}>
@@ -193,8 +192,8 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
   return (
     <Tr key={id}>
       <Td>{id}</Td>
-      <Td sx={{ color: '#000000', fontWeight: '600' }}>{creater.hash}</Td>
-      <Td sx={{ color: creater.revealed ? '#000000' : 'auto', fontWeight: creater.revealed ? '600' : 'auto' }}>
+      <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{creater.hash}</Td>
+      <Td sx={{ color: creater.revealed ? '#000000' : 'auto', fontWeight: creater.revealed ? 'semibold' : 'auto' }}>
         {creater.salt ? creater.salt : '~'}
         <Text>{!creater.revealed && '(Unrevealed)'}</Text>
       </Td>
@@ -206,15 +205,15 @@ const renderGameRow = (gameInfo: GameInfo, operations: any) => {
         {renderChoice(creater.choice, 'creater')}
       </Td>
       <Td>
-        <Text as='span' sx={{ fontSize: '16px', fontWeight: '500', color: 'brand.primary' }}>
+        <Text as='span' sx={{ fontSize: 'md', fontWeight: 'medium', color: 'brand.primary' }}>
           {creater.value}
         </Text>
         {joinerValue && (
-          <Text as='span' sx={{ display: 'inline-block', mx: '3px', fontWeight: '500' }}>
+          <Text as='span' sx={{ display: 'inline-block', mx: '2', fontWeight: 'medium' }}>
             VS
           </Text>
         )}
-        <Text as='span' sx={{ fontSize: '16px', fontWeight: '500', color: 'brand.primary' }}>
+        <Text as='span' sx={{ fontSize: 'md', fontWeight: 'medium', color: 'brand.primary' }}>
           {joinerValue}
         </Text>
       </Td>
@@ -237,55 +236,59 @@ const PK: React.FC = () => {
   };
 
   return (
-    <PageLayout>
-      <PageHeader title='Patra PK' />
-      <PageMain>
-        <Flex flexDirection='row-reverse'>
-          <Button
-            sx={{
-              textAlign: 'right',
-              fontSize: '14px',
-              fontWeight: '500',
-              lineHeight: '20px',
-              color: 'brand.primary',
-              my: '14px'
-            }}
-            onClick={onCreateGameOpen}
-          >
-            <AddIcon sx={{ mr: '10px' }} />
-            Create Game
-          </Button>
-        </Flex>
-        <Table variant='pk' sx={{ borderBottom: '1px solid rgba(171, 180, 208, 0.22)' }}>
-          <Thead>
-            <Tr>
-              <Th px='13px'>ID</Th>
-              <Th colSpan={4}>Creater</Th>
-              <Th>Value</Th>
-              <Th colSpan={2}>Joiner</Th>
-              <Th px='0'>Operation</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <FirstRowTd></FirstRowTd>
-              <FirstRowTd>Hash</FirstRowTd>
-              <FirstRowTd>Salt</FirstRowTd>
-              <FirstRowTd w='200px'>Account</FirstRowTd>
-              <FirstRowTd w='77px'>Choice</FirstRowTd>
-              <FirstRowTd>Dot</FirstRowTd>
-              <FirstRowTd w='77px'>Choice</FirstRowTd>
-              <FirstRowTd w='200px'>Account</FirstRowTd>
-              <FirstRowTd></FirstRowTd>
-            </Tr>
-            {tableData.map((game) => renderGameRow(game, operations))}
-          </Tbody>
-        </Table>
-        <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
-        <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
-      </PageMain>
-    </PageLayout>
+    <>
+      <Flex flexDirection='row-reverse'>
+        <Button
+          sx={{
+            textAlign: 'right',
+            fontSize: 'sm',
+            fontWeight: '500',
+            lineHeight: '20px',
+            color: 'brand.primary',
+            my: '14px'
+          }}
+          onClick={onCreateGameOpen}
+        >
+          <AddIcon sx={{ mr: '10px' }} />
+          Create Game
+        </Button>
+      </Flex>
+      <Table variant='pk' sx={{ borderBottom: '1px solid rgba(171, 180, 208, 0.22)' }}>
+        <Thead>
+          <Tr>
+            <Th px='13px'>ID</Th>
+            <Th colSpan={4}>Creater</Th>
+            <Th>Value</Th>
+            <Th colSpan={2}>Joiner</Th>
+            <Th px='0'>Operation</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <FirstRowTd></FirstRowTd>
+            <FirstRowTd>Hash</FirstRowTd>
+            <FirstRowTd>Salt</FirstRowTd>
+            <FirstRowTd w='200px'>Account</FirstRowTd>
+            <FirstRowTd w='77px'>Choice</FirstRowTd>
+            <FirstRowTd>Dot</FirstRowTd>
+            <FirstRowTd w='77px'>Choice</FirstRowTd>
+            <FirstRowTd w='200px'>Account</FirstRowTd>
+            <FirstRowTd></FirstRowTd>
+          </Tr>
+          {tableData.map((game) => renderGameRow(game, operations))}
+        </Tbody>
+      </Table>
+      <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
+      <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
+    </>
   );
 };
 
-export default PK;
+export default () => (
+  <PageLayout>
+    <PageHeader title='Patra PK' />
+    <PageMain>
+      <PK />
+    </PageMain>
+  </PageLayout>
+);

@@ -9,7 +9,7 @@ const NavLink = ({ url, text, isActive }: { url: string; text: string; isActive:
     to={url}
     sx={{
       position: 'relative',
-      fontSize: '16px',
+      fontSize: 'md',
       fontWeight: '400',
       lineHeight: '60px',
       px: '25px',
