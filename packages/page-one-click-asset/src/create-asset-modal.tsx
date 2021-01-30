@@ -27,11 +27,6 @@ export type CreateAssetModalProps = {
   onClose(): void;
 };
 
-enum ModalView {
-  create = 'create',
-  confirm = 'confirm'
-}
-
 export type FieldValues = {
   tokenType: TokenType;
   tokenName: string;

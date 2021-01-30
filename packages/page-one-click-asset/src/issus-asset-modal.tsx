@@ -1,4 +1,4 @@
-import { useToast } from '@patract/react-hooks';
+import { useContractTx } from '@patract/react-hooks';
 import {
   Button,
   FormControl,
@@ -13,14 +13,9 @@ import {
   SimpleGrid,
   Stack
 } from '@patract/ui-components';
-import { SignMessageFields, TxButton } from '@patract/react-components';
-import { useContractTx } from '@patract/react-hooks';
-import { Abi } from '@polkadot/api-contract';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useMintableContract } from './hooks';
-import { getTokenAbi } from './token-types';
-import { checkContractParams } from '@patract/utils';
 
 export type IssueAssetModalProps = {
   isOpen: boolean;
@@ -28,11 +23,6 @@ export type IssueAssetModalProps = {
   updateView(): void;
   contractAddress: string;
 };
-
-enum ModalView {
-  create = 'create',
-  confirm = 'confirm'
-}
 
 export type FieldValues = {
   issueAmount: string;
@@ -48,7 +38,7 @@ export const IssueAssetModal: React.FC<IssueAssetModalProps> = ({ contractAddres
 
   const submit = handleSubmit(async (data) => {
     await excute([data.issueAmount]);
-    handleClose()
+    handleClose();
   });
 
   const resetView = () => {

@@ -1,7 +1,7 @@
 import { useApi } from '@patract/react-hooks';
 import { ContractPromise } from '@polkadot/api-contract';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { getTokenAbi } from '../token-types';
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
 type AssetListItem = {
   id: string;
@@ -28,8 +28,8 @@ export const useAssetList = (
   const [loading, setLoading] = useState(false);
 
   const query = useCallback(async () => {
-    if (!isApiReady || !contractList) return;
-
+    if (!isApiReady || !contractList) return count;
+    
     return Promise.all(
       contractList.map(({ id, signer, address, codeHash }) => {
         const contract = new ContractPromise(api, getTokenAbi(codeHash), address);

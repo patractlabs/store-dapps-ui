@@ -1,6 +1,7 @@
 import Pagination from '@material-ui/lab/Pagination';
-import { useAccount, useModal } from '@patract/react-hooks';
+import { useAccount } from '@patract/react-hooks';
 import {
+  Address,
   Box,
   Center,
   CircularProgress,
@@ -11,10 +12,8 @@ import {
   Text,
   Th,
   Thead,
-  Tr,
-  Address
+  Tr
 } from '@patract/ui-components';
-import { truncated } from '@patract/utils';
 import React, { useMemo, useState } from 'react';
 import Erc20fixed from './contracts/erc20fixed.json';
 import Erc20mintable from './contracts/erc20mintable.json';

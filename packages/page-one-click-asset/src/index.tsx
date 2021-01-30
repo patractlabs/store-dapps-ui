@@ -1,10 +1,8 @@
-import React from 'react';
-
-import { Api, Queue, GraphqlProvider, AccountProvider } from '@patract/react-components';
+import { AccountProvider, Api, GraphqlProvider, Queue } from '@patract/react-components';
 import { UIProvider } from '@patract/ui-components';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './app';
 
 ReactDOM.render(
