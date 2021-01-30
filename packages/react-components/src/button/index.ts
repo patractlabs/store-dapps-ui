@@ -1,1 +1,1 @@
-export * from './TxButton';
+export * from './tx-button';

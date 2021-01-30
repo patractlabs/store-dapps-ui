@@ -10,9 +10,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid
+  SimpleGrid,
+  Stack
 } from '@patract/ui-components';
-import { SignMessageModal, SignMessageFields } from '@patract/react-components';
+import { SignMessageFields, TxButton } from '@patract/react-components';
+import { useContractTx } from '@patract/react-hooks';
 import { Abi } from '@polkadot/api-contract';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -37,40 +39,20 @@ export type FieldValues = {
 };
 
 export const IssueAssetModal: React.FC<IssueAssetModalProps> = ({ contractAddress, isOpen, onClose, updateView }) => {
-  const { control, errors, handleSubmit, reset } = useForm<FieldValues>({
+  const { control, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: { issueAmount: '' }
   });
 
-  const { contract, abiJSON } = useMintableContract(contractAddress);
-  const [modalView, setModalView] = useState<ModalView>(ModalView.create);
-  const [confirmValues, setConfirmValues] = useState<SignMessageFields | null>(null);
-  const toast = useToast();
+  const { contract } = useMintableContract(contractAddress);
+  const { excute, isLoading } = useContractTx({ title: 'Issue Asset', contract, method: 'issue' });
 
-  const deploy = handleSubmit((data) => {
-    try {
-      checkContractParams(abiJSON, 'issue', [data.issueAmount]);
-      setConfirmValues([
-        {
-          label: 'Issue Amount',
-          content: data.issueAmount
-        }
-      ]);
-      setModalView(ModalView.confirm);
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: 'Issue Asset',
-        description: error?.message,
-        status: 'error'
-      });
-      setConfirmValues(null);
-    }
+  const submit = handleSubmit(async (data) => {
+    await excute([data.issueAmount]);
+    handleClose()
   });
 
   const resetView = () => {
-    setModalView(ModalView.create);
     reset();
-    setConfirmValues(null);
   };
 
   const handleClose = () => {
@@ -79,7 +61,7 @@ export const IssueAssetModal: React.FC<IssueAssetModalProps> = ({ contractAddres
     onClose();
   };
 
-  return modalView === ModalView.create ? (
+  return (
     <Modal motionPreset='none' variant='common' isOpen={isOpen} autoFocus={false} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
@@ -97,24 +79,15 @@ export const IssueAssetModal: React.FC<IssueAssetModalProps> = ({ contractAddres
               />
             </FormControl>
             <FormControl>
-              <Button width='full' size='lg' colorScheme='blue' onClick={deploy}>
-                Issue
-              </Button>
+              <Stack direction='row' spacing={4} justifyContent='flex-end'>
+                <Button colorScheme='blue' isLoading={isLoading} onClick={submit}>
+                  Issue
+                </Button>
+              </Stack>
             </FormControl>
           </SimpleGrid>
         </ModalBody>
       </ModalContent>
     </Modal>
-  ) : modalView === ModalView.confirm && confirmValues ? (
-    <SignMessageModal
-      fields={confirmValues}
-      isOpen={true}
-      method={'issue'}
-      title={'Confrim Issue'}
-      contract={contract}
-      onBack={resetView}
-      onSubmit={handleClose}
-      onCancel={handleClose}
-    />
-  ) : null;
+  );
 };
