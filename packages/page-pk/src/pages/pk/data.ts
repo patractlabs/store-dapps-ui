@@ -42,7 +42,7 @@ const tableData: Array<GameInfo> = [
       value: 1,
     },
     joiner: {
-      choice: 'scissors',
+      choice: 'Scissors',
       account: '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
       value: 1
     },
@@ -57,11 +57,11 @@ const tableData: Array<GameInfo> = [
       salt: '0x23f071a…3d536d74',
       revealed: true,
       account: '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
-      choice: 'scissors',
+      choice: 'Scissors',
       value: 1,
     },
     joiner: {
-      choice: 'scissors',
+      choice: 'Scissors',
       account: '5Cr56wqg25wVVMKsSQr16SrYiNb9u7Jn6wpNYC25ZmaUoxPG',
       value: 1
     },
@@ -75,11 +75,11 @@ const tableData: Array<GameInfo> = [
       salt: '0x23f071a…3d536d74',
       revealed: true,
       account: '5Cr56wqg25wVVMKsSQr16SrYiNb9u7Jn6wpNYC25ZmaUoxPG',
-      choice: 'rock',
+      choice: 'Rock',
       value: 1,
     },
     joiner: {
-      choice: 'scissors',
+      choice: 'Scissors',
       account: 'E5PpL…j3grz',
       value: 1
     },
@@ -97,7 +97,7 @@ const tableData: Array<GameInfo> = [
       value: 1,
     },
     joiner: {
-      choice: 'scissors',
+      choice: 'Scissors',
       account: 'E5PpL…j3grz',
       value: 1
     },
@@ -111,11 +111,11 @@ const tableData: Array<GameInfo> = [
       salt: '0x23f071a…3d536d74',
       revealed: false,
       account: 'E5PpL…j3grz',
-      choice: 'paper',
+      choice: 'Paper',
       value: 1,
     },
     joiner: {
-      choice: 'scissors',
+      choice: 'Scissors',
       account: 'E5PpL…j3grz',
       value: 1
     },
@@ -133,7 +133,7 @@ const tableData: Array<GameInfo> = [
       value: 1,
     },
     joiner: {
-      choice: 'scissors',
+      choice: 'Scissors',
       account: 'E5PpL…j3grz',
       value: 1
     },

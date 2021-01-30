@@ -7,8 +7,9 @@ import { FaRegHandRock, FaRegHandPaper, FaRegHandPeace, FaChessBoard } from 'rea
 import { BsFillEyeFill } from 'react-icons/bs';
 import CreateGame from './create-game';
 import JoinGame from './join-game';
+import { PaperImage, ScissorsImage, RockImage } from '../../images/';
 
-export type GameChoice = 'scissors' | 'rock' | 'paper' | null | undefined;
+export type GameChoice = 'Scissors' | 'Rock' | 'Paper' | null | undefined;
 export type GameStatus = 'wait_for_join' | 'wait_for_reveal' | 'closed' | 'punished' | 'expired' | 'waiting';
 export type GameInfo = {
   id: string;
@@ -120,21 +121,19 @@ const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater'
 };
 
 const renderChoice = (choice: GameChoice, role: 'creater' | 'joiner') => {
-  const iconStyle = {
+  const imageStyle = {
     w: '6',
     h: '6',
     color: 'orange.800',
     ...(role === 'creater'
-      ? {
-          transform: 'rotate(90deg)'
-        }
+      ? {}
       : {
-          transform: 'scaleY(-1) rotate(-90deg)'
+          transform: 'scaleY(-1) rotate(180deg)'
         })
   };
-  if (choice === 'rock') return <Icon as={FaRegHandRock} sx={iconStyle} />;
-  if (choice === 'paper') return <Icon as={FaRegHandPaper} sx={iconStyle} />;
-  if (choice === 'scissors') return <Icon as={FaRegHandPeace} sx={iconStyle} />;
+  if (choice === 'Rock') return <RockImage sx={imageStyle} />;
+  if (choice === 'Paper') return <PaperImage sx={imageStyle} />;
+  if (choice === 'Scissors') return <ScissorsImage sx={imageStyle} />;
   if (!choice && role === 'creater') {
     return (
       <Flex sx={{ alignItems: 'center', mx: '10px' }}>
