@@ -1,6 +1,19 @@
 import Pagination from '@material-ui/lab/Pagination';
 import { useAccount, useModal } from '@patract/react-hooks';
-import { Box, Center, CircularProgress, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from '@patract/ui-components';
+import {
+  Box,
+  Center,
+  CircularProgress,
+  Flex,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  Address
+} from '@patract/ui-components';
 import { truncated } from '@patract/utils';
 import React, { useMemo, useState } from 'react';
 import Erc20fixed from './contracts/erc20fixed.json';
@@ -56,8 +69,12 @@ export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
         <Tbody>
           {list?.map((item) => (
             <Tr key={item.id}>
-              <Td>{truncated(item.address)}</Td>
-              <Td>{truncated(item.signer)}</Td>
+              <Td>
+                <Address value={item.address} />
+              </Td>
+              <Td>
+                <Address value={item.signer} />
+              </Td>
               <Td>{item.tokenName}</Td>
               <Td>{item.tokenSymbol}</Td>
               <Td>{item.tokenDecimals}</Td>
@@ -76,7 +93,7 @@ export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
       {(!list || list.length === 0) && (
         <Center p={16}>{loading ? <CircularProgress isIndeterminate color='blue.300' /> : <Text>No Data</Text>}</Center>
       )}
-      {list && list.length !== 0 && (
+      {((list && list.length !== 0) || page !== 1) && (
         <Flex mt='4' justifyContent='flex-end'>
           <Pagination count={count} page={page} onChange={handlePage} shape='rounded' />
         </Flex>
