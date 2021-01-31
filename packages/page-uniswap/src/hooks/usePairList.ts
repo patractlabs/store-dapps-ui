@@ -50,7 +50,8 @@ export const usePairList = (signal = 0) => {
               from,
               to,
               from_decimals,
-              to_decimals
+              to_decimals,
+              exchange
             }));
           })
         );

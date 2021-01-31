@@ -107,7 +107,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
     } else {
       setBalance('');
     }
-  }, [currentAccount, signal, option, withBalance]);
+  }, [currentAccount, signal, option, withBalance, createToken]);
 
   return (
     <React.Fragment>

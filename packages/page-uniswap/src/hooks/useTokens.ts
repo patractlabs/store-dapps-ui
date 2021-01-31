@@ -43,7 +43,7 @@ export const useTokens = () => {
         return null;
       }
     },
-    [factory]
+    [currentAccount, factory]
   );
 
   return useMemo(() => {

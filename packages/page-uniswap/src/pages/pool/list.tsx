@@ -22,9 +22,21 @@ import Add from './add';
 import CreatePair from './create-pair';
 import Withdraw from './withdraw';
 
+const AddLiquidity: React.FC<any> = ({ item, onSubmit }) => {
+  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
+
+  return (
+    <Box>
+      <Button size='sm' mr='4' onClick={onAddOpen}>
+        Add
+      </Button>
+      <Add onSubmit={onSubmit} item={item} isOpen={isAddOpen} onClose={onAddClose} />
+    </Box>
+  );
+};
+
 export const PoolList = () => {
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
   const { data, loading } = usePairList(signal);
@@ -76,12 +88,12 @@ export const PoolList = () => {
                   <Amount value={lpBalance} decimals={18} postfix='LPT' />
                 </Td>
                 <Td>
-                  <Button size='sm' mr='4' onClick={onAddOpen}>
-                    Add
-                  </Button>
-                  <Button size='sm' mr='4' onClick={onWithdrawOpen}>
-                    Withdraw
-                  </Button>
+                  <Flex>
+                    <AddLiquidity item={item} onSubmit={forceUpdate} />
+                    <Button size='sm' mr='4' onClick={onWithdrawOpen}>
+                      Withdraw
+                    </Button>
+                  </Flex>
                 </Td>
               </Tr>
             ))}
@@ -93,7 +105,6 @@ export const PoolList = () => {
           </Center>
         )}
       </Box>
-      <Add isOpen={isAddOpen} onClose={onAddClose} />
       <Withdraw isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
       <CreatePair onSubmit={forceUpdate} isOpen={isCreatePairOpen} onClose={onCreatePairClose} />
     </Box>
