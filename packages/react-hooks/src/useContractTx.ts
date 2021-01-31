@@ -44,7 +44,7 @@ export const useContractTx = ({ title, contract, method }: ContractTxProps) => {
 
         const tx = contract.tx[method](
           {
-            gasLimit: estimatedGas?.toBn() || '400000000',
+            gasLimit: estimatedGas?.toBn() || '400000000000',
             value: value || 0
           },
           ...fields

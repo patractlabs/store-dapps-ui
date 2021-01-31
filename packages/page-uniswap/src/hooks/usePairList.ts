@@ -6,7 +6,7 @@ import { useTokenFactory } from './useTokenFactory';
 
 const empty: any[] = [];
 
-export const usePairList = () => {
+export const usePairList = (signal = 0) => {
   const { contract } = useFactoryContract();
   const { currentAccount } = useAccount();
   const createExchange = useExchangeFactory();
@@ -64,7 +64,7 @@ export const usePairList = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [readSwapPairs, readExchangeAddress, createExchange, currentAccount]);
+  }, [readSwapPairs, readExchangeAddress, createExchange, currentAccount, signal]);
 
   return {
     data,

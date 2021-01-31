@@ -15,7 +15,7 @@ import {
   Thead,
   Tr
 } from '@patract/ui-components';
-import React from 'react';
+import React, { useReducer } from 'react';
 import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
 import { usePairList } from '../../hooks/usePairList';
 import Add from './add';
@@ -23,10 +23,11 @@ import CreatePair from './create-pair';
 import Withdraw from './withdraw';
 
 export const PoolList = () => {
+  const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
-  const { data, loading } = usePairList();
+  const { data, loading } = usePairList(signal);
   const lpBalance = useLPtokenBalance();
 
   return (
@@ -94,7 +95,7 @@ export const PoolList = () => {
       </Box>
       <Add isOpen={isAddOpen} onClose={onAddClose} />
       <Withdraw isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
-      <CreatePair isOpen={isCreatePairOpen} onClose={onCreatePairClose} />
+      <CreatePair onSubmit={forceUpdate} isOpen={isCreatePairOpen} onClose={onCreatePairClose} />
     </Box>
   );
 };

@@ -1,5 +1,5 @@
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import { useModal } from '@patract/react-hooks';
+import { useAccount, useModal, contractQuery } from '@patract/react-hooks';
 import {
   Box,
   Center,
@@ -15,10 +15,11 @@ import {
   Text,
   InputNumber
 } from '@patract/ui-components';
-import { truncated } from '@patract/utils';
+import { truncated, formatAmount } from '@patract/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTokens } from '../hooks/useTokens';
+import { useTokenFactory } from '../hooks/useTokenFactory';
 
 export type MenuOption = {
   address: string;
@@ -31,6 +32,8 @@ export type InputSelectProps = {
   label: string;
   value: string;
   option: any;
+  withBalance?: string;
+  signal?: number;
   defaultOptionIndex: any;
   onChangeValue: (value: string) => void;
   onChangeOption: (value: any) => void;
@@ -42,13 +45,18 @@ const InputSelect: React.FC<InputSelectProps> = ({
   label,
   onChangeOption,
   onChangeValue,
-  defaultOptionIndex
+  defaultOptionIndex,
+  withBalance,
+  signal = 0
 }) => {
   const { isOpen, onOpen, onClose } = useModal();
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>(null);
 
   const { data, queryUnknownToken } = useTokens();
+  const { currentAccount } = useAccount();
+  const [balance, setBalance] = useState('');
+  const createToken = useTokenFactory();
 
   const onPopoverClose = useCallback(() => {
     onClose();
@@ -86,10 +94,30 @@ const InputSelect: React.FC<InputSelectProps> = ({
     }
   }, [data, inputValue]);
 
+  useEffect(() => {
+    if (option?.address && withBalance) {
+      const { contract } = createToken(option.address);
+      contractQuery(currentAccount, contract, withBalance, currentAccount)
+        .then((b) => {
+          setBalance(formatAmount(b as any, option.decimals));
+        })
+        .catch(() => {
+          setBalance('');
+        });
+    } else {
+      setBalance('');
+    }
+  }, [currentAccount, signal, option, withBalance]);
+
   return (
     <React.Fragment>
       <FormLabel textStyle='form-label'>
         <span>{label}</span>
+        {withBalance && balance ? (
+          <span>
+            Balance: {balance} {option?.symbol}
+          </span>
+        ) : null}
       </FormLabel>
       <InputNumber
         onChange={onChangeValue}

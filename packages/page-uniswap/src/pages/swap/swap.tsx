@@ -1,4 +1,4 @@
-import { useContractQuery, contractQuery, useAccount } from '@patract/react-hooks';
+import { useContractQuery, contractQuery, useAccount, useContractTx } from '@patract/react-hooks';
 import { formatAmount, parseAmount } from '@patract/utils';
 import {
   Box,
@@ -12,12 +12,13 @@ import {
   PageMain,
   Text
 } from '@patract/ui-components';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useReducer, useState } from 'react';
 import { FiRepeat } from 'react-icons/fi';
 import Header from '../../components/header';
 import InputSelect from '../../components/input-select';
 import { useFactoryContract } from '../../hooks/useFactoryContract';
 import { useExchangeFactory } from '../../hooks/useExchangeFactory';
+import { useTokenFactory } from '../../hooks/useTokenFactory';
 
 export const Swap = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -29,6 +30,26 @@ export const Swap = () => {
   const [estimatedInput, setEstimatedInput] = useState<string | null>(null);
   const [estimatedOutput, setEstimatedOutput] = useState<string | null>(null);
   const [isSwapPrice, setIsSwapPrice] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [method, setMethod] = useState('');
+  const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
+  const { excute } = useContractTx({ title: 'Swap', contract: exchangeContract?.contract?.contract, method });
+  const createToken = useTokenFactory();
+
+  const inputContract = useMemo(() => {
+    try {
+      if (!inputOption?.address) return null;
+      return createToken(inputOption?.address);
+    } catch {
+      return null;
+    }
+  }, [inputOption]);
+
+  const { excute: inputApprove } = useContractTx({
+    title: 'Approve',
+    contract: inputContract?.contract as any,
+    method: 'erc20,approve'
+  });
 
   const createExchange = useExchangeFactory();
   const { currentAccount } = useAccount();
@@ -80,51 +101,111 @@ export const Swap = () => {
 
   useEffect(() => {
     if (exchangeContract) {
-      if (estimatedInput === null && estimatedOutput === '' && inputValue) {
+      if (inputValue) {
         if (exchangeContract.from === inputOption.address) {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
             'getFromSwapToInputPrice',
             parseAmount(inputValue, inputOption.decimals)
-          ).then((result: any) => {
-            result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
-          });
+          )
+            .then((result: any) => {
+              result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
+              setMethod('swapFromToInput');
+            })
+            .catch(() => {
+              setMethod('');
+            });
+
+          return;
         } else {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
             'getToSwapFromInputPrice',
             parseAmount(inputValue, inputOption.decimals)
-          ).then((result: any) => {
-            result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
-          });
+          )
+            .then((result: any) => {
+              result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
+              setMethod('swapToFromInput');
+            })
+            .catch(() => {
+              setMethod('');
+            });
+          return;
         }
-      } else if (estimatedOutput === null && estimatedInput === '' && outputValue) {
+      } else if (outputValue) {
         if (exchangeContract.from === inputOption.address) {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
             'getFromSwapToOutputPrice',
             parseAmount(outputValue, outputOption.decimals)
-          ).then((result: any) => {
-            result && setEstimatedInput(formatAmount(result, inputOption.decimals));
-          });
+          )
+            .then((result: any) => {
+              result && setEstimatedInput(formatAmount(result, inputOption.decimals));
+              setMethod('swapFromToOutput');
+            })
+            .catch(() => {
+              setMethod('');
+            });
+          return;
         } else {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
             'getToSwapFromOutputPrice',
             parseAmount(outputValue, outputOption.decimals)
-          ).then((result: any) => {
-            result && setEstimatedInput(formatAmount(result, inputOption.decimals));
-          });
+          )
+            .then((result: any) => {
+              result && setEstimatedInput(formatAmount(result, inputOption.decimals));
+              setMethod('swapToFromOutput');
+            })
+            .catch(() => {
+              setMethod('');
+            });
+          return;
         }
       }
+      setMethod('');
+    } else {
+      setEstimatedInput(null);
+      setEstimatedOutput(null);
+      setMethod('');
     }
-  }, [exchangeContract, currentAccount, inputValue, outputValue]);
+  }, [exchangeContract, currentAccount, inputValue, outputValue, inputOption, outputOption]);
 
-  const submit = () => {};
+  const submit = () => {
+    if (method === 'swapFromToOutput' || method === 'swapToFromOutput') {
+      setIsLoading(true);
+      inputApprove([exchangeContract.address, parseAmount(estimatedInput as any, inputOption.decimals)])
+        .then(() => {
+          return excute([parseAmount(outputValue, outputOption.decimals)]);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setEstimatedInput(null);
+          setEstimatedOutput(null);
+          setInputValue('');
+          setOutputValue('');
+          forceUpdate();
+        });
+    } else {
+      setIsLoading(true);
+      inputApprove([exchangeContract.address, parseAmount(inputValue, inputOption.decimals)])
+        .then(() => {
+          return excute([parseAmount(inputValue, inputOption.decimals)]);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setEstimatedInput(null);
+          setEstimatedOutput(null);
+          setInputValue('');
+          setOutputValue('');
+          forceUpdate();
+        });
+    }
+  };
 
   useEffect(() => {
     if (inputOption && outputOption) {
@@ -135,6 +216,7 @@ export const Swap = () => {
             return setExchangeContract({
               from: inputOption.address,
               to: outputOption.address,
+              address: result,
               contract: createExchange(result)
             });
           } else {
@@ -143,6 +225,7 @@ export const Swap = () => {
                 setExchangeContract({
                   from: outputOption.address,
                   to: inputOption.address,
+                  address: result,
                   contract: createExchange(result)
                 });
               } else {
@@ -161,8 +244,6 @@ export const Swap = () => {
     }
   }, [readExchangeAddress, inputOption, outputOption]);
 
-  useEffect(() => {}, []);
-
   return (
     <Box>
       <Center mt='10'>
@@ -177,10 +258,14 @@ export const Swap = () => {
         >
           <FormControl sx={{ mb: '24px' }}>
             <InputSelect
-              defaultOptionIndex={1}
+              defaultOptionIndex={0}
               value={estimatedInput === null ? inputValue : estimatedInput}
               option={inputOption}
-              onChangeOption={setInputOption}
+              onChangeOption={(value) => {
+                setInputOption(value);
+              }}
+              withBalance='erc20,balanceOf'
+              signal={signal}
               onChangeValue={(value) => {
                 setInputValue(value);
                 setOutputValue('');
@@ -192,7 +277,7 @@ export const Swap = () => {
                   setEstimatedOutput(null);
                 }
               }}
-              label={`To${estimatedInput === null ? '' : ' (estimated)'}`}
+              label={`From${estimatedInput === null ? '' : ' (estimated)'}`}
             />
           </FormControl>
           <Icon
@@ -208,8 +293,8 @@ export const Swap = () => {
               transform: 'rotate(90deg)',
               borderRadius: '2px',
               mt: '-10px',
+              zIndex: 1,
               cursor: 'pointer',
-              zIndex: 'docked',
               mx: 'auto',
               left: 0,
               right: 0
@@ -217,10 +302,12 @@ export const Swap = () => {
           />
           <FormControl sx={{ mb: '16px' }}>
             <InputSelect
-              defaultOptionIndex={0}
+              defaultOptionIndex={1}
               value={estimatedOutput === null ? outputValue : estimatedOutput}
               option={outputOption}
               onChangeOption={setOutputOption}
+              withBalance='erc20,balanceOf'
+              signal={signal}
               onChangeValue={(value) => {
                 setInputValue('');
                 setOutputValue(value);
@@ -232,7 +319,7 @@ export const Swap = () => {
                   setEstimatedOutput(null);
                 }
               }}
-              label={`From${estimatedOutput === null ? '' : ' (estimated)'}`}
+              label={`To${estimatedOutput === null ? '' : ' (estimated)'}`}
             />
           </FormControl>
           <Box
@@ -275,7 +362,14 @@ export const Swap = () => {
             )}
           </Box>
           <FormControl>
-            <Button width='full' size='lg' colorScheme='blue' onClick={submit}>
+            <Button
+              isDisabled={!exchangeContract || !method}
+              isLoading={isLoading}
+              width='full'
+              size='lg'
+              colorScheme='blue'
+              onClick={submit}
+            >
               Swap
             </Button>
           </FormControl>
