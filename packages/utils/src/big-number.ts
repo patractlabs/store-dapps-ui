@@ -1,8 +1,8 @@
 import { parseFixed, formatFixed } from '@ethersproject/bignumber';
 import { isHex, hexToBn, isNumber } from '@polkadot/util';
 
-export const parseAmount = (value: string): string => {
-  const bn = parseFixed(value, 10);
+export const parseAmount = (value: string, decimals = 10): string => {
+  const bn = parseFixed(value, decimals);
   return bn.toString();
 };
 

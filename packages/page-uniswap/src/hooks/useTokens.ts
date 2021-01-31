@@ -5,15 +5,15 @@ import { useTokenFactory } from './useTokenFactory';
 
 const addresses = [
   {
-    address: '5GBDNk8TNJk5hJsq5GU52fKhovyu27bieUK3qTxLvH4TSMoo',
-    name: 'ETH',
-    symbol: 'ETH',
-    decimals: 10
-  },
-  {
     address: '5C9LcUtrcwKRrYizNu3cXQFkw9NFpcRKQhC3hTJfX3DLtVox',
     name: 'USDT',
     symbol: 'USDT',
+    decimals: 10
+  },
+  {
+    address: '5GBDNk8TNJk5hJsq5GU52fKhovyu27bieUK3qTxLvH4TSMoo',
+    name: 'ETH',
+    symbol: 'ETH',
     decimals: 10
   }
 ];
