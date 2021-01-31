@@ -65,7 +65,7 @@ export const usePairList = (signal = 0) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [readSwapPairs, readExchangeAddress, createExchange, currentAccount, signal]);
+  }, [readSwapPairs, readExchangeAddress, createExchange, currentAccount, signal, createToken]);
 
   return {
     data,

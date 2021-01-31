@@ -43,7 +43,7 @@ export const Swap = () => {
     } catch {
       return null;
     }
-  }, [inputOption]);
+  }, [inputOption, createToken]);
 
   const { excute: inputApprove } = useContractTx({
     title: 'Approve',
@@ -242,7 +242,7 @@ export const Swap = () => {
           setExchangeContractLoading(false);
         });
     }
-  }, [readExchangeAddress, inputOption, outputOption]);
+  }, [readExchangeAddress, inputOption, outputOption, createExchange]);
 
   return (
     <Box>

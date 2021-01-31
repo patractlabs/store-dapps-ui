@@ -121,7 +121,7 @@ const Add = ({
           setLpValue('');
         });
     }
-  }, [isOpen, fromValue, toValue, readEstimatedAddLiquidity, item.from_decimals, item.to_decimals]);
+  }, [isOpen, fromValue, toValue, readEstimatedAddLiquidity, item.from_decimals, item.to_decimals, readTotalSupply]);
 
   useEffect(() => {
     if (isOpen && readTo) {
