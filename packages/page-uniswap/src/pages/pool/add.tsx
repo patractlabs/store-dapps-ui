@@ -23,7 +23,6 @@ import {
 import { formatAmount, parseAmount } from '@patract/utils';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useToken } from '../../hooks/useTokenFactory';
-import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
 import { useLPtokenContract } from '../../hooks/useLPtokenContract';
 import { useExchange } from '../../hooks/useExchangeFactory';
 
@@ -31,12 +30,14 @@ const Add = ({
   isOpen,
   onClose,
   item,
-  onSubmit
+  onSubmit,
+  lpBalance
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
   item: any;
+  lpBalance: any;
 }) => {
   const [fromValue, setFromValue] = useState<string>('');
   const [fromBalance, setFromBalance] = useState<string>('');
@@ -49,7 +50,6 @@ const Add = ({
   const { contract: exContract } = useExchange(item.exchange);
   const { contract: fromContract } = useToken(item.from);
   const { contract: toContract } = useToken(item.to);
-  const lpBalance = useLPtokenBalance();
   const { contract: lpContract } = useLPtokenContract();
   const [isLoading, setIsLoading] = useState(false);
 

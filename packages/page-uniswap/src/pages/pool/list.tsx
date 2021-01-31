@@ -22,7 +22,7 @@ import Add from './add';
 import CreatePair from './create-pair';
 import Withdraw from './withdraw';
 
-const AddLiquidity: React.FC<any> = ({ item, onSubmit }) => {
+const AddLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
 
   return (
@@ -30,17 +30,30 @@ const AddLiquidity: React.FC<any> = ({ item, onSubmit }) => {
       <Button size='sm' mr='4' onClick={onAddOpen}>
         Add
       </Button>
-      <Add onSubmit={onSubmit} item={item} isOpen={isAddOpen} onClose={onAddClose} />
+      <Add lpBalance={lpBalance} onSubmit={onSubmit} item={item} isOpen={isAddOpen} onClose={onAddClose} />
+    </Box>
+  );
+};
+
+const WithdrawLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
+  const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
+
+  return (
+    <Box>
+      <Button size='sm' mr='4' onClick={onWithdrawOpen}>
+        Withdraw
+      </Button>
+      <Withdraw lpBalance={lpBalance} onSubmit={onSubmit} item={item} isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
     </Box>
   );
 };
 
 export const PoolList = () => {
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
+
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
   const { data, loading } = usePairList(signal);
-  const lpBalance = useLPtokenBalance();
+  const lpBalance = useLPtokenBalance(signal);
 
   return (
     <Box>
@@ -89,10 +102,8 @@ export const PoolList = () => {
                 </Td>
                 <Td>
                   <Flex>
-                    <AddLiquidity item={item} onSubmit={forceUpdate} />
-                    <Button size='sm' mr='4' onClick={onWithdrawOpen}>
-                      Withdraw
-                    </Button>
+                    <AddLiquidity lpBalance={lpBalance} item={item} onSubmit={forceUpdate} />
+                    <WithdrawLiquidity lpBalance={lpBalance} item={item} onSubmit={forceUpdate} />
                   </Flex>
                 </Td>
               </Tr>
@@ -105,7 +116,6 @@ export const PoolList = () => {
           </Center>
         )}
       </Box>
-      <Withdraw isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
       <CreatePair onSubmit={forceUpdate} isOpen={isCreatePairOpen} onClose={onCreatePairClose} />
     </Box>
   );

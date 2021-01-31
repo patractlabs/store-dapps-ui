@@ -1,51 +1,104 @@
-import React, { useCallback } from 'react';
+import { useContractQuery, useContractTx } from '@patract/react-hooks';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+  Box,
   Button,
   Center,
+  Flex,
   FormControl,
+  FormLabel,
+  IdentityIcon,
+  InputGroup,
+  InputNumber,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Slider,
-  SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-  Box,
-  Flex,
+  SliderTrack,
   Stack,
-  FormLabel,
   Text
-} from '@chakra-ui/react';
-import { InfoOutlineIcon } from '@chakra-ui/icons';
-import { useForm } from 'react-hook-form';
-import { InputNumberController } from '@patract/ui-components';
-import InputSelect, { MenuOption } from '../../components/input-select';
-import USDTIcon from '../../images/usdt.png';
+} from '@patract/ui-components';
+import { formatAmount, parseAmount } from '@patract/utils';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useExchange } from '../../hooks/useExchangeFactory';
 
 const defaultValues = {
   withdraw_token: 1
 };
 
-const balance = 15;
+const Withdraw = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  item,
+  lpBalance
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: () => void;
+  item: any;
+  lpBalance: any;
+}) => {
+  const [value, setValue] = useState('');
+  const [estimated, setEstimated] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<any>(null);
 
-const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { control, watch, setValue } = useForm({ defaultValues });
-  const { withdraw_token } = watch(['withdraw_token']);
-  const percentage = Math.ceil((withdraw_token * 100) / 15);
+  const { contract } = useExchange(item.exchange);
+  const { read } = useContractQuery({ contract, method: 'estimatedRemoveLiquidity' });
+  const { excute } = useContractTx({ title: 'Withdraw', contract, method: 'removeLiquidity' });
+
+  const balance = useMemo(() => {
+    return lpBalance ? formatAmount(lpBalance, 18) : 0;
+  }, [lpBalance]);
+
+  const percentage = useMemo(() => {
+    return balance ? Math.ceil((Number(value) * 100) / Number(balance)) : 0;
+  }, [value, balance]);
 
   const onSliderChange = useCallback(
     (value: number) => {
-      setValue('withdraw_token', (value * balance) / 100);
+      setValue(((Number(value as any) * (balance as any)) / 100).toString());
     },
-    [setValue]
+    [value, balance]
   );
 
+  useEffect(() => {
+    if (isOpen) {
+      console.log(value);
+      read(parseAmount(isNaN(value as any) ? '0' : String(Number(value).toFixed(18)), 18)).then((result: any) => {
+        result &&
+          setEstimated([formatAmount(result[0], item.from_decimals), formatAmount(result[1], item.to_decimals)]);
+      });
+    }
+  }, [read, isOpen, value, item.from_decimals, item.to_decimals]);
+
+  const close = () => {
+    setValue('');
+    onClose();
+  };
+
+  const submit = () => {
+    const lpvalue = parseAmount(value || '0', 18);
+
+    setIsLoading(true);
+    excute([lpvalue])
+      .then(() => {
+        onSubmit();
+        close();
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />
       <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
         <ModalHeader>Withdraw Liquidity</ModalHeader>
@@ -56,10 +109,9 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               <span>Withdraw LP Token</span>
               <span>Balance: {balance}</span>
             </FormLabel>
-            <InputNumberController
-              name='withdraw_token'
-              control={control}
-              defaultValue={defaultValues.withdraw_token}
+            <InputNumber
+              value={value}
+              onChange={setValue}
               max={balance}
               sx={{
                 w: 'calc(100% - 160px)',
@@ -98,7 +150,7 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
                 >
                   <Text sx={{ display: 'inline-block', fontSize: 'lg', lineHeight: '24px', mr: '3px' }}>LP</Text>
                   <Text sx={{ display: 'inline-block', fontSize: 'xs', lineHeight: '24px', color: 'brand.grey' }}>
-                    (USDT-ETH)
+                    ({item.from_name}-{item.to_name})
                   </Text>
                 </Box>
               </Center>
@@ -107,48 +159,82 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               <SliderTrack>
                 <SliderFilledTrack bg='#25A17C' />
               </SliderTrack>
-              <SliderThumb
-                boxSize={6}
-                sx={{ borderRadius: '4px', border: '1px solid', borderColor: '#25A17C', boxShadow: 'none' }}
-              >
-                <Flex>
-                  <Box width='1px' height='10px' mr='6px' bgColor='#E5E5E5' />
-                  <Box width='1px' height='10px' bgColor='#E5E5E5' />
-                </Flex>
-              </SliderThumb>
+              <SliderThumb />
             </Slider>
           </FormControl>
-          <FormControl sx={{ mb: '6' }}>
-            {/* <InputSelect
-              frontLabel='You will receive (estimated)'
-              inputName='input_1'
-              selectName='select_1'
-              control={control}
-              watch={watch}
-              defaultValue=''
-            /> */}
+          <FormControl mb={4}>
+            <FormLabel textStyle='form-label'>
+              <span>You will receive (estimated)</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber value={estimated?.[0] || '0'} isDisabled={true} />
+              <InputRightElement
+                width={40}
+                children={
+                  <Flex width='full' alignItems='center' mr={2} flexDirection='row-reverse'>
+                    <Text
+                      sx={{
+                        display: 'inline-block',
+                        verticalAlign: 'top',
+                        fontSize: 'lg',
+                        lineHeight: 'short',
+                        background: '#E1E9FF',
+                        borderRadius: '4px',
+                        minWidth: '74px',
+                        padding: '5px 0',
+                        textAlign: 'center',
+                        left: '42px'
+                      }}
+                    >
+                      {item.from_name}
+                    </Text>
+                    <Box mr='1' mt='1'>
+                      <IdentityIcon value={item.from} />
+                    </Box>
+                  </Flex>
+                }
+              />
+            </InputGroup>
           </FormControl>
-          <FormControl>
-            {/* <InputSelect
-              frontLabel='You will receive (estimated)'
-              inputName='input_2'
-              selectName='select_2'
-              control={control}
-              watch={watch}
-              defaultValue=''
-            /> */}
+          <FormControl mb={4}>
+            <FormLabel textStyle='form-label'>
+              <span>You will receive (estimated)</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber value={estimated?.[1] || '0'} isDisabled={true} />
+              <InputRightElement
+                width={40}
+                children={
+                  <Flex width='full' alignItems='center' mr={2} flexDirection='row-reverse'>
+                    <Text
+                      sx={{
+                        display: 'inline-block',
+                        verticalAlign: 'top',
+                        fontSize: 'lg',
+                        lineHeight: 'short',
+                        background: '#E1E9FF',
+                        borderRadius: '4px',
+                        minWidth: '74px',
+                        padding: '5px 0',
+                        textAlign: 'center',
+                        left: '42px'
+                      }}
+                    >
+                      {item.to_name}
+                    </Text>
+                    <Box mr='1' mt='1'>
+                      <IdentityIcon value={item.to} />
+                    </Box>
+                  </Flex>
+                }
+              />
+            </InputGroup>
           </FormControl>
-          {/* <Center>
-            <Text sx={{ color: 'red.600', mt: '6', fontSize: 'sm' }}>
-              <InfoOutlineIcon sx={{ mr: '9px' }} />
-              Insufficient USDT balance！
-            </Text>
-          </Center> */}
         </ModalBody>
 
         <ModalFooter py={8}>
           <Stack direction='row' spacing={4} justifyContent='flex-end'>
-            <Button colorScheme='blue' onClick={onClose}>
+            <Button isLoading={isLoading} isDisabled={!value} colorScheme='blue' onClick={submit}>
               Submit
             </Button>
           </Stack>

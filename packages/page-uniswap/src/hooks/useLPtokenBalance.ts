@@ -2,14 +2,14 @@ import { useContractQuery, useAccount } from '@patract/react-hooks';
 import { useEffect, useState } from 'react';
 import { useLPtokenContract } from './useLPtokenContract';
 
-export const useLPtokenBalance = (address?: undefined) => {
+export const useLPtokenBalance = (signal = 0) => {
   const { currentAccount } = useAccount();
   const { contract } = useLPtokenContract();
   const { read } = useContractQuery({ contract, method: 'balanceOf' });
   const [result, setResult] = useState<string | number | undefined>(undefined);
 
   useEffect(() => {
-    read(address || currentAccount)
+    read(currentAccount)
       .then((data: any) => {
         setResult(data || 0);
       })
@@ -17,7 +17,7 @@ export const useLPtokenBalance = (address?: undefined) => {
         setResult(undefined);
         throw error;
       });
-  }, [read, currentAccount, address]);
+  }, [read, currentAccount, signal]);
 
   return result;
 };

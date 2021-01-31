@@ -12,7 +12,7 @@ type InputNumberControllerProps = Omit<
 export const InputNumberController: React.FC<InputNumberControllerProps> = (props) => {
   const { name, render, as, defaultValue, control, rules, onFocus, onChange: onChangeValue, ...rest } = props;
   const inputProps = {
-    pattern: '^[0-9]*[.,]?[0-9]*$',
+    pattern: '^[0-9]*[.]?[0-9]*$',
     inputMode: 'decimal' as 'decimal',
     ...rest
   };

@@ -8,7 +8,7 @@ type InputNumberProps = Omit<React.ComponentProps<typeof Input>, 'render'> & {
 export const InputNumber: React.FC<InputNumberProps> = (props) => {
   const { onChange, ...rest } = props;
   const inputProps = {
-    pattern: '^[0-9]*[.,]?[0-9]*$',
+    pattern: '^[0-9]*[.]?[0-9]*$',
     inputMode: 'decimal' as 'decimal',
     ...rest
   };
