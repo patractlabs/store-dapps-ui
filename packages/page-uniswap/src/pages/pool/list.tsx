@@ -1,29 +1,26 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { useModal, useContractQuery } from '@patract/react-hooks';
+import { useModal } from '@patract/react-hooks';
 import {
   Address,
   Amount,
   Box,
   Button,
-  ButtonProps,
+  Center,
+  CircularProgress,
   Flex,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
-  Tr,
-  Center,
-  CircularProgress
+  Tr
 } from '@patract/ui-components';
 import React from 'react';
+import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
+import { usePairList } from '../../hooks/usePairList';
 import Add from './add';
 import CreatePair from './create-pair';
 import Withdraw from './withdraw';
-import { usePairList } from '../../hooks/usePairList';
-import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
-
-const TdLink = ({ sx, ...rest }: ButtonProps) => <Button size='sm' mr='4' {...rest} />;
 
 export const PoolList = () => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
@@ -78,18 +75,18 @@ export const PoolList = () => {
                   <Amount value={lpBalance} decimals={18} postfix='LPT' />
                 </Td>
                 <Td>
-                  <TdLink sx={{ color: '#285AF8' }} onClick={onAddOpen}>
+                  <Button size='sm' mr='4' onClick={onAddOpen}>
                     Add
-                  </TdLink>
-                  <TdLink sx={{ color: '#25A17C' }} onClick={onWithdrawOpen}>
+                  </Button>
+                  <Button size='sm' mr='4' onClick={onWithdrawOpen}>
                     Withdraw
-                  </TdLink>
+                  </Button>
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
-        {(!data.length && loading) && (
+        {!data.length && loading && (
           <Center p={16}>
             <CircularProgress isIndeterminate color='blue.300' />
           </Center>

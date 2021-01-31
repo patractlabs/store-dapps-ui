@@ -26,17 +26,8 @@ import { InputNumberController } from '@patract/ui-components';
 import InputSelect, { MenuOption } from '../../components/input-select';
 import USDTIcon from '../../images/usdt.png';
 
-const options: Array<MenuOption> = [
-  { value: 'usdt', label: 'USDT', icon: USDTIcon, fullName: 'Tether', address: 'GAneP4k…fJEfs', balance: 0 },
-  { value: 'eth', label: 'ETH', icon: USDTIcon, fullName: 'Ethereum', address: 'GAneP4k…fJEfs', balance: 150000.9912 }
-];
-
 const defaultValues = {
-  withdraw_token: 1,
-  input_1: '',
-  select_1: options[0],
-  input_2: '',
-  select_2: options[1]
+  withdraw_token: 1
 };
 
 const balance = 15;
@@ -130,25 +121,21 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
           <FormControl sx={{ mb: '6' }}>
             <InputSelect
               frontLabel='You will receive (estimated)'
-              options={options}
               inputName='input_1'
               selectName='select_1'
               control={control}
               watch={watch}
               defaultValue=''
-              defaultOption={options[0]}
             />
           </FormControl>
           <FormControl>
             <InputSelect
               frontLabel='You will receive (estimated)'
-              options={options}
               inputName='input_2'
               selectName='select_2'
               control={control}
               watch={watch}
               defaultValue=''
-              defaultOption={options[1]}
             />
           </FormControl>
           {/* <Center>

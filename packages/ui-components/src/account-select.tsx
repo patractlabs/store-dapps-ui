@@ -58,12 +58,10 @@ export const AccountSelect: React.FC = () => {
           ) : (
             <>
               <Flex
+                alignItems='center'
                 sx={{
                   flexGrow: '1',
-                  verticalAlign: 'top',
                   fontSize: 'sm',
-                  lineHeight: '25px',
-                  minWidth: '74px',
                   padding: '5px 0',
                   left: '42px'
                 }}
@@ -90,7 +88,7 @@ export const AccountSelect: React.FC = () => {
                 sx={{ listStyle: 'none', p: '5px 10px', cursor: 'pointer', _hover: { bgColor: 'gray.100' } }}
                 onClick={onSelect.bind(null, account)}
               >
-                <Flex sx={{ fontSize: 'sm' }}>
+                <Flex sx={{ fontSize: 'sm' }} alignItems='center'>
                   <IdentityIcon value={account.address} />
                   <Text sx={{ flexGrow: '1', ml: '8px' }}>{account.meta.name as string}</Text>
                   <Text sx={{ color: 'gray.400' }}>{truncated(account.address)}</Text>

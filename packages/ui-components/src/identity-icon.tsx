@@ -24,6 +24,7 @@ export const IdentityIcon: React.FC<IdentityIconProps> = ({ value, size = 24 }) 
 
   return (
     <Box
+      marginTop='2px'
       sx={{
         display: 'inline-block',
         w: `${size + 2}px`,

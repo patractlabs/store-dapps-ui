@@ -8,3 +8,4 @@ export * from './to-address';
 export * from './to-short-address';
 export * from './truncated';
 export * from './get-signer';
+export * from './is-address';

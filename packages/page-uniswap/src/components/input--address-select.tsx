@@ -28,12 +28,6 @@ export type MenuOption = {
 
 export type InputSelectProps = {
   frontLabel: string;
-  backLabel?: string;
-  control: any;
-  onChangeValue?: (value: string) => void;
-  onChangeOption?: (value: any) => void;
-  inputName: string;
-  selectName: string;
 } & Omit<React.ComponentProps<typeof Controller>, 'render'>;
 
 const ValueContainer = ({ selectOption }: { selectOption: MenuOption }) => (
@@ -66,7 +60,7 @@ const ValueContainer = ({ selectOption }: { selectOption: MenuOption }) => (
   </React.Fragment>
 );
 
-const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, selectName, watch, onChangeOption }) => {
+const InputAddressSelect: React.FC<InputSelectProps> = ({ frontLabel }) => {
   const { isOpen, onOpen, onClose } = useModal();
   const selected = watch([selectName])[selectName];
   const [inputValue, setInputValue] = useState('');
@@ -109,7 +103,6 @@ const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, select
     <React.Fragment>
       <FormLabel textStyle='form-label'>
         <span>{frontLabel}</span>
-        <span>{backLabel}</span>
       </FormLabel>
       <Input
         sx={{
@@ -184,4 +177,4 @@ const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, select
   );
 };
 
-export default InputSelect;
+export default InputAddressSelect;

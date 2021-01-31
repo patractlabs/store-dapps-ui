@@ -9,25 +9,13 @@ import InputSelect, { MenuOption } from '../../components/input-select';
 import USDTIcon from '../../images/usdt.png';
 import { handleInputChange } from 'react-select/src/utils';
 
-const options: Array<MenuOption> = [
-  { value: 'usdt', label: 'USDT', icon: USDTIcon, fullName: 'Tether', address: 'GAneP4k…fJEfs', balance: 0 },
-  { value: 'eth', label: 'ETH', icon: USDTIcon, fullName: 'Ethereum', address: 'GAneP4k…fJEfs', balance: 150000.9912 }
-];
-
-const defaultValues = {
-  from_input: '',
-  from_select: options[0],
-  to_input: '',
-  to_select: options[1]
-};
-
 const price = 0.1;
 
 const Swap = () => {
-  const { control, watch, setValue, handleSubmit } = useForm({ defaultValues });
+  const { control, watch, setValue, handleSubmit } = useForm();
   const [estimatedTo, setEstimatedTo] = useState<string | null>();
   const [estimatedFrom, setEstimatedFrom] = useState<string | null>();
-  
+
   let { from_select, to_select } = watch(['from_select', 'to_select']);
 
   const swapFromTo = () => {
@@ -61,13 +49,11 @@ const Swap = () => {
                   console.log(value);
                 }}
                 frontLabel='From'
-                options={options}
                 inputName='from_input'
                 selectName='from_select'
                 control={control}
                 watch={watch}
                 defaultValue=''
-                defaultOption={defaultValues.from_select}
                 usePortal={true}
               />
             </FormControl>
@@ -95,13 +81,11 @@ const Swap = () => {
             <FormControl sx={{ mb: '16px' }}>
               <InputSelect
                 frontLabel='To'
-                options={options}
                 inputName='to_input'
                 selectName='to_select'
                 control={control}
                 watch={watch}
                 defaultValue=''
-                defaultOption={defaultValues.to_select}
                 usePortal={true}
               />
             </FormControl>
@@ -117,7 +101,7 @@ const Swap = () => {
                 <Text sx={{ color: '#999999', display: 'inline-block' }}>Price</Text>
                 <Center>
                   <Text sx={{ display: 'inline-block' }}>
-                    722.224 {from_select.label} per {to_select.label}
+                    {/* 722.224 {from_select.label} per {to_select.label} */}
                   </Text>
                   <Icon
                     as={FiRepeat}
