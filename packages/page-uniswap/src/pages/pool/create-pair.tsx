@@ -13,7 +13,7 @@ import {
 } from '@patract/ui-components';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import InputAddressSelect from '../../components/input--address-select';
+// import InputAddressSelect from '../../components/input--address-select';
 
 const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   return (
@@ -24,12 +24,8 @@ const CreatePair = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
         <ModalCloseButton />
         <ModalBody>
           <SimpleGrid column={1} spacing='8'>
-            <FormControl>
-              <InputAddressSelect label='From' />
-            </FormControl>
-            <FormControl>
-              <InputAddressSelect label='To' />
-            </FormControl>
+            <FormControl>{/* <InputAddressSelect label='From' /> */}</FormControl>
+            <FormControl>{/* <InputAddressSelect label='To' /> */}</FormControl>
           </SimpleGrid>
         </ModalBody>
 

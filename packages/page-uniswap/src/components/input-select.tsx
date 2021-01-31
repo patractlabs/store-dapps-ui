@@ -12,7 +12,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Text
+  Text,
+  InputNumber
 } from '@patract/ui-components';
 import { truncated } from '@patract/utils';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -27,48 +28,23 @@ export type MenuOption = {
 };
 
 export type InputSelectProps = {
-  frontLabel: string;
-  backLabel?: string;
-  control: any;
-  onChangeValue?: (value: string) => void;
-  onChangeOption?: (value: any) => void;
-  inputName: string;
-  selectName: string;
+  label: string;
+  value: string;
+  option: any;
+  defaultOptionIndex: any;
+  onChangeValue: (value: string) => void;
+  onChangeOption: (value: any) => void;
 } & Omit<React.ComponentProps<typeof Controller>, 'render'>;
 
-const ValueContainer = ({ selectOption }: { selectOption: MenuOption }) => (
-  <React.Fragment>
-    {/* <Image
-      src={selectOption.icon}
-      sx={{
-        display: 'inline-block',
-        w: '42px',
-        h: '42px',
-        bgColor: '#FFFFFF'
-      }}
-    /> */}
-    <Text
-      sx={{
-        display: 'inline-block',
-        verticalAlign: 'top',
-        fontSize: 'lg',
-        lineHeight: 'short',
-        background: '#E1E9FF',
-        borderRadius: '4px',
-        minWidth: '74px',
-        padding: '5px 0',
-        textAlign: 'center',
-        left: '42px'
-      }}
-    >
-      {selectOption?.name}
-    </Text>
-  </React.Fragment>
-);
-
-const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, selectName, watch, onChangeOption }) => {
+const InputSelect: React.FC<InputSelectProps> = ({
+  value,
+  option,
+  label,
+  onChangeOption,
+  onChangeValue,
+  defaultOptionIndex
+}) => {
   const { isOpen, onOpen, onClose } = useModal();
-  const selected = watch([selectName])[selectName];
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>(null);
 
@@ -84,10 +60,15 @@ const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, select
   const onSelect = useCallback(
     (option) => {
       onClose();
-      onChangeOption && onChangeOption(option);
+      onChangeOption(option);
     },
     [onClose, setInputValue, onChangeOption]
   );
+
+  useEffect(() => {
+    if (option || !data) return;
+    onChangeOption(data[defaultOptionIndex]);
+  }, [option, data, onChangeOption, defaultOptionIndex]);
 
   useEffect(() => {
     if (!inputValue) {
@@ -108,10 +89,11 @@ const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, select
   return (
     <React.Fragment>
       <FormLabel textStyle='form-label'>
-        <span>{frontLabel}</span>
-        <span>{backLabel}</span>
+        <span>{label}</span>
       </FormLabel>
-      <Input
+      <InputNumber
+        onChange={onChangeValue}
+        value={value}
         sx={{
           w: 'calc(100% - 160px)',
           h: '44px',
@@ -127,6 +109,7 @@ const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, select
             borderColor='gray.200'
             width='160px'
             sx={{
+              height: '44px',
               display: 'inline-block',
               verticalAlign: 'top',
               borderRadius: '0 4px 4px 0',
@@ -135,8 +118,28 @@ const InputSelect: React.FC<InputSelectProps> = ({ frontLabel, backLabel, select
               bgColor: '#FFFFFF'
             }}
           >
-            <Center>
-              <ValueContainer selectOption={selected} />
+            <Center height='full'>
+              <Flex alignItems='center'>
+                <Box mr='1' mt='1'>
+                  <IdentityIcon value={option?.address} />
+                </Box>
+                <Text
+                  sx={{
+                    display: 'inline-block',
+                    verticalAlign: 'top',
+                    fontSize: 'lg',
+                    lineHeight: 'short',
+                    background: '#E1E9FF',
+                    borderRadius: '4px',
+                    minWidth: '74px',
+                    padding: '5px 0',
+                    textAlign: 'center',
+                    left: '42px'
+                  }}
+                >
+                  {option?.name}
+                </Text>
+              </Flex>
               <TriangleDownIcon sx={{ verticalAlign: 'top', w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
             </Center>
           </Box>

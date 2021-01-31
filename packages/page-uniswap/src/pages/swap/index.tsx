@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Button, Center, Flex, FormControl, Text, Icon } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { FiRepeat } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import { PageLayout, PageMain } from '@patract/ui-components';
+import { Box, Button, Center, Flex, FormControl, Text, Icon, PageLayout, PageMain } from '@patract/ui-components';
 import Header from '../../components/header';
 import InputSelect, { MenuOption } from '../../components/input-select';
 import USDTIcon from '../../images/usdt.png';
@@ -12,19 +11,16 @@ import { handleInputChange } from 'react-select/src/utils';
 const price = 0.1;
 
 const Swap = () => {
-  const { control, watch, setValue, handleSubmit } = useForm();
+  const [toValue, setToValue] = useState<string>('');
+  const [toOption, setToOption] = useState<any>(null);
+  const [fromValue, setFromValue] = useState<string>('');
+  const [fromOption, setFromOption] = useState<any>(null);
   const [estimatedTo, setEstimatedTo] = useState<string | null>();
   const [estimatedFrom, setEstimatedFrom] = useState<string | null>();
 
-  let { from_select, to_select } = watch(['from_select', 'to_select']);
+  const swapFromTo = () => {};
 
-  const swapFromTo = () => {
-    [from_select, to_select] = [to_select, from_select];
-    setValue('from_select', from_select);
-    setValue('to_select', to_select);
-  };
-
-  const submit = handleSubmit(() => {});
+  const submit = () => {};
 
   return (
     <PageLayout>
@@ -42,19 +38,12 @@ const Swap = () => {
           >
             <FormControl sx={{ mb: '24px' }}>
               <InputSelect
-                onChangeOption={(option) => {
-                  console.log(option);
-                }}
-                onChangeValue={(value) => {
-                  console.log(value);
-                }}
-                frontLabel='From'
-                inputName='from_input'
-                selectName='from_select'
-                control={control}
-                watch={watch}
-                defaultValue=''
-                usePortal={true}
+                defaultOptionIndex={0}
+                value={toValue}
+                option={toOption}
+                onChangeOption={setToOption}
+                onChangeValue={setToValue}
+                label='From'
               />
             </FormControl>
             <Icon
@@ -66,9 +55,8 @@ const Swap = () => {
                 padding: '4px',
                 w: 7,
                 h: 7,
-                color: 'brand.primary',
+                color: 'blue.500',
                 transform: 'rotate(90deg)',
-                bgColor: '#E1E9FF',
                 borderRadius: '2px',
                 mt: '-10px',
                 cursor: 'pointer',
@@ -80,13 +68,12 @@ const Swap = () => {
             />
             <FormControl sx={{ mb: '16px' }}>
               <InputSelect
-                frontLabel='To'
-                inputName='to_input'
-                selectName='to_select'
-                control={control}
-                watch={watch}
-                defaultValue=''
-                usePortal={true}
+                defaultOptionIndex={1}
+                value={fromValue}
+                option={fromOption}
+                onChangeOption={setFromOption}
+                onChangeValue={setFromValue}
+                label='To'
               />
             </FormControl>
             <Box

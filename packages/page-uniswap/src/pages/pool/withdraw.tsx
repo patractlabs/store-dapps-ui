@@ -119,24 +119,24 @@ const Withdraw = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
             </Slider>
           </FormControl>
           <FormControl sx={{ mb: '6' }}>
-            <InputSelect
+            {/* <InputSelect
               frontLabel='You will receive (estimated)'
               inputName='input_1'
               selectName='select_1'
               control={control}
               watch={watch}
               defaultValue=''
-            />
+            /> */}
           </FormControl>
           <FormControl>
-            <InputSelect
+            {/* <InputSelect
               frontLabel='You will receive (estimated)'
               inputName='input_2'
               selectName='select_2'
               control={control}
               watch={watch}
               defaultValue=''
-            />
+            /> */}
           </FormControl>
           {/* <Center>
             <Text sx={{ color: 'red.600', mt: '6', fontSize: 'sm' }}>
