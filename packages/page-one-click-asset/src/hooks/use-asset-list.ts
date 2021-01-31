@@ -28,7 +28,7 @@ export const useAssetList = (
   const [loading, setLoading] = useState(false);
 
   const query = useCallback(async () => {
-    if (!isApiReady || !contractList) return count;
+    if (!isApiReady || !contractList) return;
     
     return Promise.all(
       contractList.map(({ id, signer, address, codeHash }) => {

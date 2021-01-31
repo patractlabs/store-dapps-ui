@@ -48,7 +48,7 @@ export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
       };
     });
   }, [data]);
-
+  
   const { data: list, loading, forceUpdate } = useAssetList(contractList);
 
   return (
