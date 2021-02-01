@@ -38,7 +38,7 @@ export const usePklist = (signal = 0) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [readTotal, signal]);
+  }, [readTotal, signal, readDetail]);
 
   return {
     isLoading,

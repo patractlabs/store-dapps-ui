@@ -1,11 +1,13 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { useAccount, useModal, useContractTx, useContractQuery } from '@patract/react-hooks';
+import { useAccount, useContractTx, useModal } from '@patract/react-hooks';
 import {
   Address,
+  Amount,
   Box,
   Button,
+  Center,
+  CircularProgress,
   Flex,
-  Icon,
   PageHeader,
   PageLayout,
   PageMain,
@@ -15,19 +17,15 @@ import {
   Text,
   Th,
   Thead,
-  Tr,
-  CircularProgress,
-  Center,
-  Amount
+  Tr
 } from '@patract/ui-components';
-import React, { ComponentProps, useCallback, useReducer, useState } from 'react';
-import { BsFillEyeFill } from 'react-icons/bs';
-import { FaChessBoard, FaRegHandPaper, FaRegHandPeace, FaRegHandRock } from 'react-icons/fa';
-import CreateGame from './create-game';
-import { PaperImage, ScissorsImage, RockImage } from '../../images/';
-import { usePklist } from '../../hooks/usePklist';
-import { usePkContract } from '../../hooks/usePkContract';
 import { truncated } from '@patract/utils';
+import React, { ComponentProps, useCallback, useReducer } from 'react';
+import { FaChessBoard } from 'react-icons/fa';
+import { usePkContract } from '../../hooks/usePkContract';
+import { usePklist } from '../../hooks/usePklist';
+import { PaperImage, RockImage, ScissorsImage } from '../../images/';
+import CreateGame from './create-game';
 import { DeleteButton } from './delete';
 import { JoinButton } from './join';
 
@@ -46,12 +44,6 @@ const FirstRowTd: React.FC<ComponentProps<typeof Td>> = ({ children, ...rest }) 
   >
     {children}
   </Td>
-);
-
-const TdButton: React.FC<ComponentProps<typeof Button>> = ({ children, ...rest }) => (
-  <Button variant='link' sx={{ fontSize: 'xs', fontWeight: '300' }} {...rest}>
-    {children}
-  </Button>
 );
 
 const getTagColor = (winner: 'creater' | 'joiner' | 'even', role: 'creater' | 'joiner') => {
@@ -188,10 +180,17 @@ const PK: React.FC = () => {
           );
         }
       }
+      // if (item.status === 'Join') {
+      //   return (
+      //     <Flex direction='column'>
+      //       <RevealButton onSubmit={forceUpdate} item={item} />
+      //     </Flex>
+      //   );
+      // }
 
       return null;
     },
-    [currentAccount, forceUpdate, handleDeleteGame, forceUpdate]
+    [currentAccount, forceUpdate, handleDeleteGame]
   );
 
   const renderGameRow = useCallback(

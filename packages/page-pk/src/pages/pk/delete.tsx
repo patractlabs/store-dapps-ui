@@ -24,7 +24,7 @@ export const DeleteButton: React.FC<any> = ({ onSubmit, item }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [onSubmit, item.id]);
+  }, [onSubmit, onClose, item.id]);
 
   return (
     <>

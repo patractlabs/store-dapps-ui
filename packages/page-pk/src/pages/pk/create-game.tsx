@@ -139,7 +139,7 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
     setHash('');
     setSalt('');
     onClose();
-  }, []);
+  }, [onClose]);
 
   const submit = useCallback(() => {
     setIsLoading(true);
@@ -151,9 +151,8 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
       .finally(() => {
         setIsLoading(false);
       });
-  }, [hash]);
+  }, [hash, close, onSubmit, excute, value]);
 
-  console.log('render');
   return (
     <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />

@@ -1,6 +1,6 @@
-import { useApi, useAccount } from '@patract/react-hooks';
+import { useAccount, useApi } from '@patract/react-hooks';
 import { formatAmount } from '@patract/utils';
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useBalance = () => {
   const { api } = useApi();
@@ -17,7 +17,7 @@ export const useBalance = () => {
       .catch(() => {
         setBalance('0');
       });
-  }, [api]);
+  }, [api, currentAccount]);
 
   return balance;
 };

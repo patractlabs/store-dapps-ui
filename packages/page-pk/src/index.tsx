@@ -1,7 +1,7 @@
+import { AccountProvider, Api, Queue } from '@patract/react-components';
+import { UIProvider } from '@patract/ui-components';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Api, Queue, GraphqlProvider, AccountProvider } from '@patract/react-components';
-import { UIProvider } from '@patract/ui-components';
 import App from './app';
 
 ReactDOM.render(
