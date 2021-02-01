@@ -6,17 +6,15 @@ import App from './app';
 
 ReactDOM.render(
   <React.StrictMode>
-    <GraphqlProvider>
-      <UIProvider>
-        <Queue>
-          <Api url='wss://ws.staging.jupiter.patract.cn'>
-            <AccountProvider>
-              <App />
-            </AccountProvider>
-          </Api>
-        </Queue>
-      </UIProvider>
-    </GraphqlProvider>
+    <UIProvider>
+      <Queue>
+        <Api url='wss://ws.staging.jupiter.patract.cn'>
+          <AccountProvider>
+            <App />
+          </AccountProvider>
+        </Api>
+      </Queue>
+    </UIProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

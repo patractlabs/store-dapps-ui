@@ -47,7 +47,7 @@ const Withdraw = ({
 }) => {
   const [value, setValue] = useState('');
   const [estimated, setEstimated] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<any>(false);
 
   const { contract } = useExchange(item.exchange);
   const { read } = useContractQuery({ contract, method: 'estimatedRemoveLiquidity' });

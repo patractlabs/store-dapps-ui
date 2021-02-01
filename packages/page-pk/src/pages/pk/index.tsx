@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { useModal } from '@patract/react-hooks';
+import { useAccount, useModal, useContractTx, useContractQuery } from '@patract/react-hooks';
 import {
   Address,
   Box,
@@ -15,37 +15,24 @@ import {
   Text,
   Th,
   Thead,
-  Tr
+  Tr,
+  CircularProgress,
+  Center,
+  Amount
 } from '@patract/ui-components';
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, useCallback, useReducer, useState } from 'react';
 import { BsFillEyeFill } from 'react-icons/bs';
 import { FaChessBoard, FaRegHandPaper, FaRegHandPeace, FaRegHandRock } from 'react-icons/fa';
 import CreateGame from './create-game';
-import tableData from './data';
-import JoinGame from './join-game';
 import { PaperImage, ScissorsImage, RockImage } from '../../images/';
+import { usePklist } from '../../hooks/usePklist';
+import { usePkContract } from '../../hooks/usePkContract';
+import { truncated } from '@patract/utils';
+import { DeleteButton } from './delete';
+import { JoinButton } from './join';
 
 export type GameChoice = 'Scissors' | 'Rock' | 'Paper' | null | undefined;
 export type GameStatus = 'wait_for_join' | 'wait_for_reveal' | 'closed' | 'punished' | 'expired' | 'waiting';
-export type GameInfo = {
-  id: string;
-  creater: {
-    hash: string;
-    salt: string | null;
-    revealed: boolean;
-    account: string;
-    choice: GameChoice;
-    value: number | null;
-  };
-  joiner: {
-    account: string;
-    choice: GameChoice;
-    value: number | null;
-  } | null;
-  winner: 'creater' | 'joiner' | 'even' | null;
-  status: GameStatus;
-  expireTime?: number;
-};
 
 const FirstRowTd: React.FC<ComponentProps<typeof Td>> = ({ children, ...rest }) => (
   <Td
@@ -136,128 +123,118 @@ const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater'
   );
 };
 
-const renderChoice = (choice: GameChoice, role: 'creater' | 'joiner') => {
+const renderChoice = (choice: GameChoice) => {
   const imageStyle = {
     display: 'inline-block',
     w: '6',
     h: '6',
-    color: 'orange.800',
-    ...(role === 'creater'
-      ? {}
-      : {
-          transform: 'scaleY(-1) rotate(180deg)'
-        })
+    color: 'orange.800'
   };
   if (choice === 'Rock') return <RockImage sx={imageStyle} />;
   if (choice === 'Paper') return <PaperImage sx={imageStyle} />;
   if (choice === 'Scissors') return <ScissorsImage sx={imageStyle} />;
-  if (!choice && role === 'creater') {
-    return (
-      <Flex sx={{ alignItems: 'center', mx: '10px' }}>
-        <Icon as={BsFillEyeFill} sx={{ w: '4', h: '4', color: 'black', mr: '16px' }} />
-        <FaChessBoard viewBox='0 0 320 320' style={{ width: '24px', height: '24px', color: 'black' }} />
-      </Flex>
-    );
-  }
-  return null;
-};
 
-const renderOperations = (operations: any, status: GameStatus, expireTime?: number) => {
-  if (status === 'wait_for_join') {
-    return (
-      <Flex direction='column'>
-        <TdButton colorScheme='blue' onClick={operations.onJoinGameOpen}>
-          Join
-        </TdButton>
-        <TdButton colorScheme='blue'>Invite robot</TdButton>
-        <TdButton colorScheme='red'>Delete</TdButton>
-      </Flex>
-    );
-  }
-  if (status === 'wait_for_reveal') return <TdButton colorScheme='green'>Reveal</TdButton>;
-  if (status === 'closed') return <Text>Closed</Text>;
-  if (status === 'expired')
-    return (
-      <Flex direction='column'>
-        <TdButton colorScheme='red'>Punish</TdButton> Expired
-      </Flex>
-    );
-  if (status === 'punished') return <Text>Punished</Text>;
-  if (status === 'waiting') return <Text>Waiting</Text>;
-  return null;
-};
-
-const renderGameRow = (gameInfo: GameInfo, operations: any) => {
-  const { id, creater, joiner, status, winner, expireTime } = gameInfo;
-  const { value: joinerValue, account: joinerAccount, choice: joinerChoice } = joiner || {};
   return (
-    <Tr key={id}>
-      <Td>{id}</Td>
-      <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{creater.hash}</Td>
-      <Td sx={{ color: creater.revealed ? '#000000' : 'auto', fontWeight: creater.revealed ? 'semibold' : 'auto' }}>
-        {creater.salt ? creater.salt : '~'}
-        <Text>{!creater.revealed && '(Unrevealed)'}</Text>
-      </Td>
-      <Td sx={{ px: '3', textAlign: 'left' }}>
-        <Address value={creater.account} />
-      </Td>
-      <Td sx={{ position: 'relative' }}>
-        {renderTag(winner, 'creater')}
-        {creater.choice && (
-          <Box sx={{ display: 'inline-block', verticalAlign: 'top', m: '2px 8px 0 0', minW: '24px' }}>
-            {winner && winner !== 'even' && (winner === 'creater' ? `(+${creater.value})` : `(-${creater.value})`)}
-          </Box>
-        )}
-        {renderChoice(creater.choice, 'creater')}
-      </Td>
-      <Td>
-        <Text as='span' sx={{ fontSize: 'md', fontWeight: 'medium', color: 'brand.primary' }}>
-          {creater.value}
-        </Text>
-        {joinerValue && (
-          <Text as='span' sx={{ display: 'inline-block', mx: '2', fontWeight: 'medium' }}>
-            VS
-          </Text>
-        )}
-        <Text as='span' sx={{ fontSize: 'md', fontWeight: 'medium', color: 'brand.primary' }}>
-          {joinerValue}
-        </Text>
-      </Td>
-      <Td sx={{ position: 'relative' }}>
-        {renderTag(winner, 'joiner')}
-        {renderChoice(joinerChoice, 'joiner')}
-        <Box sx={{ display: 'inline-block', verticalAlign: 'top', m: '2px 0 0 8px', minW: '24px' }}>
-          {winner && winner !== 'even' && (winner === 'joiner' ? `(+${joinerValue})` : `(-${joinerValue})`)}
-        </Box>
-      </Td>
-      <Td sx={{ px: '3', textAlign: 'left' }}>{joinerAccount && <Address value={joinerAccount} />}</Td>
-      <Td>{renderOperations(operations, status, expireTime)}</Td>
-    </Tr>
+    <Flex sx={{ alignItems: 'center', mx: '10px' }} justifyContent='center'>
+      <FaChessBoard viewBox='0 0 320 320' style={{ width: '24px', height: '24px', color: 'black' }} />
+    </Flex>
   );
 };
 
 const PK: React.FC = () => {
   const { isOpen: isCreateGameOpen, onOpen: onCreateGameOpen, onClose: onCreateGameClose } = useModal();
   const { isOpen: isJoinGameOpen, onOpen: onJoinGameOpen, onClose: onJoinGameClose } = useModal();
+  const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
+  const { currentAccount } = useAccount();
+  const { contract } = usePkContract();
+  const { excute: deleteGame } = useContractTx({ title: 'Delete Game', contract, method: 'delete' });
+  const { excute: revealGame } = useContractTx({ title: 'Reveal Game', contract, method: 'reveal' });
+  const { excute: expireGame } = useContractTx({ title: 'Delete Game', contract, method: 'delete' });
+  const { excute } = useContractTx({ title: 'Delete Game', contract, method: 'delete' });
+  const { data, isLoading } = usePklist(signal);
 
-  const operations = {
-    onJoinGameOpen
-  };
+  const handleDeleteGame = useCallback(
+    (id) => {
+      return deleteGame(id).then(() => {
+        forceUpdate();
+      });
+    },
+    [forceUpdate, deleteGame]
+  );
+
+  const renderOperations = useCallback(
+    (item: any) => {
+      if (item.status === 'End') {
+        return <Text color='gray.500'>Ended</Text>;
+      }
+      if (item.status === 'Expire') {
+        return <Text color='gray.500'>Expired</Text>;
+      }
+      if (item.status === 'Delete') {
+        return <Text color='gray.500'>Deleted</Text>;
+      }
+      if (item.status === 'Join') {
+        if (currentAccount === item.creator) {
+          return (
+            <Flex direction='column'>
+              <DeleteButton onSubmit={handleDeleteGame} item={item} />
+            </Flex>
+          );
+        } else {
+          return (
+            <Flex direction='column'>
+              <JoinButton onSubmit={forceUpdate} item={item} />
+            </Flex>
+          );
+        }
+      }
+
+      return null;
+    },
+    [currentAccount, forceUpdate, handleDeleteGame, forceUpdate]
+  );
+
+  const renderGameRow = useCallback(
+    (item: any) => {
+      const isRevealed = ['Settle'].includes(item.status);
+
+      return (
+        <Tr key={item.id}>
+          <Td>{item.id}</Td>
+          {/* <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{creater.hash}</Td> */}
+          <Td
+            sx={{
+              color: isRevealed ? '#000000' : 'auto',
+              fontWeight: isRevealed ? 'semibold' : 'auto'
+            }}
+          >
+            {truncated(item.salt_hash)}
+            {!isRevealed && <Text>{'(Unrevealed)'}</Text>}
+          </Td>
+          <Td sx={{ px: '3', textAlign: 'left' }}>
+            <Address value={item.creator} />
+          </Td>
+          <Td sx={{ position: 'relative' }}>{renderChoice(item.create_choice)}</Td>
+          <Td>
+            <Amount value={item.value} decimals={10} postfix='JPT' />
+          </Td>
+          <Td sx={{ position: 'relative' }}>
+            {item.joiner_choice === 'None' ? <Center>-</Center> : renderChoice(item.joiner_choice)}
+          </Td>
+          <Td sx={{ px: '3', textAlign: 'left' }}>
+            {item.joiner ? <Address value={item.joiner} /> : <Center>-</Center>}
+          </Td>
+          <Td>{renderOperations(item)}</Td>
+        </Tr>
+      );
+    },
+    [renderOperations]
+  );
 
   return (
     <>
       <Flex flexDirection='row-reverse'>
-        <Button
-          sx={{
-            textAlign: 'right',
-            fontSize: 'sm',
-            fontWeight: '500',
-            lineHeight: '20px',
-            color: 'brand.primary',
-            my: '14px'
-          }}
-          onClick={onCreateGameOpen}
-        >
+        <Button mb={4} onClick={onCreateGameOpen}>
           <AddIcon sx={{ mr: '10px' }} />
           Create Game
         </Button>
@@ -266,7 +243,7 @@ const PK: React.FC = () => {
         <Thead>
           <Tr>
             <Th px='13px'>ID</Th>
-            <Th colSpan={4}>Creater</Th>
+            <Th colSpan={3}>Creater</Th>
             <Th>Value</Th>
             <Th colSpan={2}>Joiner</Th>
             <Th px='0'>Operation</Th>
@@ -275,20 +252,24 @@ const PK: React.FC = () => {
         <Tbody>
           <Tr>
             <FirstRowTd></FirstRowTd>
-            <FirstRowTd>Hash</FirstRowTd>
+            {/* <FirstRowTd>Hash</FirstRowTd> */}
             <FirstRowTd>Salt</FirstRowTd>
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd w='77px'>Choice</FirstRowTd>
-            <FirstRowTd>Dot</FirstRowTd>
+            <FirstRowTd>JPT</FirstRowTd>
             <FirstRowTd w='77px'>Choice</FirstRowTd>
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd></FirstRowTd>
           </Tr>
-          {tableData.map((game) => renderGameRow(game, operations))}
+          {data.map((game) => renderGameRow(game))}
         </Tbody>
       </Table>
-      <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} />
-      <JoinGame isOpen={isJoinGameOpen} onClose={onJoinGameClose} />
+      {!data.length && isLoading && (
+        <Center p={16}>
+          <CircularProgress isIndeterminate color='blue.300' />
+        </Center>
+      )}
+      <CreateGame isOpen={isCreateGameOpen} onClose={onCreateGameClose} onSubmit={forceUpdate} />
     </>
   );
 };

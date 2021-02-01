@@ -1,105 +1,178 @@
-import React from 'react';
+import { useContractQuery, useContractTx, useToast } from '@patract/react-hooks';
 import {
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Button,
   Center,
-  Icon,
   HStack,
-  Text,
-  InputGroup,
+  Image,
   Input,
-  InputRightAddon,
-  Tag
-} from '@chakra-ui/react';
-import { FaRegHandRock, FaRegHandPaper, FaRegHandPeace } from 'react-icons/fa';
+  InputGroup,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Tag,
+  Text,
+  useNumberInput
+} from '@patract/ui-components';
+import { parseAmount } from '@patract/utils';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useBalance } from '../../hooks/useBalance';
+import { usePkContract } from '../../hooks/usePkContract';
+import {
+  PaperEmptyImage,
+  PaperImage,
+  RockEmptyImage,
+  RockImage,
+  ScissorsEmptyImage,
+  ScissorsImage
+} from '../../images';
+import { GameChoice } from './index';
 
-const JoinGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+type ChoiceCardProps = {
+  Image: typeof Image;
+  choice: GameChoice;
+  onSelect: (choice: GameChoice) => void;
+  isSelected: boolean;
+};
+
+const ChoiceCard: React.FC<ChoiceCardProps> = ({ Image, choice, onSelect, isSelected }) => (
+  <Box
+    onClick={onSelect.bind(null, choice)}
+    sx={{
+      borderRadius: '3px',
+      bgColor: '#FFFFFF',
+      w: '100px',
+      h: '100px',
+      py: '10px',
+      cursor: 'pointer',
+      border: '1px solid',
+      borderColor: isSelected ? 'brand.primary' : 'transparent'
+    }}
+  >
+    <Center flexDirection='column'>
+      <Image sx={{ w: '55px', h: '55px' }} />
+      <Text sx={{ mt: '4px', color: isSelected ? 'brand.primary' : 'currentColor' }}>{choice}</Text>
+    </Center>
+  </Box>
+);
+
+export const JoinGame = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  item
+}: {
+  isOpen: boolean;
+  item: any;
+  onClose: () => void;
+  onSubmit: () => void;
+}) => {
+  const [selectedChoice, setSelectedChoice] = useState<GameChoice>('Rock');
+  const { contract } = usePkContract();
+  const balance = useBalance();
+  const [isLoading, setIsLoading] = useState<any>(false);
+
+  const { excute } = useContractTx({ title: 'Join Game', contract, method: 'join' });
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value } = useNumberInput({
+    step: 1,
+    defaultValue: 1,
+    min: 1,
+    max: Number(balance),
+    precision: 1
+  });
+
+  const inc = getIncrementButtonProps();
+  const dec = getDecrementButtonProps();
+  const input = getInputProps();
+
+  const close = useCallback(() => {
+    onClose();
+  }, []);
+
+  const submit = useCallback(() => {
+    setIsLoading(true);
+    excute([item.id, selectedChoice], parseAmount(value.toString(), 10))
+      .then(() => {
+        close();
+        onSubmit();
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [item, selectedChoice]);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={close}>
       <ModalOverlay />
-      <ModalContent sx={{ w: '700px', maxW: 'auto' }}>
-        <ModalHeader
-          sx={{
-            color: '#0058FA',
-            fontSize: 'md',
-            fontWeight: 'medium',
-            lineHeight: 'base',
-            py: '3',
-            boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)'
-          }}
-        >
-          <Center>Create Game</Center>
-        </ModalHeader>
-        <ModalCloseButton sx={{ color: '#999999' }} />
-        <ModalBody sx={{ p: '16px 128px', bgColor: '#F8F8F8' }}>
-          <Box sx={{ bgColor: '#FFFFFF', py: '7px', borderRadius: '8px 8px 0 0', w: '100%' }}>
-            <Center>Hash</Center>
+      <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
+        <ModalHeader>Create Game</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Box sx={{ w: '100%', p: '10px 64px 16px' }} justifyContent='center' alignItems='center'>
+            <HStack spacing={4} justifyContent='center'>
+              <ChoiceCard
+                Image={selectedChoice === 'Rock' ? RockImage : RockEmptyImage}
+                choice='Rock'
+                onSelect={setSelectedChoice}
+                isSelected={selectedChoice === 'Rock'}
+              />
+              <ChoiceCard
+                Image={selectedChoice === 'Paper' ? PaperImage : PaperEmptyImage}
+                choice='Paper'
+                onSelect={setSelectedChoice}
+                isSelected={selectedChoice === 'Paper'}
+              />
+              <ChoiceCard
+                Image={selectedChoice === 'Scissors' ? ScissorsImage : ScissorsEmptyImage}
+                choice='Scissors'
+                onSelect={setSelectedChoice}
+                isSelected={selectedChoice === 'Scissors'}
+              />
+            </HStack>
           </Box>
-          <HStack spacing={4}>
-            <Box
+
+          <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {balance} JPT</Text>
+          <HStack alignItems='center'>
+            <InputGroup>
+              <Input {...input} background='white' />
+              <InputRightElement
+                width={16}
+                children={<Tag colorScheme='blue'>JPT</Tag>}
+                sx={{ h: '40px', bg: 'transparent' }}
+              />
+            </InputGroup>
+            <Button
+              {...inc}
               sx={{
-                borderRadius: '3px',
-                bgColor: '#FFFFFF',
-                w: '100px',
-                h: '100px',
-                py: '10px',
-                cursor: 'pointer'
+                h: '40px',
+                border: '0',
+                bgColor: 'white',
+                color: 'blue.500',
+                boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
               }}
             >
-              <Center flexDirection='column'>
-                <Icon
-                  as={FaRegHandRock}
-                  sx={{ w: '55px', h: '55px', transform: 'rotate(90deg)', color: 'orange.800' }}
-                />
-                <Text sx={{ mt: '4px' }}>Rock</Text>
-              </Center>
-            </Box>
-            <Box
+              +
+            </Button>
+            <Button
+              {...dec}
               sx={{
-                borderRadius: '3px',
-                bgColor: '#FFFFFF',
-                w: '100px',
-                h: '100px',
-                py: '10px',
-                cursor: 'pointer',
-                border: '1px solid #0058FA'
+                h: '40px',
+                border: '0',
+                bgColor: 'white',
+                color: 'blue.500',
+                boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
               }}
             >
-              <Center flexDirection='column'>
-                <Icon
-                  as={FaRegHandPaper}
-                  sx={{ w: '55px', h: '55px', transform: 'rotate(90deg)', color: 'orange.800' }}
-                />
-                <Text sx={{ mt: '4px' }}>Paper</Text>
-              </Center>
-            </Box>
-            <Box
-              sx={{ borderRadius: '3px', bgColor: '#FFFFFF', w: '100px', h: '100px', py: '10px', cursor: 'pointer' }}
-            >
-              <Center flexDirection='column'>
-                <Icon
-                  as={FaRegHandPeace}
-                  sx={{ w: '55px', h: '55px', transform: 'rotate(90deg)', color: 'orange.800' }}
-                />
-                <Text sx={{ mt: '4px' }}>Scissors</Text>
-              </Center>
-            </Box>
+              -
+            </Button>
           </HStack>
-
-          <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: 10</Text>
-          <InputGroup size='sm' sx={{ bgColor: 'white', mt: '4px' }}>
-            <Input sx={{ fontSize: 'lg', h: '40px', borderRight: '0', w: '350px' }} />
-            <InputRightAddon children={<Tag colorScheme='blue'>DOT</Tag>} sx={{ h: '40px', bg: 'transparent' }} />
-          </InputGroup>
-
-          <Text
+          <Box
             sx={{
               border: '1px solid',
               borderColor: 'red.400',
@@ -108,27 +181,23 @@ const JoinGame = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void })
               borderRadius: '4px',
               p: '5px 15px',
               fontSize: 'sm',
-              mt: '8px'
+              mt: '2'
             }}
           >
-            <p>
-              1. The creator need to reveal the salt in 1 day, otherwise you can get
-            </p>
-            <p>
-              2. If the creator reveal and you win, you will get 190% back with 90% as profit.
-            </p>
+            <p>1. The creator need to reveal the salt in 1 day, otherwise you can get</p>
+            <p>2. If the creator reveal and you win, you will get 190% back with 90% as profit.</p>
             <p>3. If the creator reveal and you lose, you will get 0% back with -100% as lost.</p>
             <p>4. If the creator reveal and you are even, you will get 100% back.</p>
-          </Text>
+          </Box>
         </ModalBody>
-        <ModalFooter sx={{ justifyContent: 'center' }}>
-          <Button onClick={onClose} colorScheme='primary'>
-            Confirm
-          </Button>
+        <ModalFooter py={8}>
+          <Stack direction='row' spacing={4} justifyContent='flex-end'>
+            <Button isDisabled={!value} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+              Submit
+            </Button>
+          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>
   );
 };
-
-export default JoinGame;
