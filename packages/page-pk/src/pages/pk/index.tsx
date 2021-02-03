@@ -115,13 +115,16 @@ const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater'
   );
 };
 
-const renderChoice = (choice: GameChoice) => {
-  const imageStyle = {
+const renderChoice = (choice: GameChoice, revert = false) => {
+  const imageStyle: any = {
     display: 'inline-block',
     w: '6',
     h: '6',
-    color: 'orange.800'
+    color: 'orange.800',
   };
+  if (revert) {
+    imageStyle.transform = 'scaleX(-1)';
+  }
   if (choice === 'Rock') return <RockImage sx={imageStyle} />;
   if (choice === 'Paper') return <PaperImage sx={imageStyle} />;
   if (choice === 'Scissors') return <ScissorsImage sx={imageStyle} />;
@@ -218,7 +221,7 @@ const PK: React.FC = () => {
             <Amount value={item.value} decimals={10} postfix='JPT' />
           </Td>
           <Td sx={{ position: 'relative' }}>
-            {item.joiner_choice === 'None' ? <Center>-</Center> : renderChoice(item.joiner_choice)}
+            {item.joiner_choice === 'None' ? <Center>-</Center> : renderChoice(item.joiner_choice, true)}
           </Td>
           <Td sx={{ px: '3', textAlign: 'left' }}>
             {item.joiner ? <Address value={item.joiner} /> : <Center>-</Center>}

@@ -56,7 +56,7 @@ const ChoiceCard: React.FC<ChoiceCardProps> = ({ Image, choice, onSelect, isSele
     }}
   >
     <Center flexDirection='column'>
-      <Image sx={{ w: '55px', h: '55px' }} />
+      <Image sx={{ w: '55px', h: '55px', transform: 'scaleX(-1)' }} />
       <Text sx={{ mt: '4px', color: isSelected ? 'brand.primary' : 'currentColor' }}>{choice}</Text>
     </Center>
   </Box>
