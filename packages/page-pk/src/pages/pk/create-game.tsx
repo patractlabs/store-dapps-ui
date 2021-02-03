@@ -18,6 +18,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  SimpleGrid,
   Stack,
   Tag,
   Text,
@@ -264,45 +265,43 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
               </Text>
             </Center>
           </Box>
-
-          <Flex justify='space-between' flexDirection='row'>
-            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>{parseFloat(balance).toFixed()} JPT</Text>
-            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance</Text>
+          <Flex justify='space-between'>
+            <HStack alignItems='center' sx={{ width: '77%' }}>
+              <InputGroup>
+                <Input {...input} background='white' />
+                <InputRightElement
+                  width={16}
+                  children={<Tag colorScheme='blue'>JPT</Tag>}
+                  sx={{ h: '40px', bg: 'transparent' }}
+                />
+              </InputGroup>
+              <Button
+                {...inc}
+                sx={{
+                  h: '40px',
+                  border: '0',
+                  bgColor: 'white',
+                  color: 'blue.500',
+                  boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
+                }}
+              >
+                +
+              </Button>
+              <Button
+                {...dec}
+                sx={{
+                  h: '40px',
+                  border: '0',
+                  bgColor: 'white',
+                  color: 'blue.500',
+                  boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
+                }}
+              >
+                -
+              </Button>
+            </HStack>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs', width: '23%', lineHeight: '40px', textAlign: 'right' }}>Balance: {parseInt(balance)} JPT</Text>
           </Flex>
-          <HStack alignItems='center'>
-            <InputGroup>
-              <Input {...input} background='white' />
-              <InputRightElement
-                width={16}
-                children={<Tag colorScheme='blue'>JPT</Tag>}
-                sx={{ h: '40px', bg: 'transparent' }}
-              />
-            </InputGroup>
-            <Button
-              {...inc}
-              sx={{
-                h: '40px',
-                border: '0',
-                bgColor: 'white',
-                color: 'blue.500',
-                boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
-              }}
-            >
-              +
-            </Button>
-            <Button
-              {...dec}
-              sx={{
-                h: '40px',
-                border: '0',
-                bgColor: 'white',
-                color: 'blue.500',
-                boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
-              }}
-            >
-              -
-            </Button>
-          </HStack>
           <Box
             sx={{
               border: '1px solid',
