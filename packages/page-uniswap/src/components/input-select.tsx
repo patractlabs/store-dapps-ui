@@ -15,7 +15,8 @@ import {
   Text,
   InputNumber
 } from '@patract/ui-components';
-import { truncated, formatAmount } from '@patract/utils';
+import { Fixed } from '@patract/ui-components';
+import { truncated, toFixed, FixedNumber } from '@patract/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTokens } from '../hooks/useTokens';
@@ -52,10 +53,10 @@ const InputSelect: React.FC<InputSelectProps> = ({
   const { isOpen, onOpen, onClose } = useModal();
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>(null);
-
+  console.log('哦哦哦哦')
   const { data, queryUnknownToken } = useTokens();
   const { currentAccount } = useAccount();
-  const [balance, setBalance] = useState('');
+  const [balance, setBalance] = useState<null | FixedNumber>(null);
   const createToken = useTokenFactory();
 
   const onPopoverClose = useCallback(() => {
@@ -70,7 +71,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
       onClose();
       onChangeOption(option);
     },
-    [onClose, setInputValue, onChangeOption]
+    [onClose, onChangeOption]
   );
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
     if (!inputValue) {
       setOptions(data);
     } else {
-      const options = data.filter(({ name, symbol, address }) => {
+      const options = data.filter(({ name, symbol, address }: any) => {
         const lowerInput = inputValue.toLowerCase();
         return (
           name.toLocaleLowerCase().includes(lowerInput) ||
@@ -99,13 +100,14 @@ const InputSelect: React.FC<InputSelectProps> = ({
       const { contract } = createToken(option.address);
       contractQuery(currentAccount, contract, withBalance, currentAccount)
         .then((b) => {
-          setBalance(formatAmount(b as any, option.decimals));
+          setBalance(toFixed(b as string, option.decimals));
         })
-        .catch(() => {
-          setBalance('');
+        .catch((error) => {
+          console.log(error);
+          setBalance(null);
         });
     } else {
-      setBalance('');
+      setBalance(null);
     }
   }, [currentAccount, signal, option, withBalance, createToken]);
 
@@ -115,7 +117,8 @@ const InputSelect: React.FC<InputSelectProps> = ({
         <span>{label}</span>
         {withBalance && balance ? (
           <span>
-            Balance: {balance} {option?.symbol}
+            Balance:
+            <Fixed value={balance} postfix={option?.symbol} />
           </span>
         ) : null}
       </FormLabel>

@@ -6,5 +6,6 @@ export * from './api-ready';
 export * from './identity-icon';
 export * from './address';
 export * from './amount';
+export * from './fixed';
 
 export * from '@chakra-ui/react';

@@ -2,7 +2,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { useModal } from '@patract/react-hooks';
 import {
   Address,
-  Amount,
+  Fixed,
   Box,
   Button,
   Center,
@@ -89,16 +89,16 @@ export const PoolList = () => {
                   <Address value={item.to} />
                 </Td>
                 <Td>
-                  <Amount value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_name} />
+                  <Fixed value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_name} />
                 </Td>
                 <Td>
-                  <Amount value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_name} />
+                  <Fixed value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_name} />
                 </Td>
                 <Td>
-                  <Amount value={item.lp_token_supply} decimals={18} postfix='LPT' />
+                  <Fixed value={item.lp_token_supply} decimals={18} postfix='LPT' />
                 </Td>
                 <Td>
-                  <Amount value={lpBalance} decimals={18} postfix='LPT' />
+                  <Fixed value={lpBalance} decimals={18} postfix='LPT' />
                 </Td>
                 <Td>
                   <Flex>

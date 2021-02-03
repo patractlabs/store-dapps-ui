@@ -32,7 +32,7 @@ const CreatePair = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
 
   const submit = () => {
     setIsLoading(true);
-    excute([from, to])
+    excute([from, to, null])
       .then(() => {
         close();
         onSubmit();

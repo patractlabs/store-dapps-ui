@@ -18,13 +18,15 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text
+  Text,
+  Fixed
 } from '@patract/ui-components';
 import { formatAmount, parseAmount } from '@patract/utils';
 import React, { useEffect, useState, useMemo } from 'react';
 import { useToken } from '../../hooks/useTokenFactory';
 import { useLPtokenContract } from '../../hooks/useLPtokenContract';
 import { useExchange } from '../../hooks/useExchangeFactory';
+import { FiX } from 'react-icons/fi';
 
 const Add = ({
   isOpen,
@@ -80,14 +82,18 @@ const Add = ({
     const totalFrom = Number(fromValue) + Number(item.from_token_pool);
     const totalTo = Number(toValue) + Number(item.to_token_pool);
 
-    return [(totalTo / totalFrom).toFixed(10), (totalFrom / totalTo).toFixed(10)];
+    if (!totalFrom || !totalTo) {
+      return [0, 0];
+    } else {
+      return [totalTo / totalFrom, totalFrom / totalTo];
+    }
   }, [fromValue, toValue, item.from_token_pool, item.to_token_pool]);
 
   useEffect(() => {
     if (isOpen && readFrom) {
       readFrom(currentAccount)
         .then((result) => {
-          result && setFromBalance(formatAmount(result as any, item.from_decimals));
+          result && setFromBalance(result as any);
         })
         .catch(() => {
           setFromBalance('');
@@ -99,7 +105,7 @@ const Add = ({
     if (isOpen && readTotalSupply) {
       readTotalSupply()
         .then((result) => {
-          result && setLpTotal(formatAmount(result as any, 18));
+          result && setLpTotal(result as any);
         })
         .catch(() => {
           setLpTotal('');
@@ -114,7 +120,7 @@ const Add = ({
         parseAmount(toValue || '0', item.to_decimals)
       )
         .then((result) => {
-          setLpValue(formatAmount((result as any) || 0, 18));
+          setLpValue((result as any) || '0');
         })
         .catch((error) => {
           console.error(error);
@@ -127,7 +133,7 @@ const Add = ({
     if (isOpen && readTo) {
       readTo(currentAccount)
         .then((result) => {
-          result && setToBalance(formatAmount(result as any, item.to_decimals));
+          result && setToBalance(result as any);
         })
         .catch(() => {
           setToBalance('');
@@ -172,7 +178,10 @@ const Add = ({
           <FormControl mb={4}>
             <FormLabel textStyle='form-label'>
               <span>From</span>
-              {fromBalance ? <span>Balance: {fromBalance}</span> : null}
+
+              <span>
+                Balance: <Fixed value={fromBalance} decimals={item.from_decimals} />{' '}
+              </span>
             </FormLabel>
             <InputGroup>
               <InputNumber value={fromValue} onChange={setFromValue} />
@@ -207,7 +216,10 @@ const Add = ({
           <FormControl mb={4}>
             <FormLabel textStyle='form-label'>
               <span>To</span>
-              {toBalance ? <span>Balance: {toBalance}</span> : null}
+
+              <span>
+                Balance: <Fixed value={toBalance} decimals={item.to_decimals} />
+              </span>
             </FormLabel>
             <InputGroup>
               <InputNumber value={toValue} onChange={setToValue} />
@@ -251,21 +263,19 @@ const Add = ({
                 }}
               >
                 <Box>
-                  <Center>
-                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>{fromPrice}</Text>
+                  <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
+                    <Fixed value={fromPrice} round={8} withDecimals />
                   </Center>
-                  <Center>
-                    <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>
-                      {item.to_name} per {item.from_name}
-                    </Text>
+                  <Center sx={{ color: 'brand.grey', fontSize: 'xs' }}>
+                    {item.to_name} per {item.from_name}
                   </Center>
                 </Box>
                 <Box>
-                  <Center>
-                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>{toPrice}</Text>
+                  <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
+                    <Fixed value={toPrice} round={8} withDecimals />
                   </Center>
                   <Center>
-                    <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>
+                    <Text>
                       {item.from_name} per {item.to_name}
                     </Text>
                   </Center>
@@ -275,7 +285,7 @@ const Add = ({
             <FormControl>
               <FormLabel textStyle='form-label'>
                 <span>LP Tokens</span>
-                <span>Balance: {lpBalance && formatAmount(lpBalance, 18)}</span>
+                <span>Balance: {lpBalance && <Fixed value={lpBalance} round={8} decimals={18} postfix='LPT' />}</span>
               </FormLabel>
               <Flex
                 sx={{
@@ -286,16 +296,16 @@ const Add = ({
                 }}
               >
                 <Box>
-                  <Center>
-                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>{lpValue}</Text>
+                  <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
+                    <Fixed value={lpValue} decimals={18} round={8} postfix='LPT' />
                   </Center>
                   <Center>
                     <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>You will receive</Text>
                   </Center>
                 </Box>
                 <Box>
-                  <Center>
-                    <Text sx={{ fontSize: 'sm', fontWeight: 'medium' }}>{lpTotal}</Text>
+                  <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
+                    <Fixed value={lpTotal} decimals={18} postfix='LPT' />
                   </Center>
                   <Center>
                     <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>Total supply</Text>

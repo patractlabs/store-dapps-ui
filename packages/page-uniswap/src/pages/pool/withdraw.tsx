@@ -22,7 +22,8 @@ import {
   SliderThumb,
   SliderTrack,
   Stack,
-  Text
+  Text,
+  Fixed
 } from '@patract/ui-components';
 import { formatAmount, parseAmount } from '@patract/utils';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -70,7 +71,6 @@ const Withdraw = ({
 
   useEffect(() => {
     if (isOpen) {
-      console.log(value);
       read(parseAmount(isNaN(value as any) ? '0' : String(Number(value).toFixed(18)), 18)).then((result: any) => {
         result &&
           setEstimated([formatAmount(result[0], item.from_decimals), formatAmount(result[1], item.to_decimals)]);
@@ -107,7 +107,9 @@ const Withdraw = ({
           <FormControl sx={{ mb: '24px' }}>
             <FormLabel textStyle='form-label'>
               <span>Withdraw LP Token</span>
-              <span>Balance: {balance}</span>
+              <span>
+                Balance: <Fixed withDecimals value={balance} />
+              </span>
             </FormLabel>
             <InputNumber
               value={value}

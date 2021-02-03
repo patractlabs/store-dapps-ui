@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0xc8beea022f5691b22e1e856671fdfaad4313c0105897e851046c7d4b90901418",
+    "hash": "0xdaff7c082fcb0e2e6a621046f3052186f93f45938e835b30b110bac9815c4406",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
@@ -106,6 +106,15 @@
               ],
               "type": 4
             }
+          },
+          {
+            "name": "salt_op",
+            "type": {
+              "displayName": [
+                "Option"
+              ],
+              "type": 15
+            }
           }
         ],
         "docs": [],
@@ -155,7 +164,7 @@
           "displayName": [
             "Option"
           ],
-          "type": 15
+          "type": 16
         },
         "selector": "0xae0c8189"
       },
@@ -182,7 +191,7 @@
           "displayName": [
             "Option"
           ],
-          "type": 16
+          "type": 17
         },
         "selector": "0x4b668ecb"
       },
@@ -655,6 +664,32 @@
         "collections",
         "hashmap",
         "ValueEntry"
+      ]
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "name": "None"
+            },
+            {
+              "fields": [
+                {
+                  "type": 1,
+                  "typeName": "T"
+                }
+              ],
+              "name": "Some"
+            }
+          ]
+        }
+      },
+      "params": [
+        1
+      ],
+      "path": [
+        "Option"
       ]
     },
     {

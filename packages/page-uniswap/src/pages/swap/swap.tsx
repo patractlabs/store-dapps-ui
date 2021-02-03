@@ -235,7 +235,6 @@ export const Swap = () => {
           }
         })
         .catch((error) => {
-          console.error(error);
           setExchangeContract(null);
         })
         .finally(() => {
