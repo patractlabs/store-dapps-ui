@@ -53,7 +53,6 @@ const InputSelect: React.FC<InputSelectProps> = ({
   const { isOpen, onOpen, onClose } = useModal();
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>(null);
-  console.log('哦哦哦哦')
   const { data, queryUnknownToken } = useTokens();
   const { currentAccount } = useAccount();
   const [balance, setBalance] = useState<null | FixedNumber>(null);
@@ -100,7 +99,11 @@ const InputSelect: React.FC<InputSelectProps> = ({
       const { contract } = createToken(option.address);
       contractQuery(currentAccount, contract, withBalance, currentAccount)
         .then((b) => {
-          setBalance(toFixed(b as string, option.decimals));
+          if (!b || b === '0') {
+            setBalance(null);
+          } else {
+            setBalance(toFixed(b as string, option.decimals));
+          }
         })
         .catch((error) => {
           console.log(error);

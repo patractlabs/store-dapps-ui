@@ -64,7 +64,6 @@ export const useTokens = () => {
 
       const all = [...set];
 
-      console.log(all)
       const tokens = await Promise.all(
         all.map(async (address: any) => {
           const { contract } = createToken(address);

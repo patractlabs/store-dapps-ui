@@ -210,6 +210,7 @@ export const Swap = () => {
   useEffect(() => {
     if (inputOption && outputOption) {
       setExchangeContractLoading(true);
+      console.log('readExchangeAddress', inputOption.address, outputOption.address)
       readExchangeAddress(inputOption.address, outputOption.address)
         .then((result) => {
           if (result) {
@@ -235,9 +236,12 @@ export const Swap = () => {
           }
         })
         .catch((error) => {
+          console.log('catch')
+
           setExchangeContract(null);
         })
         .finally(() => {
+          console.log('finally')
           setExchangeContractLoading(false);
         });
     }
