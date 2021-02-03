@@ -203,7 +203,7 @@ const PK: React.FC = () => {
       return (
         <Tr key={item.id}>
           <Td>{item.id}</Td>
-          {/* <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{creater.hash}</Td> */}
+          {/* <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{item.hash}</Td> */}
           <Td
             sx={{
               color: isRevealed ? '#000000' : 'auto',

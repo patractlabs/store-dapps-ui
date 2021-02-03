@@ -265,7 +265,10 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
             </Center>
           </Box>
 
-          <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {balance} JPT</Text>
+          <Flex justify='space-between' flexDirection='row'>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>{parseFloat(balance).toFixed()} JPT</Text>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance</Text>
+          </Flex>
           <HStack alignItems='center'>
             <InputGroup>
               <Input {...input} background='white' />

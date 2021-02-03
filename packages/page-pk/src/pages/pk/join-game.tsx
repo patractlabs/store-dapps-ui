@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   HStack,
   Image,
   Input,
@@ -87,8 +88,8 @@ export const JoinGame = ({
     precision: 1
   });
 
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
+  // const inc = getIncrementButtonProps();
+  // const dec = getDecrementButtonProps();
   const input = getInputProps();
 
   const close = useCallback(() => {
@@ -137,17 +138,21 @@ export const JoinGame = ({
             </HStack>
           </Box>
 
-          <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {balance} JPT</Text>
+
+          <Flex justify='space-between' flexDirection='row'>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>{parseFloat(balance).toFixed()} JPT</Text>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance</Text>
+          </Flex>
           <HStack alignItems='center'>
             <InputGroup>
-              <Input {...input} background='white' />
+              <Input {...input} background='white' isDisabled/>
               <InputRightElement
                 width={16}
                 children={<Tag colorScheme='blue'>JPT</Tag>}
                 sx={{ h: '40px', bg: 'transparent' }}
               />
             </InputGroup>
-            <Button
+            {/* <Button
               {...inc}
               sx={{
                 h: '40px',
@@ -158,8 +163,8 @@ export const JoinGame = ({
               }}
             >
               +
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               {...dec}
               sx={{
                 h: '40px',
@@ -170,7 +175,7 @@ export const JoinGame = ({
               }}
             >
               -
-            </Button>
+            </Button> */}
           </HStack>
           <Box
             sx={{
