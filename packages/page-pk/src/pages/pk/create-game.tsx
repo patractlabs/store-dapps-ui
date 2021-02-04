@@ -93,7 +93,7 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
     defaultValue: 1,
     min: 1,
     max: Number(balance),
-    precision: 1
+    precision: 0
   });
 
   useEffect(() => {
@@ -329,7 +329,7 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
         </ModalBody>
         <ModalFooter py={8}>
           <Stack direction='row' spacing={4} justifyContent='flex-end'>
-            <Button isDisabled={!salt || !hash || !value} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            <Button isDisabled={!salt || !value} isLoading={isLoading} colorScheme='blue' onClick={submit}>
               Submit
             </Button>
           </Stack>

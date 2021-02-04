@@ -14,7 +14,6 @@ export const Fixed: React.FC<FixedProps> = ({ value, withDecimals = false, decim
   if (value === undefined || value === null) return null;
 
   const fixed = useMemo(() => {
-    console.log(value)
     if(withDecimals) {
       return toFixed(value, decimals, withDecimals).round(round).toString();
     } else {

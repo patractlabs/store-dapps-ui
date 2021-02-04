@@ -3,12 +3,13 @@ import {
   Box,
   Button,
   Center,
+  Fixed,
   Flex,
   FormControl,
   FormLabel,
   IdentityIcon,
-  InputNumber,
   InputGroup,
+  InputNumber,
   InputRightElement,
   Modal,
   ModalBody,
@@ -18,15 +19,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text,
-  Fixed
+  Text
 } from '@patract/ui-components';
-import { formatAmount, parseAmount } from '@patract/utils';
-import React, { useEffect, useState, useMemo } from 'react';
-import { useToken } from '../../hooks/useTokenFactory';
-import { useLPtokenContract } from '../../hooks/useLPtokenContract';
+import { parseAmount } from '@patract/utils';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useExchange } from '../../hooks/useExchangeFactory';
-import { FiX } from 'react-icons/fi';
+import { useLPtokenContract } from '../../hooks/useLPtokenContract';
+import { useToken } from '../../hooks/useTokenFactory';
 
 const Add = ({
   isOpen,
@@ -77,6 +76,27 @@ const Add = ({
     contract: toContract,
     method: 'erc20,approve'
   });
+
+  const poolPrice = useMemo(() => {
+    const totalFrom = Number(item.from_token_pool);
+    const totalTo = Number(item.to_token_pool);
+
+    if (!totalFrom || !totalTo) {
+      return 0;
+    } else {
+      return totalTo / totalFrom;
+    }
+  }, [item.from_token_pool, item.to_token_pool]);
+
+  useEffect(() => {
+    if (poolPrice) {
+      if (Number(fromValue)) {
+        setToValue((poolPrice * Number(fromValue)).toFixed(8));
+      } else {
+        setToValue('');
+      }
+    }
+  }, [fromValue, poolPrice]);
 
   const [fromPrice, toPrice] = useMemo(() => {
     const totalFrom = Number(fromValue) + Number(item.from_token_pool);
@@ -149,12 +169,14 @@ const Add = ({
 
   const submit = () => {
     const from = parseAmount(fromValue || '0', item.from_decimals);
+    const fromApprove = parseAmount(fromValue + 1 || '0', item.from_decimals);
     const to = parseAmount(toValue || '0', item.to_decimals);
+    const toApprove = parseAmount(toValue + 1 || '0', item.to_decimals);
 
     setIsLoading(true);
-    approveFrom([item.exchange, from])
+    approveFrom([item.exchange, fromApprove])
       .then(() => {
-        return approveTo([item.exchange, to]);
+        return approveTo([item.exchange, toApprove]);
       })
       .then(() => {
         return excute([from, to]);
@@ -222,7 +244,7 @@ const Add = ({
               </span>
             </FormLabel>
             <InputGroup>
-              <InputNumber value={toValue} onChange={setToValue} />
+              <InputNumber isDisabled={!!poolPrice} value={toValue} onChange={setToValue} />
               <InputRightElement
                 width={40}
                 children={
@@ -274,10 +296,8 @@ const Add = ({
                   <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
                     <Fixed value={toPrice} round={8} withDecimals />
                   </Center>
-                  <Center>
-                    <Text>
-                      {item.from_name} per {item.to_name}
-                    </Text>
+                  <Center sx={{ color: 'brand.grey', fontSize: 'xs' }}>
+                    {item.from_name} per {item.to_name}
                   </Center>
                 </Box>
               </Flex>
