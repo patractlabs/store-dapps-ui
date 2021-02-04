@@ -3604,6 +3604,7 @@ __metadata:
     "@babel/runtime": ^7.12.5
     "@chakra-ui/icons": ^1.0.3
     "@chakra-ui/react": ^1.1.6
+    "@material-ui/lab": ^4.0.0-alpha.57
     "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
     react: ^17.0.1

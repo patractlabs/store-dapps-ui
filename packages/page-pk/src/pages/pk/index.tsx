@@ -19,8 +19,9 @@ import {
   Thead,
   Tr
 } from '@patract/ui-components';
+import Pagination from '@material-ui/lab/Pagination';
 import { truncated } from '@patract/utils';
-import React, { ComponentProps, useCallback, useMemo, useReducer } from 'react';
+import React, { ComponentProps, useCallback, useMemo, useReducer, useState } from 'react';
 import { FaChessBoard } from 'react-icons/fa';
 import { usePkContract } from '../../hooks/usePkContract';
 import { usePklist } from '../../hooks/usePklist';
@@ -261,6 +262,14 @@ const PK: React.FC = () => {
     [renderOperations]
   );
 
+  const pageSize = 10;
+
+  const count = useMemo(() => {
+    return data ? Math.ceil(data.length / pageSize) : 0;
+  }, [data]);
+
+  const [page, setPage] = useState(1);
+
   return (
     <>
       <Flex flexDirection='row-reverse'>
@@ -291,9 +300,14 @@ const PK: React.FC = () => {
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd></FirstRowTd>
           </Tr>
-          {data.map((game) => renderGameRow(game))}
+          {data.slice(pageSize * (page - 1), pageSize * page).map((game) => renderGameRow(game))}
         </Tbody>
       </Table>
+      {((data && data.length !== 0) || page !== 1) && (
+        <Flex mt='4' justifyContent='flex-end'>
+          <Pagination count={count} page={page} onChange={(_, page) => setPage(page)} shape='rounded' />
+        </Flex>
+      )}
       {!data.length && isLoading && (
         <Center p={16}>
           <CircularProgress isIndeterminate color='blue.300' />
