@@ -232,7 +232,7 @@ const PK: React.FC = () => {
               fontWeight: isRevealed ? 'semibold' : 'auto'
             }}
           >
-            {!isRevealed ? <Text>{'-'}</Text> : truncated(item.salt || '')}
+            {!isRevealed ? <Text>{'-'}</Text> : (item.salt || '')}
           </Td>
           <Td sx={{ px: '3', textAlign: 'left' }}>
             <Address value={item.creator} />
