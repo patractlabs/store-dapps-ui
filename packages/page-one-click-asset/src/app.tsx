@@ -18,10 +18,10 @@ export const App = () => {
           </Button>
         </Flex>
         <Box>
-          <Text>Your Assets</Text>
-          <AssetList isAll={false} />
-          <Text mt="8">All Assets</Text>
-          <AssetList isAll={true} />
+          <Text>My Assets</Text>
+          <AssetList isPublic={false} />
+          <Text mt="8">Public Assets</Text>
+          <AssetList isPublic={true} />
         </Box>
       </PageMain>
       <CreateAssetModal isOpen={isOpen} onClose={onClose} />

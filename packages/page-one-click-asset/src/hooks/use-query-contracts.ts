@@ -72,16 +72,54 @@ const allDeployedContractSubscription = gql`
   }
 `;
 
+const publicDeployedContractSubscription = gql`
+  query Contracts($signer: String!, $offset: Int, $codeHash1: jsonb!, $codeHash2: jsonb!) {
+    Events(
+      order_by: { blockNumber: desc }
+      limit: 5
+      offset: $offset
+      where: {
+        section: { _eq: "contracts" }
+        method: { _eq: "Instantiated" }
+        extrinsic: {
+          signer: { _neq: $signer }
+          _or: [{ args: { _contains: $codeHash1 } }, { args: { _contains: $codeHash2 } }]
+        }
+      }
+    ) {
+      id
+      args
+      extrinsic {
+        args
+      }
+    }
+    Events_aggregate(
+      where: {
+        section: { _eq: "contracts" }
+        method: { _eq: "Instantiated" }
+        extrinsic: {
+          signer: { _neq: $signer }
+          _or: [{ args: { _contains: $codeHash1 } }, { args: { _contains: $codeHash2 } }]
+        }
+      }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
 export const useQueryContracts = (
-  isAll: boolean,
+  isPublic: boolean,
   signer: string,
   codeHash1: string,
   codeHash2: string,
   offset: number
 ) => {
   const gql = useMemo(() => {
-    return isAll ? allDeployedContractSubscription : deployedContractSubscription;
-  }, [isAll]);
+    return isPublic ? publicDeployedContractSubscription : deployedContractSubscription;
+  }, [isPublic]);
 
   return useSubscription(gql, {
     variables: {

@@ -20,12 +20,12 @@ import Erc20mintable from './contracts/erc20mintable.json';
 import { useAssetList, useQueryContracts } from './hooks';
 import { IssueAssetButton } from './issue-asset-button';
 
-export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
+export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
   const { currentAccount } = useAccount();
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0);
 
-  const { data } = useQueryContracts(isAll, currentAccount, Erc20fixed.source.hash, Erc20mintable.source.hash, offset);
+  const { data } = useQueryContracts(isPublic, currentAccount, Erc20fixed.source.hash, Erc20mintable.source.hash, offset);
 
   const page = useMemo(() => {
     return Math.floor(offset / 5) + 1;
@@ -38,6 +38,7 @@ export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
 
   const contractList = useMemo(() => {
     if (!data) return;
+    console.log('data change contractlist', data.Events_aggregate.aggregate.count, data.Events)
     setCount(Math.floor(data.Events_aggregate.aggregate.count / 5) + 1);
     return data.Events.map((event: any) => {
       return {
@@ -62,7 +63,7 @@ export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
             <Th>Symbol</Th>
             <Th>Decimals</Th>
             <Th>Max Supply</Th>
-            {isAll ? null : <Th></Th>}
+            {isPublic ? null : <Th></Th>}
           </Tr>
         </Thead>
         <Tbody>
@@ -78,7 +79,7 @@ export const AssetList: React.FC<{ isAll: boolean }> = ({ isAll }) => {
               <Td>{item.tokenSymbol}</Td>
               <Td>{item.tokenDecimals}</Td>
               <Td>{item.totalSupply}</Td>
-              {isAll ? null : (
+              {isPublic ? null : (
                 <Td>
                   {item.codeHash === Erc20mintable.source.hash ? (
                     <IssueAssetButton contractAddress={item.address} updateView={forceUpdate} />

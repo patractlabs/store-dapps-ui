@@ -18,7 +18,6 @@ import { ApiSigner } from '../signer/signers/api-signer';
 import { registry } from './type-registry';
 import type { ApiProps, ApiState } from './types';
 
-
 interface Props {
   children: React.ReactNode;
   url?: string;
