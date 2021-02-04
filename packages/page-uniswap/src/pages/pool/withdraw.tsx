@@ -152,7 +152,7 @@ const Withdraw = ({
                 >
                   <Text sx={{ display: 'inline-block', fontSize: 'lg', lineHeight: '24px', mr: '3px' }}>LP</Text>
                   <Text sx={{ display: 'inline-block', fontSize: 'xs', lineHeight: '24px', color: 'brand.grey' }}>
-                    ({item.from_name}-{item.to_name})
+                    ({item.from_symbol}-{item.to_symbol})
                   </Text>
                 </Box>
               </Center>
@@ -188,7 +188,7 @@ const Withdraw = ({
                         left: '42px'
                       }}
                     >
-                      {item.from_name}
+                      {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
                       <IdentityIcon value={item.from} />
@@ -222,7 +222,7 @@ const Withdraw = ({
                         left: '42px'
                       }}
                     >
-                      {item.to_name}
+                      {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
                       <IdentityIcon value={item.to} />
