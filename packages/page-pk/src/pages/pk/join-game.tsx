@@ -21,8 +21,8 @@ import {
   Text,
   useNumberInput
 } from '@patract/ui-components';
-import { parseAmount } from '@patract/utils';
-import React, { useCallback, useState } from 'react';
+import { parseAmount, formatAmount } from '@patract/utils';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useBalance } from '../../hooks/useBalance';
 import { usePkContract } from '../../hooks/usePkContract';
 import {
@@ -78,19 +78,17 @@ export const JoinGame = ({
   const { contract } = usePkContract();
   const balance = useBalance();
   const [isLoading, setIsLoading] = useState<any>(false);
+  const [value, setValue] = useState<any>('');
 
   const { excute } = useContractTx({ title: 'Join Game', contract, method: 'join' });
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value } = useNumberInput({
-    step: 1,
-    defaultValue: 1,
-    min: 1,
-    max: Number(balance),
-    precision: 1
-  });
 
   // const inc = getIncrementButtonProps();
   // const dec = getDecrementButtonProps();
-  const input = getInputProps();
+  useEffect(() => {
+    if (item.value) {
+      setValue(formatAmount(item.value, 10));
+    }
+  }, [item.value]);
 
   const close = useCallback(() => {
     onClose();
@@ -140,7 +138,7 @@ export const JoinGame = ({
           <Flex justify='space-between'>
             <HStack alignItems='center' sx={{ width: '77%' }}>
               <InputGroup>
-                <Input {...input} background='white' isDisabled/>
+                <Input value={value} background='white' isDisabled />
                 <InputRightElement
                   width={16}
                   children={<Tag colorScheme='blue'>JPT</Tag>}
@@ -172,7 +170,9 @@ export const JoinGame = ({
                 -
               </Button> */}
             </HStack>
-            <Text sx={{ color: 'gray.400', fontSize: 'xs', width: '23%', lineHeight: '40px', textAlign: 'right' }}>Balance: {parseInt(balance)} JPT</Text>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs', width: '23%', lineHeight: '40px', textAlign: 'right' }}>
+              Balance: {parseInt(balance)} JPT
+            </Text>
           </Flex>
           <Box
             sx={{

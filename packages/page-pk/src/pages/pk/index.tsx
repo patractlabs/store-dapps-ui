@@ -20,13 +20,14 @@ import {
   Tr
 } from '@patract/ui-components';
 import { truncated } from '@patract/utils';
-import React, { ComponentProps, useCallback, useReducer } from 'react';
+import React, { ComponentProps, useCallback, useMemo, useReducer } from 'react';
 import { FaChessBoard } from 'react-icons/fa';
 import { usePkContract } from '../../hooks/usePkContract';
 import { usePklist } from '../../hooks/usePklist';
 import { PaperImage, RockImage, ScissorsImage } from '../../images/';
 import CreateGame from './create-game';
 import { DeleteButton } from './delete';
+import { RevealButton } from './reveal';
 import { JoinButton } from './join';
 
 export type GameChoice = 'Scissors' | 'Rock' | 'Paper' | null | undefined;
@@ -46,18 +47,18 @@ const FirstRowTd: React.FC<ComponentProps<typeof Td>> = ({ children, ...rest }) 
   </Td>
 );
 
-const getTagColor = (winner: 'creater' | 'joiner' | 'even', role: 'creater' | 'joiner') => {
+const getTagColor = (winner: 'Creator' | 'joiner' | 'even', role: 'Creator' | 'joiner') => {
   if (winner === 'even') return { color: '#000000', bgColor: '#ABB4D0' };
   return winner === role ? { color: '#FFFFFF', bgColor: '#25A17C' } : { color: '#FFFFFF', bgColor: '#FA6400' };
 };
 
-const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater' | 'joiner') => {
+const renderTag = (winner: 'Creator' | 'joiner' | 'even' | null, role: 'Creator' | 'joiner') => {
   if (!winner) return null;
   const tagText = winner === 'even' ? 'Even' : winner === role ? 'Win' : 'Lose';
   const color = getTagColor(winner, role);
-  const styles = role === 'creater' ? { left: 0 } : { right: 0 };
+  const styles = role === 'Creator' ? { left: 0 } : { right: 0 };
   const triangleStyles =
-    role === 'creater'
+    role === 'Creator'
       ? {
           left: 0,
           borderWidth: '36px 36px 0 0',
@@ -69,7 +70,7 @@ const renderTag = (winner: 'creater' | 'joiner' | 'even' | null, role: 'creater'
           borderColor: `transparent ${color['bgColor']} transparent transparent`
         };
   const textStyles =
-    role === 'creater'
+    role === 'Creator'
       ? {
           transform: 'rotate(-45deg)',
           mt: '2px',
@@ -120,7 +121,7 @@ const renderChoice = (choice: GameChoice, revert = false) => {
     display: 'inline-block',
     w: '6',
     h: '6',
-    color: 'orange.800',
+    color: 'orange.800'
   };
   if (revert) {
     imageStyle.transform = 'scaleX(-1)';
@@ -157,6 +158,22 @@ const PK: React.FC = () => {
     [forceUpdate, deleteGame]
   );
 
+  const getResult = useCallback((item, role) => {
+    if (!item.result) return null;
+
+    if (item.result === 'Draw') {
+      return renderTag('even', role);
+    }
+    if (item.result === 'CreatorWin') {
+      return renderTag('Creator', role);
+    }
+    if (item.result === 'JoinerWin') {
+      return renderTag('joiner', role);
+    }
+
+    return null;
+  }, []);
+
   const renderOperations = useCallback(
     (item: any) => {
       if (item.status === 'End') {
@@ -183,13 +200,17 @@ const PK: React.FC = () => {
           );
         }
       }
-      // if (item.status === 'Join') {
-      //   return (
-      //     <Flex direction='column'>
-      //       <RevealButton onSubmit={forceUpdate} item={item} />
-      //     </Flex>
-      //   );
-      // }
+      if (item.status === 'Settle') {
+        if (currentAccount === item.creator) {
+          return (
+            <Flex direction='column'>
+              <RevealButton onSubmit={forceUpdate} item={item} />
+            </Flex>
+          );
+        } else {
+          return <Text color='gray.500'>{'Waitting'}</Text>;
+        }
+      }
 
       return null;
     },
@@ -198,33 +219,40 @@ const PK: React.FC = () => {
 
   const renderGameRow = useCallback(
     (item: any) => {
-      const isRevealed = ['Settle'].includes(item.status);
+      const isRevealed = item.salt;
 
       return (
         <Tr key={item.id}>
           <Td>{item.id}</Td>
-          {/* <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{item.hash}</Td> */}
+          <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{truncated(item.salt_hash || '')}</Td>
           <Td
             sx={{
               color: isRevealed ? '#000000' : 'auto',
               fontWeight: isRevealed ? 'semibold' : 'auto'
             }}
           >
-            {truncated(item.salt_hash)}
-            {!isRevealed && <Text>{'(Unrevealed)'}</Text>}
+            {!isRevealed ? <Text>{'-'}</Text> : truncated(item.salt || '')}
           </Td>
           <Td sx={{ px: '3', textAlign: 'left' }}>
             <Address value={item.creator} />
           </Td>
-          <Td sx={{ position: 'relative' }}>{renderChoice(item.create_choice)}</Td>
+          <Td sx={{ position: 'relative' }}>
+            {getResult(item, 'Creator')}
+            {renderChoice(item.create_choice)}
+          </Td>
           <Td>
             <Amount value={item.value} decimals={10} postfix='JPT' />
           </Td>
           <Td sx={{ position: 'relative' }}>
+            {getResult(item, 'joiner')}
             {item.joiner_choice === 'None' ? <Center>-</Center> : renderChoice(item.joiner_choice, true)}
           </Td>
           <Td sx={{ px: '3', textAlign: 'left' }}>
-            {item.joiner ? <Address value={item.joiner} /> : <Center>-</Center>}
+            {item.joiner && item.joiner !== '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ? (
+              <Address value={item.joiner} />
+            ) : (
+              <Center>-</Center>
+            )}
           </Td>
           <Td>{renderOperations(item)}</Td>
         </Tr>
@@ -245,7 +273,7 @@ const PK: React.FC = () => {
         <Thead>
           <Tr>
             <Th px='13px'>ID</Th>
-            <Th colSpan={3}>Creater</Th>
+            <Th colSpan={4}>Creator</Th>
             <Th>Value</Th>
             <Th colSpan={2}>Joiner</Th>
             <Th px='0'>Operation</Th>
@@ -254,7 +282,7 @@ const PK: React.FC = () => {
         <Tbody>
           <Tr>
             <FirstRowTd></FirstRowTd>
-            {/* <FirstRowTd>Hash</FirstRowTd> */}
+            <FirstRowTd>Hash</FirstRowTd>
             <FirstRowTd>Salt</FirstRowTd>
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd w='77px'>Choice</FirstRowTd>

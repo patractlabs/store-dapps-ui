@@ -15,6 +15,7 @@ export const usePklist = (signal = 0) => {
     setIsLoading(true);
     readTotal()
       .then((total) => {
+        if (!total) return [];
         return Promise.all(
           [...new Array(total)]
             .map((_, i) => i + 1)
