@@ -1,7 +1,7 @@
 import { AddIcon } from '@chakra-ui/icons';
+import { List, ListItem, PopoverTrigger, Image } from "@chakra-ui/react"
 import { useModal } from '@patract/react-hooks';
 import {
-  Address,
   Fixed,
   Box,
   Button,
@@ -13,7 +13,12 @@ import {
   Td,
   Th,
   Thead,
-  Tr
+  Tr,
+  Avatar,
+  Popover,
+  PopoverContent,
+  PopoverArrow,
+  PopoverBody
 } from '@patract/ui-components';
 import React, { useReducer } from 'react';
 import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
@@ -21,6 +26,11 @@ import { usePairList } from '../../hooks/usePairList';
 import Add from './add';
 import CreatePair from './create-pair';
 import Withdraw from './withdraw';
+import UsdtWebp from '../../images/usdt.webp';
+import EthWebp from '../../images/eth.webp';
+import ArrowWebp from '../../images/arrow.svg';
+import TokenFromWebp from '../../images/token-from.webp';
+import TokenToWebp from '../../images/token-to.webp';
 
 const AddLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
@@ -67,8 +77,6 @@ export const PoolList = () => {
           <Thead>
             <Tr>
               <Th>Pair</Th>
-              <Th>From Token Address</Th>
-              <Th>To Token Address</Th>
               <Th>From Token Pool</Th>
               <Th>To Token Pool</Th>
               <Th>LP Token Supply</Th>
@@ -80,13 +88,32 @@ export const PoolList = () => {
             {data.map((item, index) => (
               <Tr key={index}>
                 <Td>
-                  {item.from_name}/{item.to_name}
-                </Td>
-                <Td>
-                  <Address value={item.from} />
-                </Td>
-                <Td>
-                  <Address value={item.to} />
+                <Popover trigger='hover' arrowSize={15} placement='bottom-start'>
+                  <PopoverTrigger>
+                    <Box display='flex' alignItems='center' textTransform='uppercase' justifyContent='space-between' paddingRight='35px'>
+                      <label>{item.from_name}</label>
+                      <Image sx={{ width: '20px', height: '20px' }} src={UsdtWebp}/>
+                      <Image size='xs' src={ArrowWebp}/>
+                      <label>{item.to_name}</label>
+                      <Image sx={{ width: '20px', height: '20px' }} size='xs' src={EthWebp}/>
+                    </Box> 
+                  </PopoverTrigger>
+                  <PopoverContent sx={{ width: '452px', padding: '16px 12px' }}>
+                    <PopoverArrow></PopoverArrow>
+                    <PopoverBody sx={{ padding: '0px' }}>
+                        <Box sx={{ display: 'flex', height: '17px', lineHeight: '17px', marginBottom: '11px', padding: '0px', justifyContent: 'flex-start' }} >
+                          <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '35px' }}>From: </label>
+                          <Image sx={{ height: '20px', width: '20px', marginRight: '10px' }} src={TokenFromWebp}/>
+                          <label>{ item.from }</label>
+                        </Box>
+                        <Box sx={{ display: 'flex', height: '17px', lineHeight: '17px', padding: '0px', justifyContent: 'flex-start' }}>
+                          <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '35px' }}>To: </label>
+                          <Image sx={{ height: '20px', width: '20px', marginRight: '10px' }} src={TokenToWebp}/>
+                          <label>{ item.to }</label>
+                        </Box>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
                 </Td>
                 <Td>
                   <Fixed value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_name} />
