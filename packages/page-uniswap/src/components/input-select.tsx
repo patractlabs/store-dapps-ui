@@ -118,11 +118,15 @@ const InputSelect: React.FC<InputSelectProps> = ({
     <React.Fragment>
       <FormLabel textStyle='form-label'>
         <span>{label}</span>
-        {withBalance && balance ? (
-          <span>
-            Balance:
-            <Fixed value={balance} postfix={option?.symbol} />
-          </span>
+        {withBalance ? (
+          balance ? (
+            <span>
+              Balance:
+              <Fixed value={balance} postfix={option?.symbol} />
+            </span>
+          ) : (
+            <span>Balance: 0</span>
+          )
         ) : null}
       </FormLabel>
       <InputNumber
@@ -171,7 +175,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
                     left: '42px'
                   }}
                 >
-                  {option?.name}
+                  {option?.symbol}
                 </Text>
               </Flex>
               <TriangleDownIcon sx={{ verticalAlign: 'top', w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
@@ -198,9 +202,9 @@ const InputSelect: React.FC<InputSelectProps> = ({
                   <Flex py={2} px={4} alignItems='center' _hover={{ bgColor: 'gray.100' }}>
                     <IdentityIcon value={option.address} />
                     <Box mx={2} width='16'>
-                      <Text fontSize='sm'>{option.name}</Text>
+                      <Text fontSize='sm'>{option.symbol}</Text>
                       <Text fontSize='xs' color='gray.500'>
-                        {option.symbol}
+                        {option.name}
                       </Text>
                     </Box>
                     <Text ml={4} color='gray.500'>

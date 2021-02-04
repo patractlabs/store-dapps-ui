@@ -44,13 +44,17 @@ export const usePairList = (signal = 0) => {
             return Promise.all([
               contractQuery(currentAccount, contract, 'exchangeInfo'),
               contractQuery(currentAccount, fromContract, 'erc20,tokenDecimals'),
-              contractQuery(currentAccount, toContract, 'erc20,tokenDecimals')
-            ]).then(([data, from_decimals, to_decimals]: any) => ({
+              contractQuery(currentAccount, toContract, 'erc20,tokenDecimals'),
+              contractQuery(currentAccount, fromContract, 'erc20,tokenSymbol'),
+              contractQuery(currentAccount, toContract, 'erc20,tokenSymbol')
+            ]).then(([data, from_decimals, to_decimals, from_symbol, to_symbol]: any) => ({
               ...data,
               from,
               to,
               from_decimals,
               to_decimals,
+              from_symbol,
+              to_symbol,
               exchange
             }));
           })

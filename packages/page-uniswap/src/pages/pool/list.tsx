@@ -65,6 +65,7 @@ export const PoolList = () => {
   const { data, loading } = usePairList(signal);
   const lpBalance = useLPtokenBalance(signal);
 
+  console.log(data)
   return (
     <Box>
       <Flex flexDirection='row-reverse' mb={4}>
@@ -91,10 +92,10 @@ export const PoolList = () => {
                 <Popover trigger='hover' arrowSize={15} placement='bottom-start'>
                   <PopoverTrigger>
                     <Box display='flex' alignItems='center' textTransform='uppercase' justifyContent='space-between' paddingRight='35px'>
-                      <label>{item.from_name}</label>
+                      <label>{item.from_symbol}</label>
                       <Image sx={{ width: '20px', height: '20px' }} src={UsdtWebp}/>
                       <Image size='xs' src={ArrowWebp}/>
-                      <label>{item.to_name}</label>
+                      <label>{item.to_symbol}</label>
                       <Image sx={{ width: '20px', height: '20px' }} size='xs' src={EthWebp}/>
                     </Box> 
                   </PopoverTrigger>
@@ -116,10 +117,10 @@ export const PoolList = () => {
                 </Popover>
                 </Td>
                 <Td>
-                  <Fixed value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_name} />
+                  <Fixed value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_symbol} />
                 </Td>
                 <Td>
-                  <Fixed value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_name} />
+                  <Fixed value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_symbol} />
                 </Td>
                 <Td>
                   <Fixed value={item.lp_token_supply} decimals={18} postfix='LPT' />

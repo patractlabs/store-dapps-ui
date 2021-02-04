@@ -225,7 +225,7 @@ const Add = ({
                         left: '42px'
                       }}
                     >
-                      {item.from_name}
+                      {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
                       <IdentityIcon value={item.from} />
@@ -263,7 +263,7 @@ const Add = ({
                         left: '42px'
                       }}
                     >
-                      {item.to_name}
+                      {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
                       <IdentityIcon value={item.to} />
@@ -289,7 +289,7 @@ const Add = ({
                     <Fixed value={fromPrice} round={8} withDecimals />
                   </Center>
                   <Center sx={{ color: 'brand.grey', fontSize: 'xs' }}>
-                    {item.to_name} per {item.from_name}
+                    {item.to_symbol} per {item.from_symbol}
                   </Center>
                 </Box>
                 <Box>
@@ -297,7 +297,7 @@ const Add = ({
                     <Fixed value={toPrice} round={8} withDecimals />
                   </Center>
                   <Center sx={{ color: 'brand.grey', fontSize: 'xs' }}>
-                    {item.from_name} per {item.to_name}
+                    {item.from_symbol} per {item.to_symbol}
                   </Center>
                 </Box>
               </Flex>
