@@ -24,7 +24,8 @@
     "typescript": "^4.1.3"
   },
   "scripts": {
-    "start": "cd packages/page-one-click-asset && react-app-rewired start"
+    "start": "cd packages/page-one-click-asset && react-app-rewired start",
+    "build": "cd packages/page-one-click-asset && yarn build && cd ../page-pk && yarn build &&  cd ../page-uniswap && yarn build"
   },
   "workspaces": [
     "packages/*"
