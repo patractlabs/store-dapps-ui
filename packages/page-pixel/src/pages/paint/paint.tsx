@@ -1,10 +1,13 @@
 import { SignMessageModal } from '@patract/react-components';
 import { useApi, useModal } from '@patract/react-hooks';
-import { Box, Button, Center, Spinner, Text } from '@patract/ui-components';
-import React, { useCallback, useRef, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Box, Button, Center, Spinner, Text, Fixed } from '@patract/ui-components';
+import { useContractTx } from '@patract/react-hooks';
+import { parseAmount } from '@patract/utils';
+import React, { useCallback, useRef, useState, useReducer } from 'react';
+import { useParams } from 'react-router-dom';
 import { usePixelContract } from '../../hooks/use-pixel-contract';
-import { canvas2Hex } from '../../utils';
+import { usePixelDetail } from '../../hooks/use-pixel-detail';
+import { usePixelPool } from '../../hooks/use-pixel-pool';
 import Canvas from './canvas';
 import Palette, { paletteColors } from './palette';
 import ToolBar from './tool-bar';
@@ -44,12 +47,16 @@ export const Paint: React.FC = () => {
   const pixelRef = useRef<HTMLSpanElement>(null);
   const [paintMode, setPaintMode] = useState<PaintMode>('pen');
   const { api } = useApi();
-  const history = useHistory();
   const [saving, setSaving] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
   const [fields, setFields] = useState<any>(null);
   const isEditing = typeof Number(editingId) === 'number';
   const { contract } = usePixelContract();
+  const pool = usePixelPool();
   const { isOpen, onOpen, onClose } = useModal();
+  const { excute } = useContractTx({ title: 'Pixel', contract, method: 'update' });
+  const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
+  const data = usePixelDetail(signal);
 
   const onPenClick = () => {
     setPaintMode('pen');
@@ -70,16 +77,20 @@ export const Paint: React.FC = () => {
   };
 
   const getPixel = useCallback(() => {
-    let pixels = 0;
-    for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
-      for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
-        if (canvasObj[yAxis][xAxis] !== 0) {
-          pixels += 1;
+    if (!data) {
+      setPixels(0);
+    } else {
+      let pixels = 0;
+      for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
+        for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
+          if (canvasObj[yAxis][xAxis] !== data[yAxis][xAxis]) {
+            pixels += 1;
+          }
         }
       }
+      setPixels(pixels);
     }
-    setPixels(pixels);
-  }, []);
+  }, [data]);
 
   const onRefresh = useCallback(() => {
     const wantToClear = window.confirm('\nWARNING MESSAGE:\n\nDo you want to clear the design canvas?');
@@ -100,26 +111,41 @@ export const Paint: React.FC = () => {
     }
   }, [getPixel]);
 
-  const submit = () => {
-    try {
-      const data = canvas2Hex(api.registry, canvasObj);
-      setFields([
-        {
-          label: 'Pixels',
-          content: pixels,
-          value: data
-        }
-      ]);
-      onOpen();
-    } catch {
-      setFields(null);
-    }
-  };
+  // const submit = () => {
+  //   try {
+  //     const data = canvas2Hex(api.registry, canvasObj);
+  //     setFields([
+  //       {
+  //         label: 'Pixels',
+  //         content: pixels,
+  //         value: data
+  //       }
+  //     ]);
+  //     onOpen();
+  //   } catch {
+  //     setFields(null);
+  //   }
+  // };
 
   const onSubmit = () => {
-    onClose();
-    setFields(null);
-    history.push('/list');
+    setIsloading(true);
+    const result = [];
+    for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
+      for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
+        if (canvasObj[yAxis][xAxis] !== data[yAxis][xAxis]) {
+          result.push([xAxis + 160 * yAxis, canvasObj[yAxis][xAxis]]);
+        }
+      }
+    }
+    excute([result], parseAmount(result.length.toString(), 10))
+      .then(() => {
+        forceUpdate();
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+    // onClose();
+    // setFields(null);
   };
 
   const onCancel = () => {
@@ -130,6 +156,16 @@ export const Paint: React.FC = () => {
   return (
     <Box>
       <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'absolute', left: '24px', top: '26px' }}>
+          <Box color='#0058FA' sx={{ display: 'inline-block' }}>
+            Pool: <Fixed value={pool || '0'} decimals={10} postfix='JPT' />
+          </Box>
+          <Box mt={2}>
+            <Box color='gray.500' sx={{ display: 'inline-block' }}>
+              Canvas size: 160 Pixel * 90 Pixel
+            </Box>
+          </Box>
+        </Box>
         <Center sx={{ display: 'inline-flex', w: '100%', m: '18px 0 34px' }}>
           <ToolBar
             paintMode={paintMode}
@@ -143,16 +179,22 @@ export const Paint: React.FC = () => {
           <Text color='orange.400' sx={{ display: 'inline-block' }}>
             You have covered {pixels} pixels
           </Text>
-          <Button colorScheme='primary' sx={{ ml: '10px' }} onClick={submit}>
+          <Button
+            isDisabled={pixels === 0}
+            isLoading={isLoading}
+            colorScheme='primary'
+            sx={{ ml: '10px', mr: '24px' }}
+            onClick={onSubmit}
+          >
             {saving ? <Spinner size='sm' color='white' /> : 'Submit'}
           </Button>
         </Box>
       </Box>
-      <Canvas paintMode={paintMode} color={color} getPixel={getPixel} editingId={Number(editingId)} />
+      <Canvas data={data} signal={signal} paintMode={paintMode} color={color} getPixel={getPixel} />
       <Box as='aside' aria-label='palette' sx={{ position: 'absolute', h: '100%', right: '0', top: '60px' }}>
         <Palette color={color} onColorChange={setColor} />
       </Box>
-      <SignMessageModal
+      {/* <SignMessageModal
         fields={fields || []}
         isOpen={isOpen}
         method={'mintWithMetadata'}
@@ -160,7 +202,7 @@ export const Paint: React.FC = () => {
         contract={contract}
         onSubmit={onSubmit}
         onCancel={onCancel}
-      />
+      /> */}
     </Box>
   );
 };

@@ -1,15 +1,17 @@
 import { useApi } from '@patract/react-hooks';
 import { Center } from '@patract/ui-components';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import { hex2Canvas } from '../../utils';
 import { canvasObj, paintCanvas, paintHistory, PaintMode } from './paint';
 import { paletteColors } from './palette';
+import { usePixelDetail } from '../../hooks/use-pixel-detail';
 
 type CanvasProps = {
+  data: any;
   paintMode: PaintMode;
   color: number;
+  signal: number;
   getPixel: () => void;
-  editingId?: number;
 };
 
 let isMouseDown = false;
@@ -27,8 +29,7 @@ const snapshot = () => {
   paintHistory.push(JSON.stringify(canvasObj));
 };
 
-const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel, editingId }) => {
-  const { api } = useApi();
+const Canvas: React.FC<CanvasProps> = ({ data, paintMode, color, getPixel }) => {
 
   const onMouseDown = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -64,18 +65,13 @@ const Canvas: React.FC<CanvasProps> = ({ paintMode, color, getPixel, editingId }
   }, [getPixel]);
 
   useEffect(() => {
-    if (typeof editingId === 'number') {
-      const canvasListBuffer = localStorage.getItem('canvas-list') || '[]';
-      const canvasListArray = JSON.parse(canvasListBuffer);
-      const canvasHex = canvasListArray[Number(editingId)];
-      if (canvasHex) {
-        paintCanvas(hex2Canvas(api.registry, canvasHex));
-        paintHistory.length = 0;
-        paintHistory.push(JSON.stringify(canvasObj));
-      }
-      getPixel();
+    if (data) {
+      paintCanvas(JSON.parse(JSON.stringify(data)));
+      paintHistory.length = 0;
+      paintHistory.push(JSON.stringify(canvasObj));
     }
-  }, [api.registry, editingId, getPixel]);
+    getPixel();
+  }, [getPixel, data]);
 
   return (
     <Center sx={{ w: '100%', borderRadius: '8px', p: '10px 0 24px' }}>
