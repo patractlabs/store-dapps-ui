@@ -14,7 +14,7 @@ export const App = () => {
       <PageMain>
         <Flex justifyContent='flex-end'>
           <Button leftIcon={<AddIcon mb={1} />} onClick={onOpen}>
-            Create Pair
+            Create Asset
           </Button>
         </Flex>
         <Box>

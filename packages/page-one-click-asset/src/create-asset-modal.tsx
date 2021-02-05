@@ -42,7 +42,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
 
   const { currentAccount } = useAccount();
   const toast = useToast({
-    title: 'Create Pair'
+    title: 'Create Asset'
   });
   const { api } = useApi();
   const [isLoading, setIsLoading] = useState(false);
@@ -127,7 +127,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
       <ModalOverlay />
 
       <ModalContent maxW='2xl' border='1px' borderColor='gray.200' borderRadius='20px'>
-        <ModalHeader>Create Pair</ModalHeader>
+        <ModalHeader>Create Asset</ModalHeader>
         <ModalCloseButton />
         <ModalBody padding={8}>
           <SimpleGrid column={1} spacing='8'>
