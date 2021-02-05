@@ -1,16 +1,14 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x43cf63c1e915fd88ed38ef072b8a56f5b1895e9475360beb0a6b48362479e311",
+    "hash": "0x60c65d2f99da3b15b03d123a0f2152100f313fbb731fd98990c758edb8ac0559",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
   "contract": {
     "name": "exchange",
     "version": "0.1.0",
-    "authors": [
-      "Patract Labs <tyler@patract.io>"
-    ]
+    "authors": ["Patract Labs <tyler@patract.io>"]
   },
   "spec": {
     "constructors": [
@@ -19,35 +17,27 @@
           {
             "name": "from_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
           {
             "name": "to_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
           {
             "name": "lpt",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           }
         ],
         "docs": [],
-        "name": [
-          "new"
-        ],
+        "name": ["new"],
         "selector": "0xd183512b"
       }
     ],
@@ -60,9 +50,7 @@
             "indexed": true,
             "name": "buyer",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
@@ -71,9 +59,7 @@
             "indexed": true,
             "name": "sold",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           },
@@ -82,54 +68,13 @@
             "indexed": true,
             "name": "bought",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
-        "name": "FromTokenPurchase"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "buyer",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 2
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "sold",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "bought",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          }
-        ],
-        "docs": [],
-        "name": "ToTokenPurchase"
+        "name": "TokenSwap"
       },
       {
         "args": [
@@ -138,9 +83,7 @@
             "indexed": true,
             "name": "sender",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
@@ -149,9 +92,7 @@
             "indexed": true,
             "name": "from_amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           },
@@ -160,9 +101,7 @@
             "indexed": true,
             "name": "to_amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
@@ -177,9 +116,7 @@
             "indexed": true,
             "name": "sender",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
@@ -188,9 +125,7 @@
             "indexed": true,
             "name": "from_amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           },
@@ -199,9 +134,7 @@
             "indexed": true,
             "name": "to_amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
@@ -216,9 +149,7 @@
             "indexed": true,
             "name": "from_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
@@ -227,9 +158,7 @@
             "indexed": true,
             "name": "to_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           },
@@ -238,9 +167,7 @@
             "indexed": true,
             "name": "exchange",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 2
             }
           }
@@ -255,23 +182,17 @@
           {
             "name": "from_sold",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": [
-          "swap_from_to_input"
-        ],
+        "name": ["swap_from_to_input"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0xf350bc39"
@@ -281,23 +202,17 @@
           {
             "name": "to_sold",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": [
-          "swap_to_from_input"
-        ],
+        "name": ["swap_to_from_input"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0xd2f5a9bf"
@@ -307,23 +222,17 @@
           {
             "name": "from_bought",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": [
-          "swap_to_from_output"
-        ],
+        "name": ["swap_to_from_output"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0x89f549ef"
@@ -333,23 +242,17 @@
           {
             "name": "to_bought",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": [
-          "swap_from_to_output"
-        ],
+        "name": ["swap_from_to_output"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0xbec7ab71"
@@ -359,25 +262,17 @@
           {
             "name": "from_sold",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
-        "docs": [
-          " Public price function for from swap to Token trades with an exact input."
-        ],
+        "docs": [" Public price function for from swap to Token trades with an exact input."],
         "mutates": false,
-        "name": [
-          "get_from_swap_to_input_price"
-        ],
+        "name": ["get_from_swap_to_input_price"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0xac674d2d"
@@ -387,25 +282,17 @@
           {
             "name": "to_sold",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
-        "docs": [
-          " Public price function for to swap from Token trades with an exact input."
-        ],
+        "docs": [" Public price function for to swap from Token trades with an exact input."],
         "mutates": false,
-        "name": [
-          "get_to_swap_from_input_price"
-        ],
+        "name": ["get_to_swap_from_input_price"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0x0e2d87f9"
@@ -415,25 +302,17 @@
           {
             "name": "to_bought",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
-        "docs": [
-          " Public price function for DOT to Token trades with an exact output."
-        ],
+        "docs": [" Public price function for DOT to Token trades with an exact output."],
         "mutates": false,
-        "name": [
-          "get_from_swap_to_output_price"
-        ],
+        "name": ["get_from_swap_to_output_price"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0xbb423444"
@@ -443,25 +322,17 @@
           {
             "name": "from_bought",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
-        "docs": [
-          " Public price function for Token to DOT trades with an exact output."
-        ],
+        "docs": [" Public price function for Token to DOT trades with an exact output."],
         "mutates": false,
-        "name": [
-          "get_to_swap_from_output_price"
-        ],
+        "name": ["get_to_swap_from_output_price"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0x5d53aa35"
@@ -471,34 +342,24 @@
           {
             "name": "from_tokens",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           },
           {
             "name": "to_tokens",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
-        "docs": [
-          " Deposit DOT and Tokens (self.token) at current ratio to mint PAT tokens."
-        ],
+        "docs": [" Deposit DOT and Tokens (self.token) at current ratio to mint PAT tokens."],
         "mutates": true,
-        "name": [
-          "add_liquidity"
-        ],
+        "name": ["add_liquidity"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0x58c13299"
@@ -508,20 +369,14 @@
           {
             "name": "lp_amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
-        "docs": [
-          " Burn PAT tokens to withdraw DOT and Tokens at current ratio."
-        ],
+        "docs": [" Burn PAT tokens to withdraw DOT and Tokens at current ratio."],
         "mutates": true,
-        "name": [
-          "remove_liquidity"
-        ],
+        "name": ["remove_liquidity"],
         "payable": false,
         "returnType": {
           "displayName": [],
@@ -534,32 +389,24 @@
           {
             "name": "from_tokens",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           },
           {
             "name": "to_tokens",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": [
-          "estimated_add_liquidity"
-        ],
+        "name": ["estimated_add_liquidity"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Balance"
-          ],
+          "displayName": ["Balance"],
           "type": 1
         },
         "selector": "0xffa82393"
@@ -569,18 +416,14 @@
           {
             "name": "lp_amount",
             "type": {
-              "displayName": [
-                "Balance"
-              ],
+              "displayName": ["Balance"],
               "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": [
-          "estimated_remove_liquidity"
-        ],
+        "name": ["estimated_remove_liquidity"],
         "payable": false,
         "returnType": {
           "displayName": [],
@@ -592,14 +435,10 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": [
-          "exchange_info"
-        ],
+        "name": ["exchange_info"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "ExchangeInfo"
-          ],
+          "displayName": ["ExchangeInfo"],
           "type": 6
         },
         "selector": "0x367c3d78"
@@ -710,11 +549,7 @@
           ]
         }
       },
-      "path": [
-        "ink_env",
-        "types",
-        "AccountId"
-      ]
+      "path": ["ink_env", "types", "AccountId"]
     },
     {
       "def": {
@@ -731,10 +566,7 @@
     },
     {
       "def": {
-        "tuple": [
-          1,
-          1
-        ]
+        "tuple": [1, 1]
       }
     },
     {
@@ -742,14 +574,24 @@
         "composite": {
           "fields": [
             {
-              "name": "from_name",
+              "name": "from_symbol",
               "type": 7,
               "typeName": "String"
             },
             {
-              "name": "to_name",
+              "name": "from_decimals",
+              "type": 4,
+              "typeName": "u8"
+            },
+            {
+              "name": "to_symbol",
               "type": 7,
               "typeName": "String"
+            },
+            {
+              "name": "to_decimals",
+              "type": 4,
+              "typeName": "u8"
             },
             {
               "name": "from_token_pool",
@@ -774,11 +616,7 @@
           ]
         }
       },
-      "path": [
-        "exchange",
-        "exchange",
-        "ExchangeInfo"
-      ]
+      "path": ["exchange", "exchange", "ExchangeInfo"]
     },
     {
       "def": {

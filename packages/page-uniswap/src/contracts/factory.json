@@ -1,26 +1,21 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0xdaff7c082fcb0e2e6a621046f3052186f93f45938e835b30b110bac9815c4406",
+    "hash": "0x428ae16ca0e4c5dd04c3d39afe2849021bf3151571c15e132f7ab4934d219c3f",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.49.0-nightly"
   },
   "contract": {
     "name": "factory",
     "version": "0.1.0",
-    "authors": [
-      "Patract Labs <tyler@patract.io>"
-    ]
+    "authors": ["Patract Labs <tyler@patract.io>"]
   },
   "spec": {
     "constructors": [
       {
         "args": [],
         "docs": [],
-        "name": [
-          "Factory",
-          "new"
-        ],
+        "name": ["Factory", "new"],
         "selector": "0x7efe2251"
       }
     ],
@@ -33,9 +28,7 @@
             "indexed": true,
             "name": "token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           },
@@ -44,9 +37,7 @@
             "indexed": true,
             "name": "caller",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           }
@@ -61,28 +52,28 @@
           {
             "name": "template",
             "type": {
-              "displayName": [
-                "Hash"
-              ],
+              "displayName": ["Hash"],
+              "type": 1
+            }
+          },
+          {
+            "name": "template2",
+            "type": {
+              "displayName": ["Hash"],
               "type": 1
             }
           },
           {
             "name": "lpt",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": [
-          "Factory",
-          "initialize_factory"
-        ],
+        "name": ["Factory", "initialize_factory"],
         "payable": false,
         "returnType": null,
         "selector": "0x4d118a3c"
@@ -92,42 +83,31 @@
           {
             "name": "from_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           },
           {
             "name": "to_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           },
           {
             "name": "salt_op",
             "type": {
-              "displayName": [
-                "Option"
-              ],
+              "displayName": ["Option"],
               "type": 15
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": [
-          "Factory",
-          "create_exchange"
-        ],
+        "name": ["Factory", "create_exchange"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "AccountId"
-          ],
+          "displayName": ["AccountId"],
           "type": 4
         },
         "selector": "0xbfa4876e"
@@ -137,33 +117,51 @@
           {
             "name": "from_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
+              "type": 4
+            }
+          },
+          {
+            "name": "salt_op",
+            "type": {
+              "displayName": ["Option"],
+              "type": 15
+            }
+          }
+        ],
+        "docs": [" Create ERC20 Token => DOT"],
+        "mutates": true,
+        "name": ["Factory", "create_exchange_with_dot"],
+        "payable": false,
+        "returnType": {
+          "displayName": ["AccountId"],
+          "type": 4
+        },
+        "selector": "0xcf2899a1"
+      },
+      {
+        "args": [
+          {
+            "name": "from_token",
+            "type": {
+              "displayName": ["AccountId"],
               "type": 4
             }
           },
           {
             "name": "to_token",
             "type": {
-              "displayName": [
-                "AccountId"
-              ],
+              "displayName": ["AccountId"],
               "type": 4
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": [
-          "Factory",
-          "get_exchange"
-        ],
+        "name": ["Factory", "get_exchange"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Option"
-          ],
+          "displayName": ["Option"],
           "type": 16
         },
         "selector": "0xae0c8189"
@@ -173,24 +171,17 @@
           {
             "name": "token_id",
             "type": {
-              "displayName": [
-                "u128"
-              ],
+              "displayName": ["u128"],
               "type": 5
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": [
-          "Factory",
-          "get_token_with_id"
-        ],
+        "name": ["Factory", "get_token_with_id"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Option"
-          ],
+          "displayName": ["Option"],
           "type": 17
         },
         "selector": "0x4b668ecb"
@@ -199,15 +190,10 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": [
-          "Factory",
-          "get_swap_pairs"
-        ],
+        "name": ["Factory", "get_swap_pairs"],
         "payable": false,
         "returnType": {
-          "displayName": [
-            "Vec"
-          ],
+          "displayName": ["Vec"],
           "type": 6
         },
         "selector": "0xf9497c19"
@@ -230,6 +216,15 @@
           "layout": {
             "cell": {
               "key": "0x0100000000000000000000000000000000000000000000000000000000000000",
+              "ty": 1
+            }
+          },
+          "name": "exchange_template2"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
               "ty": 4
             }
           },
@@ -238,7 +233,7 @@
         {
           "layout": {
             "cell": {
-              "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
+              "key": "0x0300000000000000000000000000000000000000000000000000000000000000",
               "ty": 5
             }
           },
@@ -247,7 +242,7 @@
         {
           "layout": {
             "cell": {
-              "key": "0x0300000000000000000000000000000000000000000000000000000000000000",
+              "key": "0x0400000000000000000000000000000000000000000000000000000000000000",
               "ty": 6
             }
           },
@@ -264,7 +259,7 @@
                         {
                           "layout": {
                             "cell": {
-                              "key": "0x0400000000000000000000000000000000000000000000000000000000000000",
+                              "key": "0x0500000000000000000000000000000000000000000000000000000000000000",
                               "ty": 8
                             }
                           },
@@ -277,7 +272,7 @@
                                 {
                                   "layout": {
                                     "cell": {
-                                      "key": "0x0500000000000000000000000000000000000000000000000000000000000000",
+                                      "key": "0x0600000000000000000000000000000000000000000000000000000000000000",
                                       "ty": 9
                                     }
                                   },
@@ -289,12 +284,12 @@
                                       "cellsPerElem": 1,
                                       "layout": {
                                         "cell": {
-                                          "key": "0x0500000001000000000000000000000000000000000000000000000000000000",
+                                          "key": "0x0600000001000000000000000000000000000000000000000000000000000000",
                                           "ty": 10
                                         }
                                       },
                                       "len": 4294967295,
-                                      "offset": "0x0600000000000000000000000000000000000000000000000000000000000000"
+                                      "offset": "0x0700000000000000000000000000000000000000000000000000000000000000"
                                     }
                                   },
                                   "name": "elems"
@@ -314,11 +309,11 @@
                     "hash": {
                       "layout": {
                         "cell": {
-                          "key": "0x0600000001000000000000000000000000000000000000000000000000000000",
+                          "key": "0x0700000001000000000000000000000000000000000000000000000000000000",
                           "ty": 12
                         }
                       },
-                      "offset": "0x0500000001000000000000000000000000000000000000000000000000000000",
+                      "offset": "0x0600000001000000000000000000000000000000000000000000000000000000",
                       "strategy": {
                         "hasher": "Blake2x256",
                         "postfix": "",
@@ -344,7 +339,7 @@
                         {
                           "layout": {
                             "cell": {
-                              "key": "0x0600000001000000000000000000000000000000000000000000000000000000",
+                              "key": "0x0700000001000000000000000000000000000000000000000000000000000000",
                               "ty": 8
                             }
                           },
@@ -357,7 +352,7 @@
                                 {
                                   "layout": {
                                     "cell": {
-                                      "key": "0x0700000001000000000000000000000000000000000000000000000000000000",
+                                      "key": "0x0800000001000000000000000000000000000000000000000000000000000000",
                                       "ty": 9
                                     }
                                   },
@@ -369,12 +364,12 @@
                                       "cellsPerElem": 1,
                                       "layout": {
                                         "cell": {
-                                          "key": "0x0700000002000000000000000000000000000000000000000000000000000000",
+                                          "key": "0x0800000002000000000000000000000000000000000000000000000000000000",
                                           "ty": 13
                                         }
                                       },
                                       "len": 4294967295,
-                                      "offset": "0x0800000001000000000000000000000000000000000000000000000000000000"
+                                      "offset": "0x0900000001000000000000000000000000000000000000000000000000000000"
                                     }
                                   },
                                   "name": "elems"
@@ -394,11 +389,11 @@
                     "hash": {
                       "layout": {
                         "cell": {
-                          "key": "0x0800000002000000000000000000000000000000000000000000000000000000",
+                          "key": "0x0900000002000000000000000000000000000000000000000000000000000000",
                           "ty": 14
                         }
                       },
-                      "offset": "0x0700000002000000000000000000000000000000000000000000000000000000",
+                      "offset": "0x0800000002000000000000000000000000000000000000000000000000000000",
                       "strategy": {
                         "hasher": "Blake2x256",
                         "postfix": "",
@@ -428,11 +423,7 @@
           ]
         }
       },
-      "path": [
-        "ink_env",
-        "types",
-        "Hash"
-      ]
+      "path": ["ink_env", "types", "Hash"]
     },
     {
       "def": {
@@ -458,11 +449,7 @@
           ]
         }
       },
-      "path": [
-        "ink_env",
-        "types",
-        "AccountId"
-      ]
+      "path": ["ink_env", "types", "AccountId"]
     },
     {
       "def": {
@@ -478,10 +465,7 @@
     },
     {
       "def": {
-        "tuple": [
-          4,
-          4
-        ]
+        "tuple": [4, 4]
       }
     },
     {
@@ -506,12 +490,7 @@
           ]
         }
       },
-      "path": [
-        "ink_storage",
-        "collections",
-        "stash",
-        "Header"
-      ]
+      "path": ["ink_storage", "collections", "stash", "Header"]
     },
     {
       "def": {
@@ -543,15 +522,8 @@
           ]
         }
       },
-      "params": [
-        7
-      ],
-      "path": [
-        "ink_storage",
-        "collections",
-        "stash",
-        "Entry"
-      ]
+      "params": [7],
+      "path": ["ink_storage", "collections", "stash", "Entry"]
     },
     {
       "def": {
@@ -570,12 +542,7 @@
           ]
         }
       },
-      "path": [
-        "ink_storage",
-        "collections",
-        "stash",
-        "VacantEntry"
-      ]
+      "path": ["ink_storage", "collections", "stash", "VacantEntry"]
     },
     {
       "def": {
@@ -594,15 +561,8 @@
           ]
         }
       },
-      "params": [
-        4
-      ],
-      "path": [
-        "ink_storage",
-        "collections",
-        "hashmap",
-        "ValueEntry"
-      ]
+      "params": [4],
+      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
     },
     {
       "def": {
@@ -629,15 +589,8 @@
           ]
         }
       },
-      "params": [
-        5
-      ],
-      "path": [
-        "ink_storage",
-        "collections",
-        "stash",
-        "Entry"
-      ]
+      "params": [5],
+      "path": ["ink_storage", "collections", "stash", "Entry"]
     },
     {
       "def": {
@@ -656,15 +609,8 @@
           ]
         }
       },
-      "params": [
-        7
-      ],
-      "path": [
-        "ink_storage",
-        "collections",
-        "hashmap",
-        "ValueEntry"
-      ]
+      "params": [7],
+      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
     },
     {
       "def": {
@@ -685,12 +631,8 @@
           ]
         }
       },
-      "params": [
-        1
-      ],
-      "path": [
-        "Option"
-      ]
+      "params": [1],
+      "path": ["Option"]
     },
     {
       "def": {
@@ -711,12 +653,8 @@
           ]
         }
       },
-      "params": [
-        4
-      ],
-      "path": [
-        "Option"
-      ]
+      "params": [4],
+      "path": ["Option"]
     },
     {
       "def": {
@@ -737,12 +675,8 @@
           ]
         }
       },
-      "params": [
-        7
-      ],
-      "path": [
-        "Option"
-      ]
+      "params": [7],
+      "path": ["Option"]
     }
   ]
 }

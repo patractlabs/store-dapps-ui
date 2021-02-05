@@ -1,21 +1,25 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x2c5626abf1f1e4b43616c3afd0743defdb44f8d9041789e2436af4f2f2e3bfb6",
+    "hash": "0x5b5e5eaa2e81dbbe2ff29e272df28cedabd2dc83daed50e1a6d71e3b87352349",
     "language": "ink! 3.0.0-rc2",
-    "compiler": "rustc 1.49.0-nightly"
+    "compiler": "rustc 1.51.0-nightly"
   },
   "contract": {
     "name": "patrapk",
     "version": "0.1.0",
-    "authors": ["tyler <tyler@patract.io>"]
+    "authors": [
+      "tyler <tyler@patract.io>"
+    ]
   },
   "spec": {
     "constructors": [
       {
         "args": [],
         "docs": [],
-        "name": ["new"],
+        "name": [
+          "new"
+        ],
         "selector": "0xd183512b"
       }
     ],
@@ -28,7 +32,9 @@
             "indexed": true,
             "name": "creator",
             "type": {
-              "displayName": ["AccountId"],
+              "displayName": [
+                "AccountId"
+              ],
               "type": 7
             }
           },
@@ -37,7 +43,9 @@
             "indexed": true,
             "name": "salt_hash",
             "type": {
-              "displayName": ["Hash"],
+              "displayName": [
+                "Hash"
+              ],
               "type": 11
             }
           },
@@ -46,7 +54,9 @@
             "indexed": true,
             "name": "value",
             "type": {
-              "displayName": ["Balance"],
+              "displayName": [
+                "Balance"
+              ],
               "type": 13
             }
           }
@@ -61,7 +71,9 @@
             "indexed": true,
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           },
@@ -70,7 +82,9 @@
             "indexed": true,
             "name": "creator",
             "type": {
-              "displayName": ["AccountId"],
+              "displayName": [
+                "AccountId"
+              ],
               "type": 7
             }
           }
@@ -85,7 +99,9 @@
             "indexed": true,
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           },
@@ -94,7 +110,9 @@
             "indexed": true,
             "name": "joiner",
             "type": {
-              "displayName": ["AccountId"],
+              "displayName": [
+                "AccountId"
+              ],
               "type": 7
             }
           },
@@ -103,7 +121,9 @@
             "indexed": true,
             "name": "joiner_choice",
             "type": {
-              "displayName": ["Choice"],
+              "displayName": [
+                "Choice"
+              ],
               "type": 12
             }
           }
@@ -118,7 +138,9 @@
             "indexed": true,
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           },
@@ -127,7 +149,9 @@
             "indexed": true,
             "name": "result",
             "type": {
-              "displayName": ["GameResult"],
+              "displayName": [
+                "GameResult"
+              ],
               "type": 15
             }
           }
@@ -142,7 +166,9 @@
             "indexed": true,
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           },
@@ -151,7 +177,9 @@
             "indexed": true,
             "name": "status",
             "type": {
-              "displayName": ["GameStatus"],
+              "displayName": [
+                "GameStatus"
+              ],
               "type": 14
             }
           },
@@ -160,7 +188,9 @@
             "indexed": true,
             "name": "result",
             "type": {
-              "displayName": ["GameResult"],
+              "displayName": [
+                "GameResult"
+              ],
               "type": 15
             }
           }
@@ -175,17 +205,23 @@
           {
             "name": "salt_hash",
             "type": {
-              "displayName": ["Hash"],
+              "displayName": [
+                "Hash"
+              ],
               "type": 11
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["create"],
+        "name": [
+          "create"
+        ],
         "payable": true,
         "returnType": {
-          "displayName": ["GameID"],
+          "displayName": [
+            "GameID"
+          ],
           "type": 2
         },
         "selector": "0x744789ad"
@@ -195,19 +231,20 @@
           {
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["delete"],
+        "name": [
+          "delete"
+        ],
         "payable": false,
-        "returnType": {
-          "displayName": ["Result"],
-          "type": 16
-        },
+        "returnType": null,
         "selector": "0xa51b6d49"
       },
       {
@@ -215,26 +252,29 @@
           {
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           },
           {
             "name": "choice",
             "type": {
-              "displayName": ["Choice"],
+              "displayName": [
+                "Choice"
+              ],
               "type": 12
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["join"],
+        "name": [
+          "join"
+        ],
         "payable": true,
-        "returnType": {
-          "displayName": ["Result"],
-          "type": 16
-        },
+        "returnType": null,
         "selector": "0x669b4856"
       },
       {
@@ -242,33 +282,38 @@
           {
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           },
           {
             "name": "salt",
             "type": {
-              "displayName": ["String"],
+              "displayName": [
+                "String"
+              ],
               "type": 10
             }
           },
           {
             "name": "choice",
             "type": {
-              "displayName": ["Choice"],
+              "displayName": [
+                "Choice"
+              ],
               "type": 12
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["reveal"],
+        "name": [
+          "reveal"
+        ],
         "payable": false,
-        "returnType": {
-          "displayName": ["Result"],
-          "type": 16
-        },
+        "returnType": null,
         "selector": "0x4c2b8e66"
       },
       {
@@ -276,19 +321,20 @@
           {
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["expire"],
+        "name": [
+          "expire"
+        ],
         "payable": false,
-        "returnType": {
-          "displayName": ["Result"],
-          "type": 16
-        },
+        "returnType": null,
         "selector": "0xea63d23e"
       },
       {
@@ -296,24 +342,32 @@
           {
             "name": "salt",
             "type": {
-              "displayName": ["String"],
+              "displayName": [
+                "String"
+              ],
               "type": 10
             }
           },
           {
             "name": "choice",
             "type": {
-              "displayName": ["Choice"],
+              "displayName": [
+                "Choice"
+              ],
               "type": 12
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": ["salt_hash"],
+        "name": [
+          "salt_hash"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Hash"],
+          "displayName": [
+            "Hash"
+          ],
           "type": 11
         },
         "selector": "0x8ca7314c"
@@ -323,18 +377,24 @@
           {
             "name": "game_id",
             "type": {
-              "displayName": ["GameID"],
+              "displayName": [
+                "GameID"
+              ],
               "type": 2
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": ["game_of"],
+        "name": [
+          "game_of"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Result"],
-          "type": 19
+          "displayName": [
+            "Result"
+          ],
+          "type": 16
         },
         "selector": "0x94656e1c"
       },
@@ -342,10 +402,14 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": ["game_total"],
+        "name": [
+          "game_total"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["u32"],
+          "displayName": [
+            "u32"
+          ],
           "type": 2
         },
         "selector": "0x7bf544d6"
@@ -470,7 +534,12 @@
           ]
         }
       },
-      "path": ["ink_storage", "collections", "stash", "Header"]
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Header"
+      ]
     },
     {
       "def": {
@@ -502,8 +571,15 @@
           ]
         }
       },
-      "params": [2],
-      "path": ["ink_storage", "collections", "stash", "Entry"]
+      "params": [
+        2
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
     },
     {
       "def": {
@@ -522,7 +598,12 @@
           ]
         }
       },
-      "path": ["ink_storage", "collections", "stash", "VacantEntry"]
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "VacantEntry"
+      ]
     },
     {
       "def": {
@@ -541,8 +622,15 @@
           ]
         }
       },
-      "params": [6],
-      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
+      "params": [
+        6
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
     },
     {
       "def": {
@@ -601,7 +689,11 @@
           ]
         }
       },
-      "path": ["patrapk", "patrapk", "GameDetails"]
+      "path": [
+        "patrapk",
+        "patrapk",
+        "GameDetails"
+      ]
     },
     {
       "def": {
@@ -614,7 +706,11 @@
           ]
         }
       },
-      "path": ["ink_env", "types", "AccountId"]
+      "path": [
+        "ink_env",
+        "types",
+        "AccountId"
+      ]
     },
     {
       "def": {
@@ -645,7 +741,11 @@
           ]
         }
       },
-      "path": ["ink_env", "types", "Hash"]
+      "path": [
+        "ink_env",
+        "types",
+        "Hash"
+      ]
     },
     {
       "def": {
@@ -670,7 +770,11 @@
           ]
         }
       },
-      "path": ["patrapk", "patrapk", "Choice"]
+      "path": [
+        "patrapk",
+        "patrapk",
+        "Choice"
+      ]
     },
     {
       "def": {
@@ -708,7 +812,11 @@
           ]
         }
       },
-      "path": ["patrapk", "patrapk", "GameStatus"]
+      "path": [
+        "patrapk",
+        "patrapk",
+        "GameStatus"
+      ]
     },
     {
       "def": {
@@ -733,7 +841,11 @@
           ]
         }
       },
-      "path": ["patrapk", "patrapk", "GameResult"]
+      "path": [
+        "patrapk",
+        "patrapk",
+        "GameResult"
+      ]
     },
     {
       "def": {
@@ -742,7 +854,7 @@
             {
               "fields": [
                 {
-                  "type": 17,
+                  "type": 6,
                   "typeName": "T"
                 }
               ],
@@ -751,7 +863,7 @@
             {
               "fields": [
                 {
-                  "type": 18,
+                  "type": 17,
                   "typeName": "E"
                 }
               ],
@@ -760,13 +872,13 @@
           ]
         }
       },
-      "params": [17, 18],
-      "path": ["Result"]
-    },
-    {
-      "def": {
-        "tuple": []
-      }
+      "params": [
+        6,
+        17
+      ],
+      "path": [
+        "Result"
+      ]
     },
     {
       "def": {
@@ -819,35 +931,11 @@
           ]
         }
       },
-      "path": ["patrapk", "patrapk", "Error"]
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "fields": [
-                {
-                  "type": 6,
-                  "typeName": "T"
-                }
-              ],
-              "name": "Ok"
-            },
-            {
-              "fields": [
-                {
-                  "type": 18,
-                  "typeName": "E"
-                }
-              ],
-              "name": "Err"
-            }
-          ]
-        }
-      },
-      "params": [6, 18],
-      "path": ["Result"]
+      "path": [
+        "patrapk",
+        "patrapk",
+        "Error"
+      ]
     }
   ]
 }
