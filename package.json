@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "cd packages/page-one-click-asset && react-app-rewired start",
-    "build": "cd packages/page-one-click-asset && yarn build && cd ../page-pk && yarn build &&  cd ../page-uniswap && yarn build"
+    "build": "cd packages/page-one-click-asset && yarn build && cd ../page-pk && yarn build &&  cd ../page-uniswap && yarn build && cd ../page-pixel && yarn build"
   },
   "workspaces": [
     "packages/*"
