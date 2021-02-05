@@ -82,8 +82,6 @@ export const JoinGame = ({
 
   const { excute } = useContractTx({ title: 'Join Game', contract, method: 'join' });
 
-  // const inc = getIncrementButtonProps();
-  // const dec = getDecrementButtonProps();
   useEffect(() => {
     if (item.value) {
       setValue(formatAmount(item.value, 10));
@@ -135,45 +133,20 @@ export const JoinGame = ({
               />
             </HStack>
           </Box>
-          <Flex justify='space-between'>
-            <HStack alignItems='center' sx={{ width: '77%' }}>
-              <InputGroup>
-                <Input value={value} background='white' isDisabled />
-                <InputRightElement
-                  width={16}
-                  children={<Tag colorScheme='blue'>JPT</Tag>}
-                  sx={{ h: '40px', bg: 'transparent' }}
-                />
-              </InputGroup>
-              {/* <Button
-                {...inc}
-                sx={{
-                  h: '40px',
-                  border: '0',
-                  bgColor: 'white',
-                  color: 'blue.500',
-                  boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
-                }}
-              >
-                +
-              </Button> */}
-              {/* <Button
-                {...dec}
-                sx={{
-                  h: '40px',
-                  border: '0',
-                  bgColor: 'white',
-                  color: 'blue.500',
-                  boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
-                }}
-              >
-                -
-              </Button> */}
-            </HStack>
-            <Text sx={{ color: 'gray.400', fontSize: 'xs', width: '23%', lineHeight: '40px', textAlign: 'right' }}>
-              Balance: {parseInt(balance)} JPT
-            </Text>
+          <Flex justifyContent='space-between'>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Value: </Text>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {parseInt(balance)} JPT</Text>
           </Flex>
+          <HStack alignItems='center'>
+            <InputGroup>
+              <Input value={value} background='white' isDisabled />
+              <InputRightElement
+                width={16}
+                children={<Tag colorScheme='blue'>JPT</Tag>}
+                sx={{ h: '40px', bg: 'transparent' }}
+              />
+            </InputGroup>
+          </HStack>
           <Box
             sx={{
               border: '1px solid',
