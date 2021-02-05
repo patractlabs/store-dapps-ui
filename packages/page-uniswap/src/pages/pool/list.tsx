@@ -70,7 +70,7 @@ export const PoolList = () => {
     <Box>
       <Flex flexDirection='row-reverse' mb={4}>
         <Button leftIcon={<AddIcon mb={1} />} onClick={onCreatePairOpen}>
-          Create Asset
+          Create Pair
         </Button>
       </Flex>
       <Box mt={4} padding={3} background='white' borderRadius='12px' border='1px solid' borderColor='gray.100'>
