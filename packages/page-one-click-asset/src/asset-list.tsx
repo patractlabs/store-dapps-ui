@@ -12,7 +12,8 @@ import {
   Text,
   Th,
   Thead,
-  Tr
+  Tr,
+  Fixed
 } from '@patract/ui-components';
 import React, { useMemo, useState } from 'react';
 import Erc20fixed from './contracts/erc20fixed.json';
@@ -25,20 +26,24 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
   const [count, setCount] = useState(0);
   const [offset, setOffset] = useState(0);
 
-  const { data } = useQueryContracts(isPublic, currentAccount, Erc20fixed.source.hash, Erc20mintable.source.hash, offset);
+  const { data } = useQueryContracts(
+    isPublic,
+    currentAccount,
+    Erc20fixed.source.hash,
+    Erc20mintable.source.hash,
+    offset
+  );
 
   const page = useMemo(() => {
     return Math.floor(offset / 5) + 1;
   }, [offset]);
 
   const handlePage = (_: any, page: number) => {
-    console.log(page);
     setOffset((page - 1) * 5);
   };
 
   const contractList = useMemo(() => {
     if (!data) return;
-    console.log('data change contractlist', data.Events_aggregate.aggregate.count, data.Events)
     setCount(Math.floor(data.Events_aggregate.aggregate.count / 5) + 1);
     return data.Events.map((event: any) => {
       return {
@@ -49,7 +54,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
       };
     });
   }, [data]);
-  
+
   const { data: list, loading, forceUpdate } = useAssetList(contractList);
 
   return (
@@ -63,6 +68,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
             <Th>Symbol</Th>
             <Th>Decimals</Th>
             <Th>Max Supply</Th>
+            <Th>Type</Th>
             {isPublic ? null : <Th></Th>}
           </Tr>
         </Thead>
@@ -79,6 +85,14 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
               <Td>{item.tokenSymbol}</Td>
               <Td>{item.tokenDecimals}</Td>
               <Td>{item.totalSupply}</Td>
+              <Td>
+                {item.codeHash === Erc20mintable.source.hash
+                  ? 'Mintable'
+                  : item.codeHash === Erc20fixed.source.hash
+                  ? 'Fixed Supply'
+                  : null}
+              </Td>
+
               {isPublic ? null : (
                 <Td>
                   {item.codeHash === Erc20mintable.source.hash ? (
