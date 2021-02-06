@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { List, ListItem, PopoverTrigger, Image } from "@chakra-ui/react"
+import { List, ListItem, PopoverTrigger, Image } from '@chakra-ui/react';
 import { useModal } from '@patract/react-hooks';
 import {
   Fixed,
@@ -16,6 +16,7 @@ import {
   Tr,
   Avatar,
   Popover,
+  IdentityIcon,
   PopoverContent,
   PopoverArrow,
   PopoverBody
@@ -53,7 +54,13 @@ const WithdrawLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
       <Button size='sm' mr='4' onClick={onWithdrawOpen}>
         Withdraw
       </Button>
-      <Withdraw lpBalance={lpBalance} onSubmit={onSubmit} item={item} isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
+      <Withdraw
+        lpBalance={lpBalance}
+        onSubmit={onSubmit}
+        item={item}
+        isOpen={isWithdrawOpen}
+        onClose={onWithdrawClose}
+      />
     </Box>
   );
 };
@@ -65,7 +72,7 @@ export const PoolList = () => {
   const { data, loading } = usePairList(signal);
   const lpBalance = useLPtokenBalance(signal);
 
-  console.log(data)
+  console.log(data);
   return (
     <Box>
       <Flex flexDirection='row-reverse' mb={4}>
@@ -89,32 +96,65 @@ export const PoolList = () => {
             {data.map((item, index) => (
               <Tr key={index}>
                 <Td>
-                <Popover trigger='hover' arrowSize={15} placement='bottom-start'>
-                  <PopoverTrigger>
-                    <Box display='flex' alignItems='center' textTransform='uppercase' justifyContent='space-between' paddingRight='35px'>
-                      <label>{item.from_symbol}</label>
-                      <Image sx={{ width: '20px', height: '20px' }} src={UsdtWebp}/>
-                      <Image size='xs' src={ArrowWebp}/>
-                      <label>{item.to_symbol}</label>
-                      <Image sx={{ width: '20px', height: '20px' }} size='xs' src={EthWebp}/>
-                    </Box> 
-                  </PopoverTrigger>
-                  <PopoverContent sx={{ width: '452px', padding: '16px 12px' }}>
-                    <PopoverArrow></PopoverArrow>
-                    <PopoverBody sx={{ padding: '0px' }}>
-                        <Box sx={{ display: 'flex', height: '17px', lineHeight: '17px', marginBottom: '11px', padding: '0px', justifyContent: 'flex-start' }} >
-                          <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '35px' }}>From: </label>
-                          <Image sx={{ height: '20px', width: '20px', marginRight: '10px' }} src={TokenFromWebp}/>
-                          <label>{ item.from }</label>
+                  <Popover trigger='hover' arrowSize={15} placement='bottom-start'>
+                    <PopoverTrigger>
+                      <Box
+                        display='flex'
+                        alignItems='center'
+                        textTransform='uppercase'
+                        justifyContent='space-between'
+                        paddingRight='35px'
+                      >
+                        <label>{item.from_symbol}</label>
+                        <Image sx={{ width: '20px', height: '20px' }} src={UsdtWebp} />
+                        <Image size='xs' src={ArrowWebp} />
+                        <label>{item.to_symbol}</label>
+                        <Image sx={{ width: '20px', height: '20px' }} size='xs' src={EthWebp} />
+                      </Box>
+                    </PopoverTrigger>
+                    <PopoverContent sx={{ width: '480px', padding: '16px 12px' }}>
+                      <PopoverArrow></PopoverArrow>
+                      <PopoverBody sx={{ padding: '0px' }}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            height: '24px',
+                            marginBottom: '11px',
+                            padding: '0px',
+                            justifyContent: 'flex-start'
+                          }}
+                          alignItems='center'
+                        >
+                          <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '40px' }}>
+                            From:{' '}
+                          </label>
+                          <Box mr={2}>
+                            <IdentityIcon value={item.from} theme='robohash' />
+                          </Box>
+                          <label>{item.from}</label>
                         </Box>
-                        <Box sx={{ display: 'flex', height: '17px', lineHeight: '17px', padding: '0px', justifyContent: 'flex-start' }}>
-                          <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '35px' }}>To: </label>
-                          <Image sx={{ height: '20px', width: '20px', marginRight: '10px' }} src={TokenToWebp}/>
-                          <label>{ item.to }</label>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            height: '24px',
+                            lineHeight: '17px',
+                            padding: '0px',
+                            justifyContent: 'flex-start'
+                          }}
+                          alignItems='center'
+
+                        >
+                          <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '40px' }}>
+                            To:{' '}
+                          </label>
+                          <Box mr={2}>
+                            <IdentityIcon value={item.to} theme='robohash' />
+                          </Box>
+                          <label>{item.to}</label>
                         </Box>
-                    </PopoverBody>
-                  </PopoverContent>
-                </Popover>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
                 </Td>
                 <Td>
                   <Fixed value={item.from_token_pool} decimals={item.from_decimals} postfix={item.from_symbol} />

@@ -5,7 +5,7 @@ import { JoinGame } from './join-game';
 
 export const JoinButton: React.FC<any> = ({ onSubmit, item }) => {
   const { isOpen, onOpen, onClose } = useModal();
-
+  
   return (
     <>
       <Button colorScheme='blue' variant='link' _focus={{ boxShadow: 'none' }} onClick={onOpen}>

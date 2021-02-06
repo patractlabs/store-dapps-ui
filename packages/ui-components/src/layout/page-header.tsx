@@ -11,7 +11,7 @@ export type PageHeaderProps = {
 export const PageHeader: React.FC<PageHeaderProps> = React.memo(({ title, navLinks }) => {
   return (
     <Box maxW='full' as='header' p={0} background='white'>
-      <Container display='flex' maxW='max' alignItems='center'>
+      <Container display='flex' maxW='max' alignItems='center' px="72px">
         <Heading as='h1' fontSize='2xl' fontWeight='medium' py={4}>
           <Link as={ReachLink} to='/' sx={{ _hover: { textDecoration: 'none', color: 'gray.800' }}}>
             {title}

@@ -83,6 +83,14 @@ export const JoinGame = ({
   const { excute } = useContractTx({ title: 'Join Game', contract, method: 'join' });
 
   useEffect(() => {
+    if (isOpen) {
+      const allItem = ['Scissors', 'Rock', 'Paper'];
+      // random
+      setSelectedChoice(allItem[Math.floor(Math.random() * allItem.length)] as 'Rock');
+    }
+  }, [isOpen]);
+  
+  useEffect(() => {
     if (item.value) {
       setValue(formatAmount(item.value, 10));
     }

@@ -159,7 +159,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
             <Center height='full'>
               <Flex alignItems='center'>
                 <Box mr='1' mt='1'>
-                  <IdentityIcon value={option?.address} />
+                  <IdentityIcon value={option?.address} theme="robohash" />
                 </Box>
                 <Text
                   sx={{
@@ -169,7 +169,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
                     lineHeight: 'short',
                     background: '#E1E9FF',
                     borderRadius: '4px',
-                    minWidth: '74px',
+                    minWidth: '96px',
                     padding: '5px 0',
                     textAlign: 'center',
                     left: '42px'
@@ -199,14 +199,16 @@ const InputSelect: React.FC<InputSelectProps> = ({
             {options?.length ? (
               options.map((option: any) => (
                 <Box key={option.address} cursor='pointer' onClick={onSelect.bind(null, option)}>
-                  <Flex py={2} px={4} alignItems='center' _hover={{ bgColor: 'gray.100' }}>
-                    <IdentityIcon value={option.address} />
-                    <Box mx={2} width='16'>
-                      <Text fontSize='sm'>{option.symbol}</Text>
-                      <Text fontSize='xs' color='gray.500'>
-                        {option.name}
-                      </Text>
-                    </Box>
+                  <Flex py={2} px={4} alignItems='center' justifyContent="space-between" _hover={{ bgColor: 'gray.100' }}>
+                    <Flex>
+                      <IdentityIcon value={option.address} theme="robohash" />
+                      <Box mx={2} width='32'>
+                        <Text fontSize='sm'>{option.symbol}</Text>
+                        <Text fontSize='xs' color='gray.500'>
+                          {option.name}
+                        </Text>
+                      </Box>
+                    </Flex>
                     <Text ml={4} color='gray.500'>
                       {truncated(option.address)}
                     </Text>

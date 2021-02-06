@@ -5,10 +5,11 @@ import React, { useCallback } from 'react';
 
 type IdentityIconProps = {
   size?: number;
+  theme?: string;
   value?: string | Uint8Array | null;
 };
 
-export const IdentityIcon: React.FC<IdentityIconProps> = ({ value, size = 24 }) => {
+export const IdentityIcon: React.FC<IdentityIconProps> = ({ theme = 'polkadot', value, size = 24 }) => {
   const toast = useToast();
 
   const onCopy = useCallback(
@@ -35,7 +36,7 @@ export const IdentityIcon: React.FC<IdentityIconProps> = ({ value, size = 24 }) 
         overflow: 'hidden'
       }}
     >
-      <BaseIdentityIcon onCopy={onCopy} value={value} size={size} theme='substrate' />
+      <BaseIdentityIcon onCopy={onCopy} value={value} size={size} theme={theme} />
     </Box>
   );
 };

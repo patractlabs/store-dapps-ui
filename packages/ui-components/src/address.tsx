@@ -20,7 +20,7 @@ export const Address: React.FC<AddressProps> = ({ value, type, ...rest }) => {
   return (
     <Tooltip label={value} aria-label='account address' placement='top' hasArrow {...rest}>
       <Flex display='inline-flex' alignItems='center' textTransform='uppercase'>
-        <IdentityIcon value={value} />
+        <IdentityIcon value={value} theme={type === 'contract' ? 'robohash' : 'polkadot'} />
         <Text mx={2}>{name as string}</Text>
       </Flex>
     </Tooltip>
