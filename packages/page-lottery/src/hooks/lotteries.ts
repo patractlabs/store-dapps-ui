@@ -22,6 +22,6 @@ export const useBig = (): TableProps => {
 export const useHis = (): TableProps => {
   return {
     head: ['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyer', 'Pool In(DOT)', 'Pool Out(DOT)', 'Operation'],
-    body: [{ epoch: 918, random: '0x000', lottery: [1, 4, 7], poolIn: 9, poolOut: 3, operation: 'close' }]
+    body: [{ epoch: 918, random: '0x000', lottery: [1, 4, 7], buyer: 10, poolIn: 9, poolOut: 3, operation: 'close' }]
   };
 };

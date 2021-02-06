@@ -25,7 +25,7 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange }) => {
         <Thead>
           <Tr>
             {head.map((head, idx) => (
-              <Th key={title + idx}>{head}</Th>
+              <Th key={title + 'head' + idx}>{head}</Th>
             ))}
           </Tr>
         </Thead>
@@ -51,19 +51,41 @@ export const Trr: React.FC<TrProps> = ({
   operation
 }) => {
   return (
-    <Tr>
+    <Tr key=''>
       <Td>{epoch}</Td>
-      {random ? <Td>{random}</Td> : ''}
-      {ident ? <Td>{ident}</Td> : ''}
-      <Td>{lottery}</Td>
-      <Td>{tickets}</Td>
-      {reward ? <Td>{reward}</Td> : ''}
-      {buyer ? <Td>{buyer}</Td> : ''}
-      {poolIn ? <Td>{poolIn}</Td> : ''}
-      {poolOut ? <Td>{poolOut}</Td> : ''}
-      {operation ? <Td>{operation}</Td> : ''}
+      {random && <Td>{random}</Td>}
+      {ident && <Td>{ident}</Td>}
+      <Td>{lottery.join(',')}</Td>
+      {tickets && <Td>{tickets}</Td>}
+      {reward && Trend({ v: reward })}
+      {buyer && <Td>{buyer}</Td>}
+      {poolIn && Trend({ v: poolIn })}
+      {poolOut && Trend({ v: poolOut })}
+      {operation && <Td>{operation}</Td>}
     </Tr>
   );
+};
+
+const Trend: React.FC<{ v: number }> = ({ v }) => {
+  if (v === 0) {
+    return (
+      <Td>
+        <Box color='#999999F'>'-'</Box>
+      </Td>
+    );
+  } else if (v > 0) {
+    return (
+      <Td>
+        <Box color='#25A17CFF'>{'+' + v}</Box>
+      </Td>
+    );
+  } else {
+    return (
+      <Td>
+        <Box color='#E02020FF'>{'-' + -v}</Box>
+      </Td>
+    );
+  }
 };
 
 export default T;

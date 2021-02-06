@@ -14,7 +14,7 @@ export interface TrProps {
   lottery: number[];
   reward?: number;
   tickets?: number;
-  buyer?: string;
+  buyer?: number;
   poolIn?: number;
   poolOut?: number;
   operation?: string;
