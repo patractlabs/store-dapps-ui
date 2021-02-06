@@ -3,10 +3,10 @@ import { Box, Flex, PageHeader, PageLayout, PageMain } from '@patract/ui-compone
 import React from 'react';
 import { T } from './table';
 import { Foo } from './foo';
-import { useMy } from './hooks';
+import { useMy, useBig, useHis } from './hooks';
 
 export const App = () => {
-  const myLotteries = useMy();
+  const [my, big, his] = [useMy(), useBig(), useHis()];
 
   return (
     <PageLayout>
@@ -15,11 +15,11 @@ export const App = () => {
         <Box>
           <Foo />
           <Flex>
-            <T title='My Lotteries' cols={myLotteries} />
+            <T title='My Lotteries' head={my.head} body={my.body} />
             <Box width='30px'></Box>
-            <T title='My Lotteries' cols={myLotteries} />
+            <T title='Biggest Winners' head={big.head} body={big.body} />
           </Flex>
-          <T title='My Lotteries' cols={myLotteries} />
+          <T height='1104px' title='Epoch Histories' head={his.head} body={his.body} />
         </Box>
       </PageMain>
     </PageLayout>
