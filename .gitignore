@@ -22,3 +22,4 @@ env-config.js
 NOTES.md
 .cache
 dist
+.log
