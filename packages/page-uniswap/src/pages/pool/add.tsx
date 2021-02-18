@@ -219,7 +219,7 @@ const Add = ({
                         lineHeight: 'short',
                         background: '#E1E9FF',
                         borderRadius: '4px',
-                        minWidth: '74px',
+                        minWidth: '96px',
                         padding: '5px 0',
                         textAlign: 'center',
                         left: '42px'
@@ -228,7 +228,7 @@ const Add = ({
                       {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.from} />
+                      <IdentityIcon value={item.from} theme="robohash" />
                     </Box>
                   </Flex>
                 }
@@ -257,7 +257,7 @@ const Add = ({
                         lineHeight: 'short',
                         background: '#E1E9FF',
                         borderRadius: '4px',
-                        minWidth: '74px',
+                        minWidth: '96px',
                         padding: '5px 0',
                         textAlign: 'center',
                         left: '42px'
@@ -266,7 +266,7 @@ const Add = ({
                       {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.to} />
+                      <IdentityIcon value={item.to} theme="robohash" />
                     </Box>
                   </Flex>
                 }

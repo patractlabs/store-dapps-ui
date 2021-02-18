@@ -76,7 +76,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
           {list?.map((item) => (
             <Tr key={item.id}>
               <Td>
-                <Address value={item.address} />
+                <Address value={item.address} type="contract" />
               </Td>
               <Td>
                 <Address value={item.signer} />

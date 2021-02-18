@@ -22,7 +22,7 @@ export const theme = extendTheme({
     }
   },
   sizes: {
-    max: '75rem'
+    max: '100%'
   },
   components: {
     Button: {

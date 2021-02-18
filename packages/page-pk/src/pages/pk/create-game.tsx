@@ -98,6 +98,14 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
   });
 
   useEffect(() => {
+    if (isOpen) {
+      const allItem = ['Scissors', 'Rock', 'Paper'];
+      // random
+      setSelectedChoice(allItem[Math.floor(Math.random() * allItem.length)] as 'Rock');
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     if (!isOpen) return;
     if (!salt) {
       setHash('');
@@ -272,7 +280,7 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
               </Text>
             </Center>
           </Box>
-          
+
           <Flex justifyContent='space-between'>
             <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Value: </Text>
             <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {parseInt(balance)} JPT</Text>
@@ -311,7 +319,7 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
               -
             </Button>
           </HStack>
-          
+
           <Box
             sx={{
               border: '1px solid',

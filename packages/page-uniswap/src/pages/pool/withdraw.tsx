@@ -116,7 +116,7 @@ const Withdraw = ({
               onChange={setValue}
               max={balance}
               sx={{
-                w: 'calc(100% - 160px)',
+                w: 'calc(100% - 196px)',
                 h: '44px',
                 fontSize: 'lg',
                 borderRadius: '4px 0 0 4px',
@@ -126,7 +126,7 @@ const Withdraw = ({
               }}
             />
             <Box
-              width='160px'
+              width='196px'
               border='1px solid'
               borderColor='gray.200'
               sx={{
@@ -143,7 +143,7 @@ const Withdraw = ({
                     verticalAlign: 'top',
                     background: '#E1E9FF',
                     borderRadius: '4px',
-                    minWidth: '144px',
+                    minWidth: '182px',
                     padding: '3px 13px',
                     textAlign: 'center',
                     left: '42px',
@@ -182,7 +182,7 @@ const Withdraw = ({
                         lineHeight: 'short',
                         background: '#E1E9FF',
                         borderRadius: '4px',
-                        minWidth: '74px',
+                        minWidth: '96px',
                         padding: '5px 0',
                         textAlign: 'center',
                         left: '42px'
@@ -191,7 +191,7 @@ const Withdraw = ({
                       {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.from} />
+                      <IdentityIcon value={item.from} theme="robohash" />
                     </Box>
                   </Flex>
                 }
@@ -216,7 +216,7 @@ const Withdraw = ({
                         lineHeight: 'short',
                         background: '#E1E9FF',
                         borderRadius: '4px',
-                        minWidth: '74px',
+                        minWidth: '96px',
                         padding: '5px 0',
                         textAlign: 'center',
                         left: '42px'
@@ -225,7 +225,7 @@ const Withdraw = ({
                       {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.to} />
+                      <IdentityIcon value={item.to} theme="robohash" />
                     </Box>
                   </Flex>
                 }

@@ -183,13 +183,13 @@ const PK: React.FC = () => {
   const renderOperations = useCallback(
     (item: any) => {
       if (item.status === 'End') {
-        return <Text color='gray.500'>Ended</Text>;
+        return <Text color='#ABB4D0'>Ended</Text>;
       }
       if (item.status === 'Expire') {
         return <Text color='gray.500'>Expired</Text>;
       }
       if (item.status === 'Delete') {
-        return <Text color='gray.500'>Deleted</Text>;
+        return <Text color='#ABB4D0'>Deleted</Text>;
       }
       if (item.status === 'Join') {
         if (currentAccount === item.creator) {
@@ -214,7 +214,7 @@ const PK: React.FC = () => {
             </Flex>
           );
         } else {
-          return <Text color='gray.500'>{'Waitting'}</Text>;
+          return <Text color='gray.700'>{'Waitting'}</Text>;
         }
       }
 

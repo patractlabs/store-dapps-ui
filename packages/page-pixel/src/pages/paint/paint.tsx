@@ -154,9 +154,9 @@ export const Paint: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Box maxW='1200px' justifyContent='center' display='flex' flexDirection='column' mx='auto'>
       <Box sx={{ position: 'relative' }}>
-        <Box sx={{ position: 'absolute', left: '24px', top: '26px' }}>
+        <Box sx={{ position: 'absolute', left: '40px', top: '26px' }}>
           <Box color='#0058FA' sx={{ display: 'inline-block' }}>
             Pool: <Fixed value={pool || '0'} decimals={10} postfix='JPT' />
           </Box>
@@ -175,19 +175,28 @@ export const Paint: React.FC = () => {
             onRefresh={onRefresh}
           />
         </Center>
-        <Box sx={{ position: 'absolute', right: '0', top: '26px' }}>
-          <Text color='orange.400' sx={{ display: 'inline-block' }}>
-            You have covered {pixels} pixels
-          </Text>
-          <Button
-            isDisabled={pixels === 0}
-            isLoading={isLoading}
-            colorScheme='primary'
-            sx={{ ml: '10px', mr: '24px' }}
-            onClick={onSubmit}
-          >
-            {saving ? <Spinner size='sm' color='white' /> : 'Submit'}
-          </Button>
+        <Box sx={{ position: 'absolute', right: '16px', top: '26px' }} display='flex' alignItems='center'>
+          <Box display='inline-block'>
+            <Box color='gray.500' sx={{ display: 'inline-block' }}>
+              1 Pixel cost 1 DOT
+            </Box>
+            <Box mt={2}>
+              <Box color='orange.400' sx={{ display: 'inline-block' }}>
+                You have covered {pixels} pixels
+              </Box>
+            </Box>
+          </Box>
+          <Box ml={8}>
+            <Button
+              isDisabled={pixels === 0}
+              isLoading={isLoading}
+              colorScheme='primary'
+              sx={{ ml: '10px', mr: '24px' }}
+              onClick={onSubmit}
+            >
+              {saving ? <Spinner size='sm' color='white' /> : 'Submit'}
+            </Button>
+          </Box>
         </Box>
       </Box>
       <Canvas data={data} signal={signal} paintMode={paintMode} color={color} getPixel={getPixel} />
