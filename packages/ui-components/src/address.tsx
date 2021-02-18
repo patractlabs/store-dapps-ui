@@ -15,7 +15,7 @@ export const Address: React.FC<AddressProps> = ({ value, type, ...rest }) => {
   if (!value) return null;
 
   const account = accountList?.filter((account) => account.address === value)[0];
-  const name = account ? account.meta.name : `${value.substring(0, 6)}`;
+  const name = account ? account.meta.name : `${truncated(value)}`;
 
   return (
     <Tooltip label={value} aria-label='account address' placement='top' hasArrow {...rest}>
