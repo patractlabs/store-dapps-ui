@@ -33,7 +33,12 @@ import { JoinButton } from './join';
 
 export type GameChoice = 'Scissors' | 'Rock' | 'Paper' | null | undefined;
 export type GameStatus = 'wait_for_join' | 'wait_for_reveal' | 'closed' | 'punished' | 'expired' | 'waiting';
-
+export function getSaltKey(hash: string, account: string): string {
+  return `${hash}salt: ${account}`;
+}
+export function getChoiceKey(hash: string, account: string): string {
+  return `${hash}choice: ${account}`;
+}
 const FirstRowTd: React.FC<ComponentProps<typeof Td>> = ({ children, ...rest }) => (
   <Td
     sx={{
@@ -225,7 +230,6 @@ const PK: React.FC = () => {
       return (
         <Tr key={item.id}>
           <Td>{item.id}</Td>
-          <Td sx={{ color: 'black', fontWeight: 'semibold' }}>{truncated(item.salt_hash || '')}</Td>
           <Td
             sx={{
               color: isRevealed ? '#000000' : 'auto',
@@ -282,7 +286,7 @@ const PK: React.FC = () => {
         <Thead>
           <Tr>
             <Th px='13px'>ID</Th>
-            <Th colSpan={4}>Creator</Th>
+            <Th colSpan={3}>Creator</Th>
             <Th>Value</Th>
             <Th colSpan={2}>Joiner</Th>
             <Th px='0'>Operation</Th>
@@ -291,7 +295,6 @@ const PK: React.FC = () => {
         <Tbody>
           <Tr>
             <FirstRowTd></FirstRowTd>
-            <FirstRowTd>Hash</FirstRowTd>
             <FirstRowTd>Salt</FirstRowTd>
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd w='77px'>Choice</FirstRowTd>

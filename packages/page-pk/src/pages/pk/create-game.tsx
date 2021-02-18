@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { useContractQuery, useContractTx, useToast } from '@patract/react-hooks';
+import { useAccount, useContractQuery, useContractTx, useToast } from '@patract/react-hooks';
 import {
   Box,
   Button,
@@ -37,7 +37,7 @@ import {
   ScissorsEmptyImage,
   ScissorsImage
 } from '../../images/';
-import { GameChoice } from './index';
+import { GameChoice, getChoiceKey, getSaltKey } from './index';
 
 function makeSalt(length: number) {
   let result = '';
@@ -85,6 +85,7 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
   const balance = useBalance();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<any>(false);
+  const { currentAccount } = useAccount();
 
   const { read: readHash } = useContractQuery({ contract, method: 'saltHash' });
   const { excute } = useContractTx({ title: 'Create Game', contract, method: 'create' });
@@ -142,8 +143,14 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
     onClose();
   }, [onClose]);
 
+  const saveChoiceAndSalt = (choice: GameChoice, salt: string) => {
+    localStorage.setItem(getSaltKey(hash, currentAccount), salt);
+    localStorage.setItem(getChoiceKey(hash, currentAccount), choice as string);
+  };
+
   const submit = useCallback(() => {
     setIsLoading(true);
+    saveChoiceAndSalt(selectedChoice, salt);
     excute([hash], parseAmount(value.toString(), 10))
       .then(() => {
         close();

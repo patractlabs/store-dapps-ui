@@ -1,4 +1,4 @@
-import { useContractTx, useModal } from '@patract/react-hooks';
+import { useAccount, useContractTx, useModal } from '@patract/react-hooks';
 import {
   Box,
   Button,
@@ -28,7 +28,7 @@ import {
   ScissorsEmptyImage,
   ScissorsImage
 } from '../../images';
-import { GameChoice } from './index';
+import { GameChoice, getChoiceKey, getSaltKey } from './index';
 
 export const RevealButton: React.FC<any> = ({ onSubmit, item }) => {
   const { isOpen, onOpen, onClose } = useModal();
@@ -82,11 +82,13 @@ export const RevealGame = ({
   onClose: () => void;
   onSubmit: () => void;
 }) => {
-  const [selectedChoice, setSelectedChoice] = useState<GameChoice>('Rock');
+  const { currentAccount } = useAccount();
+  const saltFromStorage = localStorage.getItem(getSaltKey(item.salt_hash, currentAccount));
+  const choiceFromeStorage = localStorage.getItem(getChoiceKey(item.salt_hash, currentAccount));
+  const [selectedChoice, setSelectedChoice] = useState<GameChoice>(choiceFromeStorage as GameChoice || 'Rock');
   const { contract } = usePkContract();
   const [isLoading, setIsLoading] = useState<any>(false);
-  const [salt, setSalt] = useState('');
-
+  const [salt, setSalt] = useState(saltFromStorage || '');
   const { excute } = useContractTx({ title: 'Reveal Game', contract, method: 'reveal' });
 
   const close = useCallback(() => {
