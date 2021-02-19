@@ -37,9 +37,7 @@ export const usePairList = (signal = 0) => {
       .then((result) => {
         return Promise.all(
           (result || []).map(({ from, to, exchange }: any) => {
-            const { contract } = createExchange(exchange);
-            const { contract: fromContract } = createToken(from);
-            const { contract: toContract } = createToken(to);
+            const { contract } = createExchange(exchange, from, to);
 
             return Promise.all([
               contractQuery(currentAccount, contract, 'exchangeInfo'),

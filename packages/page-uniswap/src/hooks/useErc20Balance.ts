@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { useAccount, useModal, contractQuery } from '@patract/react-hooks';
 
 export const queryBalance = async (api: any, currentAccount: any, contract: any, account: any) => {
-  console.log(contract.address.toString())
   if (contract.address.toString() === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
     const info = await api.query.system.account(account);
     return info.data.free.toString();

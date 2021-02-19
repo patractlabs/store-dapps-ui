@@ -70,7 +70,6 @@ export const PoolList = () => {
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
   const { data, loading } = usePairList(signal);
 
-  console.log(data);
   return (
     <Box>
       <Flex flexDirection='row-reverse' mb={4}>

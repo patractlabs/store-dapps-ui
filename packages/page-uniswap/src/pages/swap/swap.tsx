@@ -34,6 +34,7 @@ export const Swap = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [method, setMethod] = useState('');
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
+
   const { excute } = useContractTx({ title: 'Swap', contract: exchangeContract?.contract?.contract, method });
   const createToken = useTokenFactory();
 
@@ -53,7 +54,7 @@ export const Swap = () => {
   const { contract } = useFactoryContract();
 
   const { read: readExchangeAddress } = useContractQuery({ contract, method: 'factory,getExchange' });
-  
+
   const swapPrice = useMemo(() => {
     if (!isSwapPrice) {
       if (inputValue && estimatedOutput && Number(inputValue as any) !== 0) {
@@ -98,17 +99,19 @@ export const Swap = () => {
 
   useEffect(() => {
     if (exchangeContract) {
+      const isExchange2 = exchangeContract.contract.contract.abi.json.contract.name === 'exchange2';
+
       if (inputValue) {
         if (exchangeContract.from === inputOption.address) {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
-            'getFromSwapToInputPrice',
+            isExchange2 ? 'getTokenToDotInputPrice' : 'getFromSwapToInputPrice',
             parseAmount(inputValue, inputOption.decimals)
           )
             .then((result: any) => {
               result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
-              setMethod('swapFromToInput');
+              setMethod(!isExchange2 ? 'swapFromToInput': 'swapTokenToDotInput');
             })
             .catch(() => {
               setMethod('');
@@ -119,12 +122,12 @@ export const Swap = () => {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
-            'getToSwapFromInputPrice',
+            isExchange2 ? 'getDotToTokenInputPrice' : 'getToSwapFromInputPrice',
             parseAmount(inputValue, inputOption.decimals)
           )
             .then((result: any) => {
               result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
-              setMethod('swapToFromInput');
+              setMethod(!isExchange2 ? 'swapToFromInput': 'swapDotToTokenInput');
             })
             .catch(() => {
               setMethod('');
@@ -136,12 +139,12 @@ export const Swap = () => {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
-            'getFromSwapToOutputPrice',
+            isExchange2 ? 'getTokenToDotOutputPrice' : 'getFromSwapToOutputPrice',
             parseAmount(outputValue, outputOption.decimals)
           )
             .then((result: any) => {
               result && setEstimatedInput(formatAmount(result, inputOption.decimals));
-              setMethod('swapFromToOutput');
+              setMethod(!isExchange2? 'swapFromToOutput': 'swapTokenToDotOutput');
             })
             .catch(() => {
               setMethod('');
@@ -151,12 +154,12 @@ export const Swap = () => {
           contractQuery(
             currentAccount,
             exchangeContract.contract.contract,
-            'getToSwapFromOutputPrice',
+            isExchange2 ? 'getDotToTokenOutputPrice' : 'getToSwapFromOutputPrice',
             parseAmount(outputValue, outputOption.decimals)
           )
             .then((result: any) => {
               result && setEstimatedInput(formatAmount(result, inputOption.decimals));
-              setMethod('swapToFromOutput');
+              setMethod(!isExchange2? 'swapToFromOutput': 'swapDotToTokenOutput');
             })
             .catch(() => {
               setMethod('');
@@ -164,6 +167,7 @@ export const Swap = () => {
           return;
         }
       }
+
       setMethod('');
     } else {
       setEstimatedInput(null);
@@ -173,7 +177,7 @@ export const Swap = () => {
   }, [exchangeContract, currentAccount, inputValue, outputValue, inputOption, outputOption]);
 
   const submit = () => {
-    if (method === 'swapFromToOutput' || method === 'swapToFromOutput') {
+    if (method === 'swapFromToOutput' || method === 'swapToFromOutput' || method === 'swapTokenToDotOutput' || method === 'swapDotToTokenOutput') {
       setIsLoading(true);
       inputApprove(exchangeContract.address)
         .then(() => {
@@ -207,6 +211,11 @@ export const Swap = () => {
   useEffect(() => {
     if (inputOption && outputOption) {
       setExchangeContractLoading(true);
+      if (inputOption.address === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+        setExchangeContract(null);
+        setExchangeContractLoading(false);
+        return;
+      }
       readExchangeAddress(inputOption.address, outputOption.address)
         .then((result) => {
           if (result) {
@@ -214,7 +223,7 @@ export const Swap = () => {
               from: inputOption.address,
               to: outputOption.address,
               address: result,
-              contract: createExchange(result)
+              contract: createExchange(result, inputOption.address, outputOption.address)
             });
           } else {
             return readExchangeAddress(outputOption.address, inputOption.address).then((result) => {
@@ -223,7 +232,7 @@ export const Swap = () => {
                   from: outputOption.address,
                   to: inputOption.address,
                   address: result,
-                  contract: createExchange(result)
+                  contract: createExchange(result, inputOption.address, outputOption.address)
                 });
               } else {
                 setExchangeContract(null);
@@ -232,12 +241,12 @@ export const Swap = () => {
           }
         })
         .catch((error) => {
-          console.log('catch')
+          console.log('catch');
 
           setExchangeContract(null);
         })
         .finally(() => {
-          console.log('finally')
+          console.log('finally');
           setExchangeContractLoading(false);
         });
     }

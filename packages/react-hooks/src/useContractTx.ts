@@ -40,8 +40,6 @@ export const useContractTx = ({ title, contract, method }: ContractTxProps) => {
       let toastId: any;
 
       try {
-        console.log('start')
-
         const estimatedGas = await queryEstimatedWeight(fields, value);
 
         const tx = contract.tx[method](

@@ -1,6 +1,5 @@
 import { contractQuery, useAccount, useContractQuery } from '@patract/react-hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useExchangeFactory } from './useExchangeFactory';
 import { useFactoryContract } from './useFactoryContract';
 import { useTokenFactory } from './useTokenFactory';
 

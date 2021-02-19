@@ -15,15 +15,21 @@ export const useApprove = (contract: any) => {
 
   const { currentAccount } = useAccount();
 
+  return useCallback(
+    async (spender: string) => {
+      // isDot
+      if (contract.address.toString() === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+        return;
+      }
 
-  return useCallback(async (spender: string) => {
-    const allowance = await read(currentAccount, spender)
-    console.log('allowance', allowance)
+      const allowance = await read(currentAccount, spender);
 
-    if(allowance === '0xffffffffffffffffffffffffffffffff') {
-      return 
-    } else {
-      return excute([spender, '0xffffffffffffffffffffffffffffffff'])
-    }
-  }, [excute, currentAccount])
-}
+      if (Number(allowance) >= Number('0x0fffffffffffffffffffffffffffffff')) {
+        return;
+      } else {
+        return excute([spender, '0xffffffffffffffffffffffffffffffff']);
+      }
+    },
+    [excute, currentAccount, contract]
+  );
+};
