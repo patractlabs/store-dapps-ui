@@ -1,4 +1,3 @@
-// import { AddIcon } from '@chakra-ui/icons';
 import { Box, Flex, PageHeader, PageLayout, PageMain, Spacer } from '@patract/ui-components';
 import React from 'react';
 import { T } from './table';
