@@ -1,8 +1,7 @@
-import { useContractQuery, useModal } from '@patract/react-hooks';
-import { Box, Button, Flex, PageHeader, PageLayout, PageMain } from '@patract/ui-components';
+import { useContractTx, useContractQuery } from '@patract/react-hooks';
+import { Box, Button, Flex, PageHeader, PageLayout, PageMain, systemProps } from '@patract/ui-components';
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
-import IssueDAI from './issue-dai';
 
 interface TotalSupplyProps{
   title: string;
@@ -63,8 +62,6 @@ const SystemParams: FC<SystemParamsProps> = ({
   lrr,
   currentPrice,
 }): ReactElement => {
-  const { isOpen: isIssueDAIOpen, onOpen: onIssueDAIOpen, onClose: onIssueDAIClose } = useModal();
-
   return <Flex sx={{
     height: '183px',
     background: '#FFFFFF',
@@ -159,33 +156,31 @@ const SystemParams: FC<SystemParamsProps> = ({
         fontWeight: 500,
         color: '#000000',
         lineHeight: '17px',
-      }}>At current price and ratios, 100 DOT can issue 1000 DAI at max.</h3>
+      }}>At current price and ratios,
+      100 DOT can issue 1000 DAI at max.</h3>
       <p style={{
         fontSize: '12px',
         fontFamily: 'PingFangSC-Regular, PingFang SC',
         fontWeight: 400,
         color: '#666666',
         lineHeight: '15px',
-      }}>You can under take up to 27% price drop. Otherwise, you need to increase collateral, or you can be liquidated by anyone and lose 5%.</p>
-      <Button
-        colorScheme={ 'green' }
-        sx={{
-          width: '193px',
-          height: '40px',
-          background: '#25A17C',
-          boxShadow: '0px 0px 4px 0px #ABB4D0',
-          borderRadius: '4px',
-        }}
-        onClick={onIssueDAIOpen}>
-          Issue DAI
-      </Button>
+      }}>You can under take up to 27% price drop. 
+Otherwise, you need to increase collateral, 
+or you can be liquidated by anyone and lose 5%.</p>
+      <Button colorScheme={ 'green' } sx={{
+        width: '193px',
+        height: '40px',
+        background: '#25A17C',
+        boxShadow: '0px 0px 4px 0px #ABB4D0',
+        borderRadius: '4px',
+      }}>Issue DAI</Button>
     </Box>
-    <IssueDAI currentPrice={ 15 } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} />
   </Flex>
 };
 
 const Maker: FC = (): ReactElement => {
   const { contract } = useMakerContract();
+  const { excute } = useContractTx({ title: 'Pixel', contract, method: 'update' });
   const { read: readSystemParams } = useContractQuery({ contract, method: 'systemParams' });
   const { read: readTotalSupply } = useContractQuery({ contract, method: 'totalSupply' });
   const [ totalSupply, setTotalSupply ] = useState<TotalSupplyProps[]>([]);
@@ -198,6 +193,7 @@ const Maker: FC = (): ReactElement => {
 
   useEffect(() => {
     readSystemParams().then((data) => {
+      console.log('system params', data);
       const [ mcr, mlr, lrr, currentPrice ] = (data as number[]) || [0, 0, 0, 0];
 
       setSystemParams({
@@ -212,7 +208,7 @@ const Maker: FC = (): ReactElement => {
   useEffect(() => {
     readTotalSupply().then(data => {
       const [totalIssuers, totalCollateral, totalIssuance] = (data as number[]) || [0, 0, 0, 0];
-
+      console.log('total supply', data);
       setTotalSupply([
         { title: 'Total Issuers', val: totalIssuers },
         { title: 'Total Collateral', val: totalCollateral, unit: 'DOT' },
