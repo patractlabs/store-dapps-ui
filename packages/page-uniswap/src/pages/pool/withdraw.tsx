@@ -196,7 +196,7 @@ const Withdraw = ({
                       {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.from} theme="robohash" />
+                      <IdentityIcon value={item.from} theme="polkadot" />
                     </Box>
                   </Flex>
                 }
@@ -230,7 +230,7 @@ const Withdraw = ({
                       {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.to} theme="robohash" />
+                      <IdentityIcon value={item.to} theme="polkadot" />
                     </Box>
                   </Flex>
                 }

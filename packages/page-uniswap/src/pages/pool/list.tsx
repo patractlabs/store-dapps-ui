@@ -126,7 +126,7 @@ export const PoolList = () => {
                             From:{' '}
                           </label>
                           <Box mr={2}>
-                            <IdentityIcon value={item.from} theme='robohash' />
+                            <IdentityIcon value={item.from} theme='polkadot' />
                           </Box>
                           <label>{item.from}</label>
                         </Box>
@@ -145,7 +145,7 @@ export const PoolList = () => {
                             To:{' '}
                           </label>
                           <Box mr={2}>
-                            <IdentityIcon value={item.to} theme='robohash' />
+                            <IdentityIcon value={item.to} theme='polkadot' />
                           </Box>
                           <label>{item.to}</label>
                         </Box>

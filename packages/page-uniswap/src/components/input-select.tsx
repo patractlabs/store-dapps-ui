@@ -161,7 +161,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
             <Center height='full'>
               <Flex alignItems='center'>
                 <Box mr='1' mt='1'>
-                  <IdentityIcon value={option?.address} theme='robohash' />
+                  <IdentityIcon value={option?.address} theme='polkadot' />
                 </Box>
                 <Text
                   sx={{
@@ -209,7 +209,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
                     _hover={{ bgColor: 'gray.100' }}
                   >
                     <Flex>
-                      <IdentityIcon value={option.address} theme='robohash' />
+                      <IdentityIcon value={option.address} theme='polkadot' />
                       <Box mx={2} width='32'>
                         <Text fontSize='sm'>{option.symbol}</Text>
                         <Text fontSize='xs' color='gray.500'>
