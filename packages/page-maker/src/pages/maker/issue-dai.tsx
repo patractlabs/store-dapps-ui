@@ -20,12 +20,12 @@ import {
   HStack,
   useNumberInput
 } from '@patract/ui-components';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useContractTx } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 
-const ReduceCollateral = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen: boolean; onClose: () => void; onSubmit?: () => void, currentPrice: number; }) => {
+const IssueDAI = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen: boolean; onClose: () => void; onSubmit?: () => void, currentPrice: number; }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
@@ -74,7 +74,7 @@ const ReduceCollateral = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen:
       return;  
     }
     setEstimatedIssuance(_estimatedIssuance.toString());
-  }, [collateralRatio, collateral]);
+  }, [collateralRatio, collateral, currentPrice]);
   // const onCollateralRatioChange = (val: string): void => {
   //   const _collateralRatio = parseFloat(val) / 100;
   //   const _collateral = parseFloat(collateral);
@@ -87,7 +87,7 @@ const ReduceCollateral = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen:
   //   const _estimatedIssuance = parseFloat(val);
   //   const _collateralRatio = parseFloat(collateralRatio) / 100;
   //   const _collateral = _estimatedIssuance * _collateralRatio / currentPrice;
-    
+
   //   if (_estimatedIssuance.toString() === 'NaN' || _collateralRatio.toString() === 'NaN') {
   //     setCollateral('');
   //     setEstimatedIssuance('');
@@ -231,4 +231,4 @@ const ReduceCollateral = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen:
   );
 };
 
-export default ReduceCollateral;
+export default IssueDAI;
