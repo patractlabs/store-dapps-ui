@@ -12,7 +12,7 @@ export const App = () => {
   return (
     <PageLayout>
       <PageHeader title='Patra Lottery' />
-      <PageMain my='30'>
+      <PageMain my='30' minWidth='1360px' width='1360px'>
         <Tip />
         <Foo />
         <Flex>
