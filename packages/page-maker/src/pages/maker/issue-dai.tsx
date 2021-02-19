@@ -20,12 +20,18 @@ import {
   HStack,
   useNumberInput
 } from '@patract/ui-components';
-import React, { useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useContractTx } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 
-const IssueDAI = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen: boolean; onClose: () => void; onSubmit?: () => void, currentPrice: number; }) => {
+const IssueDAI: FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: () => void;
+  currentPrice: number;
+  balance: number;
+}> = ({ isOpen, onClose, onSubmit, currentPrice, balance }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
@@ -53,7 +59,7 @@ const IssueDAI = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen: boolean
     excute([collateralRatio], parseAmount(collateral.toString(), 10))
       .then(() => {
         close();
-        // onSubmit();
+        onSubmit();
       })
       .finally(() => {
         setIsLoading(false);
@@ -109,7 +115,7 @@ const IssueDAI = ({ isOpen, onClose, onSubmit, currentPrice }: { isOpen: boolean
               <FormLabel>
                 <span>Collateral</span>
                 <span>
-                  Balance: <Fixed value={100.1} decimals={ 0 } /> DOT
+                  Balance: <Fixed value={balance} decimals={ 0 } /> DOT
                 </span>
               </FormLabel>
               <InputGroup>

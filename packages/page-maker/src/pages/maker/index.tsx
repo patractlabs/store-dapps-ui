@@ -3,7 +3,7 @@ import { Box, Button, Flex, PageHeader, PageLayout, PageMain } from '@patract/ui
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import IssueDAI from './issue-dai';
-
+import CDPList from './cdp-list';
 interface TotalSupplyProps{
   title: string;
   val: number | string;
@@ -180,7 +180,7 @@ const SystemParams: FC<SystemParamsProps> = ({
           Issue DAI
       </Button>
     </Box>
-    <IssueDAI currentPrice={ 15 } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} />
+    <IssueDAI currentPrice={ 15 } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={ () => {} } balance={ 100.1 } />
   </Flex>
 };
 
@@ -228,6 +228,7 @@ const Maker: FC = (): ReactElement => {
         { totalSupply.map(item => <TotalSupply key={ item.title } title={ item.title } val={ item.val } unit={ item.unit } />) }
       </Flex>
       <SystemParams mcr={systemParams.mcr} mlr={ systemParams.mlr } lrr={ systemParams.lrr } currentPrice={ systemParams.currentPrice } />
+      <CDPList price={systemParams.currentPrice}/>
     </>
   );
 };

@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x87cacabf767ef003d2815bc603eca26e9bd230bb0559ec2f361cba7e1d099fb9",
+    "hash": "0xd8aee2189e2085051a5caa5878dcda776ee0cce58f63d576ab2087be355db490",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.52.0-nightly"
   },
@@ -581,6 +581,24 @@
           "type": 17
         },
         "selector": "0xdb6375a8"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Returns the total cdp amount."
+        ],
+        "mutates": false,
+        "name": [
+          "cdp_count"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u32"
+          ],
+          "type": 5
+        },
+        "selector": "0x6e2a7d4c"
       }
     ]
   },
