@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Flex } from '@patract/ui-components';
 
+/* The header table */
 export const Foo: React.FC<{}> = () => {
   return (
     <Flex height={317} px='4' py='4' rounded='lg' shadow='sm' bg='white' flexDirection='row'>

@@ -2,9 +2,16 @@ import React from 'react';
 import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 
+import { Circle } from './component';
+
 import { TableProps, TrProps } from './types';
 
-export const T: React.FC<TableProps> = ({ head, body, title, onChange }) => {
+/**
+ * Custom Table
+ *
+ * + Pagination
+ */
+export const T: React.FC<TableProps> = ({ head, body, title, onChange, width }) => {
   const [page, setPage] = React.useState(1);
 
   // On Changing Page
@@ -17,7 +24,7 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange }) => {
   );
 
   return (
-    <Box mt='10' px='10px' py='8px' rounded='lg' shadow='sm' bg='white'>
+    <Box mt='10' px='10px' py='8px' rounded='lg' shadow='sm' bg='white' width={width ? width : ''}>
       <Text p={8} fontSize='16px' fontWeight='bold'>
         {title}
       </Text>
@@ -38,6 +45,7 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange }) => {
   );
 };
 
+/* Well, I've forgotten why I named this component `Tr` */
 export const Trr: React.FC<TrProps> = ({
   epoch,
   random,
@@ -55,7 +63,9 @@ export const Trr: React.FC<TrProps> = ({
       <Td>{epoch}</Td>
       {random && <Td>{random}</Td>}
       {ident && <Td>{ident}</Td>}
-      <Td>{lottery.join(',')}</Td>
+      <Td display='flex' flexDirection='row'>
+        {lottery.map((v) => Circle({ v }))}
+      </Td>
       {tickets && <Td>{tickets}</Td>}
       {reward && Trend({ v: reward })}
       {buyer && <Td>{buyer}</Td>}
@@ -66,6 +76,7 @@ export const Trr: React.FC<TrProps> = ({
   );
 };
 
+/* font color of reward */
 const Trend: React.FC<{ v: number }> = ({ v }) => {
   if (v === 0) {
     return (

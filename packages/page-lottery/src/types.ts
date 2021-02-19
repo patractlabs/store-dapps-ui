@@ -2,6 +2,7 @@ export interface TableProps {
   head: string[];
   body: TrProps[];
   height?: string;
+  width?: string;
   title: string;
 
   onChange?: (page: number) => void;
