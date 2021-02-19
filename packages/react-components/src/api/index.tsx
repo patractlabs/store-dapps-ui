@@ -196,7 +196,8 @@ export const Api = React.memo(function Api({ children, store, url }: Props): Rea
       signer,
       types: {
         Address: 'MultiAddress',
-        LookupSource: 'MultiAddress'
+        LookupSource: 'MultiAddress',
+        BlockLength: 'u32'
       }
     });
 
