@@ -64,7 +64,7 @@ export const Trr: React.FC<TrProps> = ({
       {random && <Td>{random}</Td>}
       {ident && <Td>{ident}</Td>}
       <Td display='flex' flexDirection='row'>
-        {lottery.map((v) => Circle({ v }))}
+        {lottery.map((v, i) => Circle({ v, style: 0, key: String(i) }))}
       </Td>
       {tickets && <Td>{tickets}</Td>}
       {reward && Trend({ v: reward })}

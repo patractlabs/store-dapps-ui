@@ -1,6 +1,8 @@
 import React from 'react';
-import { Box, Flex, Spacer, QuestionIcon } from '@patract/ui-components';
+import { Box, Flex, Spacer } from '@patract/ui-components';
 
+import { Pop } from './component';
+import { TicketBoard } from './ticket';
 import { FooCardProps } from './types';
 
 /* The header table */
@@ -33,16 +35,10 @@ export const Foo: React.FC<{}> = () => {
             content={<Box>01 : 10s</Box>}
           />
         </Flex>
-        <Flex mt='5' color='rgba(37, 161, 124, 1)' justifyContent='flex-start' alignItems='center'>
-          <QuestionIcon w={5} h={5} /> <Box ml='0.2rem'>Rules</Box>
-        </Flex>
+        <Pop />
       </Box>
       <Spacer />
-      <Box width='100%'>
-        <Box height='100%' bg='#F9F9FBFF' p='5' rounded='md' border='1px solid rgba(171, 180, 208, 0.35)'>
-          Epoch ID: 918
-        </Box>
-      </Box>
+      <TicketBoard />
     </Flex>
   );
 };
