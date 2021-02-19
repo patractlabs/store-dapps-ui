@@ -19,6 +19,7 @@ import InputSelect from '../../components/input-select';
 import { useFactoryContract } from '../../hooks/useFactoryContract';
 import { useExchangeFactory } from '../../hooks/useExchangeFactory';
 import { useTokenFactory } from '../../hooks/useTokenFactory';
+import { useApprove } from '../../hooks/useApprove';
 
 export const Swap = () => {
   const [inputValue, setInputValue] = useState<string>('');
@@ -45,18 +46,14 @@ export const Swap = () => {
     }
   }, [inputOption, createToken]);
 
-  const { excute: inputApprove } = useContractTx({
-    title: 'Approve',
-    contract: inputContract?.contract as any,
-    method: 'erc20,approve'
-  });
+  const inputApprove = useApprove(inputContract?.contract as any);
 
   const createExchange = useExchangeFactory();
   const { currentAccount } = useAccount();
   const { contract } = useFactoryContract();
 
   const { read: readExchangeAddress } = useContractQuery({ contract, method: 'factory,getExchange' });
-
+  
   const swapPrice = useMemo(() => {
     if (!isSwapPrice) {
       if (inputValue && estimatedOutput && Number(inputValue as any) !== 0) {
@@ -178,7 +175,7 @@ export const Swap = () => {
   const submit = () => {
     if (method === 'swapFromToOutput' || method === 'swapToFromOutput') {
       setIsLoading(true);
-      inputApprove([exchangeContract.address, parseAmount(estimatedInput as any, inputOption.decimals)])
+      inputApprove(exchangeContract.address)
         .then(() => {
           return excute([parseAmount(outputValue, outputOption.decimals)]);
         })
@@ -192,7 +189,7 @@ export const Swap = () => {
         });
     } else {
       setIsLoading(true);
-      inputApprove([exchangeContract.address, parseAmount(inputValue, inputOption.decimals)])
+      inputApprove(exchangeContract.address)
         .then(() => {
           return excute([parseAmount(inputValue, inputOption.decimals)]);
         })
@@ -210,7 +207,6 @@ export const Swap = () => {
   useEffect(() => {
     if (inputOption && outputOption) {
       setExchangeContractLoading(true);
-      console.log('readExchangeAddress', inputOption.address, outputOption.address)
       readExchangeAddress(inputOption.address, outputOption.address)
         .then((result) => {
           if (result) {
@@ -267,7 +263,7 @@ export const Swap = () => {
               onChangeOption={(value) => {
                 setInputOption(value);
               }}
-              withBalance='erc20,balanceOf'
+              withBalance
               signal={signal}
               onChangeValue={(value) => {
                 setInputValue(value);
@@ -309,7 +305,7 @@ export const Swap = () => {
               value={estimatedOutput === null ? outputValue : estimatedOutput}
               option={outputOption}
               onChangeOption={setOutputOption}
-              withBalance='erc20,balanceOf'
+              withBalance
               signal={signal}
               onChangeValue={(value) => {
                 setInputValue('');

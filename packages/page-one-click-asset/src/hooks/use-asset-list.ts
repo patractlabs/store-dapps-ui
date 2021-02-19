@@ -35,16 +35,16 @@ export const useAssetList = (
         const contract = new ContractPromise(api, getTokenAbi(codeHash), address);
 
         return Promise.all([
-          contract.query['erc20,tokenDecimals'](signer, {}).then((data) => {
+          contract.query['iErc20,tokenDecimals'](signer, {}).then((data) => {
             return data.output?.toString();
           }),
-          contract.query['erc20,tokenSymbol'](signer, {}).then((data) => {
+          contract.query['iErc20,tokenSymbol'](signer, {}).then((data) => {
             return data.output?.toString();
           }),
-          contract.query['erc20,totalSupply'](signer, {}).then((data) => {
+          contract.query['iErc20,totalSupply'](signer, {}).then((data) => {
             return data.output?.toString();
           }),
-          contract.query['erc20,tokenName'](signer, {}).then((data) => {
+          contract.query['iErc20,tokenName'](signer, {}).then((data) => {
             return data.output?.toString();
           })
         ]).then(([tokenDecimals, tokenSymbol, totalSupply, tokenName]) => {

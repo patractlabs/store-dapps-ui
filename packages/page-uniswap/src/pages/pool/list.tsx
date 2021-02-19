@@ -22,7 +22,6 @@ import {
   PopoverBody
 } from '@patract/ui-components';
 import React, { useReducer } from 'react';
-import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
 import { usePairList } from '../../hooks/usePairList';
 import Add from './add';
 import CreatePair from './create-pair';
@@ -70,7 +69,6 @@ export const PoolList = () => {
 
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
   const { data, loading } = usePairList(signal);
-  const lpBalance = useLPtokenBalance(signal);
 
   console.log(data);
   return (
@@ -166,12 +164,12 @@ export const PoolList = () => {
                   <Fixed value={item.lp_token_supply} decimals={18} postfix='LPT' />
                 </Td>
                 <Td>
-                  <Fixed value={lpBalance} decimals={18} postfix='LPT' />
+                  <Fixed value={item.own_lp_token} decimals={18} postfix='LPT' />
                 </Td>
                 <Td>
                   <Flex>
-                    <AddLiquidity lpBalance={lpBalance} item={item} onSubmit={forceUpdate} />
-                    <WithdrawLiquidity lpBalance={lpBalance} item={item} onSubmit={forceUpdate} />
+                    <AddLiquidity lpBalance={item.own_lp_token} item={item} onSubmit={forceUpdate} />
+                    <WithdrawLiquidity lpBalance={item.own_lp_token} item={item} onSubmit={forceUpdate} />
                   </Flex>
                 </Td>
               </Tr>

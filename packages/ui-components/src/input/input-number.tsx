@@ -3,12 +3,13 @@ import React from 'react';
 
 type InputNumberProps = Omit<React.ComponentProps<typeof Input>, 'render'> & {
   onChange?: (value: string) => void;
+  maxDecimals?: number;
 };
 
 export const InputNumber: React.FC<InputNumberProps> = (props) => {
-  const { onChange, ...rest } = props;
+  const { onChange, maxDecimals, ...rest } = props;
   const inputProps = {
-    pattern: '^[0-9]*[.]?[0-9]*$',
+    pattern: `(^[0-9]{0,18}$)|(^[0-9]{0,18}[.][0-9]{0,${maxDecimals || 10}}$)`,
     inputMode: 'decimal' as 'decimal',
     ...rest
   };

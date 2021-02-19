@@ -1,26 +1,27 @@
 import { TriangleDownIcon } from '@chakra-ui/icons';
-import { useAccount, useModal, contractQuery } from '@patract/react-hooks';
+import { useAccount, useApi, useModal } from '@patract/react-hooks';
 import {
   Box,
   Center,
   Divider,
+  Fixed,
   Flex,
   FormLabel,
   Heading,
   IdentityIcon,
   Input,
+  InputNumber,
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Text,
-  InputNumber
+  Text
 } from '@patract/ui-components';
-import { Fixed } from '@patract/ui-components';
-import { truncated, toFixed, FixedNumber } from '@patract/utils';
+import { FixedNumber, toFixed, truncated } from '@patract/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { useTokens } from '../hooks/useTokens';
+import { queryBalance } from '../hooks/useErc20Balance';
 import { useTokenFactory } from '../hooks/useTokenFactory';
+import { useTokens } from '../hooks/useTokens';
 
 export type MenuOption = {
   address: string;
@@ -33,7 +34,7 @@ export type InputSelectProps = {
   label: string;
   value: string;
   option: any;
-  withBalance?: string;
+  withBalance?: boolean;
   signal?: number;
   defaultOptionIndex: any;
   onChangeValue: (value: string) => void;
@@ -51,6 +52,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
   signal = 0
 }) => {
   const { isOpen, onOpen, onClose } = useModal();
+  const { api } = useApi();
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<any>(null);
   const { data, queryUnknownToken } = useTokens();
@@ -97,7 +99,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
   useEffect(() => {
     if (option?.address && withBalance) {
       const { contract } = createToken(option.address);
-      contractQuery(currentAccount, contract, withBalance, currentAccount)
+      queryBalance(api, currentAccount, contract, currentAccount)
         .then((b) => {
           if (!b || b === '0') {
             setBalance(null);
@@ -112,7 +114,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
     } else {
       setBalance(null);
     }
-  }, [currentAccount, signal, option, withBalance, createToken]);
+  }, [api, currentAccount, signal, option, withBalance, createToken]);
 
   return (
     <React.Fragment>
@@ -159,7 +161,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
             <Center height='full'>
               <Flex alignItems='center'>
                 <Box mr='1' mt='1'>
-                  <IdentityIcon value={option?.address} theme="robohash" />
+                  <IdentityIcon value={option?.address} theme='robohash' />
                 </Box>
                 <Text
                   sx={{
@@ -199,9 +201,15 @@ const InputSelect: React.FC<InputSelectProps> = ({
             {options?.length ? (
               options.map((option: any) => (
                 <Box key={option.address} cursor='pointer' onClick={onSelect.bind(null, option)}>
-                  <Flex py={2} px={4} alignItems='center' justifyContent="space-between" _hover={{ bgColor: 'gray.100' }}>
+                  <Flex
+                    py={2}
+                    px={4}
+                    alignItems='center'
+                    justifyContent='space-between'
+                    _hover={{ bgColor: 'gray.100' }}
+                  >
                     <Flex>
-                      <IdentityIcon value={option.address} theme="robohash" />
+                      <IdentityIcon value={option.address} theme='robohash' />
                       <Box mx={2} width='32'>
                         <Text fontSize='sm'>{option.symbol}</Text>
                         <Text fontSize='xs' color='gray.500'>

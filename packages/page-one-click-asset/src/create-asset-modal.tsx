@@ -56,7 +56,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
 
       const blueprint = new BlueprintPromise(api, abi, abi.source.hash);
 
-      const tx = blueprint.tx['erc20,new'](
+      const tx = blueprint.tx['iErc20,new'](
         {
           gasLimit: '400000000000',
           value: parseAmount('100')

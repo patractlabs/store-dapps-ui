@@ -23,6 +23,11 @@ const CreatePair = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useFactoryContract();
   const { excute } = useContractTx({ title: 'Create Pair', contract, method: 'factory,createExchange' });
+  const { excute: createDot } = useContractTx({
+    title: 'Create Pair',
+    contract,
+    method: 'factory,createExchangeWithDot'
+  });
 
   const close = () => {
     setFrom('');
@@ -32,7 +37,13 @@ const CreatePair = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
 
   const submit = () => {
     setIsLoading(true);
-    excute([from, to, null])
+    let method: any;
+    if (to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+      method = createDot([from, '']);
+    } else {
+      method = excute([from, to, null]);
+    }
+    method
       .then(() => {
         close();
         onSubmit();
