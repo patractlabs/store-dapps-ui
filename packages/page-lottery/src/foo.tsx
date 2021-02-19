@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex } from '@patract/ui-components';
+import { Box, Flex, Spacer, QuestionIcon } from '@patract/ui-components';
 
 import { FooCardProps } from './types';
 
@@ -25,6 +25,7 @@ export const Foo: React.FC<{}> = () => {
               </Flex>
             }
           />
+          <Spacer />
           <FooCard
             titleColor='rgba(0, 133, 146, 0.2)'
             title='Open In'
@@ -32,8 +33,11 @@ export const Foo: React.FC<{}> = () => {
             content={<Box>01 : 10s</Box>}
           />
         </Flex>
-        <Box mt='5'>(?) Rules</Box>
+        <Flex mt='5' color='rgba(37, 161, 124, 1)' justifyContent='flex-start' alignItems='center'>
+          <QuestionIcon w={5} h={5} /> <Box ml='0.2rem'>Rules</Box>
+        </Flex>
       </Box>
+      <Spacer />
       <Box width='100%'>
         <Box height='100%' bg='#F9F9FBFF' p='5' rounded='md' border='1px solid rgba(171, 180, 208, 0.35)'>
           Epoch ID: 918
@@ -45,7 +49,7 @@ export const Foo: React.FC<{}> = () => {
 
 export const FooCard: React.FC<FooCardProps> = ({ title, titleColor, contentColor, content }) => {
   return (
-    <Box width='100%' bg={contentColor} p='0' height='11rem' rounded='md' mr={3} shadow='md'>
+    <Box width='16rem' bg={contentColor} p='0' height='11rem' rounded='md' shadow='md'>
       <Box bg={titleColor} height='3rem' roundedTop='md' lineHeight='3rem' fontSize='1.2rem' pl='1.5rem'>
         {title}
       </Box>
