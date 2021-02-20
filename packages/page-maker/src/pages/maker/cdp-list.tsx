@@ -1,10 +1,10 @@
 import { Pagination } from '@material-ui/lab';
-import { useAccount, useContractTx, useModal } from '@patract/react-hooks';
+import { useModal } from '@patract/react-hooks';
 import { Address, Button, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text } from '@patract/ui-components';
 import React, { FC, ReactElement, useCallback, useMemo, useReducer, useState } from 'react';
 import { useCdpList } from '../../hooks/use-cdp-list';
-import { useMakerContract } from '../../hooks/use-maker-contract';
 import Increase from './increase';
+import Liquidate from './liquidate';
 import Reduce from './reduce';
 import { CDP } from './types';
 import Withdraw from './with-draw';
@@ -15,8 +15,8 @@ const CDPList: FC<{
   const { isOpen: isIncreaseOpen, onOpen: onIncreaseOpen, onClose: onIncreaseClose } = useModal();
   const { isOpen: isReduceOpen, onOpen: onReduceOpen, onClose: onReduceClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
+  const { isOpen: isLiquidateOpen, onOpen: onLiquidateOpen, onClose: onLiquidateClose } = useModal();
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { contract } = useMakerContract();
   const { data: list, isLoading } = useCdpList(signal);
   const [ choosedCdp, setChoosedCdp ] = useState<CDP>();
 
@@ -36,10 +36,14 @@ const CDPList: FC<{
             setChoosedCdp(item);
             onWithdrawOpen();
           } }>Withdraw</Button>
+          <Button onClick={ () => {
+            setChoosedCdp(item);
+            onLiquidateOpen();
+          } }>Liquidate</Button>
         </Flex>
       );
     },
-    [onIncreaseOpen, onReduceOpen, onWithdrawOpen],
+    [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen],
   );
 
   const renderGameRow = useCallback(
@@ -107,6 +111,7 @@ const CDPList: FC<{
       <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={forceUpdate} price={price} />
       <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={price} />
       <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={price} />
+      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} price={price} />
     </>
   );
 };
