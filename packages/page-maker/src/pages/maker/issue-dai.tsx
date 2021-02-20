@@ -22,7 +22,7 @@ import {
 } from '@patract/ui-components';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useAccount, useContractTx } from '@patract/react-hooks';
-import { parseAmount } from '@patract/utils';
+import { parseAmount, toFixed } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { api } from '@patract/react-components';
 import { formatBalance } from '@polkadot/util';
@@ -37,9 +37,8 @@ const IssueDAI: FC<{
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
   const [collateral, setCollateral] = useState<string>('');
-  // const [collateralRatio, setCollateralRatio] = useState<string>('150');
   const [estimatedIssuance, setEstimatedIssuance] = useState<string>('');
-  const [balance, setBalance] = useState<number>();
+  const [balance, setBalance] = useState<string>('');
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value: collateralRatio } = useNumberInput({
     step: 10,
     defaultValue: 150,
@@ -51,26 +50,9 @@ const IssueDAI: FC<{
   const input = getInputProps();
   const { currentAccount } = useAccount();
   useEffect(() => {
-    // api.query.system.account(currentAccount).then(({ data, nonce: previousNonce }) => {
-    //   // console.log(data, 'sda', data.free.toBigInt().toString(), data.reserved.toNumber(), data.miscFrozen.toNumber())
-    //   let previousFree = data.free
-    //   console.log(`${previousFree}`, previousFree.toString(10), formatBalance(previousFree, { decimals: 10}), 'free balance');
-    //   api.query.system.account(currentAccount, ({ data: { free: currentFree }, nonce: currentNonce }) => {
-    //     // Calculate the delta
-    //     const change = currentFree.sub(previousFree);
-    
-    //     // Only display positive value changes (Since we are pulling `previous` above already,
-    //     // the initial balance change will also be zero)
-    //     if (!change.isZero()) {
-    //       console.log(`New balance change of ${change}, nonce ${currentNonce}`);
-    
-    //       previousFree = currentFree;
-    //       previousNonce = currentNonce;
-    //     }
-    //   });
-    // });
-    api.derive.balances.all(currentAccount).then(account => console.log('address', currentAccount, account.accountNonce.toString(), 'account', account.availableBalance.toString()));
-    // api.query.balances.account(currentAccount).then(account => console.log(account.toHuman(), 'human'));
+    api.derive.balances.all(currentAccount).then(account => {
+      setBalance(account.availableBalance.toString()); 
+    });
   }, [currentAccount]);
   const close = () => {
     setCollateral('');
@@ -105,27 +87,6 @@ const IssueDAI: FC<{
     }
     setEstimatedIssuance(_estimatedIssuance.toString());
   }, [collateralRatio, collateral, currentPrice]);
-  // const onCollateralRatioChange = (val: string): void => {
-  //   const _collateralRatio = parseFloat(val) / 100;
-  //   const _collateral = parseFloat(collateral);
-  //   const _estimatedIssuance = _collateral * currentPrice / _collateralRatio;
-
-  //   setEstimatedIssuance(_estimatedIssuance === Infinity ? '' : _estimatedIssuance.toFixed());
-  // };
-
-  // const onEstimatedIssuanceChange = (val: string): void => {
-  //   const _estimatedIssuance = parseFloat(val);
-  //   const _collateralRatio = parseFloat(collateralRatio) / 100;
-  //   const _collateral = _estimatedIssuance * _collateralRatio / currentPrice;
-
-  //   if (_estimatedIssuance.toString() === 'NaN' || _collateralRatio.toString() === 'NaN') {
-  //     setCollateral('');
-  //     setEstimatedIssuance('');
-  //     return;
-  //   }
-  //   setCollateral(_collateral === Infinity ? '' : _collateral.toFixed());
-  //   setEstimatedIssuance(_estimatedIssuance.toFixed());
-  // };
 
   return (
     <Modal isOpen={isOpen} onClose={close}>
@@ -139,7 +100,7 @@ const IssueDAI: FC<{
               <FormLabel>
                 <span>Collateral</span>
                 <span>
-                  Balance: <Fixed value={balance} decimals={ 0 } /> DOT
+                  Balance: <Fixed value={balance} decimals={ 10 } /> DOT
                 </span>
               </FormLabel>
               <InputGroup>
@@ -172,7 +133,6 @@ const IssueDAI: FC<{
               <HStack alignItems='center'>
                 <InputGroup>
                   <Input {...input} background='white' />
-                  {/* <InputNumber value={collateralRatio} onChange={ onCollateralRatioChange } /> */}
                   <InputRightElement
                     width={40}
                     children={
@@ -248,10 +208,9 @@ const IssueDAI: FC<{
             </FormControl>
           </SimpleGrid>
         </ModalBody>
-
         <ModalFooter py={8}>
           <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!collateralRatio || parseFloat(`${collateralRatio}`) < 150 || !collateral || !estimatedIssuance} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            <Button isDisabled={!collateralRatio || parseFloat(`${collateralRatio}`) < 150 || parseFloat(collateral) <= 0 || parseFloat(collateral) > parseFloat(toFixed(balance, 10, false).round(3).toString())  || !estimatedIssuance} isLoading={isLoading} colorScheme='blue' onClick={submit}>
               Confirm
             </Button>
           </Stack>

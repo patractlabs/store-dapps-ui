@@ -16,7 +16,6 @@ export const TotalSupply: FC<{price: number}> = ({ price }): ReactElement => {
   useEffect(() => {
     readTotalSupply().then(data => {
       const [totalIssuers, totalCollateral, totalIssuance] = (data as number[]) || [0, 0, 0, 0];
-      console.log((totalCollateral * price / totalIssuance).toFixed(0), 'ratio');
       
       setList([
         { title: 'Total Issuers', val: totalIssuers },
