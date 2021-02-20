@@ -28,8 +28,25 @@ export const Circle: React.FC<{
   fontSize?: string;
   key?: string;
   mr?: string;
-}> = ({ v, style = 0, r = '25px', lineHeight = '1.5rem', fontSize = '', key = '', mr = '3px' }) => {
-  const pallet = circleStyle(style);
+  disabled?: boolean;
+  onClick?: () => void;
+}> = ({
+  v,
+  style = 0,
+  r = '25px',
+  lineHeight = '1.5rem',
+  fontSize = '',
+  key = '',
+  mr = '3px',
+  disabled = true,
+  onClick
+}) => {
+  const [pallet, setPallet] = React.useState(circleStyle(style));
+  const [curStyle, setCurStyle] = React.useState(style);
+
+  React.useEffect(() => {
+    setPallet(circleStyle(curStyle));
+  }, [curStyle]);
 
   return (
     <Box
@@ -44,8 +61,19 @@ export const Circle: React.FC<{
       color={pallet.font}
       border={pallet.border}
       borderWidth='1px'
-      boxShadow={style === 0 ? '0px 1px 3px 0px rgba(171, 180, 208, 0.5);' : ''}
+      boxShadow={curStyle === 0 ? '0px 1px 3px 0px rgba(171, 180, 208, 0.5);' : ''}
       key={key}
+      onClick={() => {
+        if (curStyle === 0) {
+          if (disabled) return;
+          setCurStyle(2);
+        } else {
+          setCurStyle(0);
+        }
+
+        onClick && onClick();
+      }}
+      visibility={v > -1 ? 'visible' : 'hidden'}
     >
       {v}
     </Box>

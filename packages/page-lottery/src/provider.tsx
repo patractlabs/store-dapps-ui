@@ -1,9 +1,8 @@
 //! Data Provider
 import React from 'react';
-import { BiggestWinner, EpochHistory, MyLottery, EpochInfo } from './types';
+import { BiggestWinner, EpochHistory, MyLottery } from './types';
 import { useLottery } from './hooks';
 import { useApi, useAccount, useContractQuery } from '@patract/react-hooks';
-import { TIMEOUT } from 'dns';
 
 export interface Value {
   epochId: number;
