@@ -1,15 +1,10 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
-import { useContractQuery, useContractTx } from '@patract/react-hooks';
 import { Address } from '@patract/ui-components';
 import React, { FC, ReactElement } from 'react';
-import { useMakerContract } from '../../hooks/use-maker-contract';
 
 export const Collaterals: FC<{
   list: any[],
 }> = ({ list }): ReactElement => {
-  const { contract } = useMakerContract();
-  const { excute } = useContractTx({ title: 'Pixel', contract, method: 'update' });
-  const { read } = useContractQuery({ contract, method: '' });
 
   return <Box>
     <p>My Collaterals</p>

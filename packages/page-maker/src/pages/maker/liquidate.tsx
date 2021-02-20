@@ -54,7 +54,6 @@ const Liquidate: FC<{
     if (`${_maxRedeem}` === 'NaN') {
       return setMaxRedeem(0);
     }
-    console.log('set max redeem', _maxRedeem);
     setMaxRedeem(_maxRedeem);
     setRedeem(_maxRedeem);
   }, [cdp, systemParams]);

@@ -38,7 +38,6 @@ const Increase: FC<{
   
   useMemo(() => {
     const _collateral = parseFloat(increase);
-    console.log('cr', _collateral, cdp, price)
     if (`${_collateral}` === 'NaN' || !cdp || !cdp.issue_dai) {
       return setCollateralRatio('');
     }

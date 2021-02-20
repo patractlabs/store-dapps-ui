@@ -20,24 +20,26 @@ import {
   HStack,
   useNumberInput
 } from '@patract/ui-components';
-import React, { FC, useMemo, useState } from 'react';
-import { useContractTx } from '@patract/react-hooks';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useAccount, useContractTx } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
+import { api } from '@patract/react-components';
+import { formatBalance } from '@polkadot/util';
 
 const IssueDAI: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
   currentPrice: number;
-  balance: number;
-}> = ({ isOpen, onClose, onSubmit, currentPrice, balance }) => {
+}> = ({ isOpen, onClose, onSubmit, currentPrice }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
   const [collateral, setCollateral] = useState<string>('');
   // const [collateralRatio, setCollateralRatio] = useState<string>('150');
   const [estimatedIssuance, setEstimatedIssuance] = useState<string>('');
+  const [balance, setBalance] = useState<number>();
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value: collateralRatio } = useNumberInput({
     step: 10,
     defaultValue: 150,
@@ -47,7 +49,29 @@ const IssueDAI: FC<{
   const inc = getIncrementButtonProps();
   const dec = getDecrementButtonProps();
   const input = getInputProps();
-
+  const { currentAccount } = useAccount();
+  useEffect(() => {
+    // api.query.system.account(currentAccount).then(({ data, nonce: previousNonce }) => {
+    //   // console.log(data, 'sda', data.free.toBigInt().toString(), data.reserved.toNumber(), data.miscFrozen.toNumber())
+    //   let previousFree = data.free
+    //   console.log(`${previousFree}`, previousFree.toString(10), formatBalance(previousFree, { decimals: 10}), 'free balance');
+    //   api.query.system.account(currentAccount, ({ data: { free: currentFree }, nonce: currentNonce }) => {
+    //     // Calculate the delta
+    //     const change = currentFree.sub(previousFree);
+    
+    //     // Only display positive value changes (Since we are pulling `previous` above already,
+    //     // the initial balance change will also be zero)
+    //     if (!change.isZero()) {
+    //       console.log(`New balance change of ${change}, nonce ${currentNonce}`);
+    
+    //       previousFree = currentFree;
+    //       previousNonce = currentNonce;
+    //     }
+    //   });
+    // });
+    api.derive.balances.all(currentAccount).then(account => console.log('address', currentAccount, account.accountNonce.toString(), 'account', account.availableBalance.toString()));
+    // api.query.balances.account(currentAccount).then(account => console.log(account.toHuman(), 'human'));
+  }, [currentAccount]);
   const close = () => {
     setCollateral('');
     setEstimatedIssuance('');

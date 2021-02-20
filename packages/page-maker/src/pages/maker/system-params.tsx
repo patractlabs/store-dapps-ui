@@ -136,6 +136,6 @@ export const SystemParamsArea: FC<SystemParamsProps> = ({
           Issue DAI
       </Button>
     </Box>
-    <IssueDAI currentPrice={ systemParams.currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} balance={ 100.1 } />
+    <IssueDAI currentPrice={ systemParams.currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} />
   </Flex>
 };

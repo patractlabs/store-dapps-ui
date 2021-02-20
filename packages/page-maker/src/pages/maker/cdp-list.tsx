@@ -13,7 +13,8 @@ import Withdraw from './with-draw';
 const CDPList: FC<{
   systemParams: SystemParams;
   owner: boolean;
-}> = ({ systemParams, owner }): ReactElement => {
+  decimals: number;
+}> = ({ systemParams, owner, decimals }): ReactElement => {
   const { isOpen: isIncreaseOpen, onOpen: onIncreaseOpen, onClose: onIncreaseClose } = useModal();
   const { isOpen: isReduceOpen, onOpen: onReduceOpen, onClose: onReduceClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
@@ -59,7 +60,7 @@ const CDPList: FC<{
     [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen, owner],
   );
 
-  const renderGameRow = useCallback(
+  const renderCdpRow = useCallback(
     (item: CDP) => {
       return (
         <Tr key={item.id}>
@@ -70,10 +71,10 @@ const CDPList: FC<{
             { item.create_date }
           </Td>
           <Td>
-            <Fixed value={item.collateral_dot} decimals={10} />
+            <Fixed value={item.collateral_dot} decimals={decimals} />
           </Td>
           <Td>
-            <Fixed value={item.issue_dai} decimals={10} />
+            <Fixed value={item.issue_dai} decimals={decimals} />
           </Td>
           <Td>
             { item.collateral_ratio }%
@@ -82,7 +83,7 @@ const CDPList: FC<{
         </Tr>
       );
     },
-    [renderOperations]
+    [renderOperations, decimals]
   );
 
   const pageSize = 10;
@@ -106,7 +107,7 @@ const CDPList: FC<{
           </Tr>
         </Thead>
         <Tbody>
-          {list.slice(pageSize * (page - 1), pageSize * page).map(item => renderGameRow(item))}
+          {list.slice(pageSize * (page - 1), pageSize * page).map(item => renderCdpRow(item))}
         </Tbody>
       </Table>
       {((list && list.length !== 0) || page !== 1) && (
