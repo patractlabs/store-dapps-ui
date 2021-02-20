@@ -299,7 +299,7 @@ const Add = ({
             <FormControl>
               <FormLabel textStyle='form-label'>
                 <span>LP Tokens</span>
-                <span>Balance: {lpBalance && <Fixed value={lpBalance} round={8} decimals={18} postfix='LPT' />}</span>
+                <span>Balance: {lpBalance && <Fixed value={lpBalance} round={8} decimals={item.from_decimals} postfix='LPT' />}</span>
               </FormLabel>
               <Flex
                 sx={{
@@ -311,7 +311,7 @@ const Add = ({
               >
                 <Box>
                   <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
-                    <Fixed value={lpValue} decimals={18} round={8} postfix='LPT' />
+                    <Fixed value={lpValue} decimals={item.from_decimals} round={8} postfix='LPT' />
                   </Center>
                   <Center>
                     <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>You will receive</Text>
@@ -319,7 +319,7 @@ const Add = ({
                 </Box>
                 <Box>
                   <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
-                    <Fixed value={item.lp_token_supply} decimals={18} postfix='LPT' />
+                    <Fixed value={item.lp_token_supply} decimals={item.from_decimals} postfix='LPT' />
                   </Center>
                   <Center>
                     <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>Total supply</Text>

@@ -160,10 +160,10 @@ export const PoolList = () => {
                   <Fixed value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_symbol} />
                 </Td>
                 <Td>
-                  <Fixed value={item.lp_token_supply} decimals={18} postfix='LPT' />
+                  <Fixed value={item.lp_token_supply} decimals={item.from_decimals} postfix='LPT' />
                 </Td>
                 <Td>
-                  <Fixed value={item.own_lp_token} decimals={18} postfix='LPT' />
+                  <Fixed value={item.own_lp_token} decimals={item.from_decimals} postfix='LPT' />
                 </Td>
                 <Td>
                   <Flex>
