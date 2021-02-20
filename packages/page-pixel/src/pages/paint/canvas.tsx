@@ -74,13 +74,13 @@ const Canvas: React.FC<CanvasProps> = ({ data, paintMode, color, getPixel }) => 
   }, [getPixel, data]);
 
   return (
-    <Center sx={{ w: '100%', borderRadius: '8px', p: '10px 0 24px' }}>
+    <Center sx={{ w: '100%', borderRadius: '8px', p: '10px 0 24px', width: 'calc(100% - 122px)' }}>
       <table
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseLeave}
-        style={{ background: '#FFFFFF' }}
+        style={{ background: '#FFFFFF', width: '100%' }}
       >
         <tbody>
           {canvasObj.map((row, rowIndex) => (
@@ -92,8 +92,9 @@ const Canvas: React.FC<CanvasProps> = ({ data, paintMode, color, getPixel }) => 
                   data-xaxis={columnIndex}
                   data-yaxis={rowIndex}
                   style={{
-                    width: '7px',
-                    height: '7px',
+                    width: '0.3125%',
+                    height: '0',
+                    paddingBottom: 'calc(0.3125% - 2px)',
                     border: '1px solid rgba(171, 180, 208, 0.30)'
                   }}
                 ></td>

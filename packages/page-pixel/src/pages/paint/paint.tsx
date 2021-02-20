@@ -15,8 +15,8 @@ import ToolBar from './tool-bar';
 export type PaintMode = 'pen' | 'eraser';
 export type Canvas = Array<Array<number>>;
 
-export const HEIGHT_FIELD = 90;
-export const WIDTH_FIELD = 160;
+export const HEIGHT_FIELD = 180;
+export const WIDTH_FIELD = 320;
 const emptyCanvasObj: Canvas = new Array(HEIGHT_FIELD).fill(0).map(() => new Array(WIDTH_FIELD).fill(0));
 export let canvasObj: Canvas = emptyCanvasObj;
 export let paintHistory: Array<string> = [JSON.stringify(emptyCanvasObj)];
@@ -133,7 +133,7 @@ export const Paint: React.FC = () => {
     for (let yAxis = 0; yAxis < HEIGHT_FIELD; yAxis++) {
       for (let xAxis = 0; xAxis < WIDTH_FIELD; xAxis++) {
         if (canvasObj[yAxis][xAxis] !== data[yAxis][xAxis]) {
-          result.push([xAxis + 160 * yAxis, canvasObj[yAxis][xAxis]]);
+          result.push([xAxis + 320 * yAxis, canvasObj[yAxis][xAxis]]);
         }
       }
     }
@@ -154,15 +154,15 @@ export const Paint: React.FC = () => {
   };
 
   return (
-    <Box maxW='1200px' justifyContent='center' display='flex' flexDirection='column' mx='auto'>
-      <Box sx={{ position: 'relative' }}>
+    <Box  justifyContent='center' display='flex' flexDirection='column' mx='auto'>
+      <Box sx={{ position: 'relative', width: 'calc(100% - 122px)' }}>
         <Box sx={{ position: 'absolute', left: '40px', top: '26px' }}>
           <Box color='#0058FA' sx={{ display: 'inline-block' }}>
             Pool: <Fixed value={pool || '0'} decimals={10} postfix='JPT' />
           </Box>
           <Box mt={2}>
             <Box color='gray.500' sx={{ display: 'inline-block' }}>
-              Canvas size: 160 Pixel * 90 Pixel
+              Canvas size: 320 Pixel * 180 Pixel
             </Box>
           </Box>
         </Box>
@@ -200,7 +200,7 @@ export const Paint: React.FC = () => {
         </Box>
       </Box>
       <Canvas data={data} signal={signal} paintMode={paintMode} color={color} getPixel={getPixel} />
-      <Box as='aside' aria-label='palette' sx={{ position: 'absolute', h: '100%', right: '0', top: '60px' }}>
+      <Box as='aside' aria-label='palette' sx={{ position: 'absolute', height: 'calc(100% - 60px)', right: '0', top: '60px' }}>
         <Palette color={color} onColorChange={setColor} />
       </Box>
       {/* <SignMessageModal
