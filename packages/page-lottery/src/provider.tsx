@@ -36,6 +36,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
   const [biggestWinners, setBiggestWinners] = React.useState<BiggestWinner[]>([]);
   const [epochHistories, setEpochHistories] = React.useState<EpochHistory[]>([]);
   const [timer, setTimer] = React.useState(setInterval(() => {}, 1000));
+  const [trigger, setTrigger] = React.useState(false);
 
   const api = useApi();
   const account = useAccount();
@@ -73,15 +74,16 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
       curLotteries && setMyLotteries(curLotteries);
     });
-  }, []);
+  }, [trigger]);
 
   React.useEffect(() => {
     clearInterval(timer);
     setTimer(
       setInterval(() => {
-        console.log('123');
         if (openIn > 0) {
           setOpenIn(openIn - 1);
+        } else {
+          setTrigger(!trigger);
         }
       }, 1000)
     );
