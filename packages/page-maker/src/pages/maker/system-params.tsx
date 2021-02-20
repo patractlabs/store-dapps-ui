@@ -10,11 +10,14 @@ export interface SystemParams {
   currentPrice: number;
 }
 
-export const SystemParamsArea: FC<SystemParams> = ({
-  mcr,
-  mlr,
-  lrr,
-  currentPrice,
+interface SystemParamsProps {
+  systemParams: SystemParams;
+  onIssueDaiSubmit(): void;
+}
+
+export const SystemParamsArea: FC<SystemParamsProps> = ({
+  systemParams,
+  onIssueDaiSubmit,
 }): ReactElement => {
   const { isOpen: isIssueDAIOpen, onOpen: onIssueDAIOpen, onClose: onIssueDAIClose } = useModal();
 
@@ -68,7 +71,7 @@ export const SystemParamsArea: FC<SystemParams> = ({
             fontWeight: 600,
             color: '#000000',
             lineHeight: '36px',
-           }}>{ mcr }%</p>
+           }}>{ systemParams.mcr }%</p>
           <p>(MCR)</p>
         </Box>
         <Box style={{ width: '170px', textAlign: 'center' }}>
@@ -78,7 +81,7 @@ export const SystemParamsArea: FC<SystemParams> = ({
             fontWeight: 600,
             color: '#000000',
             lineHeight: '36px',
-           }}>{ mlr }%</p>
+           }}>{ systemParams.mlr }%</p>
           <p>(MLR)</p>
         </Box>
         <Box style={{ width: '170px', textAlign: 'center' }}>
@@ -88,7 +91,7 @@ export const SystemParamsArea: FC<SystemParams> = ({
             fontWeight: 600,
             color: '#000000',
             lineHeight: '36px',
-           }}>{ lrr }%</p>
+           }}>{ systemParams.lrr }%</p>
           <p>(LRR)</p>
         </Box>
         <Box style={{ width: '170px', textAlign: 'center' }}>
@@ -98,7 +101,7 @@ export const SystemParamsArea: FC<SystemParams> = ({
             fontWeight: 600,
             color: '#000000',
             lineHeight: '36px',
-           }}>${ currentPrice }</p>
+           }}>${ systemParams.currentPrice }</p>
         </Box>
       </Flex>
     </Box>
@@ -133,6 +136,6 @@ export const SystemParamsArea: FC<SystemParams> = ({
           Issue DAI
       </Button>
     </Box>
-    <IssueDAI currentPrice={ currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={ () => {} } balance={ 100.1 } />
+    <IssueDAI currentPrice={ systemParams.currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} balance={ 100.1 } />
   </Flex>
 };

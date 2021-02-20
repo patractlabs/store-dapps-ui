@@ -50,7 +50,7 @@ const Maker: FC = (): ReactElement => {
       <Flex justifyContent='space-between' sx={{ marginBottom: '1rem' }}>
         { totalSupply.map(item => <TotalSupply key={ item.title } title={ item.title } val={ item.val } unit={ item.unit } />) }
       </Flex>
-      <SystemParamsArea mcr={systemParams.mcr} mlr={ systemParams.mlr } lrr={ systemParams.lrr } currentPrice={ systemParams.currentPrice } />
+      <SystemParamsArea systemParams={systemParams} onIssueDaiSubmit={() => {}} />
       <CDPList systemParams={systemParams} owner={true} />
       <CDPList systemParams={systemParams} owner={false} />
     </>
