@@ -3,6 +3,7 @@ import React from 'react';
 import { BiggestWinner, EpochHistory, MyLottery, EpochInfo } from './types';
 import { useLottery } from './hooks';
 import { useApi, useAccount, useContractQuery } from '@patract/react-hooks';
+import { TIMEOUT } from 'dns';
 
 export interface Value {
   epochId: number;
@@ -34,6 +35,8 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
   const [myLotteries, setMyLotteries] = React.useState<MyLottery[]>([]);
   const [biggestWinners, setBiggestWinners] = React.useState<BiggestWinner[]>([]);
   const [epochHistories, setEpochHistories] = React.useState<EpochHistory[]>([]);
+  const [timer, setTimer] = React.useState(setInterval(() => {}, 1000));
+  const [trigger, setTrigger] = React.useState(false);
 
   const api = useApi();
   const account = useAccount();
@@ -64,14 +67,27 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       });
 
       setEpochId(Number(epoch?.epoch_id));
-      setOpenIn(Number(currentSlot.toNumber() - epoch?.start_slot) * 6);
+      setOpenIn(Number(epoch?.start_slot - currentSlot.toNumber()) * 6);
       setRewardPool(Number(epoch?.reward_pool));
       setEpochHistories(histories);
       setBiggestWinners(winners);
 
       curLotteries && setMyLotteries(curLotteries);
     });
-  }, []);
+  }, [trigger]);
+
+  React.useEffect(() => {
+    clearInterval(timer);
+    setTimer(
+      setInterval(() => {
+        if (openIn > 0) {
+          setOpenIn(openIn - 1);
+        } else {
+          setTrigger(!trigger);
+        }
+      }, 1000)
+    );
+  }, [openIn]);
 
   // return states
   return (

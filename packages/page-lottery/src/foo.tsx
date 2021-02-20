@@ -4,14 +4,17 @@ import { Box, Flex, Spacer } from '@patract/ui-components';
 import { Pop } from './component';
 import { TicketBoard } from './ticket';
 import { FooCardProps } from './types';
+import { useProvider } from './provider';
 
 /* The header table */
 export const Foo: React.FC<{}> = () => {
+  const context = useProvider();
+
   return (
     <Flex height={317} px='4' py='4' rounded='lg' shadow='sm' bg='white' flexDirection='row'>
       <Box width='100%' mr='16'>
         <Box bg='#ffe6d6ff' p='2' rounded='md' fontWeight='bold'>
-          Epoch ID: 918
+          Epoch ID: {context.epochId}
         </Box>
         <Flex width='100%' mt='6' color='white'>
           <FooCard
@@ -20,7 +23,7 @@ export const Foo: React.FC<{}> = () => {
             contentColor='#FF7600'
             content={
               <Flex>
-                <Box>6980.10</Box>
+                <Box>{context.rewardPool}</Box>
                 <Flex fontSize='1rem' pl='0.5rem' alignItems='flex-end' lineHeight='3rem'>
                   DOT
                 </Flex>
@@ -32,7 +35,11 @@ export const Foo: React.FC<{}> = () => {
             titleColor='rgba(0, 133, 146, 0.2)'
             title='Open In'
             contentColor='#00BACB'
-            content={<Box>01 : 10s</Box>}
+            content={
+              <Box>
+                {Math.floor(context.openIn / 60)} : {context.openIn % 60}s
+              </Box>
+            }
           />
         </Flex>
         <Pop />
