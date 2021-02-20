@@ -228,7 +228,8 @@ const Maker: FC = (): ReactElement => {
         { totalSupply.map(item => <TotalSupply key={ item.title } title={ item.title } val={ item.val } unit={ item.unit } />) }
       </Flex>
       <SystemParams mcr={systemParams.mcr} mlr={ systemParams.mlr } lrr={ systemParams.lrr } currentPrice={ systemParams.currentPrice } />
-      <CDPList price={systemParams.currentPrice}/>
+      <CDPList price={systemParams.currentPrice} owner={true} />
+      <CDPList price={systemParams.currentPrice} owner={false} />
     </>
   );
 };

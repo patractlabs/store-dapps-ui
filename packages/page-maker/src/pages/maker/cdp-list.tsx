@@ -1,5 +1,5 @@
 import { Pagination } from '@material-ui/lab';
-import { useModal } from '@patract/react-hooks';
+import { useAccount, useModal } from '@patract/react-hooks';
 import { Address, Button, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text } from '@patract/ui-components';
 import React, { FC, ReactElement, useCallback, useMemo, useReducer, useState } from 'react';
 import { useCdpList } from '../../hooks/use-cdp-list';
@@ -11,18 +11,30 @@ import Withdraw from './with-draw';
 
 const CDPList: FC<{
   price: number;
-}> = ({ price }): ReactElement => {
+  owner: boolean;
+}> = ({ price, owner }): ReactElement => {
   const { isOpen: isIncreaseOpen, onOpen: onIncreaseOpen, onClose: onIncreaseClose } = useModal();
   const { isOpen: isReduceOpen, onOpen: onReduceOpen, onClose: onReduceClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
   const { isOpen: isLiquidateOpen, onOpen: onLiquidateOpen, onClose: onLiquidateClose } = useModal();
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { data: list, isLoading } = useCdpList(signal);
+  const { data, isLoading } = useCdpList(signal);
   const [ choosedCdp, setChoosedCdp ] = useState<CDP>();
+  const [ list, setList ] = useState<CDP[]>([]);
+  const { currentAccount } = useAccount();
+
+  useMemo(() => {
+    if (!data) {
+      return;
+    }
+    const _list = data.filter(item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount));
+    setList(_list);
+  }, [data]);
 
   const renderOperations = useCallback(
     (item: CDP) => {
-      return (
+      
+      return owner ?
         <Flex>
           <Button onClick={ () => {
             setChoosedCdp(item);
@@ -36,12 +48,12 @@ const CDPList: FC<{
             setChoosedCdp(item);
             onWithdrawOpen();
           } }>Withdraw</Button>
-          <Button onClick={ () => {
-            setChoosedCdp(item);
-            onLiquidateOpen();
-          } }>Liquidate</Button>
         </Flex>
-      );
+        :
+        <Button onClick={ () => {
+          setChoosedCdp(item);
+          onLiquidateOpen();
+        } }>Liquidate</Button>
     },
     [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen],
   );
@@ -82,7 +94,7 @@ const CDPList: FC<{
 
   return (
     <>
-      <Text>My Collaterals</Text>
+      <Text>{ owner ? 'My' : 'Others' } Collaterals</Text>
       <Table>
         <Thead>
           <Tr>
