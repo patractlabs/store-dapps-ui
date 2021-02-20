@@ -1,4 +1,4 @@
-import { Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { useContractTx } from '@patract/react-hooks';
@@ -12,20 +12,20 @@ const Withdraw: FC<{
   price?: number;
 }> = ({ isOpen, onClose, onSubmit, cdp, price }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
-  const [redeem, setRedeem] = useState<string>('');
+  const [redeem, setRedeem] = useState<number>(0);
   const [release, setRelease] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Withdraw Collateral', contract, method: 'withdrawDot' });
 
   const close = () => {
-    setRedeem('');
-    setRelease('');
+    // setRedeem();
+    // setRelease('');
     onClose();
   };
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, parseFloat(redeem)])
+    excute([cdp!.id, redeem])
       .then((data) => {
         console.log('withdraw', data)
         close();
@@ -36,18 +36,21 @@ const Withdraw: FC<{
       });
   };
 
-  const onDaiChange = (val: string) => {
-    setRedeem(val)
-  }
-
   useMemo(() => {
-    const _redeem = parseFloat(redeem);
-    if (`${_redeem}` === 'NaN' || !cdp || !price) {
+    if (`${redeem}` === 'NaN' || !cdp || !price) {
       return setRelease('');
     }
-    const _release = cdp!.collateral_ratio / 100 * _redeem / price;
+    const _release = cdp!.collateral_ratio / 100 * redeem / price;
     setRelease(`${_release}`);
+    // setRedeem(cdp.issue_dai);
   }, [redeem, cdp, price]);
+
+  useMemo(() => {
+    if (!cdp) {
+      return setRedeem(0);
+    }
+    setRedeem(cdp.issue_dai);
+  }, [cdp]);
 
   return (
     <Modal isOpen={ isOpen } onClose={ close }>
@@ -60,34 +63,18 @@ const Withdraw: FC<{
             <FormControl>
               <FormLabel>
                 <span>
-                  Redeem: <Fixed value={500.1} decimals={ 0 } /> DAI
+                  Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
                 </span>
                 <span>
                   Total Issuance: <Fixed value={cdp?.issue_dai} decimals={ 0 } /> DAI
                 </span>
               </FormLabel>
-              <InputGroup>
-                <InputNumber value={ redeem } onChange={ onDaiChange } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DAI
-                    </Text>
-                  }
-                />
-              </InputGroup>
+              <Slider min={0} max={(cdp && cdp.issue_dai) || 0} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>
+                <SliderTrack>
+                  <SliderFilledTrack />
+                </SliderTrack>
+                <SliderThumb />
+              </Slider>
             </FormControl>
 
             <FormControl>
@@ -122,7 +109,7 @@ const Withdraw: FC<{
 
         <ModalFooter py={8}>
           <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!redeem || !cdp || parseFloat(redeem) > cdp!.issue_dai || parseFloat(redeem) <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            <Button isDisabled={!redeem || !cdp || redeem > cdp!.issue_dai || redeem <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
               Confirm
             </Button>
           </Stack>

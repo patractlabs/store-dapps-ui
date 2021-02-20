@@ -1,5 +1,5 @@
 import { useContractTx } from '@patract/react-hooks';
-import { Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
@@ -12,20 +12,21 @@ const Liquidate: FC<{
   price?: number;
 }> = ({ isOpen, onClose, onSubmit, cdp, price }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
-  const [redeem, setRedeem] = useState<string>('');
+  const [redeem, setRedeem] = useState<number>(0);
+  const [maxRedeem, setMaxRedeem] = useState<number>(0);
   const [dotYouGot, setDotYouGot] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Liquidate Collateral', contract, method: 'liquidateCollateral' });
 
   const close = () => {
-    setRedeem('');
-    setDotYouGot('');
+    // setRedeem(0);
+    // setDotYouGot('');
     onClose();
   };
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, parseFloat(redeem)])
+    excute([cdp!.id, redeem])
       .then((data) => {
         console.log('liquidate', data)
         close();
@@ -36,18 +37,26 @@ const Liquidate: FC<{
       });
   };
 
-  const onDaiChange = (val: string) => {
-    setRedeem(val)
-  }
-
   useMemo(() => {
-    const _redeem = parseFloat(redeem);
-    if (`${_redeem}` === 'NaN' || !cdp || !price) {
+    if (`${redeem}` === 'NaN' || !cdp || !price) {
       return setDotYouGot('');
     }
-    const _dotYouGot = _redeem / price * 1.05;
+    const _dotYouGot = redeem / price * 1.05;
     setDotYouGot(`${_dotYouGot}`);
   }, [redeem, cdp, price]);
+
+  useMemo(() => {
+    if (!cdp || !price) {
+      return setMaxRedeem(0);
+    }
+    const _maxRedeem = cdp.collateral_dot * price / 1.05;
+    if (`${_maxRedeem}` === 'NaN') {
+      return setMaxRedeem(0);
+    }
+    console.log('set max redeem', _maxRedeem);
+    setMaxRedeem(_maxRedeem);
+    setRedeem(_maxRedeem);
+  }, [cdp, price]);
 
   return (
     <Modal isOpen={ isOpen } onClose={ close }>
@@ -60,34 +69,18 @@ const Liquidate: FC<{
             <FormControl>
               <FormLabel>
                 <span>
-                  Redeem: <Fixed value={500.1} decimals={ 0 } /> DAI
+                  Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
                 </span>
                 <span>
                   Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
                 </span>
               </FormLabel>
-              <InputGroup>
-                <InputNumber value={ redeem } onChange={ onDaiChange } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DAI
-                    </Text>
-                  }
-                />
-              </InputGroup>
+              <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
+                <SliderTrack>
+                  <SliderFilledTrack />
+                </SliderTrack>
+                <SliderThumb />
+              </Slider>
             </FormControl>
 
             <FormControl>
@@ -122,7 +115,7 @@ const Liquidate: FC<{
 
         <ModalFooter py={8}>
           <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!redeem || !cdp || parseFloat(redeem) > cdp!.issue_dai || parseFloat(redeem) <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            <Button isDisabled={!redeem || !cdp || redeem === 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
               Confirm
             </Button>
           </Stack>
