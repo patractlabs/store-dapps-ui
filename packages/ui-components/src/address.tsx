@@ -15,12 +15,12 @@ export const Address: React.FC<AddressProps> = ({ value, type, ...rest }) => {
   if (!value) return null;
 
   const account = accountList?.filter((account) => account.address === value)[0];
-  const name = account ? account.meta.name : `${value.substring(0, 6)}`;
+  const name = account ? account.meta.name : `${truncated(value)}`;
 
   return (
     <Tooltip label={value} aria-label='account address' placement='top' hasArrow {...rest}>
       <Flex display='inline-flex' alignItems='center' textTransform='uppercase'>
-        <IdentityIcon value={value} theme={type === 'contract' ? 'robohash' : 'polkadot'} />
+        <IdentityIcon value={value} theme={type === 'contract' ? 'polkadot' : 'robohash'} />
         <Text mx={2}>{name as string}</Text>
       </Flex>
     </Tooltip>

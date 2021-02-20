@@ -37,26 +37,24 @@ export const usePairList = (signal = 0) => {
       .then((result) => {
         return Promise.all(
           (result || []).map(({ from, to, exchange }: any) => {
-            const { contract } = createExchange(exchange);
-            const { contract: fromContract } = createToken(from);
-            const { contract: toContract } = createToken(to);
+            const { contract } = createExchange(exchange, from, to);
 
-            return Promise.all([
-              contractQuery(currentAccount, contract, 'exchangeInfo'),
-              contractQuery(currentAccount, fromContract, 'erc20,tokenDecimals'),
-              contractQuery(currentAccount, toContract, 'erc20,tokenDecimals'),
-              contractQuery(currentAccount, fromContract, 'erc20,tokenSymbol'),
-              contractQuery(currentAccount, toContract, 'erc20,tokenSymbol')
-            ]).then(([data, from_decimals, to_decimals, from_symbol, to_symbol]: any) => ({
-              ...data,
-              from,
-              to,
-              from_decimals,
-              to_decimals,
-              from_symbol,
-              to_symbol,
-              exchange
-            }));
+            return Promise.all([contractQuery(currentAccount, contract, 'exchangeInfo')]).then(([data]: any) => {
+              if (data.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+                data.to_symbol = 'DOT';
+                data.to_decimals = 10;
+              }
+              if (data.from === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+                data.from_symbol = 'DOT';
+                data.from_decimals = 10;
+              }
+              return {
+                ...data,
+                from,
+                to,
+                exchange
+              };
+            });
           })
         );
       })

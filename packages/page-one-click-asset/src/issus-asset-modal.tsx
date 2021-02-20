@@ -34,7 +34,7 @@ export const IssueAssetModal: React.FC<IssueAssetModalProps> = ({ contractAddres
   });
 
   const { contract } = useMintableContract(contractAddress);
-  const { excute, isLoading } = useContractTx({ title: 'Issue Asset', contract, method: 'issue' });
+  const { excute, isLoading } = useContractTx({ title: 'Issue Asset', contract, method: 'iErc20.mint' });
 
   const submit = handleSubmit(async (data) => {
     await excute([data.issueAmount]);

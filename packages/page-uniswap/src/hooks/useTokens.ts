@@ -1,6 +1,5 @@
 import { contractQuery, useAccount, useContractQuery } from '@patract/react-hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useExchangeFactory } from './useExchangeFactory';
 import { useFactoryContract } from './useFactoryContract';
 import { useTokenFactory } from './useTokenFactory';
 
@@ -34,11 +33,17 @@ export const useTokens = () => {
       try {
         const { contract } = factory(address);
 
-        const [name, symbol, decimals] = await Promise.all([
-          contractQuery(currentAccount, contract, 'erc20,tokenName'),
-          contractQuery(currentAccount, contract, 'erc20,tokenSymbol'),
-          contractQuery(currentAccount, contract, 'erc20,tokenDecimals')
+        let [name, symbol, decimals] = await Promise.all([
+          contractQuery(currentAccount, contract, 'iErc20,tokenName'),
+          contractQuery(currentAccount, contract, 'iErc20,tokenSymbol'),
+          contractQuery(currentAccount, contract, 'iErc20,tokenDecimals')
         ]);
+
+        if(address === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+          decimals = 10
+          symbol = "DOT"
+          name = "Polkadot"
+        }
 
         return {
           address,
@@ -68,11 +73,17 @@ export const useTokens = () => {
         all.map(async (address: any) => {
           const { contract } = createToken(address);
 
-          const [decimals, name, symbol] = await Promise.all([
-            contractQuery(currentAccount, contract, 'erc20,tokenDecimals'),
-            contractQuery(currentAccount, contract, 'erc20,tokenName'),
-            contractQuery(currentAccount, contract, 'erc20,tokenSymbol')
+          let [decimals, name, symbol] = await Promise.all([
+            contractQuery(currentAccount, contract, 'iErc20,tokenDecimals'),
+            contractQuery(currentAccount, contract, 'iErc20,tokenName'),
+            contractQuery(currentAccount, contract, 'iErc20,tokenSymbol')
           ]);
+
+          if(address === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+            decimals = 10
+            symbol = "DOT"
+            name = "Polkadot"
+          }
 
           return {
             address,

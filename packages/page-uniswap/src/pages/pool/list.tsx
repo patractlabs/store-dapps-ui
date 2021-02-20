@@ -22,7 +22,6 @@ import {
   PopoverBody
 } from '@patract/ui-components';
 import React, { useReducer } from 'react';
-import { useLPtokenBalance } from '../../hooks/useLPtokenBalance';
 import { usePairList } from '../../hooks/usePairList';
 import Add from './add';
 import CreatePair from './create-pair';
@@ -70,9 +69,7 @@ export const PoolList = () => {
 
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
   const { data, loading } = usePairList(signal);
-  const lpBalance = useLPtokenBalance(signal);
 
-  console.log(data);
   return (
     <Box>
       <Flex flexDirection='row-reverse' mb={4}>
@@ -129,7 +126,7 @@ export const PoolList = () => {
                             From:{' '}
                           </label>
                           <Box mr={2}>
-                            <IdentityIcon value={item.from} theme='robohash' />
+                            <IdentityIcon value={item.from} theme='polkadot' />
                           </Box>
                           <label>{item.from}</label>
                         </Box>
@@ -148,7 +145,7 @@ export const PoolList = () => {
                             To:{' '}
                           </label>
                           <Box mr={2}>
-                            <IdentityIcon value={item.to} theme='robohash' />
+                            <IdentityIcon value={item.to} theme='polkadot' />
                           </Box>
                           <label>{item.to}</label>
                         </Box>
@@ -163,15 +160,15 @@ export const PoolList = () => {
                   <Fixed value={item.to_token_pool} decimals={item.to_decimals} postfix={item.to_symbol} />
                 </Td>
                 <Td>
-                  <Fixed value={item.lp_token_supply} decimals={18} postfix='LPT' />
+                  <Fixed value={item.lp_token_supply} decimals={item.from_decimals} postfix='LPT' />
                 </Td>
                 <Td>
-                  <Fixed value={lpBalance} decimals={18} postfix='LPT' />
+                  <Fixed value={item.own_lp_token} decimals={item.from_decimals} postfix='LPT' />
                 </Td>
                 <Td>
                   <Flex>
-                    <AddLiquidity lpBalance={lpBalance} item={item} onSubmit={forceUpdate} />
-                    <WithdrawLiquidity lpBalance={lpBalance} item={item} onSubmit={forceUpdate} />
+                    <AddLiquidity lpBalance={item.own_lp_token} item={item} onSubmit={forceUpdate} />
+                    <WithdrawLiquidity lpBalance={item.own_lp_token} item={item} onSubmit={forceUpdate} />
                   </Flex>
                 </Td>
               </Tr>

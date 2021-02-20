@@ -8,4 +8,5 @@ export * from './address';
 export * from './amount';
 export * from './fixed';
 
+export * from '@chakra-ui/icons';
 export * from '@chakra-ui/react';

@@ -2,5 +2,5 @@ import { useContract } from '@patract/react-hooks';
 import Pixel from '../contracts/pixel.json';
 
 export const usePixelContract = () => {
-  return useContract('5FAuq5anZnsMm8kke6NoPb1ofeTVbmiGsmhbS6r19xrQ26st', Pixel);
+  return useContract('5GSk8bjDtYoeH1E3B3xjgvDvUNk3U91KbyGaWtA7zvSRwzfa', Pixel);
 };

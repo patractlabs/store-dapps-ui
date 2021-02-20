@@ -49,8 +49,13 @@ const Withdraw = ({
   const [value, setValue] = useState('');
   const [estimated, setEstimated] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<any>(false);
-
-  const { contract } = useExchange(item.exchange);
+  const isDot = useMemo(() => {
+    return (
+      item.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ||
+      item.from === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+    );
+  }, [item.to, item.from]);
+  const { contract } = useExchange(item.exchange, isDot);
   const { read } = useContractQuery({ contract, method: 'estimatedRemoveLiquidity' });
   const { excute } = useContractTx({ title: 'Withdraw', contract, method: 'removeLiquidity' });
 
@@ -191,7 +196,7 @@ const Withdraw = ({
                       {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.from} theme="robohash" />
+                      <IdentityIcon value={item.from} theme="polkadot" />
                     </Box>
                   </Flex>
                 }
@@ -225,7 +230,7 @@ const Withdraw = ({
                       {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.to} theme="robohash" />
+                      <IdentityIcon value={item.to} theme="polkadot" />
                     </Box>
                   </Flex>
                 }

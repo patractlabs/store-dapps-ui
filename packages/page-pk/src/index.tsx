@@ -8,7 +8,7 @@ ReactDOM.render(
   <React.StrictMode>
     <UIProvider>
       <Queue>
-        <Api url='wss://ws.staging.jupiter.patract.cn'>
+        <Api url='wss://new.staging.jupiter.patract.cn'>
           <AccountProvider>
             <App />
           </AccountProvider>

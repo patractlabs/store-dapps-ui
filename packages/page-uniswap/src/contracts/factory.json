@@ -1,22 +1,27 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x428ae16ca0e4c5dd04c3d39afe2849021bf3151571c15e132f7ab4934d219c3f",
+    "hash": "0xa23acb53c11d1f128a6fe10027379adb102da0912d6a1c90c5c38f676e11adcf",
     "language": "ink! 3.0.0-rc2",
-    "compiler": "rustc 1.49.0-nightly"
+    "compiler": "rustc 1.52.0-nightly"
   },
   "contract": {
     "name": "factory",
     "version": "0.1.0",
-    "authors": ["Patract Labs <tyler@patract.io>"]
+    "authors": [
+      "Patract Labs <tyler@patract.io>"
+    ]
   },
   "spec": {
     "constructors": [
       {
         "args": [],
         "docs": [],
-        "name": ["Factory", "new"],
-        "selector": "0x7efe2251"
+        "name": [
+          "Factory",
+          "new"
+        ],
+        "selector": "0x5a231201"
       }
     ],
     "docs": [],
@@ -28,17 +33,32 @@
             "indexed": true,
             "name": "token",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           },
           {
             "docs": [],
             "indexed": true,
-            "name": "caller",
+            "name": "exchange",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
+            }
+          },
+          {
+            "docs": [],
+            "indexed": true,
+            "name": "lpt",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           }
         ],
@@ -52,151 +72,220 @@
           {
             "name": "template",
             "type": {
-              "displayName": ["Hash"],
+              "displayName": [
+                "Hash"
+              ],
               "type": 1
             }
           },
           {
             "name": "template2",
             "type": {
-              "displayName": ["Hash"],
+              "displayName": [
+                "Hash"
+              ],
               "type": 1
             }
           },
           {
             "name": "lpt",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "Hash"
+              ],
+              "type": 1
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["Factory", "initialize_factory"],
+        "name": [
+          "Factory",
+          "initialize_factory"
+        ],
         "payable": false,
         "returnType": null,
-        "selector": "0x4d118a3c"
+        "selector": "0x6fa78545"
       },
       {
         "args": [
           {
             "name": "from_token",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           },
           {
             "name": "to_token",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           },
           {
             "name": "salt_op",
             "type": {
-              "displayName": ["Option"],
+              "displayName": [
+                "Option"
+              ],
               "type": 15
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["Factory", "create_exchange"],
+        "name": [
+          "Factory",
+          "create_exchange"
+        ],
         "payable": false,
-        "returnType": {
-          "displayName": ["AccountId"],
-          "type": 4
-        },
-        "selector": "0xbfa4876e"
+        "returnType": null,
+        "selector": "0xc4e9b32e"
       },
       {
         "args": [
           {
             "name": "from_token",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           },
           {
             "name": "salt_op",
             "type": {
-              "displayName": ["Option"],
+              "displayName": [
+                "Option"
+              ],
               "type": 15
             }
           }
         ],
-        "docs": [" Create ERC20 Token => DOT"],
+        "docs": [
+          " Create ERC20 Token => DOT"
+        ],
         "mutates": true,
-        "name": ["Factory", "create_exchange_with_dot"],
+        "name": [
+          "Factory",
+          "create_exchange_with_dot"
+        ],
         "payable": false,
-        "returnType": {
-          "displayName": ["AccountId"],
-          "type": 4
-        },
-        "selector": "0xcf2899a1"
+        "returnType": null,
+        "selector": "0x5a3c4796"
       },
       {
         "args": [
           {
             "name": "from_token",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           },
           {
             "name": "to_token",
             "type": {
-              "displayName": ["AccountId"],
-              "type": 4
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 7
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": ["Factory", "get_exchange"],
+        "name": [
+          "Factory",
+          "get_exchange"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Option"],
+          "displayName": [
+            "Option"
+          ],
           "type": 16
         },
-        "selector": "0xae0c8189"
+        "selector": "0xf4a35501"
       },
       {
         "args": [
           {
             "name": "token_id",
             "type": {
-              "displayName": ["u128"],
-              "type": 5
+              "displayName": [
+                "u128"
+              ],
+              "type": 4
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": ["Factory", "get_token_with_id"],
+        "name": [
+          "Factory",
+          "get_token_with_id"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Option"],
+          "displayName": [
+            "Option"
+          ],
           "type": 17
         },
-        "selector": "0x4b668ecb"
+        "selector": "0xafe8c434"
+      },
+      {
+        "args": [
+          {
+            "name": "token_id",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "Factory",
+          "get_exchange_with_id"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Option"
+          ],
+          "type": 17
+        },
+        "selector": "0x3fab87c0"
       },
       {
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": ["Factory", "get_swap_pairs"],
+        "name": [
+          "Factory",
+          "get_swap_pairs"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Vec"],
-          "type": 6
+          "displayName": [
+            "Vec"
+          ],
+          "type": 5
         },
-        "selector": "0xf9497c19"
+        "selector": "0x7ada996b"
       }
     ]
   },
@@ -225,7 +314,7 @@
           "layout": {
             "cell": {
               "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
-              "ty": 4
+              "ty": 1
             }
           },
           "name": "lpt"
@@ -234,7 +323,7 @@
           "layout": {
             "cell": {
               "key": "0x0300000000000000000000000000000000000000000000000000000000000000",
-              "ty": 5
+              "ty": 4
             }
           },
           "name": "token_count"
@@ -243,7 +332,7 @@
           "layout": {
             "cell": {
               "key": "0x0400000000000000000000000000000000000000000000000000000000000000",
-              "ty": 6
+              "ty": 5
             }
           },
           "name": "swap_pairs"
@@ -407,6 +496,86 @@
             }
           },
           "name": "id_to_token"
+        },
+        {
+          "layout": {
+            "struct": {
+              "fields": [
+                {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "cell": {
+                              "key": "0x0900000002000000000000000000000000000000000000000000000000000000",
+                              "ty": 8
+                            }
+                          },
+                          "name": "header"
+                        },
+                        {
+                          "layout": {
+                            "struct": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "cell": {
+                                      "key": "0x0a00000002000000000000000000000000000000000000000000000000000000",
+                                      "ty": 9
+                                    }
+                                  },
+                                  "name": "len"
+                                },
+                                {
+                                  "layout": {
+                                    "array": {
+                                      "cellsPerElem": 1,
+                                      "layout": {
+                                        "cell": {
+                                          "key": "0x0a00000003000000000000000000000000000000000000000000000000000000",
+                                          "ty": 13
+                                        }
+                                      },
+                                      "len": 4294967295,
+                                      "offset": "0x0b00000002000000000000000000000000000000000000000000000000000000"
+                                    }
+                                  },
+                                  "name": "elems"
+                                }
+                              ]
+                            }
+                          },
+                          "name": "entries"
+                        }
+                      ]
+                    }
+                  },
+                  "name": "keys"
+                },
+                {
+                  "layout": {
+                    "hash": {
+                      "layout": {
+                        "cell": {
+                          "key": "0x0b00000003000000000000000000000000000000000000000000000000000000",
+                          "ty": 14
+                        }
+                      },
+                      "offset": "0x0a00000003000000000000000000000000000000000000000000000000000000",
+                      "strategy": {
+                        "hasher": "Blake2x256",
+                        "postfix": "",
+                        "prefix": "0x696e6b20686173686d6170"
+                      }
+                    }
+                  },
+                  "name": "values"
+                }
+              ]
+            }
+          },
+          "name": "id_to_exchange"
         }
       ]
     }
@@ -423,7 +592,11 @@
           ]
         }
       },
-      "path": ["ink_env", "types", "Hash"]
+      "path": [
+        "ink_env",
+        "types",
+        "Hash"
+      ]
     },
     {
       "def": {
@@ -440,6 +613,26 @@
     },
     {
       "def": {
+        "primitive": "u128"
+      }
+    },
+    {
+      "def": {
+        "sequence": {
+          "type": 6
+        }
+      }
+    },
+    {
+      "def": {
+        "tuple": [
+          7,
+          7
+        ]
+      }
+    },
+    {
+      "def": {
         "composite": {
           "fields": [
             {
@@ -449,24 +642,11 @@
           ]
         }
       },
-      "path": ["ink_env", "types", "AccountId"]
-    },
-    {
-      "def": {
-        "primitive": "u128"
-      }
-    },
-    {
-      "def": {
-        "sequence": {
-          "type": 7
-        }
-      }
-    },
-    {
-      "def": {
-        "tuple": [4, 4]
-      }
+      "path": [
+        "ink_env",
+        "types",
+        "AccountId"
+      ]
     },
     {
       "def": {
@@ -490,7 +670,12 @@
           ]
         }
       },
-      "path": ["ink_storage", "collections", "stash", "Header"]
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Header"
+      ]
     },
     {
       "def": {
@@ -513,7 +698,7 @@
             {
               "fields": [
                 {
-                  "type": 7,
+                  "type": 6,
                   "typeName": "T"
                 }
               ],
@@ -522,8 +707,15 @@
           ]
         }
       },
-      "params": [7],
-      "path": ["ink_storage", "collections", "stash", "Entry"]
+      "params": [
+        6
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
     },
     {
       "def": {
@@ -542,55 +734,12 @@
           ]
         }
       },
-      "path": ["ink_storage", "collections", "stash", "VacantEntry"]
-    },
-    {
-      "def": {
-        "composite": {
-          "fields": [
-            {
-              "name": "value",
-              "type": 4,
-              "typeName": "V"
-            },
-            {
-              "name": "key_index",
-              "type": 9,
-              "typeName": "KeyIndex"
-            }
-          ]
-        }
-      },
-      "params": [4],
-      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "fields": [
-                {
-                  "type": 11,
-                  "typeName": "VacantEntry"
-                }
-              ],
-              "name": "Vacant"
-            },
-            {
-              "fields": [
-                {
-                  "type": 5,
-                  "typeName": "T"
-                }
-              ],
-              "name": "Occupied"
-            }
-          ]
-        }
-      },
-      "params": [5],
-      "path": ["ink_storage", "collections", "stash", "Entry"]
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "VacantEntry"
+      ]
     },
     {
       "def": {
@@ -609,8 +758,77 @@
           ]
         }
       },
-      "params": [7],
-      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
+      "params": [
+        7
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "fields": [
+                {
+                  "type": 11,
+                  "typeName": "VacantEntry"
+                }
+              ],
+              "name": "Vacant"
+            },
+            {
+              "fields": [
+                {
+                  "type": 4,
+                  "typeName": "T"
+                }
+              ],
+              "name": "Occupied"
+            }
+          ]
+        }
+      },
+      "params": [
+        4
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
+    },
+    {
+      "def": {
+        "composite": {
+          "fields": [
+            {
+              "name": "value",
+              "type": 6,
+              "typeName": "V"
+            },
+            {
+              "name": "key_index",
+              "type": 9,
+              "typeName": "KeyIndex"
+            }
+          ]
+        }
+      },
+      "params": [
+        6
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
     },
     {
       "def": {
@@ -631,30 +849,12 @@
           ]
         }
       },
-      "params": [1],
-      "path": ["Option"]
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "name": "None"
-            },
-            {
-              "fields": [
-                {
-                  "type": 4,
-                  "typeName": "T"
-                }
-              ],
-              "name": "Some"
-            }
-          ]
-        }
-      },
-      "params": [4],
-      "path": ["Option"]
+      "params": [
+        1
+      ],
+      "path": [
+        "Option"
+      ]
     },
     {
       "def": {
@@ -675,8 +875,38 @@
           ]
         }
       },
-      "params": [7],
-      "path": ["Option"]
+      "params": [
+        7
+      ],
+      "path": [
+        "Option"
+      ]
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "name": "None"
+            },
+            {
+              "fields": [
+                {
+                  "type": 6,
+                  "typeName": "T"
+                }
+              ],
+              "name": "Some"
+            }
+          ]
+        }
+      },
+      "params": [
+        6
+      ],
+      "path": [
+        "Option"
+      ]
     }
   ]
 }

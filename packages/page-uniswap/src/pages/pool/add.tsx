@@ -21,11 +21,13 @@ import {
   Stack,
   Text
 } from '@patract/ui-components';
-import { parseAmount } from '@patract/utils';
+import { parseAmount, formatAmount } from '@patract/utils';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useExchange } from '../../hooks/useExchangeFactory';
 import { useLPtokenContract } from '../../hooks/useLPtokenContract';
+import { useErc20Balance } from '../../hooks/useErc20Balance';
 import { useToken } from '../../hooks/useTokenFactory';
+import { useApprove } from '../../hooks/useApprove';
 
 const Add = ({
   isOpen,
@@ -44,70 +46,76 @@ const Add = ({
   const [fromBalance, setFromBalance] = useState<string>('');
   const [toValue, setToValue] = useState<string>('');
   const [toBalance, setToBalance] = useState<string>('');
-  const [lpTotal, setLpTotal] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
-
+  const isDot = useMemo(() => {
+    return (
+      item.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ||
+      item.from === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+    );
+  }, [item.to, item.from]);
   const { currentAccount } = useAccount();
-  const { contract: exContract } = useExchange(item.exchange);
+  const { contract: exContract } = useExchange(item.exchange, isDot);
   const { contract: fromContract } = useToken(item.from);
   const { contract: toContract } = useToken(item.to);
-  const { contract: lpContract } = useLPtokenContract();
   const [isLoading, setIsLoading] = useState(false);
 
-  const { read: readFrom } = useContractQuery({ contract: fromContract, method: 'erc20,balanceOf' });
-  const { read: readTo } = useContractQuery({ contract: toContract, method: 'erc20,balanceOf' });
-  const { read: readTotalSupply } = useContractQuery({ contract: lpContract, method: 'totalSupply' });
+  const readFrom = useErc20Balance(fromContract);
+  const readTo = useErc20Balance(toContract);
+
   const { read: readEstimatedAddLiquidity } = useContractQuery({
     contract: exContract,
     method: 'estimatedAddLiquidity'
   });
+
+  const { read: readEstimatedToToken } = useContractQuery({
+    contract: exContract,
+    method: 'estimatedToToken'
+  });
+
   const { excute } = useContractTx({
     title: 'Add Liquidity',
     contract: exContract,
     method: 'addLiquidity'
   });
-  const { excute: approveFrom } = useContractTx({
-    title: 'Approve',
-    contract: fromContract,
-    method: 'erc20,approve'
-  });
-  const { excute: approveTo } = useContractTx({
-    title: 'Approve',
-    contract: toContract,
-    method: 'erc20,approve'
-  });
+  const approveFrom = useApprove(fromContract);
+  const approveTo = useApprove(toContract);
 
-  const poolPrice = useMemo(() => {
+  const isFirst = useMemo(() => {
     const totalFrom = Number(item.from_token_pool);
     const totalTo = Number(item.to_token_pool);
-
     if (!totalFrom || !totalTo) {
-      return 0;
+      return true;
     } else {
-      return totalTo / totalFrom;
+      return false;
     }
   }, [item.from_token_pool, item.to_token_pool]);
 
   useEffect(() => {
-    if (poolPrice) {
-      if (Number(fromValue)) {
-        setToValue((poolPrice * Number(fromValue)).toFixed(8));
-      } else {
-        setToValue('');
-      }
+    if (!isFirst && isOpen && fromValue) {
+      readEstimatedToToken(parseAmount(fromValue, item.from_decimals))
+        .then((result) => {
+          if (!isNaN(result as any)) {
+            setToValue(formatAmount(result as any, item.to_decimals));
+          } else {
+            setToValue('');
+          }
+        })
+        .catch(() => {
+          setToValue('');
+        });
     }
-  }, [fromValue, poolPrice]);
+  }, [fromValue, isOpen, isFirst, item.to_decimals]);
 
   const [fromPrice, toPrice] = useMemo(() => {
-    const totalFrom = Number(fromValue) + Number(item.from_token_pool);
-    const totalTo = Number(toValue) + Number(item.to_token_pool);
+    const totalFrom = Number(fromValue) + Number(formatAmount(item.from_token_pool, item.from_decimals));
+    const totalTo = Number(toValue) + Number(formatAmount(item.to_token_pool, item.to_decimals));
 
     if (!totalFrom || !totalTo) {
       return [0, 0];
     } else {
       return [totalTo / totalFrom, totalFrom / totalTo];
     }
-  }, [fromValue, toValue, item.from_token_pool, item.to_token_pool]);
+  }, [fromValue, toValue, item.from_token_pool, item.to_token_pool, item.to_decimals, item.from_decimals]);
 
   useEffect(() => {
     if (isOpen && readFrom) {
@@ -122,19 +130,7 @@ const Add = ({
   }, [isOpen, readFrom, currentAccount, item.from_decimals]);
 
   useEffect(() => {
-    if (isOpen && readTotalSupply) {
-      readTotalSupply()
-        .then((result) => {
-          result && setLpTotal(result as any);
-        })
-        .catch(() => {
-          setLpTotal('');
-        });
-    }
-  }, [isOpen, readTotalSupply]);
-
-  useEffect(() => {
-    if (isOpen && readTotalSupply) {
+    if (isOpen) {
       readEstimatedAddLiquidity(
         parseAmount(fromValue || '0', item.from_decimals),
         parseAmount(toValue || '0', item.to_decimals)
@@ -147,7 +143,7 @@ const Add = ({
           setLpValue('');
         });
     }
-  }, [isOpen, fromValue, toValue, readEstimatedAddLiquidity, item.from_decimals, item.to_decimals, readTotalSupply]);
+  }, [isOpen, fromValue, toValue, readEstimatedAddLiquidity, item.from_decimals, item.to_decimals]);
 
   useEffect(() => {
     if (isOpen && readTo) {
@@ -169,17 +165,15 @@ const Add = ({
 
   const submit = () => {
     const from = parseAmount(fromValue || '0', item.from_decimals);
-    const fromApprove = parseAmount(fromValue + 1 || '0', item.from_decimals);
     const to = parseAmount(toValue || '0', item.to_decimals);
-    const toApprove = parseAmount(toValue + 1 || '0', item.to_decimals);
 
     setIsLoading(true);
-    approveFrom([item.exchange, fromApprove])
+    approveFrom(item.exchange)
       .then(() => {
-        return approveTo([item.exchange, toApprove]);
+        return approveTo(item.exchange);
       })
       .then(() => {
-        return excute([from, to]);
+        return isDot ? excute([from], to) : excute([from, to]);
       })
       .then(() => {
         onSubmit();
@@ -206,7 +200,7 @@ const Add = ({
               </span>
             </FormLabel>
             <InputGroup>
-              <InputNumber value={fromValue} onChange={setFromValue} />
+              <InputNumber maxDecimals={item.from_decimals} value={fromValue} onChange={setFromValue} />
               <InputRightElement
                 width={40}
                 children={
@@ -228,7 +222,7 @@ const Add = ({
                       {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.from} theme="robohash" />
+                      <IdentityIcon value={item.from} theme='polkadot' />
                     </Box>
                   </Flex>
                 }
@@ -244,7 +238,7 @@ const Add = ({
               </span>
             </FormLabel>
             <InputGroup>
-              <InputNumber isDisabled={!!poolPrice} value={toValue} onChange={setToValue} />
+              <InputNumber maxDecimals={item.to_decimals} isDisabled={!isFirst} value={toValue} onChange={setToValue} />
               <InputRightElement
                 width={40}
                 children={
@@ -266,7 +260,7 @@ const Add = ({
                       {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.to} theme="robohash" />
+                      <IdentityIcon value={item.to} theme='polkadot' />
                     </Box>
                   </Flex>
                 }
@@ -305,7 +299,7 @@ const Add = ({
             <FormControl>
               <FormLabel textStyle='form-label'>
                 <span>LP Tokens</span>
-                <span>Balance: {lpBalance && <Fixed value={lpBalance} round={8} decimals={18} postfix='LPT' />}</span>
+                <span>Balance: {lpBalance && <Fixed value={lpBalance} round={8} decimals={item.from_decimals} postfix='LPT' />}</span>
               </FormLabel>
               <Flex
                 sx={{
@@ -317,7 +311,7 @@ const Add = ({
               >
                 <Box>
                   <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
-                    <Fixed value={lpValue} decimals={18} round={8} postfix='LPT' />
+                    <Fixed value={lpValue} decimals={item.from_decimals} round={8} postfix='LPT' />
                   </Center>
                   <Center>
                     <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>You will receive</Text>
@@ -325,7 +319,7 @@ const Add = ({
                 </Box>
                 <Box>
                   <Center sx={{ fontSize: 'sm', fontWeight: 'medium' }}>
-                    <Fixed value={lpTotal} decimals={18} postfix='LPT' />
+                    <Fixed value={item.lp_token_supply} decimals={item.from_decimals} postfix='LPT' />
                   </Center>
                   <Center>
                     <Text sx={{ color: 'brand.grey', fontSize: 'xs' }}>Total supply</Text>

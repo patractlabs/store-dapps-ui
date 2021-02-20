@@ -181,8 +181,6 @@ export function handleTxResults(
 
     const status = result.status.type.toLowerCase() as TxStatus;
 
-    console.log(`${handler}: status :: ${JSON.stringify(result)}`);
-
     txUpdateCb(extractEvents(result));
 
     if (result.status.isFinalized || result.status.isInBlock) {
