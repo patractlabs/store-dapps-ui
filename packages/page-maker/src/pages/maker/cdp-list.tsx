@@ -1,7 +1,8 @@
 import { Pagination } from '@material-ui/lab';
 import { useAccount, useModal } from '@patract/react-hooks';
-import { Address, Button, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text } from '@patract/ui-components';
+import { Address, Button, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text, Fixed } from '@patract/ui-components';
 import React, { FC, ReactElement, useCallback, useMemo, useReducer, useState } from 'react';
+import { SystemParams } from './system-params';
 import { useCdpList } from '../../hooks/use-cdp-list';
 import Increase from './increase';
 import Liquidate from './liquidate';
@@ -10,9 +11,9 @@ import { CDP } from './types';
 import Withdraw from './with-draw';
 
 const CDPList: FC<{
-  price: number;
+  systemParams: SystemParams;
   owner: boolean;
-}> = ({ price, owner }): ReactElement => {
+}> = ({ systemParams, owner }): ReactElement => {
   const { isOpen: isIncreaseOpen, onOpen: onIncreaseOpen, onClose: onIncreaseClose } = useModal();
   const { isOpen: isReduceOpen, onOpen: onReduceOpen, onClose: onReduceClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
@@ -29,7 +30,7 @@ const CDPList: FC<{
     }
     const _list = data.filter(item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount));
     setList(_list);
-  }, [data]);
+  }, [data, currentAccount, owner]);
 
   const renderOperations = useCallback(
     (item: CDP) => {
@@ -55,7 +56,7 @@ const CDPList: FC<{
           onLiquidateOpen();
         } }>Liquidate</Button>
     },
-    [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen],
+    [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen, owner],
   );
 
   const renderGameRow = useCallback(
@@ -69,13 +70,13 @@ const CDPList: FC<{
             { item.create_date }
           </Td>
           <Td>
-            { item.collateral_dot }
+            <Fixed value={item.collateral_dot} decimals={10} />
           </Td>
           <Td>
-            { item.issue_dai }
+            <Fixed value={item.issue_dai} decimals={10} />
           </Td>
           <Td>
-            { item.collateral_ratio }
+            { item.collateral_ratio }%
           </Td>
           <Td>{renderOperations(item)}</Td>
         </Tr>
@@ -85,11 +86,9 @@ const CDPList: FC<{
   );
 
   const pageSize = 10;
-
   const count = useMemo(() => {
     return list ? Math.ceil(list.length / pageSize) : 0;
   }, [list]);
-
   const [page, setPage] = useState(1);
 
   return (
@@ -120,10 +119,10 @@ const CDPList: FC<{
           <CircularProgress isIndeterminate color='blue.300' />
         </Center>
       )}
-      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={forceUpdate} price={price} />
-      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={price} />
-      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={price} />
-      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} price={price} />
+      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
+      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
+      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
+      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} systemParams={systemParams} />
     </>
   );
 };

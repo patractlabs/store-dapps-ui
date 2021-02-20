@@ -3,14 +3,15 @@ import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, For
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
+import { SystemParams } from './system-params';
 
 const Liquidate: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
   cdp?: CDP;
-  price?: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, price }): ReactElement => {
+  systemParams?: SystemParams;
+}> = ({ isOpen, onClose, onSubmit, cdp, systemParams }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [maxRedeem, setMaxRedeem] = useState<number>(0);
@@ -38,25 +39,25 @@ const Liquidate: FC<{
   };
 
   useMemo(() => {
-    if (`${redeem}` === 'NaN' || !cdp || !price) {
+    if (`${redeem}` === 'NaN' || !cdp || !systemParams) {
       return setDotYouGot('');
     }
-    const _dotYouGot = redeem / price * 1.05;
+    const _dotYouGot = redeem / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
     setDotYouGot(`${_dotYouGot}`);
-  }, [redeem, cdp, price]);
+  }, [redeem, cdp, systemParams]);
 
   useMemo(() => {
-    if (!cdp || !price) {
+    if (!cdp || !systemParams) {
       return setMaxRedeem(0);
     }
-    const _maxRedeem = cdp.collateral_dot * price / 1.05;
+    const _maxRedeem = cdp.collateral_dot * systemParams.currentPrice / (100 + systemParams.lrr) * 100;
     if (`${_maxRedeem}` === 'NaN') {
       return setMaxRedeem(0);
     }
     console.log('set max redeem', _maxRedeem);
     setMaxRedeem(_maxRedeem);
     setRedeem(_maxRedeem);
-  }, [cdp, price]);
+  }, [cdp, systemParams]);
 
   return (
     <Modal isOpen={ isOpen } onClose={ close }>

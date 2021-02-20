@@ -42,7 +42,6 @@ const Withdraw: FC<{
     }
     const _release = cdp!.collateral_ratio / 100 * redeem / price;
     setRelease(`${_release}`);
-    // setRedeem(cdp.issue_dai);
   }, [redeem, cdp, price]);
 
   useMemo(() => {
