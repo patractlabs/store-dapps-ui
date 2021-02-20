@@ -29,7 +29,7 @@ export const useAssetList = (
 
   const query = useCallback(async () => {
     if (!isApiReady || !contractList) return;
-    
+
     return Promise.all(
       contractList.map(({ id, signer, address, codeHash }) => {
         const contract = new ContractPromise(api, getTokenAbi(codeHash), address);

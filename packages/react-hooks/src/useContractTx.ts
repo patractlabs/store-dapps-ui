@@ -81,7 +81,7 @@ export const useContractTx = ({ title, contract, method }: ContractTxProps) => {
                       description: r.find(({ status }) => status === 'success')?.message,
                       duration: 5000
                     });
-  
+
                     setIsLoading(false);
                     resolve(undefined);
                   }
@@ -92,14 +92,14 @@ export const useContractTx = ({ title, contract, method }: ContractTxProps) => {
                 }
               )
             );
-          } catch(error) {
+          } catch (error) {
             toast.update(toastId, {
               status: 'error',
               description: error?.message,
               duration: 10000
             });
             setIsLoading(false);
-            reject(error)
+            reject(error);
           }
         });
       } catch (error) {

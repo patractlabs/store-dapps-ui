@@ -39,25 +39,22 @@ export const usePairList = (signal = 0) => {
           (result || []).map(({ from, to, exchange }: any) => {
             const { contract } = createExchange(exchange, from, to);
 
-            return Promise.all([
-              contractQuery(currentAccount, contract, 'exchangeInfo'),
-            ]).then(([data]: any) => {
-              if(data.to === "5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM") {
-                data.to_symbol = 'DOT'
-                data.to_decimals = 10
+            return Promise.all([contractQuery(currentAccount, contract, 'exchangeInfo')]).then(([data]: any) => {
+              if (data.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+                data.to_symbol = 'DOT';
+                data.to_decimals = 10;
               }
-              if(data.from === "5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM") {
-                data.from_symbol = 'DOT'
-                data.from_decimals = 10
+              if (data.from === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+                data.from_symbol = 'DOT';
+                data.from_decimals = 10;
               }
-              return ({
+              return {
                 ...data,
                 from,
                 to,
                 exchange
-              })
-            })
-            
+              };
+            });
           })
         );
       })

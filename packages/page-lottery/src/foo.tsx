@@ -1,8 +1,5 @@
 import React from 'react';
 import { Box, Flex, Spacer } from '@patract/ui-components';
-import { useLottery } from './hooks';
-
-import { useContractQuery } from '@patract/react-hooks';
 
 import { Pop } from './component';
 import { TicketBoard } from './ticket';
@@ -10,15 +7,6 @@ import { FooCardProps } from './types';
 
 /* The header table */
 export const Foo: React.FC<{}> = () => {
-  const contract = useLottery();
-  const res = useContractQuery({ contract: contract.contract, method: 'latestEpoch' });
-
-  React.useEffect(() => {
-    res.read().then((r) => {
-      console.log(r);
-    });
-  }, []);
-
   return (
     <Flex height={317} px='4' py='4' rounded='lg' shadow='sm' bg='white' flexDirection='row'>
       <Box width='100%' mr='16'>
