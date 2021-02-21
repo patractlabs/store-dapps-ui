@@ -6,15 +6,10 @@ export const useBalance = (account: string) => {
   const [balance, setBalance] = useState<string | null>(null);
 
   useEffect(() => {
-    api.query.system
-      .account(account)
-      .then((info) => {
-        setBalance(info.data.free.toString());
-      })
-      .catch(() => {
-        setBalance(null);
-      });
+    api.query.system.account(account, (info) => {
+      setBalance(info.data.free.toString());
+    });
   }, [api, account]);
 
-  return balance
+  return balance;
 };
