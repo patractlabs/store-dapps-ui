@@ -283,14 +283,14 @@ const CreateGame = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
 
           <Flex justifyContent='space-between'>
             <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Value: </Text>
-            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {parseInt(balance)} JPT</Text>
+            <Text sx={{ color: 'gray.400', fontSize: 'xs' }}>Balance: {parseInt(balance)} DOT</Text>
           </Flex>
           <HStack alignItems='center'>
             <InputGroup>
               <Input {...input} background='white' />
               <InputRightElement
                 width={16}
-                children={<Tag colorScheme='blue'>JPT</Tag>}
+                children={<Tag colorScheme='blue'>DOT</Tag>}
                 sx={{ h: '40px', bg: 'transparent' }}
               />
             </InputGroup>

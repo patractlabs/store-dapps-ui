@@ -18,7 +18,7 @@ export const InputAmountController: React.FC<InputAmountControllerProps> = (prop
         pattern='^[0-9]*[.,]?[0-9]{0,10}$'
         {...rest}
       />
-      <InputRightElement children='JPT' />
+      <InputRightElement children='DOT' />
     </InputGroup>
   );
 };

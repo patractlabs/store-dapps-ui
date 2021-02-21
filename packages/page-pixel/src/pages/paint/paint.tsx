@@ -1,7 +1,7 @@
 import { SignMessageModal } from '@patract/react-components';
-import { useApi, useModal } from '@patract/react-hooks';
+import { useAccount, useApi, useModal } from '@patract/react-hooks';
 import { Box, Button, Center, Spinner, Text, Fixed } from '@patract/ui-components';
-import { useContractTx } from '@patract/react-hooks';
+import { useContractTx, useBalance } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import React, { useCallback, useRef, useState, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
@@ -42,6 +42,8 @@ export const paintCanvas = (obj: Canvas) => {
 
 export const Paint: React.FC = () => {
   const { editingId } = useParams<{ editingId: string }>();
+  const { currentAccount } = useAccount();
+  const balance = useBalance(currentAccount);
   const [color, setColor] = useState(1);
   const [pixels, setPixels] = useState(0);
   const pixelRef = useRef<HTMLSpanElement>(null);
@@ -154,11 +156,11 @@ export const Paint: React.FC = () => {
   };
 
   return (
-    <Box  justifyContent='center' display='flex' flexDirection='column' mx='auto'>
+    <Box justifyContent='center' display='flex' flexDirection='column' mx='auto'>
       <Box sx={{ position: 'relative', width: 'calc(100% - 122px)' }}>
         <Box sx={{ position: 'absolute', left: '40px', top: '26px' }}>
           <Box color='#0058FA' sx={{ display: 'inline-block' }}>
-            Pool: <Fixed value={pool || '0'} decimals={10} postfix='JPT' />
+            Pool: <Fixed value={pool || '0'} decimals={10} postfix='DOT' />
           </Box>
           <Box mt={2}>
             <Box color='gray.500' sx={{ display: 'inline-block' }}>
@@ -178,11 +180,12 @@ export const Paint: React.FC = () => {
         <Box sx={{ position: 'absolute', right: '16px', top: '26px' }} display='flex' alignItems='center'>
           <Box display='inline-block'>
             <Box color='gray.500' sx={{ display: 'inline-block' }}>
-              1 Pixel cost 1 DOT
+              Your Balance:{' '}
+              {balance ? <Fixed value={balance} decimals={10} postfix='DOT' /> : null}
             </Box>
             <Box mt={2}>
               <Box color='orange.400' sx={{ display: 'inline-block' }}>
-                You have covered {pixels} pixels
+                You have covered {pixels} pixels (1 Pixel cost 1 DOT)
               </Box>
             </Box>
           </Box>
@@ -200,7 +203,11 @@ export const Paint: React.FC = () => {
         </Box>
       </Box>
       <Canvas data={data} signal={signal} paintMode={paintMode} color={color} getPixel={getPixel} />
-      <Box as='aside' aria-label='palette' sx={{ position: 'absolute', height: 'calc(100% - 60px)', right: '0', top: '60px' }}>
+      <Box
+        as='aside'
+        aria-label='palette'
+        sx={{ position: 'absolute', height: 'calc(100% - 60px)', right: '0', top: '60px' }}
+      >
         <Palette color={color} onColorChange={setColor} />
       </Box>
       {/* <SignMessageModal

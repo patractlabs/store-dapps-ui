@@ -246,7 +246,7 @@ const PK: React.FC = () => {
             {renderChoice(item.create_choice)}
           </Td>
           <Td>
-            <Amount value={item.value} decimals={10} postfix='JPT' />
+            <Amount value={item.value} decimals={10} postfix='DOT' />
           </Td>
           <Td sx={{ position: 'relative' }}>
             {getResult(item, 'joiner')}
@@ -298,7 +298,7 @@ const PK: React.FC = () => {
             <FirstRowTd>Salt</FirstRowTd>
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd w='77px'>Choice</FirstRowTd>
-            <FirstRowTd>JPT</FirstRowTd>
+            <FirstRowTd>DOT</FirstRowTd>
             <FirstRowTd w='77px'>Choice</FirstRowTd>
             <FirstRowTd w='200px'>Account</FirstRowTd>
             <FirstRowTd></FirstRowTd>
