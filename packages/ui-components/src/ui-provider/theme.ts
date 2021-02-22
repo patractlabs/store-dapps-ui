@@ -18,7 +18,7 @@ export const theme = extendTheme({
     },
     primary: {
       500: '#0058FA',
-      600: '#2B6CB0'
+      600: '#2B6CB0',
     }
   },
   sizes: {
@@ -34,7 +34,17 @@ export const theme = extendTheme({
       },
       sizes: {
         md: { h: '32px' }
-      }
+      },
+      variants: {
+        "maker-modal": {
+          height: '2em',
+          lineHeight: '2em',
+          background: '#0058FA',
+          borderRadius: '2px',
+          color: 'white',
+          padding: '1.125em',
+        },
+      },
     },
     FormLabel: {
       baseStyle: {
@@ -130,6 +140,34 @@ export const theme = extendTheme({
           },
         }
       },
+      sizes: {
+        small: {
+          table: {
+            fontSize: '12px'
+          },
+          th: {
+            fontSize: '12px',
+            fontWeight: '400',
+            padding: '9px 8px'
+          },
+          td: {
+            padding: '22px 8px'
+          }
+        },
+        md: {
+          table: {
+            fontSize: '14px'
+          }
+          // th: {
+          //   fontSize: '12px',
+          //   fontWeight: '400',
+          //   padding: '9px 8px'
+          // },
+          // td: {
+          //   padding: '22px 8px'
+          // }
+        }
+      }
     },
     Modal: {
       variants: {
@@ -139,6 +177,37 @@ export const theme = extendTheme({
           },
           closeButton: {
             top: '0.75rem'
+          }
+        },
+        maker: {
+          content: {
+            background: '#F8F8F8',
+            borderRadius: '4px',
+          },
+          header: {
+            height: '50px',
+            textAlign: 'center',
+            fontSize: '1rem',
+            boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)',
+            borderRadius: '4px 4px 0px 0px',
+            background: '#FFFFFF',
+            color: '#0058FA',
+          },
+          closeButton: {
+            top: '0.75rem'
+          },
+          body: {
+            padding: ' 41px 49px 10px 49px',
+            background: '#F8F8F8',
+          },
+          footer: {
+            padding: '11px 0px',
+            boxSizing: 'border-box',
+            height: '60px',
+            justifyContent: 'center',
+            color: '#0058FA',
+            background: '#FFFFFF',
+            boxShadow: '0px 2px 5px 0px rgba(0, 0, 0, 0.1)',
           }
         }
       }

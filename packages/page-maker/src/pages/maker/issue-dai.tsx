@@ -8,15 +8,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  SimpleGrid,
-  Stack,
   FormLabel,
   Input,
   Fixed,
   InputGroup,
   InputNumber,
-  InputRightElement,
-  Text,
   HStack,
   useNumberInput
 } from '@patract/ui-components';
@@ -25,6 +21,7 @@ import { useAccount, useContractTx } from '@patract/react-hooks';
 import { parseAmount, toFixed } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { api } from '@patract/react-components';
+import { RightSymbol } from './right-symbol';
 
 const IssueDAI: FC<{
   isOpen: boolean;
@@ -88,131 +85,73 @@ const IssueDAI: FC<{
   }, [collateralRatio, collateral, currentPrice]);
 
   return (
-    <Modal isOpen={isOpen} onClose={close}>
+    <Modal variant="maker" isOpen={isOpen} onClose={close}>
       <ModalOverlay />
-      <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
+      <ModalContent maxW='2xl'>
         <ModalHeader>Issue DAI</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid column={1} spacing='8'>
-            <FormControl>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>Collateral</span>
+              <span>
+                Balance: <Fixed value={balance} decimals={ 10 } /> DOT
+              </span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber value={collateral} onChange={ onCollateralChange } />
+              <RightSymbol symbol={'DOT'} />
+            </InputGroup>
+          </FormControl>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>Collateral Ratio</span>
+            </FormLabel>
+            <HStack alignItems='center'>
+              <InputGroup>
+                <Input {...input} background='white' />
+                <RightSymbol symbol={'%'} />
+              </InputGroup>
+              <Button
+                {...inc}
+                sx={{
+                  h: '40px',
+                  border: '0',
+                  bgColor: 'white',
+                  color: 'primary.500',
+                  boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
+                }}
+              >
+                +
+              </Button>
+              <Button
+                { ...dec }
+                sx={{
+                  h: '40px',
+                  border: '0',
+                  bgColor: 'white',
+                  color: 'primary.500',
+                  boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
+                }}
+              >
+                -
+              </Button>
+            </HStack>
+          </FormControl>
+          <FormControl>
               <FormLabel>
-                <span>Collateral</span>
-                <span>
-                  Balance: <Fixed value={balance} decimals={ 10 } /> DOT
-                </span>
+                <span style={{ color: '#666666', fontSize: '12px' }}>Estimated Issuance</span>
               </FormLabel>
               <InputGroup>
-                <InputNumber value={collateral} onChange={ onCollateralChange } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DOT
-                    </Text>
-                  }
-                />
+                <InputNumber isReadOnly={ true } value={estimatedIssuance} />
+                <RightSymbol symbol={'DAI'} />
               </InputGroup>
             </FormControl>
-            <FormControl>
-              <FormLabel>
-                <span>Collateral Ratio</span>
-              </FormLabel>
-              <HStack alignItems='center'>
-                <InputGroup>
-                  <Input {...input} background='white' />
-                  <InputRightElement
-                    width={40}
-                    children={
-                      <Text
-                        sx={{
-                          display: 'inline-block',
-                          verticalAlign: 'top',
-                          fontSize: 'lg',
-                          lineHeight: 'short',
-                          background: '#E1E9FF',
-                          borderRadius: '4px',
-                          minWidth: '74px',
-                          textAlign: 'center',
-                        }}
-                      >
-                        %
-                      </Text>
-                    }
-                  />
-                </InputGroup>
-                <Button
-                  {...inc}
-                  sx={{
-                    h: '40px',
-                    border: '0',
-                    bgColor: 'white',
-                    color: 'blue.500',
-                    boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
-                  }}
-                >
-                  +
-                </Button>
-                <Button
-                  { ...dec }
-                  sx={{
-                    h: '40px',
-                    border: '0',
-                    bgColor: 'white',
-                    color: 'blue.500',
-                    boxShadow: '0px 1px 5px 0px rgba(171, 180, 208, 0.5)'
-                  }}
-                >
-                  -
-                </Button>
-              </HStack>
-            </FormControl>
-            <FormControl>
-              <FormLabel>
-                <span>Estimated Issuance</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isDisabled={ true } value={estimatedIssuance} />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DAI
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
-          </SimpleGrid>
         </ModalBody>
-        <ModalFooter py={8}>
-          <Stack direction='row' spacing={4} justifyContent='center'>
+        <ModalFooter>
             <Button isDisabled={!collateralRatio || parseFloat(`${collateralRatio}`) < 150 || parseFloat(collateral) <= 0 || parseFloat(collateral) > parseFloat(toFixed(balance, 10, false).round(3).toString())  || !estimatedIssuance} isLoading={isLoading} colorScheme='blue' onClick={submit}>
               Confirm
             </Button>
-          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>

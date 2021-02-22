@@ -1,8 +1,9 @@
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { useContractTx } from '@patract/react-hooks';
 import { CDP } from './types';
+import { RightSymbol } from './right-symbol';
 
 const Withdraw: FC<{
   isOpen: boolean;
@@ -52,66 +53,44 @@ const Withdraw: FC<{
   }, [cdp]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ close }>
+    <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
       <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
         <ModalHeader>Withdraw</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid column={1} spacing='8'>
-            <FormControl>
-              <FormLabel>
-                <span>
-                  Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
-                </span>
-                <span>
-                  Total Issuance: <Fixed value={cdp?.issue_dai} decimals={ 0 } /> DAI
-                </span>
-              </FormLabel>
-              <Slider min={0} max={(cdp && cdp.issue_dai) || 0} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb />
-              </Slider>
-            </FormControl>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>
+                Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
+              </span>
+              <span>
+                Total Issuance: <Fixed value={cdp?.issue_dai} decimals={ 0 } /> DAI
+              </span>
+            </FormLabel>
+            <Slider min={0} max={(cdp && cdp.issue_dai) || 0} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb />
+            </Slider>
+          </FormControl>
 
-            <FormControl>
-              <FormLabel>
-                <span>Estimated Collateral Release:</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isDisabled={ true } value={ release } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DOT
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
-          </SimpleGrid>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>Estimated Collateral Release:</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber isDisabled={ true } value={ release } />
+              <RightSymbol symbol={'DOT'} />
+            </InputGroup>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!redeem || !cdp || redeem > cdp!.issue_dai || redeem <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
-              Confirm
-            </Button>
-          </Stack>
+          <Button isDisabled={!redeem || !cdp || redeem > cdp!.issue_dai || redeem <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            Confirm
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

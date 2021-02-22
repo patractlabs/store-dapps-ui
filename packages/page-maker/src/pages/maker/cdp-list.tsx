@@ -30,7 +30,6 @@ const getDays = (createTime: string): string => {
   if (days < 1) {
     return 'Today';
   }
-  console.log(days);
   if (days < 2) {
     return `${Math.floor(days)} day ago`;
   }
@@ -68,27 +67,36 @@ const CDPList: FC<{
 
   const renderOperations = useCallback(
     (item: CDP) => {
-      
       return owner ?
         <Flex justifyContent='space-between'>
           <LabelButton
+            isDisabled={ item.collateral_dot === 0 }
             onClick={ () => {
+              if (item.collateral_dot === 0) {
+                return;
+              }
               setChoosedCdp(item);
               onIncreaseOpen();
             } }>
               Increase
             </LabelButton>
           <LabelButton
-            isDisabled={ item.collateral_ratio < 150 }
+            isDisabled={ item.collateral_ratio < 150 || item.collateral_dot === 0 }
             onClick={ () => {
+              if (item.collateral_ratio < 150 || item.collateral_dot === 0) {
+                return;
+              }
               setChoosedCdp(item);
               onReduceOpen();
             } }>
               Reduce
             </LabelButton>
           <LabelButton
-            isDisabled={ item.collateral_ratio < 120 }
+            isDisabled={ item.collateral_ratio < 120 || item.collateral_dot === 0 }
             onClick={ () => {
+              if (item.collateral_ratio < 120 || item.collateral_dot === 0) {
+                return;
+              }
               setChoosedCdp(item);
               onWithdrawOpen();
             } }>
@@ -97,8 +105,11 @@ const CDPList: FC<{
         </Flex>
         :
         <LabelButton
-          isDisabled={ item.collateral_ratio > 110 }
+          isDisabled={ item.collateral_ratio > 110 || item.collateral_dot === 0 }
           onClick={ () => {
+            if (item.collateral_ratio > 110 || item.collateral_dot === 0) {
+              return;
+            }
             setChoosedCdp(item);
             onLiquidateOpen();
           } }>Liquidate</LabelButton>

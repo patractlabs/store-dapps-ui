@@ -1,9 +1,10 @@
 import { useContractTx } from '@patract/react-hooks';
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
+import { RightSymbol } from './right-symbol';
 
 const Liquidate: FC<{
   isOpen: boolean;
@@ -59,66 +60,44 @@ const Liquidate: FC<{
   }, [cdp, systemParams]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ close }>
+    <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
       <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
         <ModalHeader>Liquidate</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid column={1} spacing='8'>
-            <FormControl>
-              <FormLabel>
-                <span>
-                  Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
-                </span>
-                <span>
-                  Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
-                </span>
-              </FormLabel>
-              <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb />
-              </Slider>
-            </FormControl>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>
+                Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
+              </span>
+              <span>
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
+              </span>
+            </FormLabel>
+            <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+              <SliderThumb />
+            </Slider>
+          </FormControl>
 
-            <FormControl>
-              <FormLabel>
-                <span>Estimated Collateral You Can Get</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isDisabled={ true } value={ dotYouGot } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DOT
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
-          </SimpleGrid>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>Estimated Collateral You Can Get</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber isDisabled={ true } value={ dotYouGot } />
+              <RightSymbol symbol={'DOT'} />
+            </InputGroup>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!redeem || !cdp || redeem === 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
-              Confirm
-            </Button>
-          </Stack>
+          <Button isDisabled={!redeem || !cdp || redeem === 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            Confirm
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -1,7 +1,8 @@
 import { useContractTx } from '@patract/react-hooks';
-import { Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
+import { RightSymbol } from './right-symbol';
 import { CDP } from './types';
 
 const Increase: FC<{
@@ -46,80 +47,40 @@ const Increase: FC<{
   }, [increase, cdp, price]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ close }>
+    <Modal  variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
       <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
         <ModalHeader>Increase</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid column={1} spacing='8'>
-            <FormControl>
-              <FormLabel>
-                <span>Increase Collateral</span>
-                <span>
-                  Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
-                </span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber value={increase} onChange={setCollateral} />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DOT
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>Increase Collateral</span>
+              <span>
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
+              </span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber value={increase} onChange={setCollateral} />
+              <RightSymbol symbol={'DOT'} />
+            </InputGroup>
+          </FormControl>
 
-            <FormControl>
-              <FormLabel>
-                <span>Estimated New Collateral Ratio</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isDisabled={ true } value={ratio} />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      %
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
-          </SimpleGrid>
+          <FormControl>
+            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+              <span>Estimated New Collateral Ratio</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber isDisabled={ true } value={ratio} />
+              <RightSymbol symbol={'%'} />
+            </InputGroup>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!increase || !ratio || parseFloat(ratio) < 150 || parseFloat(increase) <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
-              Confirm
-            </Button>
-          </Stack>
+          <Button isDisabled={!increase || !ratio || parseFloat(ratio) < 150 || parseFloat(increase) <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+            Confirm
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
