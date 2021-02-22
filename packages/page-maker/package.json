@@ -20,6 +20,7 @@
     "build": "react-app-rewired build"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.7",
     "react-app-rewired": "^2.1.8"
   },
   "browserslist": {

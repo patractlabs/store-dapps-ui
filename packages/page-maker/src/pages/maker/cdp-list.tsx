@@ -1,6 +1,6 @@
 import { Pagination } from '@material-ui/lab';
 import { useAccount, useModal } from '@patract/react-hooks';
-import { Address, Button, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text, Fixed } from '@patract/ui-components';
+import { Address, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text, Fixed, Box } from '@patract/ui-components';
 import React, { FC, ReactElement, useCallback, useMemo, useReducer, useState } from 'react';
 import { SystemParams } from './system-params';
 import { useCdpList } from '../../hooks/use-cdp-list';
@@ -9,6 +9,39 @@ import Liquidate from './liquidate';
 import Reduce from './reduce';
 import { CDP } from './types';
 import Withdraw from './with-draw';
+import styled from 'styled-components';
+
+const getRatioColor = (ratio: number): string => {
+  if (ratio >= 150) {
+    return '#25A17C';
+  }
+  if (ratio >= 110) {
+    return '#F7B500';
+  }
+  return '#FA1C00';
+}
+
+const getDays = (createTime: string): string => {
+  const _createTime = parseFloat(createTime);
+  if (`${_createTime}` === 'NaN') {
+    return '';
+  }
+  const days = (Date.now() - parseFloat(createTime)) / 86400000;
+  if (days < 1) {
+    return 'Today';
+  }
+  console.log(days);
+  if (days < 2) {
+    return `${Math.floor(days)} day ago`;
+  }
+  return `${Math.floor(days)} days ago`;
+};
+
+const LabelButton = styled.label<{ isDisabled?: boolean }>`
+  cursor: pointer;
+  color: ${props => props.isDisabled ? '#ABB4D0' : '#0058FA'};
+  text-decoration: underline;
+`;
 
 const CDPList: FC<{
   systemParams: SystemParams;
@@ -37,25 +70,38 @@ const CDPList: FC<{
     (item: CDP) => {
       
       return owner ?
-        <Flex>
-          <Button onClick={ () => {
-            setChoosedCdp(item);
-            onIncreaseOpen();
-          } }>Increase</Button>
-          <Button onClick={ () => {
-            setChoosedCdp(item);
-            onReduceOpen();
-          } }>Reduce</Button>
-          <Button onClick={ () => {
-            setChoosedCdp(item);
-            onWithdrawOpen();
-          } }>Withdraw</Button>
+        <Flex justifyContent='space-between'>
+          <LabelButton
+            onClick={ () => {
+              setChoosedCdp(item);
+              onIncreaseOpen();
+            } }>
+              Increase
+            </LabelButton>
+          <LabelButton
+            isDisabled={ item.collateral_ratio < 150 }
+            onClick={ () => {
+              setChoosedCdp(item);
+              onReduceOpen();
+            } }>
+              Reduce
+            </LabelButton>
+          <LabelButton
+            isDisabled={ item.collateral_ratio < 120 }
+            onClick={ () => {
+              setChoosedCdp(item);
+              onWithdrawOpen();
+            } }>
+              Withdraw
+            </LabelButton>
         </Flex>
         :
-        <Button onClick={ () => {
-          setChoosedCdp(item);
-          onLiquidateOpen();
-        } }>Liquidate</Button>
+        <LabelButton
+          isDisabled={ item.collateral_ratio > 110 }
+          onClick={ () => {
+            setChoosedCdp(item);
+            onLiquidateOpen();
+          } }>Liquidate</LabelButton>
     },
     [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen, owner],
   );
@@ -68,7 +114,7 @@ const CDPList: FC<{
             <Address value={item.issuer} />
           </Td>
           <Td>
-            { item.create_date }
+            { getDays(item.create_date) }
           </Td>
           <Td>
             <Fixed value={item.collateral_dot} decimals={decimals} />
@@ -77,9 +123,13 @@ const CDPList: FC<{
             <Fixed value={item.issue_dai} decimals={decimals} />
           </Td>
           <Td>
-            { item.collateral_ratio }%
+            <label style={{
+              color: getRatioColor(item.collateral_ratio),
+            }}>
+              { item.collateral_ratio }%
+            </label>
           </Td>
-          <Td>{renderOperations(item)}</Td>
+          <Td sx={{ paddingLeft: '0px' }}>{renderOperations(item)}</Td>
         </Tr>
       );
     },
@@ -93,9 +143,13 @@ const CDPList: FC<{
   const [page, setPage] = useState(1);
 
   return (
-    <>
-      <Text>{ owner ? 'My' : 'Others' } Collaterals</Text>
-      <Table>
+    <Box sx={{
+      background: '#FFFFFF',
+      borderRadius: '8px',
+      padding: '1rem',
+    }}>
+      <Text sx={{ paddingBottom: '1em' }}>{ owner ? 'My' : 'Others' } Collaterals</Text>
+      <Table variant='maker'>
         <Thead>
           <Tr>
             <Th px='16px'>Account</Th>
@@ -124,7 +178,7 @@ const CDPList: FC<{
       <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
       <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
       <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} systemParams={systemParams} />
-    </>
+    </Box>
   );
 };
 

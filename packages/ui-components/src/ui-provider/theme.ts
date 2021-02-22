@@ -107,36 +107,29 @@ export const theme = extendTheme({
             h: '60px',
             verticalAlign: 'middle'
           }
+        },
+        maker: {
+          th: {
+            textTransform: 'capitalize',
+            fontSize: '14px',
+            fontWeight: '600',
+            lineHeight: '20px',
+            bgColor: '#ABB4D0',
+            color: '#000',
+          },
+          tr: {
+            fontSize: '14px',
+            lineHeight: '20px',
+            h: '50px',
+            _even: {
+              bgColor: '#EFF2F8'
+            },
+            _odd: {
+              bgColor: '#F7F9FF'
+            }
+          },
         }
       },
-      sizes: {
-        small: {
-          table: {
-            fontSize: '12px'
-          },
-          th: {
-            fontSize: '12px',
-            fontWeight: '400',
-            padding: '9px 8px'
-          },
-          td: {
-            padding: '22px 8px'
-          }
-        },
-        md: {
-          table: {
-            fontSize: '14px'
-          }
-          // th: {
-          //   fontSize: '12px',
-          //   fontWeight: '400',
-          //   padding: '9px 8px'
-          // },
-          // td: {
-          //   padding: '22px 8px'
-          // }
-        }
-      }
     },
     Modal: {
       variants: {

@@ -1,5 +1,5 @@
 import { useContractQuery } from '@patract/react-hooks';
-import { Flex, PageHeader, PageLayout, PageMain } from '@patract/ui-components';
+import { Box, PageHeader, PageLayout, PageMain } from '@patract/ui-components';
 import React, { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useDaiContract } from '../../hooks/use-dai-contract';
 import { useMakerContract } from '../../hooks/use-maker-contract';
@@ -44,14 +44,14 @@ const Maker: FC = (): ReactElement => {
   useCallback(() => {}, []);
 
   return (
-    <>
-      <Flex justifyContent='space-between' sx={{ marginBottom: '1rem' }}>
-        <TotalSupply price={systemParams.currentPrice} />
-      </Flex>
+    <Box>
+      <TotalSupply price={systemParams.currentPrice} />
       <SystemParamsArea systemParams={systemParams} onIssueDaiSubmit={() => {}} />
+      <Box sx={{ height: '34px' }}></Box>
       <CDPList systemParams={systemParams} owner={true} decimals={decimals} />
+      <Box sx={{ height: '24px' }}></Box>
       <CDPList systemParams={systemParams} owner={false} decimals={decimals} />
-    </>
+    </Box>
   );
 };
 

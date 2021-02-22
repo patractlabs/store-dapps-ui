@@ -25,7 +25,6 @@ import { useAccount, useContractTx } from '@patract/react-hooks';
 import { parseAmount, toFixed } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { api } from '@patract/react-components';
-import { formatBalance } from '@polkadot/util';
 
 const IssueDAI: FC<{
   isOpen: boolean;
