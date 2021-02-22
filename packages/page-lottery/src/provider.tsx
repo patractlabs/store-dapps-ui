@@ -17,6 +17,8 @@ const context = React.createContext<Value>({} as Value);
 
 export const Provider: React.FC<{}> = ({ children }) => {
   const api = useApi();
+  // const { currentAccount } = useAccount();
+
   if (api.isApiReady) {
     return <ProviderInner>{children}</ProviderInner>;
   } else {
@@ -24,7 +26,7 @@ export const Provider: React.FC<{}> = ({ children }) => {
   }
 };
 
-const BASE_EPOCH = 300;
+const BASE_EPOCH = 380;
 
 export const ProviderInner: React.FC<{}> = ({ children }) => {
   // hooks
@@ -38,7 +40,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
   const [trigger, setTrigger] = React.useState(false);
 
   const api = useApi();
-  const account = useAccount();
+  const { currentAccount } = useAccount();
   const contract = useLottery();
   const latestEpoch = useContractQuery({ contract: contract.contract, method: 'latestEpoch' });
   const lotteries = useContractQuery({ contract: contract.contract, method: 'lotteriesOf' });
@@ -50,31 +52,37 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
     api.api.query.contracts.contractInfoOf('5DYvhVPkjTJdbQNz66kza3e2Cn7XvxBpR4F1s1si9Vd96wFh', async () => {
       const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
-      const curLotteries: any = await lotteries.read(account.currentAccount);
+      const curLotteries: any = await lotteries.read(currentAccount);
 
       // Get historires
       const histories: EpochHistory[] = [];
-      new Array(epoch.epoch_id - BASE_EPOCH).fill(BASE_EPOCH).forEach(async (v, i) => {
-        const r = await epochHistory.read(v + i);
-        r && histories.push(r as any);
-      });
+      const dimHis = new Array(epoch.epoch_id - BASE_EPOCH).fill(BASE_EPOCH);
+      for (const v in dimHis) {
+        const r = await epochHistory.read(Number(BASE_EPOCH) + Number(v));
+        if (r && !histories.includes(r as any)) {
+          histories.push(r as any);
+        }
+      }
 
       // Get My Lotteries
       const winners: BiggestWinner[] = [];
-      histories.forEach(async (h) => {
-        winners.push((await biggestWinenr.read(h.epoch_id)) as any);
-      });
+      for (const w in histories) {
+        const r = await biggestWinenr.read(histories[w].epoch_id);
+        if (r) {
+          winners.push(r as any);
+        }
+      }
 
       setEpochId(Number(epoch?.epoch_id));
       setOpenIn(Number(epoch?.start_slot - currentSlot.toNumber()) * 6);
       setRewardPool(Number(epoch?.reward_pool));
-      setEpochHistories(histories);
       setBiggestWinners(winners);
+      setEpochHistories(histories);
 
       curLotteries && setMyLotteries(curLotteries);
     });
     // eslint-disable-next-line
-  }, [trigger]);
+  }, [trigger, currentAccount]);
 
   React.useEffect(() => {
     clearInterval(timer);

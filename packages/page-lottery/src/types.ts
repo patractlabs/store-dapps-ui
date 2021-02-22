@@ -6,19 +6,20 @@ export interface TableProps {
   height?: string;
   width?: string;
   title: string;
+  pagin?: boolean;
   onChange?: (page: number) => void;
 }
 
 export interface TrProps {
-  epoch: number;
+  epoch_id: number;
   random?: string;
   ident?: string;
-  lottery: number[];
+  my_num: number[];
   reward?: number;
   tickets?: number;
   buyer?: number;
-  poolIn?: number;
-  poolOut?: number;
+  pool_in?: number;
+  pool_out?: number;
   operation?: string;
 }
 

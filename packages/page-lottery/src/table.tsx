@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
+import { useApi } from '@patract/react-hooks';
 
 import { Circle } from './component';
 
@@ -11,8 +12,10 @@ import { TableProps, TrProps } from './types';
  *
  * + Pagination
  */
-export const T: React.FC<TableProps> = ({ head, body, title, onChange, width }) => {
+export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pagin = true }) => {
   const [page, setPage] = React.useState(1);
+  const api = useApi();
+  const decimal = React.useMemo(() => api.api.registry.chainDecimals, []);
 
   // On Changing Page
   const c = React.useCallback(
@@ -36,42 +39,44 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange, width }) 
             ))}
           </Tr>
         </Thead>
-        <Tbody>{body.map((b) => Trr(b))}</Tbody>
+        <Tbody>
+          {body.map((b, i) => (
+            <Trr row={b} key={i} decimal={decimal} />
+          ))}
+        </Tbody>
       </Table>
-      <Flex mt='4' justifyContent='flex-end' position='relative' bottom='2'>
-        <Pagination count={9} page={page} onChange={c} shape='rounded' />
-      </Flex>
+      {pagin && (
+        <Flex mt='4' justifyContent='flex-end' position='relative' bottom='2'>
+          <Pagination count={9} page={page} onChange={c} shape='rounded' />
+        </Flex>
+      )}
     </Box>
   );
 };
 
 /* Well, I've forgotten why I named this component `Tr` */
-export const Trr: React.FC<TrProps> = ({
-  epoch,
-  random,
-  lottery,
-  ident,
-  reward,
-  tickets,
-  buyer,
-  poolIn,
-  poolOut,
-  operation
-}) => {
+export const Trr: React.FC<{ row: TrProps; decimal: number }> = ({ row, decimal }) => {
   return (
-    <Tr key=''>
-      <Td>{epoch}</Td>
-      {random && <Td>{random}</Td>}
-      {ident && <Td>{ident}</Td>}
+    <Tr>
+      <Td>{row.epoch_id}</Td>
+      {row.random && <Td>{row.random.slice(2)[0]}</Td>}
+      {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
-        {lottery.map((v, i) => Circle({ v, style: 0, key: String(i) }))}
+        {row.my_num && row.my_num.length > 0 ? (
+          row.my_num.map((v, i) => (
+            <Box key={String(i)}>
+              <Circle v={v} />
+            </Box>
+          ))
+        ) : (
+          <Box>Waiting</Box>
+        )}
       </Td>
-      {tickets && <Td>{tickets}</Td>}
-      {reward && Trend({ v: reward })}
-      {buyer && <Td>{buyer}</Td>}
-      {poolIn && Trend({ v: poolIn })}
-      {poolOut && Trend({ v: poolOut })}
-      {operation && <Td>{operation}</Td>}
+      {row.tickets && <Td>{row.tickets}</Td>}
+      {row.reward !== undefined && <Trend v={row.reward} />}
+      {row.buyer && <Td>{row.buyer}</Td>}
+      {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
+      {row.pool_out !== undefined && <Trend v={row.pool_out / Math.pow(10, decimal)} />}
     </Tr>
   );
 };
@@ -81,19 +86,19 @@ const Trend: React.FC<{ v: number }> = ({ v }) => {
   if (v === 0) {
     return (
       <Td>
-        <Box color='#999999F'>'-'</Box>
+        <Box color='#999999F'>~</Box>
       </Td>
     );
   } else if (v > 0) {
     return (
       <Td>
-        <Box color='#25A17CFF'>{'+' + v}</Box>
+        <Box color='#25A17CFF'>{'+' + Number(v)}</Box>
       </Td>
     );
   } else {
     return (
       <Td>
-        <Box color='#E02020FF'>{'-' + -v}</Box>
+        <Box color='#E02020FF'>{'-' + -Number(v)}</Box>
       </Td>
     );
   }

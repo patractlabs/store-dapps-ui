@@ -5,23 +5,23 @@ interface TableProps {
   body: TrProps[];
 }
 
-export const useMy = (): TableProps => {
+export const useMy = (body: TrProps[]): TableProps => {
   return {
     head: ['Epoch ID', 'Randoam Number', 'My Number', 'Tickets', 'Reward(DOT)'],
-    body: [{ epoch: 918, random: '0x000', lottery: [1, 4, 7], reward: 9, tickets: 3 }]
+    body
   };
 };
 
-export const useBig = (): TableProps => {
+export const useBig = (body: TrProps[]): TableProps => {
   return {
     head: ['Epoch ID', 'Buyer Account', 'Number', 'Tickets', 'Reward(DOT)'],
-    body: [{ epoch: 918, ident: '0x000', lottery: [1, 4, 7], reward: 9, tickets: 3 }]
+    body
   };
 };
 
-export const useHis = (): TableProps => {
+export const useHis = (body: TrProps[]): TableProps => {
   return {
     head: ['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyer', 'Pool In(DOT)', 'Pool Out(DOT)', 'Operation'],
-    body: [{ epoch: 918, random: '0x000', lottery: [1, 4, 7], buyer: 10, poolIn: 9, poolOut: 3, operation: 'close' }]
+    body
   };
 };

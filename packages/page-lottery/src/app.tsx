@@ -4,10 +4,15 @@ import React from 'react';
 import { Tip } from './component';
 import { T } from './table';
 import { Foo } from './foo';
-import { useMy, useBig, useHis } from './hooks';
+import { useProvider } from './provider';
 
 export const App = () => {
-  const [my, big, his] = [useMy(), useBig(), useHis()];
+  const context = useProvider();
+
+  const my = React.useMemo(() => (context.myLotteries ? (context.myLotteries as any) : []), [context.myLotteries]);
+  const his = React.useMemo(() => (context.epochHistories ? (context.epochHistories as any) : []), [
+    context.epochHistories
+  ]);
 
   return (
     <PageLayout>
@@ -16,11 +21,27 @@ export const App = () => {
         <Tip />
         <Foo />
         <Flex>
-          <T title='My Lotteries' head={my.head} body={my.body} width='570px' />
+          <T
+            title='My Lotteries'
+            head={['Epoch ID', 'Randoam Number', 'My Number', 'Tickets', 'Reward(DOT)']}
+            body={my}
+            width='570px'
+          />
           <Spacer />
-          <T title='Biggest Winners' head={big.head} body={big.body} width='570px' />
+          <T
+            title='Biggest Winners'
+            head={['Epoch ID', 'Buyer Account', 'Number', 'Tickets', 'Reward(DOT)']}
+            body={[]}
+            width='570px'
+            pagin={false}
+          />
         </Flex>
-        <T height='1104px' title='Epoch Histories' head={his.head} body={his.body} />
+        <T
+          height='1104px'
+          title='Epoch Histories'
+          head={['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyer', 'Pool In(DOT)', 'Pool Out(DOT)']}
+          body={his}
+        />
       </PageMain>
     </PageLayout>
   );
