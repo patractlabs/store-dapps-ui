@@ -3,7 +3,7 @@ import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr } from '@patract/ui-co
 import Pagination from '@material-ui/lab/Pagination';
 import { useApi } from '@patract/react-hooks';
 
-import { Circle } from './component';
+import { Circle, Hash } from './component';
 
 import { TableProps, TrProps } from './types';
 
@@ -59,7 +59,11 @@ export const Trr: React.FC<{ row: TrProps; decimal: number }> = ({ row, decimal 
   return (
     <Tr>
       <Td>{row.epoch_id}</Td>
-      {row.random && <Td>{row.random.slice(2)[0]}</Td>}
+      {row.random && (
+        <Td>
+          <Hash hash={row.random} />
+        </Td>
+      )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
         {row.my_num && row.my_num.length > 0 ? (
