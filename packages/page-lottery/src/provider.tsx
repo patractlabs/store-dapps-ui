@@ -73,6 +73,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
       curLotteries && setMyLotteries(curLotteries);
     });
+    // eslint-disable-next-line
   }, [trigger]);
 
   React.useEffect(() => {
@@ -86,6 +87,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
         }
       }, 1000)
     );
+    // eslint-disable-next-line
   }, [openIn]);
 
   // return states

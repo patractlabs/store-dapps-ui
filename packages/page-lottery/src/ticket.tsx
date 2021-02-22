@@ -3,6 +3,9 @@ import { Box, Button, CloseIcon, Flex, Spacer } from '@patract/ui-components';
 
 import { Circle, NumberInput } from './component';
 import { useProvider } from './provider';
+import { useLottery } from './hooks';
+import { parseAmount } from '@patract/utils';
+import { useContractTx } from '@patract/react-hooks';
 
 export const TicketBoard: React.FC<{}> = () => {
   const context = useProvider();
@@ -13,6 +16,10 @@ export const TicketBoard: React.FC<{}> = () => {
   const [chosen, setChosen] = React.useState<number[]>([]);
   const [disabled, setDisabled] = React.useState(false);
 
+  // tx
+  const contract = useLottery().contract;
+  const { excute } = useContractTx({ title: 'Buy Tickets', contract, method: 'buyTickets' });
+
   React.useEffect(() => {
     setEpoch(context.epochId);
   }, [context.epochId]);
@@ -22,7 +29,7 @@ export const TicketBoard: React.FC<{}> = () => {
     (v: number) => {
       let dim = chosen;
       if (chosen.includes(v)) {
-        dim = chosen.filter((n) => n != v);
+        dim = chosen.filter((n) => n !== v);
       } else {
         dim.push(v);
       }
@@ -40,6 +47,12 @@ export const TicketBoard: React.FC<{}> = () => {
       setDisabled(true);
     }
   }, [chosen, setChosen]);
+
+  const _buyTickets = () => {
+    excute([epoch, chosen, ticket], parseAmount(ticket.toString(), 10)).then((r) => {
+      console.log(r);
+    });
+  };
 
   return (
     <Flex
@@ -73,7 +86,7 @@ export const TicketBoard: React.FC<{}> = () => {
       <TicketInput chosen={chosen} ticket={ticket} setTicket={setTicket} />
       <Spacer />
       <Flex alignItems='flex-end'>
-        <Button bg='rgba(0, 88, 250, 1)' color='#fff' width='5rem'>
+        <Button bg='rgba(0, 88, 250, 1)' color='#fff' width='5rem' onClick={_buyTickets}>
           Buy
         </Button>
         <Box ml='1rem' color='rgba(37, 161, 124, 1)' fontSize='12px'>
