@@ -7,6 +7,7 @@ export interface TableProps {
   width?: string;
   title: string;
   pagin?: boolean;
+  limit?: number;
   onChange?: (page: number) => void;
 }
 

@@ -12,10 +12,11 @@ import { TableProps, TrProps } from './types';
  *
  * + Pagination
  */
-export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pagin = true }) => {
+export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pagin = true, limit = 5 }) => {
   const [page, setPage] = React.useState(1);
   const api = useApi();
   const decimal = React.useMemo(() => api.api.registry.chainDecimals, []);
+  const rows = body.sort((a, b) => b.epoch_id - a.epoch_id);
 
   // On Changing Page
   const c = React.useCallback(
@@ -40,14 +41,19 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pa
           </Tr>
         </Thead>
         <Tbody>
-          {body.map((b, i) => (
+          {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
             <Trr row={b} key={i} decimal={decimal} />
           ))}
         </Tbody>
       </Table>
       {pagin && (
         <Flex mt='4' justifyContent='flex-end' position='relative' bottom='2'>
-          <Pagination count={9} page={page} onChange={c} shape='rounded' />
+          <Pagination
+            count={body.length % limit === 0 ? body.length / limit : Math.floor(body.length / limit) + 1}
+            page={page}
+            onChange={c}
+            shape='rounded'
+          />
         </Flex>
       )}
     </Box>
