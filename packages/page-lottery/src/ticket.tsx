@@ -5,7 +5,7 @@ import { Circle, NumberInput } from './component';
 import { useProvider } from './provider';
 import { useLottery } from './hooks';
 import { parseAmount } from '@patract/utils';
-import { useContractTx } from '@patract/react-hooks';
+import { useContractTx, useApi } from '@patract/react-hooks';
 
 export const TicketBoard: React.FC<{}> = () => {
   const context = useProvider();
@@ -49,9 +49,7 @@ export const TicketBoard: React.FC<{}> = () => {
   }, [chosen, setChosen]);
 
   const _buyTickets = () => {
-    excute([epoch, chosen, ticket], parseAmount(ticket.toString(), 10)).then((r) => {
-      console.log(r);
-    });
+    excute([Number(epoch + 10), chosen, ticket], parseAmount(ticket.toString(), 10));
   };
 
   return (
