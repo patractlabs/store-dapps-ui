@@ -9,6 +9,7 @@ export interface TableProps {
   pagin?: boolean;
   limit?: number;
   onChange?: (page: number) => void;
+  current_epoch: number;
 }
 
 export interface TrProps {
@@ -82,8 +83,9 @@ export interface EpochInfo {
 }
 
 export interface BiggestWinner {
+  epoch_id: string;
   winner: string;
-  winNum: number[];
+  win_num: number[];
   tickets: number;
   reward: number;
 }

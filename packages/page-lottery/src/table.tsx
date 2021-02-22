@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr } from '@patract/ui-components';
+import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 import { useApi } from '@patract/react-hooks';
+import { useContractTx } from '@patract/react-hooks';
 
 import { Circle, Hash } from './component';
-
+import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
 
 /**
@@ -12,9 +13,19 @@ import { TableProps, TrProps } from './types';
  *
  * + Pagination
  */
-export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pagin = true, limit = 5 }) => {
+export const T: React.FC<TableProps> = ({
+  head,
+  body,
+  title,
+  onChange,
+  width,
+  pagin = true,
+  limit = 5,
+  current_epoch
+}) => {
   const [page, setPage] = React.useState(1);
   const api = useApi();
+  // eslint-disable-next-line
   const decimal = React.useMemo(() => api.api.registry.chainDecimals, []);
   const rows = body.sort((a, b) => b.epoch_id - a.epoch_id);
 
@@ -42,7 +53,7 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pa
         </Thead>
         <Tbody>
           {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
-            <Trr row={b} key={i} decimal={decimal} />
+            <Trr row={b} key={i} decimal={decimal} currentEpoch={current_epoch} />
           ))}
         </Tbody>
       </Table>
@@ -61,7 +72,21 @@ export const T: React.FC<TableProps> = ({ head, body, title, onChange, width, pa
 };
 
 /* Well, I've forgotten why I named this component `Tr` */
-export const Trr: React.FC<{ row: TrProps; decimal: number }> = ({ row, decimal }) => {
+export const Trr: React.FC<{ row: TrProps; decimal: number; currentEpoch: number }> = ({
+  row,
+  decimal,
+  currentEpoch
+}) => {
+  const contract = useLottery().contract;
+  const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
+
+  const _draw = React.useCallback(
+    (epoch: number) => {
+      excute([epoch]);
+    },
+    [excute]
+  );
+
   return (
     <Tr>
       <Td>{row.epoch_id}</Td>
@@ -79,14 +104,22 @@ export const Trr: React.FC<{ row: TrProps; decimal: number }> = ({ row, decimal 
             </Box>
           ))
         ) : (
-          <Box>Waiting</Box>
+          <Box>
+            {row.epoch_id < currentEpoch ? (
+              <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
+                Draw
+              </Button>
+            ) : (
+              'Waiting'
+            )}
+          </Box>
         )}
       </Td>
       {row.tickets && <Td>{row.tickets}</Td>}
-      {row.reward !== undefined && <Trend v={row.reward} />}
+      {row.reward !== undefined && <Trend v={row.reward / Math.pow(10, decimal)} />}
       {row.buyer && <Td>{row.buyer}</Td>}
       {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
-      {row.pool_out !== undefined && <Trend v={row.pool_out / Math.pow(10, decimal)} />}
+      {row.pool_out !== undefined && <Trend v={-row.pool_out / Math.pow(10, decimal)} />}
     </Tr>
   );
 };

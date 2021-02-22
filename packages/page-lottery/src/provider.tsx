@@ -17,8 +17,6 @@ const context = React.createContext<Value>({} as Value);
 
 export const Provider: React.FC<{}> = ({ children }) => {
   const api = useApi();
-  // const { currentAccount } = useAccount();
-
   if (api.isApiReady) {
     return <ProviderInner>{children}</ProviderInner>;
   } else {
@@ -49,7 +47,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
   // Subscribe storage
   React.useEffect(() => {
-    api.api.query.contracts.contractInfoOf('5DYvhVPkjTJdbQNz66kza3e2Cn7XvxBpR4F1s1si9Vd96wFh', async () => {
+    api.api.query.contracts.contractInfoOf('5EtKbgEJGpKWBJUii5TerFZRbWpZcbVupqn8k6dX3wz4xCk5', async () => {
       const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
       const curLotteries: any = await lotteries.read(currentAccount);
@@ -69,7 +67,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       for (const w in histories) {
         const r = await biggestWinenr.read(histories[w].epoch_id);
         if (r) {
-          winners.push(r as any);
+          winners.push({ ...(r as any), epoch_id: histories[w].epoch_id });
         }
       }
 

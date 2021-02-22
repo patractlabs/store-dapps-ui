@@ -84,7 +84,7 @@ export const TicketBoard: React.FC<{}> = () => {
       <TicketInput chosen={chosen} ticket={ticket} setTicket={setTicket} />
       <Spacer />
       <Flex alignItems='flex-end'>
-        <Button bg='rgba(0, 88, 250, 1)' color='#fff' width='5rem' onClick={_buyTickets}>
+        <Button bg='rgba(0, 88, 250, 1)' color='#fff' width='5rem' onClick={_buyTickets} disabled={chosen.length !== 3}>
           Buy
         </Button>
         <Box ml='1rem' color='rgba(37, 161, 124, 1)' fontSize='12px'>

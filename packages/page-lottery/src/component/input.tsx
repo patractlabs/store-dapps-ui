@@ -2,12 +2,10 @@ import React from 'react';
 import { Box, AddIcon, MinusIcon, Flex, IconButton } from '@patract/ui-components';
 
 export const NumberInput: React.FC<{ disabled?: number; value: number; set: (e: any) => void }> = ({
-  disabled = 0,
+  disabled = 1,
   value,
   set
 }) => {
-  // const [disable, setDisable] = React.useState(false);
-
   return (
     <Flex alignItems='center'>
       <Box width='4rem' borderColor='rgba(0, 88, 250, .8)' borderWidth='2px' rounded='5px' textAlign='center'>
