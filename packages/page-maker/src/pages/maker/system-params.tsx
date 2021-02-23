@@ -75,6 +75,14 @@ export const SystemParamsArea: FC<{
     ];
   }, [systemParams]);
 
+  const estimatedDai = useMemo(() => {
+    if (!systemParams.mcr) {
+      return '?';
+    }
+    const dai = 100 * systemParams.currentPrice / systemParams.mcr;
+    return dai.toFixed(0);
+  }, [systemParams]);
+
   return (
     <Grid
       h="183px"
@@ -106,7 +114,7 @@ export const SystemParamsArea: FC<{
               height: '34px',
               marginTop: '7px',
               marginBottom: '13px',
-            }}>At current price and ratios, 100 DOT can issue 1000 DAI at max.</h3>
+            }}>At current price and ratios, 100 DOT can issue { estimatedDai } DAI at max.</h3>
             <p style={{
               fontSize: '12px',
               color: 'brand.grey',

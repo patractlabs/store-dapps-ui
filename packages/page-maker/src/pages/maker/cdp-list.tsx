@@ -29,9 +29,12 @@ const getDays = (createTime: string): string => {
   if (`${_createTime}` === 'NaN') {
     return '';
   }
-  const days = (Date.now() - parseFloat(createTime)) / 86400000;
+  const now = Date.now();
+  // 有可能出现负数的情况
+  const time = (now - _createTime) < 0 ? (_createTime - now) : (now - _createTime);
+  const days = time / 86400000;
   if (days < 1) {
-    const hours = Math.floor((Date.now() - parseFloat(createTime)) / 3600000);
+    const hours = Math.floor(time / 3600000);
     return hours === 0 ? 'Within 1 hour' : `${hours} hour${hours === 1 ? '' : 's'} ago`;
   }
   if (days < 2) {
