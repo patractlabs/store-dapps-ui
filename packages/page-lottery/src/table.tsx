@@ -109,9 +109,9 @@ export const Trr: React.FC<{
       <Td display='flex' flexDirection='row'>
         {row.my_num && row.my_num.length === 3 ? (
           <Box display='inherit'>
-            <Circle v={row.my_num[0]} style={winner && winner.includes(row.my_num[0]) ? 0 : 1} forceDisabled />
-            <Circle v={row.my_num[1]} style={winner && winner.includes(row.my_num[1]) ? 0 : 1} forceDisabled />
-            <Circle v={row.my_num[2]} style={winner && winner.includes(row.my_num[2]) ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[0]} style={winner && row.my_num[0] === winner[0] ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[1]} style={winner && row.my_num[1] === winner[1] ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[2]} style={winner && row.my_num[2] === winner[2] ? 0 : 1} forceDisabled />
           </Box>
         ) : (
           <Box>

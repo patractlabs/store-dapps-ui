@@ -76,7 +76,7 @@ export const Circle: React.FC<{
       boxShadow={curStyle === 0 ? '0px 1px 3px 0px rgba(171, 180, 208, 0.5);' : ''}
       key={key}
       onClick={() => {
-        if (forceDisabled) {
+        if (forceDisabled || inTicket) {
           return;
         }
 
