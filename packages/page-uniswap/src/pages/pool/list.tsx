@@ -54,7 +54,6 @@ const WithdrawLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
         Withdraw
       </Button>
       <Withdraw
-        lpBalance={lpBalance}
         onSubmit={onSubmit}
         item={item}
         isOpen={isWithdrawOpen}

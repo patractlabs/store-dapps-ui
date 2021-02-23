@@ -38,13 +38,11 @@ const Withdraw = ({
   onClose,
   onSubmit,
   item,
-  lpBalance
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
   item: any;
-  lpBalance: any;
 }) => {
   const [value, setValue] = useState('');
   const [estimated, setEstimated] = useState<any>(null);
@@ -59,9 +57,10 @@ const Withdraw = ({
   const { read } = useContractQuery({ contract, method: 'estimatedRemoveLiquidity' });
   const { excute } = useContractTx({ title: 'Withdraw', contract, method: 'removeLiquidity' });
 
+
   const balance = useMemo(() => {
-    return lpBalance ? formatAmount(lpBalance, 18) : 0;
-  }, [lpBalance]);
+    return item.own_lp_token ? formatAmount(item.own_lp_token, item.from_decimals) : 0;
+  }, [item.own_lp_token]);
 
   const percentage = useMemo(() => {
     return balance ? Math.ceil((Number(value) * 100) / Number(balance)) : 0;
