@@ -1,21 +1,25 @@
 import { useContractTx } from '@patract/react-hooks';
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
+import { RightSymbol } from './right-symbol';
+import { toFixed } from '@patract/utils';
 
 const Liquidate: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   cdp?: CDP;
-  systemParams?: SystemParams;
-}> = ({ isOpen, onClose, onSubmit, cdp, systemParams }): ReactElement => {
+  systemParams: SystemParams;
+  decimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, systemParams, decimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [maxRedeem, setMaxRedeem] = useState<number>(0);
   const [dotYouGot, setDotYouGot] = useState<string>('');
+  const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Liquidate Collateral', contract, method: 'liquidateCollateral' });
 
@@ -27,11 +31,13 @@ const Liquidate: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, redeem])
+    console.log(`${redeem}`);
+    
+    excute([cdp!.id, `${redeem}`])
       .then((data) => {
         console.log('liquidate', data)
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);
@@ -39,19 +45,26 @@ const Liquidate: FC<{
   };
 
   useMemo(() => {
-    if (`${redeem}` === 'NaN' || !cdp || !systemParams) {
-      return setDotYouGot('');
+    const times = Math.pow(10, decimals);
+    const _dotYouGot = redeem / times / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
+
+    if (`${_dotYouGot}` === 'NaN') {
+      setDotYouGot('');
+      setCalculation(``);
+    } else {
+      const _redeem = toFixed(redeem, decimals, false).round(3).toString();
+      setDotYouGot(`${_dotYouGot.toFixed(3)}`);
+      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${_redeem} DAI / $${systemParams.currentPrice} * (1 + 5%)`);
     }
-    const _dotYouGot = redeem / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
-    setDotYouGot(`${_dotYouGot}`);
-  }, [redeem, cdp, systemParams]);
+  }, [redeem, systemParams, decimals]);
 
   useMemo(() => {
-    if (!cdp || !systemParams) {
+    if (!cdp) {
       return setMaxRedeem(0);
     }
     const _maxRedeem = cdp.collateral_dot * systemParams.currentPrice / (100 + systemParams.lrr) * 100;
     if (`${_maxRedeem}` === 'NaN') {
+      setRedeem(_maxRedeem);
       return setMaxRedeem(0);
     }
     setMaxRedeem(_maxRedeem);
@@ -59,66 +72,47 @@ const Liquidate: FC<{
   }, [cdp, systemParams]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ close }>
+    <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
-      <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
+      <ModalContent maxW='2xl'>
         <ModalHeader>Liquidate</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid column={1} spacing='8'>
-            <FormControl>
-              <FormLabel>
-                <span>
-                  Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
-                </span>
-                <span>
-                  Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
-                </span>
-              </FormLabel>
-              <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb />
-              </Slider>
-            </FormControl>
+          <FormControl sx={{ marginBottom: '21px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
+              <span>
+                Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
+              </span>
+              <span>
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={decimals} /> DOT
+              </span>
+            </FormLabel>
+            <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
+              <SliderTrack h="10px" borderRadius="5px">
+                <SliderFilledTrack bg="linear-gradient(180deg, #25A17C 0%, #008065 100%)" />
+              </SliderTrack>
+              <SliderThumb boxSize={6} />
+            </Slider>
+          </FormControl>
 
-            <FormControl>
-              <FormLabel>
-                <span>Estimated Collateral You Can Get</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isDisabled={ true } value={ dotYouGot } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DOT
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
-          </SimpleGrid>
+          <FormControl>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
+              <span>Estimated Collateral You Can Get</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber isReadOnly={true}  bgColor="#F9FAFB"  focusBorderColor="border.100" value={ dotYouGot } />
+              <RightSymbol symbol={'DOT'} />
+            </InputGroup>
+            <FormHelperText textAlign="right" h="18px">
+              <span style={{ color: 'brand.grey', fontSize: '12px' }}>{ calculation }</span>
+            </FormHelperText>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!redeem || !cdp || redeem === 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
-              Confirm
-            </Button>
-          </Stack>
+          <Button isDisabled={redeem === 0} isLoading={isLoading} colorScheme='blue' bgColor="primary.500" height="2em" onClick={submit}>
+            Confirm
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
