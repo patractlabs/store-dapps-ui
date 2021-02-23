@@ -100,7 +100,6 @@ export const Swap = () => {
 
   useEffect(() => {
     if (exchangeContract?.contract?.contract) {
-      console.log(exchangeContract.contract.contract);
       contractQuery(currentAccount, exchangeContract.contract.contract, 'exchangeInfo').then((data: any) => {
         setExchangeInfo(data);
       });
@@ -280,10 +279,6 @@ export const Swap = () => {
       const fromPool = Number(formatAmount(exchangeInfo.from_token_pool, exchangeInfo.from_decimals));
       const toPool = Number(formatAmount(exchangeInfo.to_token_pool, exchangeInfo.to_decimals));
 
-      console.log(fromPool, toPool);
-      console.log(inputOption.symbol, exchangeInfo.from_symbol);
-      console.log(Number(inputValue) > fromPool, Number(inputValue), fromPool);
-      console.log(Number(outputValue) > toPool, Number(outputValue), toPool);
       if (inputOption.symbol === exchangeInfo.from_symbol) {
         if (Number(inputValue) > fromPool || Number(estimatedInput) > fromPool) {
           return `${inputOption.symbol} exceeds pool limit`;
@@ -301,7 +296,7 @@ export const Swap = () => {
 
     return '';
   }, [exchangeInfo, inputOption, outputOption, inputValue, estimatedInput, outputValue, estimatedOutput]);
-  console.log(message);
+
   return (
     <Box>
       <Center mt='10'>
