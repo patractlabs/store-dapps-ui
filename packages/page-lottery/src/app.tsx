@@ -38,6 +38,7 @@ export const App = () => {
             head={['Epoch ID', 'Buyer Account', 'Number', 'Tickets', 'Reward(DOT)']}
             body={win
               .filter((w: any) => w.reward !== 0)
+              .slice(0, 5)
               .map((w: BiggestWinner) => {
                 return {
                   epoch_id: w.epoch_id,
@@ -48,6 +49,7 @@ export const App = () => {
                 };
               })}
             width='570px'
+            limit={5}
             pagin={false}
             current_epoch={context.epochId}
           />

@@ -5,12 +5,10 @@ import { Pop } from './component';
 import { TicketBoard } from './ticket';
 import { FooCardProps } from './types';
 import { useProvider } from './provider';
-import { useApi } from '@patract/react-hooks';
 
 /* The header table */
 export const Foo: React.FC<{}> = () => {
   const context = useProvider();
-  const api = useApi();
 
   return (
     <Flex height={317} px='4' py='4' rounded='lg' shadow='sm' bg='white' flexDirection='row'>
@@ -25,7 +23,7 @@ export const Foo: React.FC<{}> = () => {
             contentColor='#FF7600'
             content={
               <Flex>
-                <Box>{context.rewardPool / Math.pow(10, api.api.registry.chainDecimals)}</Box>
+                <Box>{context.rewardPool / Math.pow(10, 10)}</Box>
                 <Flex fontSize='1rem' pl='0.5rem' alignItems='flex-end' lineHeight='3rem'>
                   DOT
                 </Flex>
