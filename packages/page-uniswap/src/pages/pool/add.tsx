@@ -83,7 +83,7 @@ const Add = ({
   const isFirst = useMemo(() => {
     const totalFrom = Number(item.from_token_pool);
     const totalTo = Number(item.to_token_pool);
-    if (!totalFrom || !totalTo) {
+    if (!totalFrom && !totalTo) {
       return true;
     } else {
       return false;
