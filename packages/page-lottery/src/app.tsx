@@ -33,7 +33,7 @@ export const App = () => {
         <Flex>
           <T
             title='My Lotteries'
-            head={['Epoch ID', 'Randoam Number', 'My Number', 'Tickets', 'Reward(DOT)']}
+            head={['Epoch ID', 'Randoam Number', 'My Number', 'Tickets', 'Reward']}
             body={my}
             width='570px'
             current_epoch={context.epochId}
@@ -42,7 +42,7 @@ export const App = () => {
           <Spacer />
           <T
             title='Biggest Winners'
-            head={['Epoch ID', 'Buyer Account', 'Number', 'Tickets', 'Reward(DOT)']}
+            head={['Epoch ID', 'Buyer Account', 'Number', 'Tickets', 'Reward']}
             body={win
               .filter((w: any) => w.reward !== 0)
               .slice(0, 5)
@@ -65,7 +65,7 @@ export const App = () => {
         <T
           height='1104px'
           title='Epoch Histories'
-          head={['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyer', 'Pool In(DOT)', 'Pool Out(DOT)']}
+          head={['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyer', 'Pool In', 'Pool Out']}
           body={his}
           current_epoch={context.epochId}
           winnerMap={winnerMap}

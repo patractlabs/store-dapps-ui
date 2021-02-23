@@ -136,25 +136,22 @@ export const Trr: React.FC<{
 
 /* font color of reward */
 const Trend: React.FC<{ v: number }> = ({ v }) => {
-  if (v === 0) {
-    return (
-      <Td>
-        <Box color='#999999F'>~</Box>
-      </Td>
-    );
-  } else if (v > 0) {
-    return (
-      <Td>
-        <Box color='#25A17CFF'>{'+' + Number(v)}</Box>
-      </Td>
-    );
-  } else {
-    return (
-      <Td>
-        <Box color='#E02020FF'>{'-' + -Number(v)}</Box>
-      </Td>
-    );
-  }
+  return (
+    <Td>
+      <Flex>
+        {v === 0 ? (
+          <Box color='#999999F'>0</Box>
+        ) : v > 0 ? (
+          <Box color='#25A17CFF'>{'+' + Number(v)}</Box>
+        ) : (
+          <Box color='#E02020FF'>{'-' + -Number(v)}</Box>
+        )}
+        <Flex fontSize='0.5rem' pl='0.3rem' alignItems='flex-end' lineHeight='1rem' color='999'>
+          DOT
+        </Flex>
+      </Flex>
+    </Td>
+  );
 };
 
 export default T;
