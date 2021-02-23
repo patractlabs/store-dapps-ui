@@ -7,6 +7,8 @@ import { Circle, Hash, Buyer } from './component';
 import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
 
+import Nyan from '../public/nyan.gif';
+
 /**
  * Custom Table
  *
@@ -49,16 +51,22 @@ export const T: React.FC<TableProps> = ({
           </Tr>
         </Thead>
         <Tbody>
-          {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
-            <Trr
-              row={b}
-              key={i}
-              decimal={10}
-              currentEpoch={current_epoch}
-              renderHash={title !== 'Biggest Winners'}
-              winner={winnerMap[b.epoch_id]}
-            />
-          ))}
+          {rows.length > 0 ? (
+            rows
+              .slice((page - 1) * limit, page * limit)
+              .map((b, i) => (
+                <Trr
+                  row={b}
+                  key={i}
+                  decimal={10}
+                  currentEpoch={current_epoch}
+                  renderHash={title !== 'Biggest Winners'}
+                  winner={winnerMap[b.epoch_id]}
+                />
+              ))
+          ) : (
+            <img src={Nyan} alt='nobody wins' />
+          )}
         </Tbody>
       </Table>
       {pagin && (
@@ -85,9 +93,11 @@ export const Trr: React.FC<{
 }> = ({ row, decimal, currentEpoch, winner, renderHash = true }) => {
   const contract = useLottery().contract;
   const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
+  const [hasDraw, triggerDraw] = React.useState(false);
 
   const _draw = React.useCallback(
     (epoch: number) => {
+      triggerDraw(true);
       excute([epoch]);
     },
     [excute]
@@ -115,9 +125,11 @@ export const Trr: React.FC<{
           </Box>
         ) : (
           <Box>
-            {winner.length === 0 && row.epoch_id < currentEpoch && row.buyers ? (
-              <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
-                Draw
+            {row.random === '0x0000000000000000000000000000000000000000000000000000000000000000' &&
+            row.epoch_id < currentEpoch &&
+            row.buyers ? (
+              <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)} disabled={hasDraw}>
+                {hasDraw ? 'Waiting...' : 'Draw'}
               </Button>
             ) : (
               'Waiting...'
