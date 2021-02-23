@@ -19,6 +19,9 @@ export const theme = extendTheme({
     primary: {
       500: '#0058FA',
       600: '#2B6CB0',
+    },
+    border: {
+      100: '#ABB4D0',
     }
   },
   sizes: {
@@ -197,7 +200,7 @@ export const theme = extendTheme({
             top: '0.75rem'
           },
           body: {
-            padding: ' 41px 49px 10px 49px',
+            padding: ' 41px 49px 40px 49px',
             background: '#F8F8F8',
           },
           footer: {

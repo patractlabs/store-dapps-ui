@@ -5,14 +5,16 @@ import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
 import { RightSymbol } from './right-symbol';
+import { parseAmount } from '@patract/utils';
 
 const Liquidate: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
   cdp?: CDP;
-  systemParams?: SystemParams;
-}> = ({ isOpen, onClose, onSubmit, cdp, systemParams }): ReactElement => {
+  systemParams: SystemParams;
+  decimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, systemParams, decimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [maxRedeem, setMaxRedeem] = useState<number>(0);
@@ -28,7 +30,9 @@ const Liquidate: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, redeem])
+    console.log(`${redeem}`);
+    
+    excute([cdp!.id, `${redeem}`])
       .then((data) => {
         console.log('liquidate', data)
         close();
@@ -40,19 +44,19 @@ const Liquidate: FC<{
   };
 
   useMemo(() => {
-    if (`${redeem}` === 'NaN' || !cdp || !systemParams) {
-      return setDotYouGot('');
-    }
-    const _dotYouGot = redeem / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
-    setDotYouGot(`${_dotYouGot}`);
-  }, [redeem, cdp, systemParams]);
+    const times = Math.pow(10, decimals);
+    const _dotYouGot = redeem / times / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
+
+    setDotYouGot(`${_dotYouGot}` === 'NaN' ? '' : `${_dotYouGot}`);
+  }, [redeem, systemParams]);
 
   useMemo(() => {
-    if (!cdp || !systemParams) {
+    if (!cdp) {
       return setMaxRedeem(0);
     }
     const _maxRedeem = cdp.collateral_dot * systemParams.currentPrice / (100 + systemParams.lrr) * 100;
     if (`${_maxRedeem}` === 'NaN') {
+      setRedeem(_maxRedeem);
       return setMaxRedeem(0);
     }
     setMaxRedeem(_maxRedeem);
@@ -62,24 +66,24 @@ const Liquidate: FC<{
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
-      <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
+      <ModalContent maxW='2xl'>
         <ModalHeader>Liquidate</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
+          <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
               <span>
-                Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
+                Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
               </span>
               <span>
-                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={decimals} /> DOT
               </span>
             </FormLabel>
             <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
-              <SliderTrack>
-                <SliderFilledTrack />
+              <SliderTrack h="10px" borderRadius="5px">
+                <SliderFilledTrack bg="linear-gradient(180deg, #25A17C 0%, #008065 100%)" />
               </SliderTrack>
-              <SliderThumb />
+              <SliderThumb boxSize={6} />
             </Slider>
           </FormControl>
 
@@ -88,14 +92,14 @@ const Liquidate: FC<{
               <span>Estimated Collateral You Can Get</span>
             </FormLabel>
             <InputGroup>
-              <InputNumber isDisabled={ true } value={ dotYouGot } />
+              <InputNumber isReadOnly={true}  bgColor="#F9FAFB"  focusBorderColor="border.100" value={ dotYouGot } />
               <RightSymbol symbol={'DOT'} />
             </InputGroup>
           </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Button isDisabled={!redeem || !cdp || redeem === 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+          <Button isDisabled={redeem === 0} isLoading={isLoading} colorScheme='blue' bgColor="primary.500" height="2em" onClick={submit}>
             Confirm
           </Button>
         </ModalFooter>

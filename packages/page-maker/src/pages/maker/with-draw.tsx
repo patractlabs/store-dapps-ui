@@ -10,8 +10,9 @@ const Withdraw: FC<{
   onClose: () => void;
   onSubmit: () => void;
   cdp?: CDP;
-  price?: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, price }): ReactElement => {
+  price: number;
+  decimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, price, decimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [release, setRelease] = useState<string>('');
@@ -37,13 +38,21 @@ const Withdraw: FC<{
       });
   };
 
+  const disabled = useMemo(() => {
+    if (!cdp) {
+      return false;
+    }
+    return redeem > cdp.issue_dai || redeem <= 0
+  }, [redeem, cdp]);
+
   useMemo(() => {
-    if (`${redeem}` === 'NaN' || !cdp || !price) {
+    if (!cdp || !price) {
       return setRelease('');
     }
-    const _release = cdp!.collateral_ratio / 100 * redeem / price;
-    setRelease(`${_release}`);
-  }, [redeem, cdp, price]);
+    const times = Math.pow(10, decimals);
+    const _release = cdp.collateral_ratio / 100 * redeem / times / price;
+    setRelease(`${_release}` === 'NaN' ? '' : `${_release}`);
+  }, [redeem, cdp, price, decimals]);
 
   useMemo(() => {
     if (!cdp) {
@@ -55,24 +64,24 @@ const Withdraw: FC<{
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
-      <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
+      <ModalContent maxW='2xl'>
         <ModalHeader>Withdraw</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <FormControl>
+          <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
               <span>
-                Redeem: <Fixed value={redeem} decimals={ 0 } /> DAI
+                Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
               </span>
               <span>
-                Total Issuance: <Fixed value={cdp?.issue_dai} decimals={ 0 } /> DAI
+                Total Issuance: <Fixed value={cdp?.issue_dai} decimals={decimals} /> DAI
               </span>
             </FormLabel>
             <Slider min={0} max={(cdp && cdp.issue_dai) || 0} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>
-              <SliderTrack>
-                <SliderFilledTrack />
+              <SliderTrack h="10px" borderRadius="5px">
+                <SliderFilledTrack bg="linear-gradient(180deg, #25A17C 0%, #008065 100%)" />
               </SliderTrack>
-              <SliderThumb />
+              <SliderThumb boxSize={6} />
             </Slider>
           </FormControl>
 
@@ -81,14 +90,14 @@ const Withdraw: FC<{
               <span>Estimated Collateral Release:</span>
             </FormLabel>
             <InputGroup>
-              <InputNumber isDisabled={ true } value={ release } />
+              <InputNumber isReadOnly={true} bgColor="#F9FAFB" focusBorderColor="border.100" value={ release } />
               <RightSymbol symbol={'DOT'} />
             </InputGroup>
           </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Button isDisabled={!redeem || !cdp || redeem > cdp!.issue_dai || redeem <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+          <Button isDisabled={disabled} isLoading={isLoading} colorScheme='blue' bgColor="primary.500" height="2em" onClick={submit}>
             Confirm
           </Button>
         </ModalFooter>

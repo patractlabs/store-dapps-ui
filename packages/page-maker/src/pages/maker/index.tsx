@@ -14,7 +14,7 @@ const Maker: FC = (): ReactElement => {
   const { read: readSystemParams } = useContractQuery({ contract, method: 'systemParams' });
   const { read: readDecimals } = useContractQuery({ contract: daiContract, method: 'iErc20,tokenDecimals' });
 
-  const [ decimals, setDecimals ] = useState<number>(18);
+  const [ decimals, setDecimals ] = useState<number>(10);
   const [ systemParams, setSystemParams ] = useState<SystemParams>({
     mcr: 0,
     mlr: 0,
@@ -35,10 +35,7 @@ const Maker: FC = (): ReactElement => {
   }, [readSystemParams]);
 
   useEffect(() => {
-    readDecimals().then((data) => {
-      console.log('fuck decimals', data);
-      setDecimals(10);
-    }).catch(() => {});
+    readDecimals().then((data) => setDecimals(10)).catch(() => {});
   }, [setDecimals, readDecimals]);
 
   useCallback(() => {}, []);
@@ -46,7 +43,7 @@ const Maker: FC = (): ReactElement => {
   return (
     <Box>
       <TotalSupply price={systemParams.currentPrice} />
-      <SystemParamsArea systemParams={systemParams} onIssueDaiSubmit={() => {}} />
+      <SystemParamsArea systemParams={systemParams} onIssueDaiSubmit={() => {}} decimals={decimals} />
       <Box sx={{ height: '34px' }}></Box>
       <CDPList systemParams={systemParams} owner={true} decimals={decimals} />
       <Box sx={{ height: '24px' }}></Box>

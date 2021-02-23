@@ -23,8 +23,8 @@ export const TotalSupply: FC<{price: number}> = ({ price }): ReactElement => {
       
       setList([
         { title: 'Total Issuers', val: totalIssuers },
-        { title: 'Total Collateral', val: toFixed(totalCollateral, 10).round(3).toString() },
-        { title: 'Total Issuance', val: toFixed(totalIssuance, 10).round(3).toString() },
+        { title: 'Total Collateral', val: toFixed(totalCollateral, 10).round(1).toString() },
+        { title: 'Total Issuance', val: toFixed(totalIssuance, 10).round(1).toString() },
         { title: 'Average Collateral Ratio', val: (totalCollateral * price / totalIssuance * 100).toFixed(0) },
       ]);
     }).catch(() => {});

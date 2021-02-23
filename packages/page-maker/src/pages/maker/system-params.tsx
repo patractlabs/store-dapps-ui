@@ -10,12 +10,6 @@ export interface SystemParams {
   currentPrice: number;
 }
 
-interface SystemParamsProps {
-  systemParams: SystemParams;
-  onIssueDaiSubmit(): void;
-}
-
-
 const Card: FC<{
   val: string;
   title: string;
@@ -45,9 +39,14 @@ const Card: FC<{
   );
 }
 
-export const SystemParamsArea: FC<SystemParamsProps> = ({
+export const SystemParamsArea: FC<{
+  systemParams: SystemParams;
+  onIssueDaiSubmit(): void;
+  decimals: number;
+}> = ({
   systemParams,
   onIssueDaiSubmit,
+  decimals,
 }): ReactElement => {
   const { isOpen: isIssueDAIOpen, onOpen: onIssueDAIOpen, onClose: onIssueDAIClose } = useModal();
   const list: {
@@ -123,7 +122,7 @@ export const SystemParamsArea: FC<SystemParamsProps> = ({
                 Issue DAI
             </Button>
           </Box>
-        <IssueDAI currentPrice={ systemParams.currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} />
+        <IssueDAI price={ systemParams.currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} decimals={decimals} />
       </GridItem>
     </Grid>
   )

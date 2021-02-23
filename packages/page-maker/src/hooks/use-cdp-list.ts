@@ -25,7 +25,7 @@ export const useCdpList = (signal = 0): { data: CDP[], isLoading: boolean } => {
               return readDetail(id).then((data: any) => {
                 return {
                   id,
-                  ...data
+                  ...data,
                 };
               });
             })

@@ -11,7 +11,10 @@ import { CDP } from './types';
 import Withdraw from './with-draw';
 import styled from 'styled-components';
 
-const getRatioColor = (ratio: number): string => {
+const getRatioColor = (ratio: number, withdrawed = false): string => {
+  if (withdrawed) {
+    return '#ABB4D0';
+  }
   if (ratio >= 150) {
     return '#25A17C';
   }
@@ -28,10 +31,11 @@ const getDays = (createTime: string): string => {
   }
   const days = (Date.now() - parseFloat(createTime)) / 86400000;
   if (days < 1) {
-    return 'Today';
+    const hours = Math.floor((Date.now() - parseFloat(createTime)) / 3600000);
+    return hours === 0 ? 'Within 1 hour' : `${hours} hour${hours === 1 ? '' : 's'} ago`;
   }
   if (days < 2) {
-    return `${Math.floor(days)} day ago`;
+    return `1 day ago`;
   }
   return `${Math.floor(days)} days ago`;
 };
@@ -135,9 +139,9 @@ const CDPList: FC<{
           </Td>
           <Td>
             <label style={{
-              color: getRatioColor(item.collateral_ratio),
+              color: getRatioColor(item.collateral_ratio, item.collateral_dot === 0),
             }}>
-              { item.collateral_ratio }%
+              { !item.collateral_dot ? '-' : `${item.collateral_ratio.toFixed(1)}%` }
             </label>
           </Td>
           <Td sx={{ paddingLeft: '0px' }}>{renderOperations(item)}</Td>
@@ -185,10 +189,10 @@ const CDPList: FC<{
           <CircularProgress isIndeterminate color='blue.300' />
         </Center>
       )}
-      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
-      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
-      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={systemParams.currentPrice} />
-      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} systemParams={systemParams} />
+      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={forceUpdate} price={systemParams.currentPrice} decimals={decimals} />
+      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={systemParams.currentPrice} decimals={decimals} />
+      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={systemParams.currentPrice} decimals={decimals} />
+      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} systemParams={systemParams} decimals={decimals} />
     </Box>
   );
 };
