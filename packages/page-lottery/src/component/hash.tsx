@@ -2,32 +2,48 @@
 import React from 'react';
 import { Box, Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverBody } from '@patract/ui-components';
 
-export const Hash: React.FC<{ hash: string; num: number[]; render: boolean }> = ({ hash, num, render }) => {
+const renderHash: React.FC<{ hash: string }> = ({ hash }) => {
+  let count = 0;
+  return (
+    <Box>
+      {[...hash].map((char: any, i: any) => {
+        if (Number.parseInt(char) > -1) {
+          count += 1;
+        }
+        return (
+          <span
+            key={i}
+            style={{
+              color: Number.parseInt(char) > -1 && i > 1 && count < 5 ? 'green' : 'black'
+            }}
+          >
+            {`${char}`}
+          </span>
+        );
+      })}
+    </Box>
+  );
+};
+
+export const Hash: React.FC<{ hash: string; num: number[]; render: boolean; limit?: number }> = ({
+  hash,
+  render,
+  limit = 12
+}) => {
   if (hash === '0x0000000000000000000000000000000000000000000000000000000000000000') {
     return <>?</>;
+  } else if (limit === 66) {
+    return <Box>{renderHash({ hash })}</Box>;
   } else {
     return (
       <Popover>
         <PopoverTrigger>
-          <Box>{`${hash.slice(0, 4)}...${hash.slice(30, 32)}`}</Box>
+          <Box>{render ? renderHash({ hash: `${hash.slice(0, limit)}...` }) : `${hash.slice(0, limit)}...`}</Box>
         </PopoverTrigger>
         <PopoverContent borderColor='white.800'>
           <PopoverArrow />
           <PopoverBody>
-            <Box textColor='red'>
-              {render
-                ? [...hash].map((char: any, i: any) => (
-                    <span
-                      key={i}
-                      style={{
-                        color: num && num.includes(Number(char)) && i > 1 ? 'green' : 'black'
-                      }}
-                    >
-                      {char}
-                    </span>
-                  ))
-                : hash}
-            </Box>
+            <Box textColor='red'>{render ? renderHash({ hash }) : hash}</Box>
           </PopoverBody>
         </PopoverContent>
       </Popover>

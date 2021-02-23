@@ -56,6 +56,7 @@ export const T: React.FC<TableProps> = ({
               .slice((page - 1) * limit, page * limit)
               .map((b, i) => (
                 <Trr
+                  title={title}
                   row={b}
                   key={i}
                   decimal={10}
@@ -65,7 +66,11 @@ export const T: React.FC<TableProps> = ({
                 />
               ))
           ) : (
-            <img src={Nyan} alt='nobody wins' />
+            <Tr>
+              <Td>
+                <img src={Nyan} alt='nobody wins' />
+              </Td>
+            </Tr>
           )}
         </Tbody>
       </Table>
@@ -85,12 +90,13 @@ export const T: React.FC<TableProps> = ({
 
 /* Well, I've forgotten why I named this component `Tr` */
 export const Trr: React.FC<{
+  title: string;
   row: TrProps;
   decimal: number;
   currentEpoch: number;
   renderHash?: boolean;
   winner: number[];
-}> = ({ row, decimal, currentEpoch, winner, renderHash = true }) => {
+}> = ({ row, decimal, currentEpoch, winner, renderHash = true, title }) => {
   const contract = useLottery().contract;
   const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
   const [hasDraw, triggerDraw] = React.useState(false);
@@ -112,6 +118,7 @@ export const Trr: React.FC<{
             hash={row.random}
             num={winner ? winner.filter((v) => row.my_num.includes(v)) : []}
             render={renderHash}
+            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 10}
           />
         </Td>
       )}
@@ -128,8 +135,8 @@ export const Trr: React.FC<{
             {row.random === '0x0000000000000000000000000000000000000000000000000000000000000000' &&
             row.epoch_id < currentEpoch &&
             row.buyers ? (
-              <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)} disabled={hasDraw}>
-                {hasDraw ? 'Waiting...' : 'Draw'}
+              <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
+                Draw
               </Button>
             ) : (
               'Waiting...'
@@ -156,15 +163,17 @@ const Trend: React.FC<{ v: number }> = ({ v }) => {
     <Td>
       <Flex>
         {v === 0 ? (
-          <Box color='#999999F'>0</Box>
+          <Box color='#999999F'>-</Box>
         ) : v > 0 ? (
           <Box color='#25A17CFF'>{'+' + Number(v)}</Box>
         ) : (
           <Box color='#E02020FF'>{'-' + -Number(v)}</Box>
         )}
-        <Flex fontSize='0.5rem' pl='0.2rem' alignItems='flex-end' lineHeight='1rem' color='999'>
-          DOT
-        </Flex>
+        {v !== 0 && (
+          <Flex fontSize='0.5rem' pl='0.2rem' alignItems='flex-end' lineHeight='1rem' color='999'>
+            DOT
+          </Flex>
+        )}
       </Flex>
     </Td>
   );
