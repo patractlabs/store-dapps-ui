@@ -1,0 +1,5 @@
+export const PatraPK = '5Eds2y12s3dzHhAz3pgvrYzK4M8WvfytSHhvBjv5XQj3Y5yX'
+export const PatraPixel = '5HW6uhysQVU6TYpAykZsMQqwdsGhhHz5Mqjemq5hf19LVUqm'
+export const PatraLottery = '5Hmb3UCwgkFhWfA4aZ2hmoBTp8YwXwUCDxiaYuqxxWGqxJ6C'
+export const PatraSwap = '5CgQg7KiifY82sEDQqBYatGgnP7Ynvd7Z82f3FMa6mwmSsgw'
+export const PatraMaker = '5FPJSNM93EtPiESazP42Ni58etJGbUXmiTHeWbX5mXLPwou8'

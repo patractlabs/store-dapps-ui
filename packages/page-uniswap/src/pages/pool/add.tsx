@@ -21,13 +21,12 @@ import {
   Stack,
   Text
 } from '@patract/ui-components';
-import { parseAmount, formatAmount } from '@patract/utils';
+import { formatAmount, parseAmount } from '@patract/utils';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useExchange } from '../../hooks/useExchangeFactory';
-import { useLPtokenContract } from '../../hooks/useLPtokenContract';
-import { useErc20Balance } from '../../hooks/useErc20Balance';
-import { useToken } from '../../hooks/useTokenFactory';
 import { useApprove } from '../../hooks/useApprove';
+import { useErc20Balance } from '../../hooks/useErc20Balance';
+import { useExchange } from '../../hooks/useExchangeFactory';
+import { useToken } from '../../hooks/useTokenFactory';
 
 const Add = ({
   isOpen,
@@ -299,7 +298,10 @@ const Add = ({
             <FormControl>
               <FormLabel textStyle='form-label'>
                 <span>LP Tokens</span>
-                <span>Balance: {lpBalance && <Fixed value={lpBalance} round={8} decimals={item.from_decimals} postfix='LPT' />}</span>
+                <span>
+                  Balance:{' '}
+                  {lpBalance && <Fixed value={lpBalance} round={8} decimals={item.from_decimals} postfix='LPT' />}
+                </span>
               </FormLabel>
               <Flex
                 sx={{
