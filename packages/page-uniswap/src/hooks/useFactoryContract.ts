@@ -1,6 +1,7 @@
 import { useContract } from '@patract/react-hooks';
 import Factory from '../contracts/factory.json';
+import { PatraSwap } from '@patract/utils';
 
 export const useFactoryContract = () => {
-  return useContract('5HBv8M3cmQvS5CWBaJSitwwvvKxYDmconuupEPLzFvMKqe89', Factory);
+  return useContract(PatraSwap, Factory);
 };
