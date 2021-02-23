@@ -3596,6 +3596,7 @@ __metadata:
     "@material-ui/lab": ^4.0.0-alpha.57
     "@patract/react-hooks": 0.1.0
     "@patract/ui-components": 0.1.0
+    "@types/styled-components": ^5.1.7
     react: ^17.0.1
     react-app-rewired: ^2.1.8
     react-dom: ^17.0.1
@@ -4571,6 +4572,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hoist-non-react-statics@npm:*":
+  version: 3.3.1
+  resolution: "@types/hoist-non-react-statics@npm:3.3.1"
+  dependencies:
+    "@types/react": "*"
+    hoist-non-react-statics: ^3.3.0
+  checksum: 16ab4c45d4920fa378c8be76554b10061247fc04d2c8af11bdb7d520b3967e9c06d7ad5efd9b0f1657fbc4d095f62c6e1325f03b9141eb1ef2c8095b96fd42f8
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.3
   resolution: "@types/istanbul-lib-coverage@npm:2.0.3"
@@ -4829,6 +4840,17 @@ __metadata:
   version: 2.0.2
   resolution: "@types/store@npm:2.0.2"
   checksum: 3db5572e94102d4e0bad6b74bffee93c0048e631086692ccb703c16a822d2fae213c2e1c2505628557db7120cb7f11b78aecbd4aaa8829fc12e2b302d3f443c2
+  languageName: node
+  linkType: hard
+
+"@types/styled-components@npm:^5.1.7":
+  version: 5.1.7
+  resolution: "@types/styled-components@npm:5.1.7"
+  dependencies:
+    "@types/hoist-non-react-statics": "*"
+    "@types/react": "*"
+    csstype: ^3.0.2
+  checksum: e0ce3949cbca71581288aac9b948c9943708f7ef20bdc030c8665f88f9e829b37ae7312979d9c949200aff99a704eb22e28f06b8c7bb50d4dbe1d01894762c99
   languageName: node
   linkType: hard
 
@@ -11335,7 +11357,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:

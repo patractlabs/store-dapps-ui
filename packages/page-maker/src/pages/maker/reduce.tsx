@@ -1,19 +1,23 @@
 import { useContractTx } from '@patract/react-hooks';
-import { Button, Fixed, FormControl, FormLabel, Text, InputGroup, InputNumber, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, SimpleGrid, Stack } from '@patract/ui-components';
+import { Button, Fixed, FormControl, FormHelperText, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
+import { parseAmount, toFixed } from '@patract/utils';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
+import { RightSymbol } from './right-symbol';
 import { CDP } from './types';
 
 const ReduceCollateral: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   cdp?: CDP;
-  price?: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, price }): ReactElement => {
+  price: number;
+  decimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, price, decimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [ decrease, setCollateral ] = useState<string>('');
   const [ ratio, setCollateralRatio ] = useState<string>('');
+  const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Reduce Collateral', contract, method: 'minusCollateral' });
 
@@ -25,101 +29,86 @@ const ReduceCollateral: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, parseFloat(decrease)])
+    excute([cdp!.id, parseAmount(decrease, decimals)])
       .then((data) => {
         console.log('reduce', data)
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
 
+  const disabled = useMemo(() => {
+    const _decrease = parseFloat(decrease);
+    const times = Math.pow(10, decimals);
+    const _ratio = parseFloat(ratio)
+
+    if (!cdp) {
+      return false;
+    }
+    return `${_decrease}` === 'NaN' || _decrease <= 0 || (_decrease * times) > cdp.collateral_dot || `${_ratio}` === 'NaN' || _ratio < 150;
+  }, [decrease, cdp, decimals, ratio]);
+
   useMemo(() => {
-    const _collateral = parseFloat(decrease);
-    if (`${_collateral}` === 'NaN' || !cdp || !cdp.issue_dai) {
+    if (!cdp) {
       return setCollateralRatio('');
     }
-    const estimatedRatio = (cdp!.collateral_dot - _collateral) * price! / cdp.issue_dai * 100;
-    setCollateralRatio(estimatedRatio.toFixed(0));
-  }, [decrease, cdp, price]);
+    const _decrease = parseFloat(decrease);
+    const times = Math.pow(10, decimals);
+    const estimatedRatio = (cdp!.collateral_dot / times - _decrease) * price / (cdp.issue_dai / times) * 100;
+
+    if (`${estimatedRatio}` === 'NaN') {
+      setCollateralRatio('');
+      setCalculation(``);
+    } else {
+      const collateral = toFixed(cdp.collateral_dot, decimals, false).round(3).toString();
+      const issueDai = toFixed(cdp.issue_dai, decimals, false).round(3).toString();
+
+      setCollateralRatio(estimatedRatio.toFixed(0));
+      setCalculation(`${estimatedRatio.toFixed(0)} = (${collateral} DOT - ${decrease} DOT) * $${price} / ${issueDai} DAI`);
+    }
+  }, [decrease, cdp, price, decimals]);
 
   return (
-    <Modal isOpen={ isOpen } onClose={ close }>
+    <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
-      <ModalContent maxW='2xl' background='#F8F8F8' borderRadius='4px'>
+      <ModalContent maxW='2xl'>
         <ModalHeader>Reduce</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid column={1} spacing='8'>
-            <FormControl>
-              <FormLabel>
-                <span>Reduce Collateral</span>
-                <span>
-                  Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ 0 } /> DOT
-                </span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber value={decrease} onChange={ setCollateral } />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      DOT
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
+          <FormControl sx={{ marginBottom: '21px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
+              <span>Reduce Collateral</span>
+              <span>
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={decimals} /> DOT
+              </span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber focusBorderColor="primary.500" background='white' value={decrease} onChange={ setCollateral } />
+              <RightSymbol symbol={'DOT'} />
+            </InputGroup>
+          </FormControl>
 
-            <FormControl>
-              <FormLabel>
-                <span>Estimated New Collateral Ratio</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isDisabled={true} value={ratio} />
-                <InputRightElement
-                  width={40}
-                  children={
-                    <Text
-                      sx={{
-                        display: 'inline-block',
-                        verticalAlign: 'top',
-                        fontSize: 'lg',
-                        lineHeight: 'short',
-                        background: '#E1E9FF',
-                        borderRadius: '4px',
-                        minWidth: '74px',
-                        textAlign: 'center',
-                      }}
-                    >
-                      %
-                    </Text>
-                  }
-                />
-              </InputGroup>
-            </FormControl>
-          </SimpleGrid>
+          <FormControl>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
+              <span>Estimated New Collateral Ratio</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber isReadOnly={true}  bgColor="#F9FAFB"  focusBorderColor="border.100" value={ratio} />
+              <RightSymbol symbol={'%'} />
+            </InputGroup>
+            <FormHelperText textAlign="right" h="18px">
+              <span style={{ color: 'brand.grey', fontSize: '12px' }}>{ calculation }</span>
+            </FormHelperText>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter py={8}>
-          <Stack direction='row' spacing={4} justifyContent='center'>
-            <Button isDisabled={!decrease || !ratio || parseFloat(ratio) < 150 || parseFloat(decrease) <= 0} isLoading={isLoading} colorScheme='blue' onClick={submit}>
-              Confirm
-            </Button>
-          </Stack>
+          <Button isDisabled={disabled} isLoading={isLoading} colorScheme='blue' bgColor="primary.500" height="2em" onClick={submit}>
+            Confirm
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
