@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
-import { useApi } from '@patract/react-hooks';
 import { useContractTx } from '@patract/react-hooks';
 
 import { Circle, Hash } from './component';
@@ -24,9 +23,9 @@ export const T: React.FC<TableProps> = ({
   current_epoch
 }) => {
   const [page, setPage] = React.useState(1);
-  const api = useApi();
+  // const api = useApi();
   // eslint-disable-next-line
-  const decimal = React.useMemo(() => api.api.registry.chainDecimals, []);
+  // const decimal = React.useMemo(() => api.api.registry.chainDecimals, []);
   const rows = body.sort((a, b) => b.epoch_id - a.epoch_id);
 
   // On Changing Page
@@ -53,7 +52,7 @@ export const T: React.FC<TableProps> = ({
         </Thead>
         <Tbody>
           {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
-            <Trr row={b} key={i} decimal={decimal} currentEpoch={current_epoch} />
+            <Trr row={b} key={i} decimal={10} currentEpoch={current_epoch} renderHash={title !== 'Biggest Winners'} />
           ))}
         </Tbody>
       </Table>
@@ -72,10 +71,11 @@ export const T: React.FC<TableProps> = ({
 };
 
 /* Well, I've forgotten why I named this component `Tr` */
-export const Trr: React.FC<{ row: TrProps; decimal: number; currentEpoch: number }> = ({
+export const Trr: React.FC<{ row: TrProps; decimal: number; currentEpoch: number; renderHash?: boolean }> = ({
   row,
   decimal,
-  currentEpoch
+  currentEpoch,
+  renderHash = true
 }) => {
   const contract = useLottery().contract;
   const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
@@ -92,7 +92,7 @@ export const Trr: React.FC<{ row: TrProps; decimal: number; currentEpoch: number
       <Td>{row.epoch_id}</Td>
       {row.random && (
         <Td>
-          <Hash hash={row.random} />
+          <Hash hash={row.random} num={row.my_num} render={renderHash} />
         </Td>
       )}
       {row.ident && <Td>{row.ident}</Td>}
