@@ -26,7 +26,7 @@ import { RightSymbol } from './right-symbol';
 const IssueDAI: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   price: number;
   decimals: number;
 }> = ({ isOpen, onClose, onSubmit, price, decimals }) => {
@@ -58,7 +58,7 @@ const IssueDAI: FC<{
     excute([collateralRatio], parseAmount(collateral, decimals))
       .then(() => {
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);

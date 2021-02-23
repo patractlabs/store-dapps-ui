@@ -1,7 +1,7 @@
 import { Pagination } from '@material-ui/lab';
 import { useAccount, useModal } from '@patract/react-hooks';
 import { Address, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, Text, Fixed, Box } from '@patract/ui-components';
-import React, { FC, ReactElement, useCallback, useMemo, useReducer, useState } from 'react';
+import React, { FC, ReactElement, useCallback, useMemo, useState } from 'react';
 import { SystemParams } from './system-params';
 import { useCdpList } from '../../hooks/use-cdp-list';
 import Increase from './increase';
@@ -50,12 +50,13 @@ const CDPList: FC<{
   systemParams: SystemParams;
   owner: boolean;
   decimals: number;
-}> = ({ systemParams, owner, decimals }): ReactElement => {
+  onSubmit?(): void;
+  signal: number;
+}> = ({ systemParams, owner, decimals, onSubmit, signal }): ReactElement => {
   const { isOpen: isIncreaseOpen, onOpen: onIncreaseOpen, onClose: onIncreaseClose } = useModal();
   const { isOpen: isReduceOpen, onOpen: onReduceOpen, onClose: onReduceClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
   const { isOpen: isLiquidateOpen, onOpen: onLiquidateOpen, onClose: onLiquidateClose } = useModal();
-  const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
   const { data, isLoading } = useCdpList(signal);
   const [ choosedCdp, setChoosedCdp ] = useState<CDP>();
   const [ list, setList ] = useState<CDP[]>([]);
@@ -189,10 +190,10 @@ const CDPList: FC<{
           <CircularProgress isIndeterminate color='blue.300' />
         </Center>
       )}
-      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={forceUpdate} price={systemParams.currentPrice} decimals={decimals} />
-      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={forceUpdate} price={systemParams.currentPrice} decimals={decimals} />
-      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={forceUpdate} price={systemParams.currentPrice} decimals={decimals} />
-      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={forceUpdate} systemParams={systemParams} decimals={decimals} />
+      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
+      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
+      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
+      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={onSubmit} systemParams={systemParams} decimals={decimals} />
     </Box>
   );
 };

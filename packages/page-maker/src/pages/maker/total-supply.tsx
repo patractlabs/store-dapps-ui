@@ -4,7 +4,10 @@ import { toFixed } from '@patract/utils';
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 
-export const TotalSupply: FC<{price: number}> = ({ price }): ReactElement => {
+export const TotalSupply: FC<{
+  price: number;
+  signal: number;
+}> = ({ price, signal }): ReactElement => {
   const { contract } = useMakerContract();
   const { read: readTotalSupply } = useContractQuery({ contract, method: 'totalSupply' });
   const [ list, setList ] = useState<{
@@ -16,7 +19,7 @@ export const TotalSupply: FC<{price: number}> = ({ price }): ReactElement => {
     { title: 'Total Issuance', val: '' },
     { title: 'Average Collateral Ratio', val: '' },
   ]);
-  
+
   useEffect(() => {
     readTotalSupply().then(data => {
       const [totalIssuers, totalCollateral, totalIssuance] = (data as number[]) || [0, 0, 0, 0];
@@ -28,7 +31,7 @@ export const TotalSupply: FC<{price: number}> = ({ price }): ReactElement => {
         { title: 'Average Collateral Ratio', val: (totalCollateral * price / totalIssuance * 100).toFixed(0) },
       ]);
     }).catch(() => {});
-  }, [readTotalSupply, price]);
+  }, [readTotalSupply, price, signal]);
 
   return (
     <SimpleGrid columns={4} spacing={4} sx={{ marginBottom: '1rem' }}>

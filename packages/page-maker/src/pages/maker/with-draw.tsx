@@ -8,7 +8,7 @@ import { RightSymbol } from './right-symbol';
 const Withdraw: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   cdp?: CDP;
   price: number;
   decimals: number;
@@ -31,7 +31,7 @@ const Withdraw: FC<{
       .then((data) => {
         console.log('withdraw', data)
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);

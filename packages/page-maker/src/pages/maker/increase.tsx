@@ -9,7 +9,7 @@ import { parseAmount } from '@patract/utils';
 const Increase: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   cdp?: CDP;
   price: number;
   decimals: number;
@@ -31,7 +31,7 @@ const Increase: FC<{
     excute([cdp!.id], parseAmount(increase, decimals))
       .then(() => {
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);

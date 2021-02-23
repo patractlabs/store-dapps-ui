@@ -5,12 +5,11 @@ import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
 import { RightSymbol } from './right-symbol';
-import { parseAmount } from '@patract/utils';
 
 const Liquidate: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   cdp?: CDP;
   systemParams: SystemParams;
   decimals: number;
@@ -36,7 +35,7 @@ const Liquidate: FC<{
       .then((data) => {
         console.log('liquidate', data)
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);
@@ -48,7 +47,7 @@ const Liquidate: FC<{
     const _dotYouGot = redeem / times / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
 
     setDotYouGot(`${_dotYouGot}` === 'NaN' ? '' : `${_dotYouGot}`);
-  }, [redeem, systemParams]);
+  }, [redeem, systemParams, decimals]);
 
   useMemo(() => {
     if (!cdp) {

@@ -9,7 +9,7 @@ import { CDP } from './types';
 const ReduceCollateral: FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   cdp?: CDP;
   price: number;
   decimals: number;
@@ -32,7 +32,7 @@ const ReduceCollateral: FC<{
       .then((data) => {
         console.log('reduce', data)
         close();
-        onSubmit();
+        onSubmit && onSubmit();
       })
       .finally(() => {
         setIsLoading(false);
