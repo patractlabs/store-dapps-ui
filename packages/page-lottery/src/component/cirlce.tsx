@@ -50,8 +50,8 @@ export const Circle: React.FC<{
 
   React.useEffect(() => {
     if (inTicket) {
-      if (curStyle === 0) setCurStyle(1);
-      if (curStyle === 1) setCurStyle(0);
+      if (curStyle === 0 && v < 0) setCurStyle(1);
+      if (curStyle === 1 && v > -1) setCurStyle(0);
     }
     // eslint-disable-next-line
   }, [v]);

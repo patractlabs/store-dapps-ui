@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x194401f0b386ff0e3daa64d32b4aee8e4e6de14088692271cf847d8bb87a07b1",
+    "hash": "0x3b142076ddb40b20cf2ee3d9d05157fef6d24e47e864f67cb6732586ceed2d83",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.52.0-nightly"
   },
@@ -178,26 +178,6 @@
         "selector": "0x717a29cb"
       },
       {
-        "args": [
-          {
-            "name": "epoch_id",
-            "type": {
-              "displayName": ["EpochID"],
-              "type": 4
-            }
-          }
-        ],
-        "docs": [],
-        "mutates": false,
-        "name": ["lottery_history"],
-        "payable": false,
-        "returnType": {
-          "displayName": ["Option"],
-          "type": 31
-        },
-        "selector": "0x82e49b3b"
-      },
-      {
         "args": [],
         "docs": [],
         "mutates": false,
@@ -205,7 +185,7 @@
         "payable": false,
         "returnType": {
           "displayName": ["EpochInfo"],
-          "type": 32
+          "type": 30
         },
         "selector": "0x32d82910"
       },
@@ -225,7 +205,7 @@
         "payable": false,
         "returnType": {
           "displayName": ["Option"],
-          "type": 33
+          "type": 31
         },
         "selector": "0xae6fd1ec"
       },
@@ -245,7 +225,7 @@
         "payable": false,
         "returnType": {
           "displayName": [],
-          "type": 34
+          "type": 32
         },
         "selector": "0x13210043"
       },
@@ -257,7 +237,7 @@
         "payable": false,
         "returnType": {
           "displayName": [],
-          "type": 34
+          "type": 32
         },
         "selector": "0x2667f4a6"
       },
@@ -269,7 +249,7 @@
         "payable": false,
         "returnType": {
           "displayName": [],
-          "type": 34
+          "type": 32
         },
         "selector": "0xf00cbd1e"
       }
@@ -717,6 +697,11 @@
         "composite": {
           "fields": [
             {
+              "name": "epoch_id",
+              "type": 4,
+              "typeName": "EpochID"
+            },
+            {
               "name": "random",
               "type": 8,
               "typeName": "Hash"
@@ -1083,67 +1068,6 @@
             {
               "fields": [
                 {
-                  "type": 30,
-                  "typeName": "T"
-                }
-              ],
-              "name": "Some"
-            }
-          ]
-        }
-      },
-      "params": [30],
-      "path": ["Option"]
-    },
-    {
-      "def": {
-        "composite": {
-          "fields": [
-            {
-              "name": "epoch_id",
-              "type": 4,
-              "typeName": "EpochID"
-            },
-            {
-              "name": "random",
-              "type": 8,
-              "typeName": "Hash"
-            },
-            {
-              "name": "my_num",
-              "type": 11,
-              "typeName": "Vec<u32>"
-            },
-            {
-              "name": "buyer",
-              "type": 2,
-              "typeName": "u32"
-            },
-            {
-              "name": "pool_in",
-              "type": 14,
-              "typeName": "Balance"
-            },
-            {
-              "name": "pool_out",
-              "type": 14,
-              "typeName": "Balance"
-            }
-          ]
-        }
-      },
-      "path": ["patralottery", "patralottery", "EpochHistory"]
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "name": "None"
-            },
-            {
-              "fields": [
-                {
                   "type": 7,
                   "typeName": "T"
                 }
@@ -1214,7 +1138,7 @@
     },
     {
       "def": {
-        "tuple": [35, 11]
+        "tuple": [33, 11]
       }
     },
     {

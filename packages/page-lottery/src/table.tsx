@@ -3,7 +3,7 @@ import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patra
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
-import { Circle, Hash } from './component';
+import { Circle, Hash, Buyer } from './component';
 import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
 
@@ -115,7 +115,7 @@ export const Trr: React.FC<{
           </Box>
         ) : (
           <Box>
-            {winner === undefined && row.epoch_id < currentEpoch && row.buyer ? (
+            {winner === undefined && row.epoch_id < currentEpoch && row.buyers ? (
               <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
                 Draw
               </Button>
@@ -127,7 +127,11 @@ export const Trr: React.FC<{
       </Td>
       {row.tickets && <Td>{row.tickets}</Td>}
       {row.reward !== undefined && <Trend v={row.reward / Math.pow(10, decimal)} />}
-      {row.buyer && <Td>{row.buyer}</Td>}
+      {row.buyers && (
+        <Td>
+          <Buyer buyers={row.buyers} />
+        </Td>
+      )}
       {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
       {row.pool_out !== undefined && <Trend v={-row.pool_out / Math.pow(10, decimal)} />}
     </Tr>

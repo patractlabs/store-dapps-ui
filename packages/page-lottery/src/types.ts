@@ -20,7 +20,7 @@ export interface TrProps {
   my_num: number[];
   reward?: number;
   tickets?: number;
-  buyer?: number;
+  buyers?: string[];
   pool_in?: number;
   pool_out?: number;
   operation?: string;
@@ -70,7 +70,7 @@ export interface EpochHistory {
   epoch_id: number;
   random: string;
   win_num: number[];
-  buyer: number;
+  buyer: string[];
   pool_in: number;
   pool_out: number;
 }

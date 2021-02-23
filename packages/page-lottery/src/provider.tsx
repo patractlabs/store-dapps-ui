@@ -69,6 +69,8 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
         }
       }
 
+      console.log(histories);
+
       // Get My Lotteries
       const winners: BiggestWinner[] = [];
       for (const w in histories) {

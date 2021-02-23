@@ -64,7 +64,7 @@ export const App = () => {
         <T
           height='1104px'
           title='Epoch Histories'
-          head={['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyer', 'Pool In', 'Pool Out']}
+          head={['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyers', 'Pool In', 'Pool Out']}
           body={his}
           current_epoch={context.epochId}
           winnerMap={winnerMap}
