@@ -20,7 +20,7 @@ export const Hash: React.FC<{ hash: string; num: number[]; render: boolean }> = 
                     <span
                       key={i}
                       style={{
-                        color: num.includes(Number(char)) && i > 1 ? 'green' : 'black'
+                        color: num && num.includes(Number(char)) && i > 1 ? 'green' : 'black'
                       }}
                     >
                       {char}

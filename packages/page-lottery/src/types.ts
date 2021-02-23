@@ -10,6 +10,7 @@ export interface TableProps {
   limit?: number;
   onChange?: (page: number) => void;
   current_epoch: number;
+  winnerMap: Record<string, number[]>;
 }
 
 export interface TrProps {
@@ -68,7 +69,7 @@ export interface MyLottery {
 export interface EpochHistory {
   epoch_id: number;
   random: string;
-  myNum: number[];
+  win_num: number[];
   buyer: number;
   pool_in: number;
   pool_out: number;

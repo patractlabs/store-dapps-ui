@@ -29,6 +29,7 @@ export const Circle: React.FC<{
   key?: string;
   mr?: string;
   disabled?: boolean;
+  forceDisabled?: boolean;
   onClick?: () => void;
 }> = ({
   v,
@@ -39,7 +40,8 @@ export const Circle: React.FC<{
   key = '',
   mr = '3px',
   disabled = true,
-  onClick
+  onClick,
+  forceDisabled = false
 }) => {
   const [pallet, setPallet] = React.useState(circleStyle(style));
   const [curStyle, setCurStyle] = React.useState(style);
@@ -64,6 +66,10 @@ export const Circle: React.FC<{
       boxShadow={curStyle === 0 ? '0px 1px 3px 0px rgba(171, 180, 208, 0.5);' : ''}
       key={key}
       onClick={() => {
+        if (forceDisabled) {
+          return;
+        }
+
         if (curStyle === 0) {
           if (disabled) return;
           setCurStyle(2);

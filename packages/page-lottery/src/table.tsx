@@ -20,12 +20,10 @@ export const T: React.FC<TableProps> = ({
   width,
   pagin = true,
   limit = 5,
-  current_epoch
+  current_epoch,
+  winnerMap
 }) => {
   const [page, setPage] = React.useState(1);
-  // const api = useApi();
-  // eslint-disable-next-line
-  // const decimal = React.useMemo(() => api.api.registry.chainDecimals, []);
   const rows = body.sort((a, b) => b.epoch_id - a.epoch_id);
 
   // On Changing Page
@@ -52,7 +50,14 @@ export const T: React.FC<TableProps> = ({
         </Thead>
         <Tbody>
           {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
-            <Trr row={b} key={i} decimal={10} currentEpoch={current_epoch} renderHash={title !== 'Biggest Winners'} />
+            <Trr
+              row={b}
+              key={i}
+              decimal={10}
+              currentEpoch={current_epoch}
+              renderHash={title !== 'Biggest Winners'}
+              winner={winnerMap[b.epoch_id]}
+            />
           ))}
         </Tbody>
       </Table>
@@ -71,12 +76,13 @@ export const T: React.FC<TableProps> = ({
 };
 
 /* Well, I've forgotten why I named this component `Tr` */
-export const Trr: React.FC<{ row: TrProps; decimal: number; currentEpoch: number; renderHash?: boolean }> = ({
-  row,
-  decimal,
-  currentEpoch,
-  renderHash = true
-}) => {
+export const Trr: React.FC<{
+  row: TrProps;
+  decimal: number;
+  currentEpoch: number;
+  renderHash?: boolean;
+  winner: number[];
+}> = ({ row, decimal, currentEpoch, winner, renderHash = true }) => {
   const contract = useLottery().contract;
   const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
 
@@ -92,25 +98,29 @@ export const Trr: React.FC<{ row: TrProps; decimal: number; currentEpoch: number
       <Td>{row.epoch_id}</Td>
       {row.random && (
         <Td>
-          <Hash hash={row.random} num={row.my_num} render={renderHash} />
+          <Hash
+            hash={row.random}
+            num={winner ? winner.filter((v) => row.my_num.includes(v)) : []}
+            render={renderHash}
+          />
         </Td>
       )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
-        {row.my_num && row.my_num.length > 0 ? (
-          row.my_num.map((v, i) => (
-            <Box key={String(i)}>
-              <Circle v={v} />
-            </Box>
-          ))
+        {winner && row.my_num && row.my_num.length === 3 ? (
+          <Box display='inherit'>
+            <Circle v={row.my_num[0]} style={winner.includes(row.my_num[0]) ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[1]} style={winner.includes(row.my_num[1]) ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[2]} style={winner.includes(row.my_num[2]) ? 0 : 1} forceDisabled />
+          </Box>
         ) : (
           <Box>
-            {row.epoch_id < currentEpoch ? (
+            {(winner === undefined || winner === []) && row.epoch_id < currentEpoch && row.buyer ? (
               <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
                 Draw
               </Button>
             ) : (
-              'Waiting'
+              'Waiting...'
             )}
           </Box>
         )}
