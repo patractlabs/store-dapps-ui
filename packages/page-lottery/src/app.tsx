@@ -65,7 +65,10 @@ export const App = () => {
           height='1104px'
           title='Epoch Histories'
           head={['Epoch ID', 'BABE Random Number', 'Lottery', 'Buyers', 'Pool In', 'Pool Out']}
-          body={his}
+          body={his.map((h: any) => {
+            h.my_num = h.win_num;
+            return h;
+          })}
           current_epoch={context.epochId}
           winnerMap={winnerMap}
         />

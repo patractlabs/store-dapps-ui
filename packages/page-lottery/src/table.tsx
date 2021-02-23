@@ -115,7 +115,7 @@ export const Trr: React.FC<{
           </Box>
         ) : (
           <Box>
-            {winner === undefined && row.epoch_id < currentEpoch && row.buyers ? (
+            {winner.length === 0 && row.epoch_id < currentEpoch && row.buyers ? (
               <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
                 Draw
               </Button>
