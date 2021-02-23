@@ -75,7 +75,7 @@ const Withdraw = ({
 
   useEffect(() => {
     if (isOpen) {
-      read(parseAmount(isNaN(value as any) ? '0' : String(Number(value).toFixed(18)), 18)).then((result: any) => {
+      read(parseAmount(isNaN(value as any) ? '0' : String(Number(value).toFixed(item.from_decimals)), item.from_decimals)).then((result: any) => {
         result &&
           setEstimated([formatAmount(result[0], item.from_decimals), formatAmount(result[1], item.to_decimals)]);
       });
