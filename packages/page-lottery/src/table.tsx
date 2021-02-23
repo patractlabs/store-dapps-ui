@@ -99,11 +99,9 @@ export const Trr: React.FC<{
 }> = ({ row, decimal, currentEpoch, winner, renderHash = true, title }) => {
   const contract = useLottery().contract;
   const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
-  const [hasDraw, triggerDraw] = React.useState(false);
 
   const _draw = React.useCallback(
     (epoch: number) => {
-      triggerDraw(true);
       excute([epoch]);
     },
     [excute]
@@ -124,7 +122,7 @@ export const Trr: React.FC<{
       )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
-        {row.my_num && row.my_num.length === 3 ? (
+        {winner && row.my_num && row.my_num.length === 3 ? (
           <Box display='inherit'>
             <Circle v={row.my_num[0]} style={winner && row.my_num[0] === winner[0] ? 0 : 1} forceDisabled />
             <Circle v={row.my_num[1]} style={winner && row.my_num[1] === winner[1] ? 0 : 1} forceDisabled />
