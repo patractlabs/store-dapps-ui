@@ -31,6 +31,7 @@ export const Circle: React.FC<{
   disabled?: boolean;
   forceDisabled?: boolean;
   onClick?: () => void;
+  inTicket?: boolean;
 }> = ({
   v,
   style = 0,
@@ -41,10 +42,19 @@ export const Circle: React.FC<{
   mr = '3px',
   disabled = true,
   onClick,
-  forceDisabled = false
+  forceDisabled = false,
+  inTicket = false
 }) => {
   const [pallet, setPallet] = React.useState(circleStyle(style));
   const [curStyle, setCurStyle] = React.useState(style);
+
+  React.useEffect(() => {
+    if (inTicket) {
+      if (curStyle === 0) setCurStyle(1);
+      if (curStyle === 1) setCurStyle(0);
+    }
+    // eslint-disable-next-line
+  }, [v]);
 
   React.useEffect(() => {
     setPallet(circleStyle(curStyle));
@@ -79,9 +89,8 @@ export const Circle: React.FC<{
 
         onClick && onClick();
       }}
-      visibility={v > -1 ? 'visible' : 'hidden'}
     >
-      {v}
+      {v > -1 ? v : '?'}
     </Box>
   );
 };

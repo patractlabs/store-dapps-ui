@@ -126,7 +126,7 @@ const TicketInput: React.FC<{ chosen: number[]; ticket: number; setTicket: (v: n
       p='1rem'
     >
       <Flex flexDir='row' justifyContent='space-around'>
-        {/* Ugly workaround */}
+        {/* Ugly fix */}
         {Circle({
           v: visible[0],
           style: 0,
@@ -134,7 +134,8 @@ const TicketInput: React.FC<{ chosen: number[]; ticket: number; setTicket: (v: n
           fontSize: '1.5rem',
           lineHeight: '3rem',
           mr: '20px',
-          key: '0'
+          key: '0',
+          inTicket: true
         })}
         {Circle({
           v: visible[1],
@@ -143,7 +144,8 @@ const TicketInput: React.FC<{ chosen: number[]; ticket: number; setTicket: (v: n
           fontSize: '1.5rem',
           lineHeight: '3rem',
           mr: '20px',
-          key: '1'
+          key: '1',
+          inTicket: true
         })}
         {Circle({
           v: visible[2],
@@ -152,7 +154,8 @@ const TicketInput: React.FC<{ chosen: number[]; ticket: number; setTicket: (v: n
           fontSize: '1.5rem',
           lineHeight: '3rem',
           mr: '0px',
-          key: '2'
+          key: '2',
+          inTicket: true
         })}
       </Flex>
       <Spacer />
