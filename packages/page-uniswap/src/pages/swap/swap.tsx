@@ -52,6 +52,7 @@ export const Swap = () => {
   const createExchange = useExchangeFactory();
   const { currentAccount } = useAccount();
   const { contract } = useFactoryContract();
+  const [exchangeInfo, setExchangeInfo] = useState<any>(null);
 
   const { read: readExchangeAddress } = useContractQuery({ contract, method: 'factory,getExchange' });
 
@@ -98,6 +99,17 @@ export const Swap = () => {
   };
 
   useEffect(() => {
+    if (exchangeContract?.contract?.contract) {
+      console.log(exchangeContract.contract.contract);
+      contractQuery(currentAccount, exchangeContract.contract.contract, 'exchangeInfo').then((data: any) => {
+        setExchangeInfo(data);
+      });
+    } else {
+      setExchangeInfo(null);
+    }
+  }, [contractQuery, exchangeContract, currentAccount]);
+
+  useEffect(() => {
     if (exchangeContract) {
       const isExchange2 = exchangeContract.contract.contract.abi.json.contract.name === 'exchange2';
 
@@ -111,7 +123,7 @@ export const Swap = () => {
           )
             .then((result: any) => {
               result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
-              setMethod(!isExchange2 ? 'swapFromToInput': 'swapTokenToDotInput');
+              setMethod(!isExchange2 ? 'swapFromToInput' : 'swapTokenToDotInput');
             })
             .catch(() => {
               setMethod('');
@@ -127,7 +139,7 @@ export const Swap = () => {
           )
             .then((result: any) => {
               result && setEstimatedOutput(formatAmount(result, outputOption.decimals));
-              setMethod(!isExchange2 ? 'swapToFromInput': 'swapDotToTokenInput');
+              setMethod(!isExchange2 ? 'swapToFromInput' : 'swapDotToTokenInput');
             })
             .catch(() => {
               setMethod('');
@@ -144,7 +156,7 @@ export const Swap = () => {
           )
             .then((result: any) => {
               result && setEstimatedInput(formatAmount(result, inputOption.decimals));
-              setMethod(!isExchange2? 'swapFromToOutput': 'swapTokenToDotOutput');
+              setMethod(!isExchange2 ? 'swapFromToOutput' : 'swapTokenToDotOutput');
             })
             .catch(() => {
               setMethod('');
@@ -159,7 +171,7 @@ export const Swap = () => {
           )
             .then((result: any) => {
               result && setEstimatedInput(formatAmount(result, inputOption.decimals));
-              setMethod(!isExchange2? 'swapToFromOutput': 'swapDotToTokenOutput');
+              setMethod(!isExchange2 ? 'swapToFromOutput' : 'swapDotToTokenOutput');
             })
             .catch(() => {
               setMethod('');
@@ -177,11 +189,23 @@ export const Swap = () => {
   }, [exchangeContract, currentAccount, inputValue, outputValue, inputOption, outputOption]);
 
   const submit = () => {
-    if (method === 'swapFromToOutput' || method === 'swapToFromOutput' || method === 'swapTokenToDotOutput' || method === 'swapDotToTokenOutput') {
+    if (
+      method === 'swapFromToOutput' ||
+      method === 'swapToFromOutput' ||
+      method === 'swapTokenToDotOutput' ||
+      method === 'swapDotToTokenOutput'
+    ) {
       setIsLoading(true);
       inputApprove(exchangeContract.address)
         .then(() => {
-          return excute([parseAmount(outputValue, outputOption.decimals)]);
+          if (method === 'swapDotToTokenOutput') {
+            return excute(
+              [parseAmount(outputValue, outputOption.decimals)],
+              parseAmount(String((Number(estimatedInput) * 1.1).toFixed(inputOption.decimals)), inputOption.decimals)
+            );
+          } else {
+            return excute([parseAmount(outputValue, outputOption.decimals)]);
+          }
         })
         .finally(() => {
           setIsLoading(false);
@@ -195,7 +219,11 @@ export const Swap = () => {
       setIsLoading(true);
       inputApprove(exchangeContract.address)
         .then(() => {
-          return excute([parseAmount(inputValue, inputOption.decimals)]);
+          if (method === 'swapDotToTokenInput') {
+            return excute([], parseAmount(inputValue, inputOption.decimals));
+          } else {
+            return excute([parseAmount(inputValue, inputOption.decimals)]);
+          }
         })
         .finally(() => {
           setIsLoading(false);
@@ -211,11 +239,6 @@ export const Swap = () => {
   useEffect(() => {
     if (inputOption && outputOption) {
       setExchangeContractLoading(true);
-      if (inputOption.address === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
-        setExchangeContract(null);
-        setExchangeContractLoading(false);
-        return;
-      }
       readExchangeAddress(inputOption.address, outputOption.address)
         .then((result) => {
           if (result) {
@@ -252,6 +275,33 @@ export const Swap = () => {
     }
   }, [readExchangeAddress, inputOption, outputOption, createExchange]);
 
+  const message = useMemo(() => {
+    if (exchangeInfo && inputOption && outputOption) {
+      const fromPool = Number(formatAmount(exchangeInfo.from_token_pool, exchangeInfo.from_decimals));
+      const toPool = Number(formatAmount(exchangeInfo.to_token_pool, exchangeInfo.to_decimals));
+
+      console.log(fromPool, toPool);
+      console.log(inputOption.symbol, exchangeInfo.from_symbol);
+      console.log(Number(inputValue) > fromPool, Number(inputValue), fromPool);
+      console.log(Number(outputValue) > toPool, Number(outputValue), toPool);
+      if (inputOption.symbol === exchangeInfo.from_symbol) {
+        if (Number(inputValue) > fromPool || Number(estimatedInput) > fromPool) {
+          return `${inputOption.symbol} exceeds pool limit`;
+        } else if (Number(outputValue) > toPool || Number(estimatedOutput) > toPool) {
+          return `${outputOption.symbol} exceeds pool limit`;
+        }
+      } else if (inputOption.symbol === exchangeInfo.to_symbol) {
+        if (Number(inputValue) > toPool || Number(estimatedInput) > toPool) {
+          return `${inputOption.symbol} exceeds pool limit`;
+        } else if (Number(outputValue) > fromPool || Number(estimatedOutput) > fromPool) {
+          return `${outputOption.symbol} exceeds pool limit`;
+        }
+      }
+    }
+
+    return '';
+  }, [exchangeInfo, inputOption, outputOption, inputValue, estimatedInput, outputValue, estimatedOutput]);
+  console.log(message);
   return (
     <Box>
       <Center mt='10'>
@@ -342,6 +392,8 @@ export const Swap = () => {
               <Spinner size='sm' color='blue.500' />
             ) : !exchangeContract ? (
               <Text color='red.500'>Invalid trading pairs</Text>
+            ) : message ? (
+              <Text color='red.500'>{message}</Text>
             ) : (
               <Flex sx={{ justifyContent: 'space-between' }}>
                 <Text sx={{ color: '#999999', display: 'inline-block' }}>Price</Text>
@@ -371,7 +423,7 @@ export const Swap = () => {
           </Box>
           <FormControl>
             <Button
-              isDisabled={!exchangeContract || !method}
+              isDisabled={!exchangeContract || !method || !!message}
               isLoading={isLoading}
               width='full'
               size='lg'

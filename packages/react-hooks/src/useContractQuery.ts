@@ -14,7 +14,7 @@ export const contractQuery = async (
   ...fields: any[]
 ) => {
   const data = await contract.query[method](currentAccount, {}, ...fields);
-  
+
   if (data.output?.isEmpty) {
     return null;
   }

@@ -39,7 +39,7 @@ const CreatePair = ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: (
     setIsLoading(true);
     let method: any;
     if (to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
-      method = createDot([from, '']);
+      method = createDot([from, from]);
     } else {
       method = excute([from, to, null]);
     }
