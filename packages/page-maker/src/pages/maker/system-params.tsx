@@ -1,7 +1,12 @@
 import { useModal } from '@patract/react-hooks';
-import { Box, Button, Grid, GridItem } from '@patract/ui-components';
+import { Image, Box, Button, Grid, GridItem } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo } from 'react';
 import IssueDAI from './issue-dai';
+import Add from '../../images/svgs/add.svg';
+
+const AddIcon: FC = (): ReactElement => {
+  return <Image size='xs' src={Add} />
+};
 
 export interface SystemParams {
   mcr: number;
@@ -104,7 +109,7 @@ export const SystemParamsArea: FC<{
             }}>At current price and ratios, 100 DOT can issue 1000 DAI at max.</h3>
             <p style={{
               fontSize: '12px',
-              color: '#666666',
+              color: 'brand.grey',
               lineHeight: '15px',
               marginBottom: '12px',
               height: '45px',
@@ -118,6 +123,7 @@ export const SystemParamsArea: FC<{
                 boxShadow: '0px 0px 4px 0px #ABB4D0',
                 borderRadius: '4px',
               }}
+              leftIcon={ <AddIcon/> }
               onClick={onIssueDAIOpen}>
                 Issue DAI
             </Button>

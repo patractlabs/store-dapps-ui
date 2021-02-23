@@ -14,9 +14,10 @@ import {
   InputGroup,
   InputNumber,
   HStack,
-  useNumberInput
+  useNumberInput,
+  FormHelperText,
 } from '@patract/ui-components';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 import { useAccount, useContractTx } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
@@ -29,11 +30,12 @@ const IssueDAI: FC<{
   onSubmit?: () => void;
   price: number;
   decimals: number;
-}> = ({ isOpen, onClose, onSubmit, price, decimals }) => {
+}> = ({ isOpen, onClose, onSubmit, price, decimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
   const [collateral, setCollateral] = useState<string>('');
+  const [calculation, setCalculation] = useState<string>('');
   const [estimatedIssuance, setEstimatedIssuance] = useState<string>('');
   const [balance, setBalance] = useState<string>('');
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value: collateralRatio } = useNumberInput({
@@ -82,7 +84,13 @@ const IssueDAI: FC<{
     const _collateralRatio = parseFloat(`${collateralRatio}`) / 100;
     const _estimatedIssuance = _collateral * price / _collateralRatio;
 
-    setEstimatedIssuance(`${_estimatedIssuance}` === 'NaN' ? '' : `${_estimatedIssuance.toFixed(3)}`);
+    if (`${_estimatedIssuance}` === 'NaN') {
+      setEstimatedIssuance('');
+      setCalculation('');
+    } else {
+      setEstimatedIssuance(`${_estimatedIssuance.toFixed(3)}`);
+      setCalculation(`${_estimatedIssuance.toFixed(3)} DAI = ${_collateral} DOT * $${price} / ${collateralRatio}%`);
+    }
   }, [collateralRatio, collateral, price]);
 
   useEffect(() => {
@@ -99,7 +107,7 @@ const IssueDAI: FC<{
         <ModalCloseButton />
         <ModalBody>
           <FormControl sx={{ marginBottom: '21px' }}>
-            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Collateral</span>
               <span>
                 Balance: <Fixed value={balance} decimals={decimals} /> DOT
@@ -111,7 +119,7 @@ const IssueDAI: FC<{
             </InputGroup>
           </FormControl>
           <FormControl sx={{ marginBottom: '21px' }}>
-            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Collateral Ratio</span>
             </FormLabel>
             <HStack alignItems='center'>
@@ -146,14 +154,17 @@ const IssueDAI: FC<{
             </HStack>
           </FormControl>
           <FormControl>
-              <FormLabel>
-                <span style={{ color: '#666666', fontSize: '12px' }}>Estimated Issuance</span>
-              </FormLabel>
-              <InputGroup>
-                <InputNumber isReadOnly={true}  bgColor="#F9FAFB"  focusBorderColor="border.100" value={estimatedIssuance} />
-                <RightSymbol symbol={'DAI'} />
-              </InputGroup>
-            </FormControl>
+            <FormLabel>
+              <span style={{ color: 'brand.grey', fontSize: '12px' }}>Estimated Issuance</span>
+            </FormLabel>
+            <InputGroup>
+              <InputNumber isReadOnly={true}  bgColor="#F9FAFB"  focusBorderColor="border.100" value={estimatedIssuance} />
+              <RightSymbol symbol={'DAI'} />
+            </InputGroup>
+            <FormHelperText textAlign="right" h="18px">
+              <span style={{ color: 'brand.grey', fontSize: '12px' }}>{ calculation }</span>
+            </FormHelperText>
+          </FormControl>
         </ModalBody>
         <ModalFooter>
             <Button isDisabled={disabled} isLoading={isLoading} colorScheme="blue" bgColor="primary.500" height="2em" onClick={submit}>

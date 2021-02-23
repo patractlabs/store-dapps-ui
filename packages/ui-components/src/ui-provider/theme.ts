@@ -22,7 +22,7 @@ export const theme = extendTheme({
     },
     border: {
       100: '#ABB4D0',
-    }
+    },
   },
   sizes: {
     max: '100%'

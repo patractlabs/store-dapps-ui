@@ -1,10 +1,11 @@
 import { useContractTx } from '@patract/react-hooks';
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
 import { RightSymbol } from './right-symbol';
+import { toFixed } from '@patract/utils';
 
 const Liquidate: FC<{
   isOpen: boolean;
@@ -18,6 +19,7 @@ const Liquidate: FC<{
   const [redeem, setRedeem] = useState<number>(0);
   const [maxRedeem, setMaxRedeem] = useState<number>(0);
   const [dotYouGot, setDotYouGot] = useState<string>('');
+  const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Liquidate Collateral', contract, method: 'liquidateCollateral' });
 
@@ -46,7 +48,14 @@ const Liquidate: FC<{
     const times = Math.pow(10, decimals);
     const _dotYouGot = redeem / times / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
 
-    setDotYouGot(`${_dotYouGot}` === 'NaN' ? '' : `${_dotYouGot}`);
+    if (`${_dotYouGot}` === 'NaN') {
+      setDotYouGot('');
+      setCalculation(``);
+    } else {
+      const _redeem = toFixed(redeem, decimals, false).round(3).toString();
+      setDotYouGot(`${_dotYouGot.toFixed(3)}`);
+      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${_redeem} DAI / $${systemParams.currentPrice} * (1 + 5%)`);
+    }
   }, [redeem, systemParams, decimals]);
 
   useMemo(() => {
@@ -70,7 +79,7 @@ const Liquidate: FC<{
         <ModalCloseButton />
         <ModalBody>
           <FormControl sx={{ marginBottom: '21px' }}>
-            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
                 Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
               </span>
@@ -87,13 +96,16 @@ const Liquidate: FC<{
           </FormControl>
 
           <FormControl>
-            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Estimated Collateral You Can Get</span>
             </FormLabel>
             <InputGroup>
               <InputNumber isReadOnly={true}  bgColor="#F9FAFB"  focusBorderColor="border.100" value={ dotYouGot } />
               <RightSymbol symbol={'DOT'} />
             </InputGroup>
+            <FormHelperText textAlign="right" h="18px">
+              <span style={{ color: 'brand.grey', fontSize: '12px' }}>{ calculation }</span>
+            </FormHelperText>
           </FormControl>
         </ModalBody>
 

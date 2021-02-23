@@ -1,9 +1,10 @@
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { useContractTx } from '@patract/react-hooks';
 import { CDP } from './types';
 import { RightSymbol } from './right-symbol';
+import { toFixed } from '@patract/utils';
 
 const Withdraw: FC<{
   isOpen: boolean;
@@ -16,6 +17,7 @@ const Withdraw: FC<{
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [release, setRelease] = useState<string>('');
+  const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Withdraw Collateral', contract, method: 'withdrawDot' });
 
@@ -51,7 +53,15 @@ const Withdraw: FC<{
     }
     const times = Math.pow(10, decimals);
     const _release = cdp.collateral_ratio / 100 * redeem / times / price;
-    setRelease(`${_release}` === 'NaN' ? '' : `${_release}`);
+
+    if (`${_release}` === 'NaN') {
+      setRelease('');
+      setCalculation(``);
+    } else {
+      const _redeem = toFixed(redeem, decimals, false).round(3).toString();
+      setRelease(`${_release.toFixed(3)}`);
+      setCalculation(`${_release.toFixed(3)} DOT = ${_redeem} DAI / $${price} * ${cdp.collateral_ratio}%`);
+    }
   }, [redeem, cdp, price, decimals]);
 
   useMemo(() => {
@@ -69,7 +79,7 @@ const Withdraw: FC<{
         <ModalCloseButton />
         <ModalBody>
           <FormControl sx={{ marginBottom: '21px' }}>
-            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
                 Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
               </span>
@@ -86,13 +96,16 @@ const Withdraw: FC<{
           </FormControl>
 
           <FormControl>
-            <FormLabel sx={{ color: '#666666', fontSize: '12px' }}>
-              <span>Estimated Collateral Release:</span>
+            <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
+              <span>Estimated Collateral Release</span>
             </FormLabel>
             <InputGroup>
               <InputNumber isReadOnly={true} bgColor="#F9FAFB" focusBorderColor="border.100" value={ release } />
               <RightSymbol symbol={'DOT'} />
             </InputGroup>
+            <FormHelperText textAlign="right" h="18px">
+              <span style={{ color: 'brand.grey', fontSize: '12px' }}>{ calculation }</span>
+            </FormHelperText>
           </FormControl>
         </ModalBody>
 
