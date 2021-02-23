@@ -28,7 +28,7 @@ export const TotalSupply: FC<{
         { title: 'Total Issuers', val: totalIssuers },
         { title: 'Total Collateral', val: toFixed(totalCollateral, 10).round(1).toString() },
         { title: 'Total Issuance', val: toFixed(totalIssuance, 10).round(1).toString() },
-        { title: 'Average Collateral Ratio', val: (totalCollateral * price / totalIssuance * 100).toFixed(0) },
+        { title: 'Average Collateral Ratio', val: totalIssuance ? (totalCollateral * price / totalIssuance * 100).toFixed(0) : '0' },
       ]);
     }).catch(() => {});
   }, [readTotalSupply, price, signal]);
