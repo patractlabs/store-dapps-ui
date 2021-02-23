@@ -1,7 +1,6 @@
 import { Flex, PageHeader, PageLayout, PageMain, Spacer } from '@patract/ui-components';
 import React from 'react';
 
-import { Tip } from './component';
 import { T } from './table';
 import { Foo } from './foo';
 import { useProvider } from './provider';
@@ -28,7 +27,7 @@ export const App = () => {
     <PageLayout>
       <PageHeader title='Patra Lottery' />
       <PageMain my='30' minWidth='1360px' width='1360px'>
-        <Tip />
+        {/* <Tip /> */}
         <Foo />
         <Flex>
           <T
@@ -42,7 +41,7 @@ export const App = () => {
           <Spacer />
           <T
             title='Biggest Winners'
-            head={['Epoch ID', 'Buyer Account', 'Number', 'Tickets', 'Reward']}
+            head={['Epoch ID', 'Buyer', 'Number', 'Tickets', 'Reward']}
             body={win
               .filter((w: any) => w.reward !== 0)
               .slice(0, 5)

@@ -107,15 +107,15 @@ export const Trr: React.FC<{
       )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
-        {winner && row.my_num && row.my_num.length === 3 ? (
+        {row.my_num && row.my_num.length === 3 ? (
           <Box display='inherit'>
-            <Circle v={row.my_num[0]} style={winner.includes(row.my_num[0]) ? 0 : 1} forceDisabled />
-            <Circle v={row.my_num[1]} style={winner.includes(row.my_num[1]) ? 0 : 1} forceDisabled />
-            <Circle v={row.my_num[2]} style={winner.includes(row.my_num[2]) ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[0]} style={winner && winner.includes(row.my_num[0]) ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[1]} style={winner && winner.includes(row.my_num[1]) ? 0 : 1} forceDisabled />
+            <Circle v={row.my_num[2]} style={winner && winner.includes(row.my_num[2]) ? 0 : 1} forceDisabled />
           </Box>
         ) : (
           <Box>
-            {(winner === undefined || winner === []) && row.epoch_id < currentEpoch && row.buyer ? (
+            {winner === undefined && row.epoch_id < currentEpoch && row.buyer ? (
               <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
                 Draw
               </Button>
@@ -146,7 +146,7 @@ const Trend: React.FC<{ v: number }> = ({ v }) => {
         ) : (
           <Box color='#E02020FF'>{'-' + -Number(v)}</Box>
         )}
-        <Flex fontSize='0.5rem' pl='0.3rem' alignItems='flex-end' lineHeight='1rem' color='999'>
+        <Flex fontSize='0.5rem' pl='0.2rem' alignItems='flex-end' lineHeight='1rem' color='999'>
           DOT
         </Flex>
       </Flex>

@@ -3,6 +3,9 @@ import React from 'react';
 import { BiggestWinner, EpochHistory, MyLottery } from './types';
 import { useLottery } from './hooks';
 import { useApi, useAccount, useContractQuery } from '@patract/react-hooks';
+import { Box } from '@patract/ui-components';
+
+import Nyan from '../public/nyan.gif';
 
 export interface Value {
   epochId: number;
@@ -20,11 +23,15 @@ export const Provider: React.FC<{}> = ({ children }) => {
   if (api.isApiReady) {
     return <ProviderInner>{children}</ProviderInner>;
   } else {
-    return <div>init api...</div>;
+    return (
+      <Box position='absolute' left='42%' top='42%'>
+        <img src={Nyan} alt='loading' />
+      </Box>
+    );
   }
 };
 
-const BASE_EPOCH = 380;
+const BASE_EPOCH = 0;
 
 export const ProviderInner: React.FC<{}> = ({ children }) => {
   // hooks
@@ -47,7 +54,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
   // Subscribe storage
   React.useEffect(() => {
-    api.api.query.contracts.contractInfoOf('5EtKbgEJGpKWBJUii5TerFZRbWpZcbVupqn8k6dX3wz4xCk5', async () => {
+    api.api.query.contracts.contractInfoOf('5FWmurGYTNyqVMKnY9stU9TWt1C3L8yquk3iCzhbwa5xeY5b', async () => {
       const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
       const curLotteries: any = await lotteries.read(currentAccount);
