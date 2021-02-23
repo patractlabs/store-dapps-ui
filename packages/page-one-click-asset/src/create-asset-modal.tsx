@@ -61,7 +61,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
           gasLimit: '400000000000',
           value: parseAmount('100')
         },
-        data.tokenSupply,
+        parseAmount(data.tokenSupply, Number(data.tokenDecimals)),
         data.tokenSymbol,
         data.tokenName,
         data.tokenDecimals

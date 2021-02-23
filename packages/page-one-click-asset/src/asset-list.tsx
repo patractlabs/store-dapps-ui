@@ -76,7 +76,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
           {list?.map((item) => (
             <Tr key={item.id}>
               <Td>
-                <Address value={item.address} type="contract" />
+                <Address value={item.address} type='contract' />
               </Td>
               <Td>
                 <Address value={item.signer} />
@@ -84,7 +84,9 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
               <Td>{item.tokenName}</Td>
               <Td>{item.tokenSymbol}</Td>
               <Td>{item.tokenDecimals}</Td>
-              <Td>{item.totalSupply}</Td>
+              <Td>
+                {item.tokenDecimals ? <Fixed value={item.totalSupply} decimals={Number(item.tokenDecimals)} /> : null}
+              </Td>
               <Td>
                 {item.codeHash === Erc20mintable.source.hash
                   ? 'Mintable'
@@ -96,7 +98,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
               {isPublic ? null : (
                 <Td>
                   {item.codeHash === Erc20mintable.source.hash ? (
-                    <IssueAssetButton contractAddress={item.address} updateView={forceUpdate} />
+                    <IssueAssetButton tokenDecimals={Number(item.tokenDecimals)} contractAddress={item.address} updateView={forceUpdate} />
                   ) : null}
                 </Td>
               )}

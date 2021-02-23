@@ -9,8 +9,7 @@ export const useBalance = () => {
 
   useEffect(() => {
     api.query.system
-      .account(currentAccount)
-      .then((result) => {
+      .account(currentAccount, (result) => {
         if (!result) setBalance('0');
         setBalance(formatAmount(result.data.free.toString(), 10));
       })

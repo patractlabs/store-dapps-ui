@@ -6,9 +6,10 @@ import { IssueAssetModal } from './issus-asset-modal';
 type IssueAssetButtonProps = {
   contractAddress: string;
   updateView: () => void;
+  tokenDecimals: number;
 };
 
-export const IssueAssetButton: React.FC<IssueAssetButtonProps> = ({ contractAddress, updateView }) => {
+export const IssueAssetButton: React.FC<IssueAssetButtonProps> = ({ tokenDecimals, contractAddress, updateView }) => {
   const { isOpen, onOpen, onClose } = useModal();
 
   return (
@@ -16,7 +17,7 @@ export const IssueAssetButton: React.FC<IssueAssetButtonProps> = ({ contractAddr
       <Button size='sm' onClick={onOpen}>
         Issue
       </Button>
-      <IssueAssetModal updateView={updateView} contractAddress={contractAddress} isOpen={isOpen} onClose={onClose} />
+      <IssueAssetModal tokenDecimals={tokenDecimals} updateView={updateView} contractAddress={contractAddress} isOpen={isOpen} onClose={onClose} />
     </>
   );
 };

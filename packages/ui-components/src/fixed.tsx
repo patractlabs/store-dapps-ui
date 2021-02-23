@@ -14,10 +14,14 @@ export const Fixed: React.FC<FixedProps> = ({ value, withDecimals = false, decim
   if (value === undefined || value === null) return null;
 
   const fixed = useMemo(() => {
-    if(withDecimals) {
-      return toFixed(value, decimals, withDecimals).round(round).toString();
-    } else {
-      return toFixed(value, decimals, withDecimals).round(round).toString();
+    try {
+      if(withDecimals) {
+        return toFixed(value, decimals, withDecimals).round(round).toString();
+      } else {
+        return toFixed(value, decimals, withDecimals).round(round).toString();
+      }
+    } catch {
+      return 'Invalid Number'
     }
   }, [value, round, decimals, withDecimals]);
 
