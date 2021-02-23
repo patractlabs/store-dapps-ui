@@ -88,7 +88,7 @@ const Withdraw = ({
   };
 
   const submit = () => {
-    const lpvalue = parseAmount(value || '0', 18);
+    const lpvalue = parseAmount(value || '0', item.from_decimals);
 
     setIsLoading(true);
     excute([lpvalue])
