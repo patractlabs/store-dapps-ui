@@ -97,7 +97,7 @@ export const Paint: React.FC = () => {
   const onRefresh = useCallback(() => {
     const wantToClear = window.confirm('\nWARNING MESSAGE:\n\nDo you want to clear your drawing?');
     if (wantToClear) {
-      const snapshot = paintHistory[0] || JSON.stringify(emptyCanvasObj)
+      const snapshot = paintHistory[0] || JSON.stringify(emptyCanvasObj);
       paintHistory = [JSON.stringify(emptyCanvasObj)];
       canvasObj = JSON.parse(snapshot);
 
@@ -189,14 +189,12 @@ export const Paint: React.FC = () => {
         </Center>
         <Box sx={{ position: 'absolute', right: '16px', top: '26px' }} display='flex' alignItems='center'>
           <Box display='inline-block'>
-            <Box color='gray.500' sx={{ display: 'inline-block' }}>
-              Your Balance:{' '}
-              {balance ? <Fixed value={balance} decimals={10} postfix='DOT' /> : null}
+            <Box color='orange.400' sx={{ display: 'inline-block' }}>
+              You have covered {pixels} pixels
             </Box>
             <Box mt={2}>
               <Box color='orange.400' sx={{ display: 'inline-block' }}>
-                You have covered {pixels} pixels
-                <br/> (1 Pixel cost 1 DOT)
+                1 Pixel cost 1 DOT
               </Box>
             </Box>
           </Box>

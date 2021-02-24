@@ -5,6 +5,7 @@ import { useAccount, useApi } from '@patract/react-hooks';
 import { truncated } from '@patract/utils';
 import type { KeyringPair } from '@polkadot/keyring/types';
 import { IdentityIcon } from '@patract/ui-components';
+import { Balance } from './balance';
 
 export const AccountSelect: React.FC = () => {
   const { isApiReady } = useApi();
@@ -66,9 +67,11 @@ export const AccountSelect: React.FC = () => {
                   left: '42px'
                 }}
               >
-                <IdentityIcon value={currentAccount} />
+                <IdentityIcon value={currentAccount} theme='robohash' />
                 <Text sx={{ flexGrow: '1', mx: '8px' }}>{current?.meta.name as string}</Text>
-                <Text sx={{ color: 'gray.400' }}>{truncated(currentAccount)}</Text>
+                <Box sx={{ color: 'gray.400' }}>
+                  <Balance address={currentAccount} />
+                </Box>
               </Flex>
               <TriangleDownIcon sx={{ w: '10px', h: '10px', color: '#0058FA', ml: '8px' }} />
             </>
@@ -89,9 +92,11 @@ export const AccountSelect: React.FC = () => {
                 onClick={onSelect.bind(null, account)}
               >
                 <Flex sx={{ fontSize: 'sm' }} alignItems='center'>
-                  <IdentityIcon value={account.address} theme="robohash"/>
+                  <IdentityIcon value={account.address} theme='robohash' />
                   <Text sx={{ flexGrow: '1', ml: '8px' }}>{account.meta.name as string}</Text>
-                  <Text sx={{ color: 'gray.400' }}>{truncated(account.address)}</Text>
+                  <Box sx={{ color: 'gray.400' }}>
+                    <Balance address={account.address} />
+                  </Box>
                 </Flex>
               </Box>
             ))}
