@@ -62,8 +62,8 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
           value: 0
         },
         parseAmount(data.tokenSupply, Number(data.tokenDecimals)),
-        data.tokenSymbol,
         data.tokenName,
+        data.tokenSymbol,
         data.tokenDecimals
       );
 
