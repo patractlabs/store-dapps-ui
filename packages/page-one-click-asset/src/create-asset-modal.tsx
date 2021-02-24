@@ -59,7 +59,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
       const tx = blueprint.tx['iErc20,new'](
         {
           gasLimit: '400000000000',
-          value: parseAmount('100')
+          value: 0
         },
         parseAmount(data.tokenSupply, Number(data.tokenDecimals)),
         data.tokenSymbol,
