@@ -1,6 +1,6 @@
 import { useContractFactory, useContract } from '@patract/react-hooks';
-import Exchange from '../contracts/exchange.json';
-import Exchange2 from '../contracts/exchange2.json';
+import Exchange from '@patract/utils/contracts/exchange.json';
+import Exchange2 from '@patract/utils/contracts/exchange2.json';
 import { useCallback, useMemo } from 'react';
 
 export const useExchangeFactory = () => {

@@ -9,4 +9,4 @@ export * from './to-short-address';
 export * from './truncated';
 export * from './get-signer';
 export * from './is-address';
-export * from './contract-address'
+export * from './contracts'
