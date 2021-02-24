@@ -25,7 +25,7 @@ export const App = () => {
 
   return (
     <PageLayout>
-      <PageHeader title='Patra Lottery' />
+      <PageHeader title='PatraLottery' />
       <PageMain my='30' minWidth='1360px' width='1360px'>
         {/* <Tip /> */}
         <Foo />

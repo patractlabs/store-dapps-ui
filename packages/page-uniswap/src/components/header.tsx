@@ -42,7 +42,7 @@ const Header = () => {
 
   return (
     <PageHeader
-      title='Patra Swap'
+      title='PatraSwap'
       navLinks={
         <Flex>
           <NavLink url='/swap' text='Swap' isActive={pathname === '/swap'} />

@@ -5,7 +5,7 @@ import { Paint } from './paint';
 export const PaintIndex: React.FC = () => {
   return (
     <PageLayout>
-      <PageHeader title='Patra Pixel' />
+      <PageHeader title='PatraPixel' />
       <PageMain>
         <Paint />
       </PageMain>

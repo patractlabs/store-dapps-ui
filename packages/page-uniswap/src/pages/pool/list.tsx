@@ -1,5 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { List, ListItem, PopoverTrigger, Image } from '@chakra-ui/react';
+import { PopoverTrigger, Image } from '@chakra-ui/react';
 import { useModal } from '@patract/react-hooks';
 import {
   Fixed,
@@ -14,7 +14,6 @@ import {
   Th,
   Thead,
   Tr,
-  Avatar,
   Popover,
   IdentityIcon,
   PopoverContent,
@@ -29,8 +28,6 @@ import Withdraw from './withdraw';
 import UsdtWebp from '../../images/usdt.webp';
 import EthWebp from '../../images/eth.webp';
 import ArrowWebp from '../../images/arrow.svg';
-import TokenFromWebp from '../../images/token-from.webp';
-import TokenToWebp from '../../images/token-to.webp';
 
 const AddLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();

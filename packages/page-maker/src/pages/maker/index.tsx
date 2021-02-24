@@ -53,7 +53,7 @@ const Maker: FC = (): ReactElement => {
 
 export default () => (
   <PageLayout>
-    <PageHeader title='Patra Maker' />
+    <PageHeader title='PatraMaker' />
     <PageMain>
       <Maker />
     </PageMain>

@@ -13,7 +13,7 @@ import {
   FormLabel,
   Input
 } from '@patract/ui-components';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFactoryContract } from '../../hooks/useFactoryContract';
 import { useContractTx } from '@patract/react-hooks';
 

@@ -323,7 +323,7 @@ const PK: React.FC = () => {
 
 export default () => (
   <PageLayout>
-    <PageHeader title='Patra PK' />
+    <PageHeader title='PatraPK' />
     <PageMain>
       <PK />
     </PageMain>

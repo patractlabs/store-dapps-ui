@@ -10,7 +10,7 @@ export const App = () => {
 
   return (
     <PageLayout>
-      <PageHeader title='Patra Asset' />
+      <PageHeader title='PatraAsset' />
       <PageMain>
         <Flex justifyContent='flex-end'>
           <Button leftIcon={<AddIcon mb={1} />} onClick={onOpen}>
