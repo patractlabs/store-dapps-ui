@@ -67,7 +67,7 @@ const ReduceCollateral: FC<{
       const issueDai = toFixed(cdp.issue_dai, decimals, false).round(3).toString();
 
       setCollateralRatio(estimatedRatio.toFixed(0));
-      setCalculation(`${estimatedRatio.toFixed(0)} = (${collateral} DOT - ${decrease} DOT) * $${price} / ${issueDai} DAI`);
+      setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT - ${decrease} DOT) * $${price} / ${issueDai} DAI`);
     }
   }, [decrease, cdp, price, decimals]);
 

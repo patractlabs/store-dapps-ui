@@ -60,7 +60,7 @@ const Increase: FC<{
       const issueDai = toFixed(cdp.issue_dai, decimals, false).round(3).toString();
 
       setCollateralRatio(estimatedRatio.toFixed(0));
-      setCalculation(`${estimatedRatio.toFixed(0)} = (${collateral} DOT + ${increase} DOT) * $${price} / ${issueDai} DAI`);
+      setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT + ${increase} DOT) * $${price} / ${issueDai} DAI`);
     }
   }, [increase, cdp, price, decimals]);
 

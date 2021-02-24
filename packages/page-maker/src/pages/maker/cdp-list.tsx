@@ -69,18 +69,30 @@ const CDPList: FC<{
     if (!data) {
       return;
     }
-    const _list = data.filter(item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount));
+    const _list: CDP[] = data.filter(
+      item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount)
+    ).map(
+      item => ({
+        ...item,
+        collateral_ratio: item.collateral_dot * systemParams.currentPrice / item.issue_dai * 100,
+      })
+    );
     setList(_list);
-  }, [data, currentAccount, owner]);
+  }, [data, currentAccount, owner, systemParams.currentPrice]);
 
   const renderOperations = useCallback(
     (item: CDP) => {
+      const canIncrease = item.valid && item.collateral_dot !== 0;
+      const canReduce = item.valid && item.collateral_dot !== 0 && item.collateral_ratio > 150;
+      const canWithdraw = item.valid && item.collateral_dot !== 0 && item.collateral_ratio >= 120;
+      const canLiquidate = item.collateral_dot !== 0 && item.collateral_ratio <= 110;
+
       return owner ?
         <Flex justifyContent='space-between'>
           <LabelButton
-            isDisabled={ item.collateral_dot === 0 }
+            isDisabled={!canIncrease}
             onClick={ () => {
-              if (item.collateral_dot === 0) {
+              if (!canIncrease) {
                 return;
               }
               setChoosedCdp(item);
@@ -89,9 +101,9 @@ const CDPList: FC<{
               Increase
             </LabelButton>
           <LabelButton
-            isDisabled={ item.collateral_ratio < 150 || item.collateral_dot === 0 }
+            isDisabled={!canReduce}
             onClick={ () => {
-              if (item.collateral_ratio < 150 || item.collateral_dot === 0) {
+              if (!canReduce) {
                 return;
               }
               setChoosedCdp(item);
@@ -100,9 +112,9 @@ const CDPList: FC<{
               Reduce
             </LabelButton>
           <LabelButton
-            isDisabled={ item.collateral_ratio < 120 || item.collateral_dot === 0 }
+            isDisabled={!canWithdraw}
             onClick={ () => {
-              if (item.collateral_ratio < 120 || item.collateral_dot === 0) {
+              if (!canWithdraw) {
                 return;
               }
               setChoosedCdp(item);
@@ -113,13 +125,13 @@ const CDPList: FC<{
         </Flex>
         :
         <LabelButton
-          isDisabled={ item.collateral_ratio > 110 || item.collateral_dot === 0 }
+          isDisabled={!canLiquidate}
           onClick={ () => {
-            if (item.collateral_ratio > 110 || item.collateral_dot === 0) {
+            if (!canLiquidate) {
               return;
             }
             setChoosedCdp(item);
-            onLiquidateOpen();
+            onLiquidateOpen();  
           } }>Liquidate</LabelButton>
     },
     [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen, owner],

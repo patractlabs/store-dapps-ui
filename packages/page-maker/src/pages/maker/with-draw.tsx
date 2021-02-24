@@ -60,7 +60,7 @@ const Withdraw: FC<{
     } else {
       const _redeem = toFixed(redeem, decimals, false).round(3).toString();
       setRelease(`${_release.toFixed(3)}`);
-      setCalculation(`${_release.toFixed(3)} DOT = ${_redeem} DAI / $${price} * ${cdp.collateral_ratio}%`);
+      setCalculation(`${_release.toFixed(3)} DOT = ${_redeem} DAI / $${price} * ${cdp.collateral_ratio.toFixed(1)}%`);
     }
   }, [redeem, cdp, price, decimals]);
 
