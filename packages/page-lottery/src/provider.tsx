@@ -2,7 +2,7 @@
 import React from 'react';
 import { BiggestWinner, EpochHistory, MyLottery } from './types';
 import { useLottery } from './hooks';
-import { useApi, useAccount } from '@patract/react-hooks';
+import { useApi, useAccount, useContractQuery } from '@patract/react-hooks';
 import { Box } from '@patract/ui-components';
 import { PatraLottery } from '@patract/utils';
 
@@ -48,23 +48,23 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
   const api = useApi();
   const { currentAccount } = useAccount();
   const contract = useLottery();
+  const latestEpoch = useContractQuery({ contract: contract.contract, method: 'latestEpoch' });
+  const lotteries = useContractQuery({ contract: contract.contract, method: 'lotteriesOf' });
+  const epochHistory = useContractQuery({ contract: contract.contract, method: 'epochHistory' });
+  const biggestWinenr = useContractQuery({ contract: contract.contract, method: 'biggestWinner' });
 
   // Subscribe storage
   React.useEffect(() => {
     api.api.query.contracts.contractInfoOf(PatraLottery, async () => {
-      const epoch: any = (await contract.contract.query['latestEpoch'](currentAccount, {})).output?.toJSON();
+      const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
-      const curLotteries: any = (
-        await contract.contract.query['lotteriesOf'](currentAccount, {}, currentAccount)
-      ).output?.toJSON();
+      const curLotteries: any = await lotteries.read(currentAccount);
 
       // Get historires
       const histories: EpochHistory[] = [];
       const dimHis = new Array(epoch.epoch_id - BASE_EPOCH).fill(BASE_EPOCH);
       for (const v in dimHis) {
-        const r = (
-          await contract.contract.query['epochHistory'](currentAccount, {}, Number(BASE_EPOCH) + Number(v))
-        ).output?.toJSON();
+        const r = await epochHistory.read(Number(BASE_EPOCH) + Number(v));
         if (r && !histories.includes(r as any)) {
           histories.push(r as any);
         }
@@ -73,9 +73,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       // Get My Lotteries
       const winners: BiggestWinner[] = [];
       for (const w in histories) {
-        const r = (
-          await contract.contract.query['biggestWinner'](currentAccount, {}, histories[w].epoch_id)
-        ).output?.toJSON();
+        const r = await biggestWinenr.read(histories[w].epoch_id);
         if (r) {
           winners.push({ ...(r as any), epoch_id: histories[w].epoch_id });
         }
