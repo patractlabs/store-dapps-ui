@@ -130,7 +130,7 @@ export const Trr: React.FC<{
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
         {(title === 'Biggest Winners' ? winner : true) && row.my_num && row.my_num.length === 3 ? (
-          <Box display='inherit'>
+          <Box display='inherit' pt='0.3rem' pb='0.3rem'>
             <Circle
               v={row.my_num[0]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[0] === winner[0] ? 0 : 1}
