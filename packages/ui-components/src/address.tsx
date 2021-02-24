@@ -7,9 +7,10 @@ import { truncated } from '@patract/utils';
 type AddressProps = {
   value: string;
   type?: 'address' | 'contract';
+  hideText?: boolean;
 };
 
-export const Address: React.FC<AddressProps> = ({ value, type, ...rest }) => {
+export const Address: React.FC<AddressProps> = ({ hideText = false, value, type, ...rest }) => {
   const { accountList } = useAccount();
 
   if (!value) return null;
@@ -21,7 +22,7 @@ export const Address: React.FC<AddressProps> = ({ value, type, ...rest }) => {
     <Tooltip label={value} aria-label='account address' placement='top' hasArrow {...rest}>
       <Flex display='inline-flex' alignItems='center' textTransform='uppercase'>
         <IdentityIcon value={value} theme={type === 'contract' ? 'polkadot' : 'robohash'} />
-        <Text mx={2}>{name as string}</Text>
+        {!hideText && <Text mx={2}>{name as string}</Text>}
       </Flex>
     </Tooltip>
   );

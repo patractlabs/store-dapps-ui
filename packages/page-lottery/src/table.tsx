@@ -24,7 +24,16 @@ export const T: React.FC<TableProps> = ({
   winnerMap
 }) => {
   const [page, setPage] = React.useState(1);
-  const rows = body.sort((a, b) => b.epoch_id - a.epoch_id);
+  const rows =
+    title === 'Biggest Winners'
+      ? body.sort((a, b) => {
+          if (a !== undefined && b !== undefined) {
+            return (b as any).reward - (a as any).reward;
+          } else {
+            return 0;
+          }
+        })
+      : body.sort((a, b) => b.epoch_id - a.epoch_id);
 
   // On Changing Page
   const c = React.useCallback(
@@ -114,17 +123,29 @@ export const Trr: React.FC<{
             hash={row.random}
             num={winner ? winner.filter((v) => row.my_num.includes(v)) : []}
             render={renderHash}
-            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 10}
+            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 12}
           />
         </Td>
       )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
         {(title === 'Biggest Winners' ? winner : true) && row.my_num && row.my_num.length === 3 ? (
-          <Box display='inherit'>
-            <Circle v={row.my_num[0]} style={winner && row.my_num[0] === winner[0] ? 0 : 1} forceDisabled />
-            <Circle v={row.my_num[1]} style={winner && row.my_num[1] === winner[1] ? 0 : 1} forceDisabled />
-            <Circle v={row.my_num[2]} style={winner && row.my_num[2] === winner[2] ? 0 : 1} forceDisabled />
+          <Box display='inherit' pt='0.3rem' pb='0.3rem'>
+            <Circle
+              v={row.my_num[0]}
+              style={title === 'Epoch Histories' ? 0 : winner && row.my_num[0] === winner[0] ? 0 : 1}
+              forceDisabled
+            />
+            <Circle
+              v={row.my_num[1]}
+              style={title === 'Epoch Histories' ? 0 : winner && row.my_num[1] === winner[1] ? 0 : 1}
+              forceDisabled
+            />
+            <Circle
+              v={row.my_num[2]}
+              style={title === 'Epoch Histories' ? 0 : winner && row.my_num[2] === winner[2] ? 0 : 1}
+              forceDisabled
+            />
           </Box>
         ) : (
           <Box>

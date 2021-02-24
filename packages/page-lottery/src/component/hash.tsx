@@ -1,6 +1,14 @@
 //! Pretties hash
 import React from 'react';
-import { Box, Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverBody } from '@patract/ui-components';
+import {
+  Address,
+  Box,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverBody
+} from '@patract/ui-components';
 
 const renderHash: React.FC<{ hash: string }> = ({ hash }) => {
   let count = 0;
@@ -14,7 +22,7 @@ const renderHash: React.FC<{ hash: string }> = ({ hash }) => {
           <span
             key={i}
             style={{
-              color: Number.parseInt(char) > -1 && i > 1 && count < 5 ? 'green' : 'black'
+              color: Number.parseInt(char) > -1 && i > 1 && count < 5 ? '#FF7600' : 'black'
             }}
           >
             {`${char}`}
@@ -30,7 +38,9 @@ export const Hash: React.FC<{ hash: string; num: number[]; render: boolean; limi
   render,
   limit = 12
 }) => {
-  if (hash === '0x0000000000000000000000000000000000000000000000000000000000000000') {
+  if (hash.length === 48) {
+    return <Address value={hash} type='address' hideText />;
+  } else if (hash === '0x0000000000000000000000000000000000000000000000000000000000000000') {
     return <>?</>;
   } else if (limit === 66) {
     return <Box>{renderHash({ hash })}</Box>;
