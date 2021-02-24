@@ -16,18 +16,11 @@ export const App = () => {
   const win = React.useMemo(() => (context.biggestWinners ? (context.biggestWinners as any) : []), [
     context.biggestWinners
   ]);
-  const winnerMap = React.useMemo(() => {
-    const map: Record<string, number[]> = {};
-
-    context.epochHistories.filter((e) => e).forEach((w) => (map[String(w.epoch_id)] = (w as any).my_num));
-    return map;
-  }, [context.epochHistories]);
 
   return (
     <PageLayout>
       <PageHeader title='PatraLottery' />
       <PageMain my='30' minWidth='1360px' width='1360px'>
-        {/* <Tip /> */}
         <Foo />
         <Flex>
           <T
@@ -36,7 +29,7 @@ export const App = () => {
             body={my}
             width='570px'
             current_epoch={context.epochId}
-            winnerMap={winnerMap}
+            winnerMap={context.winnerMap}
           />
           <Spacer />
           <T
@@ -58,7 +51,7 @@ export const App = () => {
             limit={5}
             pagin={false}
             current_epoch={context.epochId}
-            winnerMap={winnerMap}
+            winnerMap={context.winnerMap}
           />
         </Flex>
         <T
@@ -70,7 +63,7 @@ export const App = () => {
             return h;
           })}
           current_epoch={context.epochId}
-          winnerMap={winnerMap}
+          winnerMap={context.winnerMap}
         />
       </PageMain>
     </PageLayout>

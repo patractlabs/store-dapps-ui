@@ -15,6 +15,7 @@ export interface Value {
   biggestWinners: BiggestWinner[];
   epochHistories: EpochHistory[];
   openIn: number;
+  winnerMap: Record<string, number[]>;
 }
 
 const context = React.createContext<Value>({} as Value);
@@ -44,6 +45,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
   const [epochHistories, setEpochHistories] = React.useState<EpochHistory[]>([]);
   const [timer, setTimer] = React.useState(setInterval(() => {}, 1000));
   const [trigger, setTrigger] = React.useState(false);
+  const [winnerMap, setWinnerMap] = React.useState<Record<string, number[]>>({});
 
   const api = useApi();
   const { currentAccount } = useAccount();
@@ -58,7 +60,6 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
     api.api.query.contracts.contractInfoOf(PatraLottery, async () => {
       const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
-      const curLotteries: any = await lotteries.read(currentAccount);
 
       // Get historires
       const histories: EpochHistory[] = [];
@@ -72,19 +73,24 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
       // Get My Lotteries
       const winners: BiggestWinner[] = [];
+      const map: Record<string, number[]> = {};
       for (const w in histories) {
+        map[String(histories[w].epoch_id)] = (histories[w] as any).win_num;
         const r = await biggestWinenr.read(histories[w].epoch_id);
         if (r) {
           winners.push({ ...(r as any), epoch_id: histories[w].epoch_id });
         }
       }
 
+      // Prepare winner map
       setEpochId(Number(epoch?.epoch_id));
       setOpenIn(Number(epoch?.start_slot - currentSlot.toNumber()) * 6);
       setRewardPool(Number(epoch?.reward_pool));
       setBiggestWinners(winners);
       setEpochHistories(histories);
+      setWinnerMap(map);
 
+      const curLotteries: any = await lotteries.read(currentAccount);
       curLotteries && setMyLotteries(curLotteries);
     });
     // eslint-disable-next-line
@@ -113,7 +119,8 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
         myLotteries,
         biggestWinners,
         epochHistories,
-        openIn
+        openIn,
+        winnerMap
       }}
     >
       {children}
