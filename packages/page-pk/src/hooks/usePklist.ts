@@ -10,6 +10,7 @@ export const usePklist = (signal = 0) => {
   const [isLoading, setIsLoading] = useState(false);
   const { read: readTotal } = useContractQuery({ contract, method: 'gameTotal' });
   const { read: readDetail } = useContractQuery({ contract, method: 'gameOf' });
+  const { read: readExpireOf } = useContractQuery({ contract, method: 'expireOf' });
 
   useEffect(() => {
     setIsLoading(true);
@@ -20,13 +21,15 @@ export const usePklist = (signal = 0) => {
           [...new Array(total)]
             .map((_, i) => i + 1)
             .reverse()
-            .map((id: any) => {
-              return readDetail(id).then((data: any) => {
-                return {
-                  id,
-                  ...data?.Ok
-                };
-              });
+            .map(async (id: any) => {
+              const expireOf = await readExpireOf(id);
+              const data: any = await readDetail(id);
+
+              return {
+                id,
+                expireOf: !isNaN(expireOf as any) ? Number(expireOf) * 6 : 0,
+                ...data?.Ok
+              };
             })
         );
       })
