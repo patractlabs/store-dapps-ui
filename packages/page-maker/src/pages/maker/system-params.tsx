@@ -80,7 +80,7 @@ export const SystemParamsArea: FC<{
     if (!systemParams.mcr) {
       return '?';
     }
-    const dai = dotYouMayHave * systemParams.currentPrice / systemParams.mcr;
+    const dai = dotYouMayHave * systemParams.currentPrice / systemParams.mcr * 100;
     return dai.toFixed(0);
   }, [systemParams]);
 
