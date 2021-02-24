@@ -23,8 +23,6 @@ export const useCdpList = (signal = 0): { data: CDP[], isLoading: boolean } => {
             .reverse()
             .map(id => {
               return readDetail(id).then((data: any) => {
-                console.log(data, 'data');
-                
                 return {
                   id,
                   ...data,

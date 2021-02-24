@@ -192,7 +192,7 @@ const CDPList: FC<{
           </Tr>
         </Thead>
         <Tbody>
-          {list.slice(pageSize * (page - 1), pageSize * page).map(item => renderCdpRow(item))}
+          { list.slice(pageSize * (page - 1), pageSize * page).map(item => renderCdpRow(item)) }
         </Tbody>
       </Table>
       {((list && list.length !== 0) || page !== 1) && (
@@ -200,9 +200,9 @@ const CDPList: FC<{
           <Pagination count={count} page={page} onChange={(_, page) => setPage(page)} shape='rounded' />
         </Flex>
       )}
-      {!list.length && isLoading && (
+      {(!list.length) && (
         <Center p={16}>
-          <CircularProgress isIndeterminate color='blue.300' />
+          {isLoading ? <CircularProgress isIndeterminate color='blue.300' /> : <Text>No Data</Text>}
         </Center>
       )}
       <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />

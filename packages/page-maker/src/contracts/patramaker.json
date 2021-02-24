@@ -1,7 +1,7 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0xd8aee2189e2085051a5caa5878dcda776ee0cce58f63d576ab2087be355db490",
+    "hash": "0x5f2af7f24b53b453ea1ef1c2ddd024d40737efd3987742d447704c313b364cbc",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.52.0-nightly"
   },
@@ -929,11 +929,6 @@
               "name": "issue_dai",
               "type": 10,
               "typeName": "Balance"
-            },
-            {
-              "name": "collateral_ratio",
-              "type": 5,
-              "typeName": "u32"
             },
             {
               "name": "valid",
