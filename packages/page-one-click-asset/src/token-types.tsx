@@ -1,5 +1,5 @@
-import Erc20fixed from './contracts/erc20fixed.json';
-import Erc20mintable from './contracts/erc20mintable.json';
+import Erc20fixed from '@patract/utils/contracts/erc20fixed.json';
+import Erc20mintable from '@patract/utils/contracts/erc20mintable.json';
 
 export enum TokenType {
   erc20_1 = 'ERC20_1',

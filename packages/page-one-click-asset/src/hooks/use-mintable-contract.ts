@@ -1,7 +1,7 @@
 import { useApi } from '@patract/react-hooks';
 import { ContractPromise } from '@polkadot/api-contract';
 import { useMemo } from 'react';
-import Erc20mintable from '../contracts/erc20mintable.json';
+import Erc20mintable from '@patract/utils/contracts/erc20mintable.json';
 
 export const useMintableContract = (address: string) => {
   const { isApiReady, api } = useApi();
