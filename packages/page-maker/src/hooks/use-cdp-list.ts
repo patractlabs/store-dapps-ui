@@ -24,8 +24,9 @@ export const useCdpList = (signal = 0): { data: CDP[], isLoading: boolean } => {
             .map(id => {
               return readDetail(id).then((data: any) => {
                 return {
-                  id,
                   ...data,
+                  id,
+                  liquidating: !data.valid,
                 };
               });
             })

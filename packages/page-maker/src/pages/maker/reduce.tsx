@@ -4,6 +4,7 @@ import { parseAmount, toFixed } from '@patract/utils';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { RightSymbol } from './right-symbol';
+import { SystemParams } from './system-params';
 import { CDP } from './types';
 
 const ReduceCollateral: FC<{
@@ -11,9 +12,9 @@ const ReduceCollateral: FC<{
   onClose: () => void;
   onSubmit?: () => void;
   cdp?: CDP;
-  price: number;
   decimals: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, price, decimals }): ReactElement => {
+  systemParams: SystemParams,
+}> = ({ isOpen, onClose, onSubmit, cdp, decimals, systemParams }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [ decrease, setCollateral ] = useState<string>('');
   const [ ratio, setCollateralRatio ] = useState<string>('');
@@ -48,8 +49,8 @@ const ReduceCollateral: FC<{
     if (!cdp) {
       return false;
     }
-    return `${_decrease}` === 'NaN' || _decrease <= 0 || (_decrease * times) > cdp.collateral_dot || `${_ratio}` === 'NaN' || _ratio < 150;
-  }, [decrease, cdp, decimals, ratio]);
+    return `${_decrease}` === 'NaN' || _decrease <= 0 || (_decrease * times) > cdp.collateral_dot || `${_ratio}` === 'NaN' || _ratio < systemParams.mcr;
+  }, [decrease, cdp, decimals, ratio, systemParams.mcr]);
 
   useMemo(() => {
     if (!cdp) {
@@ -57,7 +58,7 @@ const ReduceCollateral: FC<{
     }
     const _decrease = parseFloat(decrease);
     const times = Math.pow(10, decimals);
-    const estimatedRatio = (cdp!.collateral_dot / times - _decrease) * price / (cdp.issue_dai / times) * 100;
+    const estimatedRatio = (cdp!.collateral_dot / times - _decrease) * systemParams.currentPrice / (cdp.issue_dai / times) * 100;
 
     if (`${estimatedRatio}` === 'NaN') {
       setCollateralRatio('');
@@ -67,9 +68,9 @@ const ReduceCollateral: FC<{
       const issueDai = toFixed(cdp.issue_dai, decimals, false).round(3).toString();
 
       setCollateralRatio(estimatedRatio.toFixed(0));
-      setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT - ${decrease} DOT) * $${price} / ${issueDai} DAI`);
+      setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT - ${decrease} DOT) * $${systemParams.currentPrice} / ${issueDai} DAI`);
     }
-  }, [decrease, cdp, price, decimals]);
+  }, [decrease, cdp, systemParams.currentPrice, decimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>

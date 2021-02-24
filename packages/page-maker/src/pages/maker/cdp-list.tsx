@@ -11,19 +11,6 @@ import { CDP } from './types';
 import Withdraw from './with-draw';
 import styled from 'styled-components';
 
-const getRatioColor = (ratio: number, withdrawed = false): string => {
-  if (withdrawed) {
-    return '#ABB4D0';
-  }
-  if (ratio >= 150) {
-    return '#25A17C';
-  }
-  if (ratio >= 110) {
-    return '#F7B500';
-  }
-  return '#FA1C00';
-}
-
 const getDays = (createTime: string): string => {
   const _createTime = parseFloat(createTime);
   if (`${_createTime}` === 'NaN') {
@@ -80,12 +67,25 @@ const CDPList: FC<{
     setList(_list);
   }, [data, currentAccount, owner, systemParams.currentPrice]);
 
+  const getRatioColor = useCallback((ratio: number, withdrawed = false): string => {
+    if (withdrawed) {
+      return '#ABB4D0';
+    }
+    if (ratio >= systemParams.mcr) {
+      return '#25A17C';
+    }
+    if (ratio > systemParams.mlr) {
+      return '#F7B500';
+    }
+    return '#FA1C00';
+  }, [systemParams]);
+  
   const renderOperations = useCallback(
     (item: CDP) => {
-      const canIncrease = item.valid && item.collateral_dot !== 0;
-      const canReduce = item.valid && item.collateral_dot !== 0 && item.collateral_ratio > 150;
-      const canWithdraw = item.valid && item.collateral_dot !== 0 && item.collateral_ratio >= 120;
-      const canLiquidate = item.collateral_dot !== 0 && item.collateral_ratio <= 110;
+      const canIncrease = item.liquidating;
+      const canReduce = item.liquidating && item.collateral_dot > 0 && item.collateral_ratio > systemParams.mcr;
+      const canWithdraw = item.liquidating && item.collateral_dot > 0 && item.collateral_ratio > 120;
+      const canLiquidate = item.liquidating ? item.collateral_dot > 0 : item.collateral_ratio <= systemParams.mlr;
 
       return owner ?
         <Flex justifyContent='space-between'>
@@ -131,10 +131,10 @@ const CDPList: FC<{
               return;
             }
             setChoosedCdp(item);
-            onLiquidateOpen();  
+            onLiquidateOpen();
           } }>Liquidate</LabelButton>
     },
-    [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen, owner],
+    [onIncreaseOpen, onReduceOpen, onWithdrawOpen, onLiquidateOpen, owner, systemParams],
   );
 
   const renderCdpRow = useCallback(
@@ -159,12 +159,15 @@ const CDPList: FC<{
             }}>
               { !item.collateral_dot ? '-' : `${item.collateral_ratio.toFixed(1)}%` }
             </label>
+            <label style={{ color: '#ABB4D0', marginLeft: '2em' }}>
+              { !item.liquidating && 'has been liquidated'}
+            </label>
           </Td>
           <Td sx={{ paddingLeft: '0px' }}>{renderOperations(item)}</Td>
         </Tr>
       );
     },
-    [renderOperations, decimals]
+    [renderOperations, decimals, getRatioColor]
   );
 
   const pageSize = 10;
@@ -206,7 +209,7 @@ const CDPList: FC<{
         </Center>
       )}
       <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
-      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
+      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={onSubmit} systemParams={systemParams} decimals={decimals} />
       <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
       <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={onSubmit} systemParams={systemParams} decimals={decimals} />
     </Box>

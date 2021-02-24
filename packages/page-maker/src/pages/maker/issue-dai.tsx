@@ -23,14 +23,15 @@ import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { api } from '@patract/react-components';
 import { RightSymbol } from './right-symbol';
+import { SystemParams } from './system-params';
 
 const IssueDAI: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: () => void;
-  price: number;
   decimals: number;
-}> = ({ isOpen, onClose, onSubmit, price, decimals }): ReactElement => {
+  systemParams: SystemParams,
+}> = ({ isOpen, onClose, onSubmit, decimals, systemParams }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
@@ -40,8 +41,8 @@ const IssueDAI: FC<{
   const [balance, setBalance] = useState<string>('');
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value: collateralRatio } = useNumberInput({
     step: 10,
-    defaultValue: 150,
-    min: 150,
+    defaultValue: systemParams.mcr,
+    min: systemParams.mcr,
     precision: 0,
   });
   const inc = getIncrementButtonProps();
@@ -75,22 +76,22 @@ const IssueDAI: FC<{
     const ratio = parseFloat(collateralRatio.toString());
     const times = Math.pow(10, decimals);
     const _balance = parseFloat(balance) / times;
-    return `${_collateral}` === 'NaN' || _collateral <= 0 || ratio < 150 || _collateral > _balance;
-  }, [collateral, collateralRatio, decimals, balance]);
+    return `${_collateral}` === 'NaN' || _collateral <= 0 || ratio < systemParams.mcr || _collateral > _balance;
+  }, [collateral, collateralRatio, decimals, balance, systemParams.mcr]);
 
   useMemo(() => {
     const _collateral = parseFloat(collateral);
     const _collateralRatio = parseFloat(`${collateralRatio}`) / 100;
-    const _estimatedIssuance = _collateral * price / _collateralRatio;
+    const _estimatedIssuance = _collateral * systemParams.currentPrice / _collateralRatio;
 
     if (`${_estimatedIssuance}` === 'NaN') {
       setEstimatedIssuance('');
       setCalculation('');
     } else {
       setEstimatedIssuance(`${_estimatedIssuance.toFixed(3)}`);
-      setCalculation(`${_estimatedIssuance.toFixed(3)} DAI = ${_collateral} DOT * $${price} / ${collateralRatio}%`);
+      setCalculation(`${_estimatedIssuance.toFixed(3)} DAI = ${_collateral} DOT * $${systemParams.currentPrice} / ${collateralRatio}%`);
     }
-  }, [collateralRatio, collateral, price]);
+  }, [collateralRatio, collateral, systemParams.currentPrice]);
 
   useEffect(() => {
     api.derive.balances.all(currentAccount).then(account => {

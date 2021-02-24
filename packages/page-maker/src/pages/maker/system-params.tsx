@@ -75,12 +75,22 @@ export const SystemParamsArea: FC<{
     ];
   }, [systemParams]);
 
+  const dotYouMayHave = 100;
   const estimatedDai = useMemo(() => {
     if (!systemParams.mcr) {
       return '?';
     }
-    const dai = 100 * systemParams.currentPrice / systemParams.mcr;
+    const dai = dotYouMayHave * systemParams.currentPrice / systemParams.mcr;
     return dai.toFixed(0);
+  }, [systemParams]);
+
+  const losePercent = useMemo(() => {
+    if (!systemParams.mcr) {
+      return '?';
+    }
+    // `100` here is not ${dotYouMayHave}
+    const _losePercent = (100 - 100 / systemParams.mcr * systemParams.mlr);
+    return _losePercent.toFixed(0);
   }, [systemParams]);
 
   return (
@@ -114,14 +124,14 @@ export const SystemParamsArea: FC<{
               height: '34px',
               marginTop: '7px',
               marginBottom: '13px',
-            }}>At current price and ratios, 100 DOT can issue { estimatedDai } DAI at max.</h3>
+            }}>At current price and ratios, { dotYouMayHave } DOT can issue { estimatedDai } DAI at max.</h3>
             <p style={{
               fontSize: '12px',
               color: 'brand.grey',
               lineHeight: '15px',
               marginBottom: '12px',
               height: '45px',
-            }}>You can under take up to 27% price drop. Otherwise, you need to increase collateral, or you can be liquidated by anyone and lose 5%.</p>
+            }}>You can under take up to { losePercent }% price drop. Otherwise, you need to increase collateral, or you can be liquidated by anyone and lose { systemParams.lrr }%.</p>
             <Button
               colorScheme={ 'green' }
               sx={{
@@ -136,7 +146,7 @@ export const SystemParamsArea: FC<{
                 Issue DAI
             </Button>
           </Box>
-        <IssueDAI price={ systemParams.currentPrice } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} decimals={decimals} />
+        <IssueDAI systemParams={ systemParams } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} decimals={decimals} />
       </GridItem>
     </Grid>
   )

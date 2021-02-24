@@ -4,6 +4,6 @@ export interface CDP {
   collateral_dot: number;
   issue_dai: number;
   collateral_ratio: number;
-  valid: boolean;
+  liquidating: boolean;
   create_date: string;
 }

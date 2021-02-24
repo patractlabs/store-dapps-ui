@@ -31,8 +31,6 @@ const Liquidate: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    console.log(`${redeem}`);
-    
     excute([cdp!.id, `${redeem}`])
       .then((data) => {
         console.log('liquidate', data)
@@ -54,7 +52,7 @@ const Liquidate: FC<{
     } else {
       const _redeem = toFixed(redeem, decimals, false).round(3).toString();
       setDotYouGot(`${_dotYouGot.toFixed(3)}`);
-      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${_redeem} DAI / $${systemParams.currentPrice} * (1 + 5%)`);
+      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${_redeem} DAI / $${systemParams.currentPrice} * (1 + ${systemParams.lrr}%)`);
     }
   }, [redeem, systemParams, decimals]);
 
