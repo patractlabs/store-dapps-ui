@@ -9,15 +9,13 @@ import {
   ModalHeader,
   ModalOverlay,
   FormLabel,
-  Input,
   Fixed,
   InputGroup,
   InputNumber,
   HStack,
-  useNumberInput,
   FormHelperText,
 } from '@patract/ui-components';
-import React, { FC, ReactElement, useEffect, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccount, useContractTx } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
@@ -36,18 +34,11 @@ const IssueDAI: FC<{
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
   const [collateral, setCollateral] = useState<string>('');
+  const [collateralRatio, setCollateralRatio] = useState<string>('');
   const [calculation, setCalculation] = useState<string>('');
   const [estimatedIssuance, setEstimatedIssuance] = useState<string>('');
   const [balance, setBalance] = useState<string>('');
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value: collateralRatio } = useNumberInput({
-    step: 10,
-    defaultValue: systemParams.mcr,
-    min: systemParams.mcr,
-    precision: 0,
-  });
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
-  const input = getInputProps();
+
   const { currentAccount } = useAccount();
   const close = () => {
     setCollateral('');
@@ -73,7 +64,7 @@ const IssueDAI: FC<{
 
   const disabled = useMemo(() => {
     const _collateral = parseFloat(collateral);
-    const ratio = parseFloat(collateralRatio.toString());
+    const ratio = parseFloat(collateralRatio);
     const times = Math.pow(10, decimals);
     const _balance = parseFloat(balance) / times;
     return `${_collateral}` === 'NaN' || _collateral <= 0 || ratio < systemParams.mcr || _collateral > _balance;
@@ -98,6 +89,28 @@ const IssueDAI: FC<{
       setBalance(account.availableBalance.toString()); 
     });
   }, [currentAccount]);
+
+  useMemo(() => {
+    setCollateralRatio(`${systemParams.mcr}`);
+  }, [systemParams.mcr]);
+
+  const onAdd = useCallback(() => {
+    let ratio = parseFloat(collateralRatio);
+    if (`${ratio}` === 'NaN' || ratio < systemParams.mcr) {
+      return setCollateralRatio(`${systemParams.mcr}`);
+    }
+    ratio += 10;
+    setCollateralRatio(ratio.toFixed(0));
+  }, [systemParams.mcr, collateralRatio]);
+
+  const onSub = useCallback(() => {
+    let ratio = parseFloat(collateralRatio);
+    if (`${ratio}` === 'NaN' || ratio < systemParams.mcr + 10) {
+      return setCollateralRatio(`${systemParams.mcr}`);
+    }
+    ratio -= 10;
+    setCollateralRatio(ratio.toFixed(0));
+  }, [systemParams.mcr, collateralRatio]);
 
   return (
     <Modal variant="maker" isOpen={isOpen} onClose={close}>
@@ -124,11 +137,11 @@ const IssueDAI: FC<{
             </FormLabel>
             <HStack alignItems='center'>
               <InputGroup>
-                <Input focusBorderColor="primary.500" {...input} background='white' />
+                <InputNumber focusBorderColor="primary.500" background='white' value={collateralRatio} onChange={ (v)=> setCollateralRatio(v)}/>
                 <RightSymbol symbol={'%'} />
               </InputGroup>
               <Button
-                {...inc}
+                onClick={onAdd}
                 sx={{
                   h: '40px',
                   border: '0',
@@ -140,7 +153,7 @@ const IssueDAI: FC<{
                 +
               </Button>
               <Button
-                { ...dec }
+                onClick={onSub}
                 sx={{
                   h: '40px',
                   border: '0',
