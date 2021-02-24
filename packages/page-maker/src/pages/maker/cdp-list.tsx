@@ -160,7 +160,7 @@ const CDPList: FC<{
               { !item.collateral_dot ? '-' : `${item.collateral_ratio.toFixed(1)}%` }
             </label>
             <label style={{ color: '#ABB4D0', marginLeft: '2em' }}>
-              { !item.liquidating && 'has been liquidated'}
+              { item.liquidating && 'has been liquidated'}
             </label>
           </Td>
           <Td sx={{ paddingLeft: '0px' }}>{renderOperations(item)}</Td>
