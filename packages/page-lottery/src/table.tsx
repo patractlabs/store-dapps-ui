@@ -1,13 +1,11 @@
 import React from 'react';
-import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
+import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button, Spinner } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
 import { Circle, Hash, Buyer } from './component';
 import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
-
-import Nyan from '../public/nyan.gif';
 
 /**
  * Custom Table
@@ -68,7 +66,7 @@ export const T: React.FC<TableProps> = ({
           ) : (
             <Tr>
               <Td>
-                <img src={Nyan} alt='nobody wins' />
+                <Spinner />
               </Td>
             </Tr>
           )}
@@ -122,7 +120,7 @@ export const Trr: React.FC<{
       )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
-        {winner && row.my_num && row.my_num.length === 3 ? (
+        {(title === 'Biggest Winners' ? winner : true) && row.my_num && row.my_num.length === 3 ? (
           <Box display='inherit'>
             <Circle v={row.my_num[0]} style={winner && row.my_num[0] === winner[0] ? 0 : 1} forceDisabled />
             <Circle v={row.my_num[1]} style={winner && row.my_num[1] === winner[1] ? 0 : 1} forceDisabled />

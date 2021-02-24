@@ -4,6 +4,7 @@ import { BiggestWinner, EpochHistory, MyLottery } from './types';
 import { useLottery } from './hooks';
 import { useApi, useAccount, useContractQuery } from '@patract/react-hooks';
 import { Box } from '@patract/ui-components';
+import { PatraLottery } from '@patract/utils';
 
 import Nyan from '../public/nyan.gif';
 
@@ -54,7 +55,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
   // Subscribe storage
   React.useEffect(() => {
-    api.api.query.contracts.contractInfoOf('5FWmurGYTNyqVMKnY9stU9TWt1C3L8yquk3iCzhbwa5xeY5b', async () => {
+    api.api.query.contracts.contractInfoOf(PatraLottery, async () => {
       const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
       const curLotteries: any = await lotteries.read(currentAccount);
