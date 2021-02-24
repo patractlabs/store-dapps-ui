@@ -80,7 +80,7 @@ export const Swap = () => {
     }
   }, [isSwapPrice, inputValue, estimatedOutput, outputValue, estimatedInput]);
 
-  const swapInputOuteput = () => {
+  const swapInputOutput = () => {
     if (estimatedInput === null) {
       setInputOption(outputOption);
       setOutputOption(inputOption);
@@ -335,7 +335,7 @@ export const Swap = () => {
           </FormControl>
           <Icon
             as={FiRepeat}
-            onClick={swapInputOuteput}
+            onClick={swapInputOutput}
             sx={{
               position: 'absolute',
               display: 'inline-block',

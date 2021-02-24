@@ -25,7 +25,7 @@ const Card: FC<{
     <Box sx={{ textAlign: 'center', paddingTop: '24px' }}>
       <Box sx={{
           fontSize: '14px',
-          color: orange ? '#FA6400' : '#000000',
+          color: orange ? '#0058FA' : '#000000',
           lineHeight: '24px',
           marginBottom: '17px',
         }}>
@@ -35,7 +35,7 @@ const Card: FC<{
         <p style={{ 
           fontSize: '25px',
           fontWeight: 600,
-          color: orange ? '#FA6400' : '#000000',
+          color: orange ? '#0058FA' : '#000000',
           lineHeight: orange ? '60px' : '36px',
           }}>{ val }</p>
         <p>{ unit }</p>
