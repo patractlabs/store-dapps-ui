@@ -22,7 +22,7 @@ export const Address: React.FC<AddressProps> = ({ hideText = false, value, type,
     <Tooltip label={value} aria-label='account address' placement='top' hasArrow {...rest}>
       <Flex display='inline-flex' alignItems='center' textTransform='uppercase'>
         <IdentityIcon value={value} theme={type === 'contract' ? 'polkadot' : 'robohash'} />
-        {!hideText && <Text mx={2}>{name as string}</Text>}
+        {!hideText ? <Text mx={2}>{name as string}</Text> : <Text mx={2}>{(name as string).slice(0, 5) + '...'}</Text>}
       </Flex>
     </Tooltip>
   );
