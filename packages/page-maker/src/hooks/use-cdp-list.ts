@@ -26,7 +26,6 @@ export const useCdpList = (signal = 0): { data: CDP[], isLoading: boolean } => {
                 return {
                   ...data,
                   id,
-                  liquidating: !data.valid,
                 };
               });
             })

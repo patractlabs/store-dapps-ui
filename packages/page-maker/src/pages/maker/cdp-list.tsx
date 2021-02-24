@@ -82,10 +82,10 @@ const CDPList: FC<{
   
   const renderOperations = useCallback(
     (item: CDP) => {
-      const canIncrease = item.liquidating;
-      const canReduce = item.liquidating && item.collateral_dot > 0 && item.collateral_ratio > systemParams.mcr;
-      const canWithdraw = item.liquidating && item.collateral_dot > 0 && item.collateral_ratio > 120;
-      const canLiquidate = item.liquidating ? item.collateral_dot > 0 : item.collateral_ratio <= systemParams.mlr;
+      const canIncrease = item.collateral_dot > 0;
+      const canReduce = item.collateral_dot > 0 && item.collateral_ratio > systemParams.mcr;
+      const canWithdraw = item.collateral_dot > 0 && item.collateral_ratio > 120;
+      const canLiquidate = item.collateral_dot > 0 && item.collateral_ratio <= systemParams.mlr;
 
       return owner ?
         <Flex justifyContent='space-between'>
@@ -158,9 +158,6 @@ const CDPList: FC<{
               color: getRatioColor(item.collateral_ratio, item.collateral_dot === 0),
             }}>
               { !item.collateral_dot ? '-' : `${item.collateral_ratio.toFixed(1)}%` }
-            </label>
-            <label style={{ color: '#ABB4D0', marginLeft: '2em' }}>
-              { item.liquidating && 'has been liquidated'}
             </label>
           </Td>
           <Td sx={{ paddingLeft: '0px' }}>{renderOperations(item)}</Td>
