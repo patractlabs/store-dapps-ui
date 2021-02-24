@@ -1,13 +1,11 @@
 import React from 'react';
-import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
+import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button, Spinner } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
 import { Circle, Hash, Buyer } from './component';
 import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
-
-import Nyan from '../public/nyan.gif';
 
 /**
  * Custom Table
@@ -68,7 +66,7 @@ export const T: React.FC<TableProps> = ({
           ) : (
             <Tr>
               <Td>
-                <img src={Nyan} alt='nobody wins' />
+                <Spinner />
               </Td>
             </Tr>
           )}
