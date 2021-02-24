@@ -74,7 +74,8 @@ const Card: FC<{
 export const TotalSupply: FC<{
   price: number;
   signal: number;
-}> = ({ price, signal }): ReactElement => {
+  decimals: number;
+}> = ({ price, signal, decimals }): ReactElement => {
   const { contract } = useMakerContract();
   const { read: readTotalSupply } = useContractQuery({ contract, method: 'totalSupply' });
   const { contract: daiContract } = useDaiContract();
@@ -97,13 +98,13 @@ export const TotalSupply: FC<{
 
       setList([
         { title: 'Total Issuers', val: totalIssuers },
-        { title: 'Total Collateral', val: toFixed(totalCollateral, 10).round(1).toString() },
-        { title: 'Total Issuance', val: toFixed(totalIssuance, 10).round(1).toString() },
+        { title: 'Total Collateral', val: toFixed(totalCollateral, decimals).round(1).toString() },
+        { title: 'Total Issuance', val: toFixed(totalIssuance, decimals).round(1).toString() },
         { title: 'Average Collateral Ratio', val: totalIssuance ? (totalCollateral * price / totalIssuance * 100).toFixed(0) : '0' },
-        { title: 'Your Balance', val: toFixed(balance as number, 10, false).round(3).toString() },
+        { title: 'Your Balance', val: toFixed(balance as number, decimals, false).round(3).toString() },
       ]);
     }).catch((e) => {console.log('err', e)});
-  }, [readTotalSupply, price, signal, readBalance, currentAccount]);
+  }, [readTotalSupply, price, signal, readBalance, currentAccount, decimals]);
 
   return (
     <SimpleGrid columns={5} spacing={4} sx={{ marginBottom: '1rem' }}>

@@ -39,7 +39,7 @@ const Maker: FC = (): ReactElement => {
 
   return (
     <Box>
-      <TotalSupply price={systemParams.currentPrice} signal={signal} />
+      <TotalSupply price={systemParams.currentPrice} signal={signal} decimals={decimals} />
       <SystemParamsArea systemParams={systemParams} onIssueDaiSubmit={forceUpdate} decimals={decimals} />
       <Box sx={{ height: '34px' }}></Box>
       <CDPList systemParams={systemParams} owner={true} decimals={decimals} onSubmit={forceUpdate} signal={signal} />
