@@ -3,7 +3,7 @@ import { useAccount, useApi, useModal } from '@patract/react-hooks';
 import { Box, Button, Center, Spinner, Text, Fixed } from '@patract/ui-components';
 import { useContractTx, useBalance } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
-import React, { useCallback, useRef, useState, useReducer } from 'react';
+import React, { useCallback, useRef, useState, useReducer, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePixelContract } from '../../hooks/use-pixel-contract';
 import { usePixelDetail } from '../../hooks/use-pixel-detail';
@@ -95,23 +95,33 @@ export const Paint: React.FC = () => {
   }, [data]);
 
   const onRefresh = useCallback(() => {
-    const wantToClear = window.confirm('\nWARNING MESSAGE:\n\nDo you want to clear the design canvas?');
+    const wantToClear = window.confirm('\nWARNING MESSAGE:\n\nDo you want to clear your drawing?');
     if (wantToClear) {
-      canvasObj = emptyCanvasObj;
-      getPixel();
+      const snapshot = paintHistory[0] || JSON.stringify(emptyCanvasObj)
       paintHistory = [JSON.stringify(emptyCanvasObj)];
-      const TDS = document.querySelectorAll('td');
-      for (let i = 0, length = TDS.length; i < length; i++) {
-        let td = TDS[i];
-        if ((td.style.backgroundColor = '')) {
-          continue;
-        }
-        td.style.backgroundColor = '';
-      }
+      canvasObj = JSON.parse(snapshot);
+
+      getPixel();
+      paintAll();
+
+      // canvasObj = emptyCanvasObj;
+      // getPixel();
+      // const TDS = document.querySelectorAll('td');
+      // for (let i = 0, length = TDS.length; i < length; i++) {
+      //   let td = TDS[i];
+      //   if ((td.style.backgroundColor = '')) {
+      //     continue;
+      //   }
+      //   td.style.backgroundColor = '';
+      // }
     } else {
       return;
     }
   }, [getPixel]);
+
+  useEffect(() => {
+    setColor(Math.floor(Math.random() * 26) + 1);
+  }, []);
 
   // const submit = () => {
   //   try {
@@ -185,7 +195,8 @@ export const Paint: React.FC = () => {
             </Box>
             <Box mt={2}>
               <Box color='orange.400' sx={{ display: 'inline-block' }}>
-                You have covered {pixels} pixels (1 Pixel cost 1 DOT)
+                You have covered {pixels} pixels
+                <br/> (1 Pixel cost 1 DOT)
               </Box>
             </Box>
           </Box>

@@ -16,26 +16,21 @@ export const usePixelDetail = (signal = 0) => {
     contract.query
       .metadata(currentAccount, {})
       .then((data) => {
+        const canvasObj = new Array(HEIGHT_FIELD).fill(0).map(() => new Array(WIDTH_FIELD).fill(0));
+
         if (data.output?.isEmpty) {
-          setResult(null);
+          console.log(canvasObj)
+
+          setResult(canvasObj);
         } else {
           const array: any = data.output?.toJSON()
-          // const [_, result] = compactStripLength(data.output as any);
-          // const r1 = Array.from(result);
-
-          // const r = [];
-
-          // for (let i = 1; i <= 90; i++) {
-          //   r.push([...r1.slice((i - 1) * 160, i * 160)]);
-          // }
           
-          const canvasObj = new Array(HEIGHT_FIELD).fill(0).map(() => new Array(WIDTH_FIELD).fill(0));
-
           for(const item of array) {
             const xAxis = item[0] % 320
             const yAxis = Math.floor(item[0] / 320)
             canvasObj[yAxis][xAxis] =  item[1]
           }
+
          
           setResult(canvasObj);
         }

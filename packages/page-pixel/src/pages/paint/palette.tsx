@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from '@patract/ui-components';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 type PaletteProps = {
   color: number;
@@ -56,6 +56,7 @@ const Palette: React.FC<PaletteProps> = ({ color, onColorChange }) => {
               bgColor: hex,
               mb: '10px',
               border: color === index + 1 ? '2px solid #000000' : hex === '#FFFFFF' ? '1px solid #ABB4D0' : 'none',
+              boxShadow: color === index + 1 ? 'rgb(66 153 225 / 60%) 0px 0px 0px 3px' : 'none',
               _odd: { mr: '10px' }
             }}
           ></Box>
