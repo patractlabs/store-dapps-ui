@@ -89,7 +89,7 @@ export const AccountSelect: React.FC = () => {
                 onClick={onSelect.bind(null, account)}
               >
                 <Flex sx={{ fontSize: 'sm' }} alignItems='center'>
-                  <IdentityIcon value={account.address} />
+                  <IdentityIcon value={account.address} theme="robohash"/>
                   <Text sx={{ flexGrow: '1', ml: '8px' }}>{account.meta.name as string}</Text>
                   <Text sx={{ color: 'gray.400' }}>{truncated(account.address)}</Text>
                 </Flex>

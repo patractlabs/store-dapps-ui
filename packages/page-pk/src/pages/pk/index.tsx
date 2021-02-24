@@ -30,6 +30,7 @@ import CreateGame from './create-game';
 import { DeleteButton } from './delete';
 import { RevealButton } from './reveal';
 import { JoinButton } from './join';
+import { Countdown } from './countdown';
 
 export type GameChoice = 'Scissors' | 'Rock' | 'Paper' | null | undefined;
 export type GameStatus = 'wait_for_join' | 'wait_for_reveal' | 'closed' | 'punished' | 'expired' | 'waiting';
@@ -211,10 +212,16 @@ const PK: React.FC = () => {
           return (
             <Flex direction='column'>
               <RevealButton onSubmit={forceUpdate} item={item} />
+              <Countdown value={item.expireOf} />
             </Flex>
           );
         } else {
-          return <Text color='gray.700'>{'Waitting'}</Text>;
+          return (
+            <Flex direction='column'>
+              <Text color='gray.700'>{'Waitting'}</Text>
+              <Countdown value={item.expireOf} />
+            </Flex>
+          );
         }
       }
 
@@ -236,7 +243,7 @@ const PK: React.FC = () => {
               fontWeight: isRevealed ? 'semibold' : 'auto'
             }}
           >
-            {!isRevealed ? <Text>{'-'}</Text> : (item.salt || '')}
+            {!isRevealed ? <Text>{'-'}</Text> : item.salt || ''}
           </Td>
           <Td sx={{ px: '3', textAlign: 'left' }}>
             <Address value={item.creator} />
