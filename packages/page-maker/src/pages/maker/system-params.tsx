@@ -37,9 +37,9 @@ const Card: FC<{
           fontSize: '25px',
           fontWeight: 600,
           color: orange ? '#0058FA' : '#000000',
-          lineHeight: orange ? '60px' : '36px',
+          lineHeight: '60px',
           }}>{ val }</p>
-        <p>{ unit }</p>
+        <p style={{ color: orange ? '#0058FA' : '#000000' }}>{ unit }</p>
       </Box>
     </Box>
   );
@@ -48,7 +48,7 @@ const initialList = [
   { title: 'Min Collateral Ratio', val: '?', unit: '(MCR)' },
   { title: 'Min Liquidate Ratio', val: '?', unit: '(MLR)' },
   { title: 'Liquidater Reward Ratio', val: '?', unit: '(LRR)' },
-  { title: 'Current DOT Price', val: '?', unit: ''},
+  { title: 'Collateral Price', val: '?', unit: '(DOT)'},
 ];
 
 export const SystemParamsArea: FC<{

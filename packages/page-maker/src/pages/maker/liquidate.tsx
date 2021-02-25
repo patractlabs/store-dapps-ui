@@ -5,8 +5,9 @@ import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
 import { RightSymbol } from './right-symbol';
-import { toFixed } from '@patract/utils';
 import ApiContext from '@patract/react-components/api/api-context';
+import { fillZero } from './cdp-list';
+import { parseAmount } from '@patract/utils';
 
 const Liquidate: FC<{
   isOpen: boolean;
@@ -33,7 +34,9 @@ const Liquidate: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, `${redeem}`])
+    console.log(redeem)
+    console.log(parseAmount(`${redeem}`, daiDecimals), 'liqui')
+    excute([cdp!.id, parseAmount(`${redeem}`, daiDecimals)])
       .then((data) => {
         console.log('liquidate', data)
         close();
@@ -45,31 +48,30 @@ const Liquidate: FC<{
   };
 
   useMemo(() => {
-    const times = Math.pow(10, daiDecimals);
-    const _dotYouGot = redeem / times / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
+    const _dotYouGot = redeem / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
 
     if (`${_dotYouGot}` === 'NaN') {
       setDotYouGot('');
       setCalculation(``);
     } else {
-      const _redeem = toFixed(`${redeem}`, daiDecimals, false).round(3).toString();
       setDotYouGot(`${_dotYouGot.toFixed(3)}`);
-      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${_redeem} DAI / $${systemParams.currentPrice} * (1 + ${systemParams.lrr}%)`);
+      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${fillZero(`${redeem}`)} DAI / $${systemParams.currentPrice} * (1 + ${systemParams.lrr}%)`);
     }
-  }, [redeem, systemParams, daiDecimals]);
+  }, [redeem, systemParams]);
 
   useMemo(() => {
     if (!cdp) {
       return setMaxRedeem(0);
     }
-    const _maxRedeem = cdp.collateral_dot * systemParams.currentPrice / (100 + systemParams.lrr) * 100;
+    const times = Math.pow(10, dotDecimals);
+    const _maxRedeem = cdp.collateral_dot / times * systemParams.currentPrice * 100 / (100 + systemParams.lrr);
     if (`${_maxRedeem}` === 'NaN') {
-      setRedeem(_maxRedeem);
+      setRedeem(0);
       return setMaxRedeem(0);
     }
     setMaxRedeem(_maxRedeem);
     setRedeem(_maxRedeem);
-  }, [cdp, systemParams]);
+  }, [cdp, systemParams, dotDecimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
@@ -81,10 +83,10 @@ const Liquidate: FC<{
           <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
-                Redeem: <Fixed value={`${redeem}`} decimals={daiDecimals} /> DAI
+                Redeem: { fillZero(`${redeem}`)} DAI
               </span>
               <span>
-                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={dotDecimals} /> DOT
+                Current Issuance: <Fixed value={cdp?.issue_dai} decimals={daiDecimals} /> DAI
               </span>
             </FormLabel>
             <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>

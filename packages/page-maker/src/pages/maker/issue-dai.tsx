@@ -42,6 +42,11 @@ const IssueDAI: FC<{
   const { tokenDecimals: dotDecimals } = useContext(ApiContext);
 
   const { currentAccount } = useAccount();
+
+  const onRatioChange = (val: string) => {
+    setCollateralRatio(`${parseInt(val)}`);
+  };
+
   const close = () => {
     setCollateral('');
     setEstimatedIssuance('');
@@ -139,7 +144,7 @@ const IssueDAI: FC<{
             </FormLabel>
             <HStack alignItems='center'>
               <InputGroup>
-                <InputNumber focusBorderColor="primary.500" background='white' value={collateralRatio} onChange={ (v)=> setCollateralRatio(v)}/>
+                <InputNumber focusBorderColor="primary.500" background='white' value={collateralRatio} onChange={ onRatioChange}/>
                 <RightSymbol symbol={'%'} />
               </InputGroup>
               <Button
