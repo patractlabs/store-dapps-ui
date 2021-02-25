@@ -52,7 +52,7 @@ const ReduceCollateral: FC<{
       return false;
     }
     return `${_decrease}` === 'NaN' || _decrease <= 0 || (_decrease * times) > cdp.collateral_dot || _ratio < systemParams.mcr;
-  }, [decrease, cdp, daiDecimals, ratio, systemParams.mcr]);
+  }, [decrease, cdp, dotDecimals, ratio, systemParams.mcr]);
 
   useMemo(() => {
     if (!cdp) {
@@ -62,7 +62,7 @@ const ReduceCollateral: FC<{
     const dotTimes = Math.pow(10, dotDecimals);
     const daiTimes = Math.pow(10, daiDecimals);
     const estimatedRatio = (cdp.collateral_dot / dotTimes - _decrease) * systemParams.currentPrice / (cdp.issue_dai / daiTimes) * 100;
-
+    
     if (`${estimatedRatio}` === 'NaN') {
       setCollateralRatio('');
       setCalculation(``);
@@ -73,7 +73,7 @@ const ReduceCollateral: FC<{
       setCollateralRatio(estimatedRatio.toFixed(0));
       setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT - ${decrease} DOT) * $${systemParams.currentPrice} / ${issueDai} DAI`);
     }
-  }, [decrease, cdp, systemParams.currentPrice, daiDecimals]);
+  }, [decrease, cdp, systemParams.currentPrice, daiDecimals, dotDecimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>

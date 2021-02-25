@@ -96,7 +96,7 @@ const CDPList: FC<{
     console.log(_list, 'list');
     
     setList(_list);
-  }, [data, currentAccount, owner, systemParams.currentPrice]);
+  }, [data, currentAccount, owner, systemParams.currentPrice, daiDecimals, dotDecimals]);
 
   const getRatioColor = useCallback((ratio: number, withdrawed = false): string => {
     if (withdrawed) {

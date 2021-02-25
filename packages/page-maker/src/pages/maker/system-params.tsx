@@ -3,7 +3,7 @@ import { Image, Box, Button, Grid, GridItem } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo } from 'react';
 import IssueDAI from './issue-dai';
 import Add from '../../images/svgs/add.svg';
-import { fillZero as fillZero } from './cdp-list';
+import { fillZero } from './cdp-list';
 
 const AddIcon: FC = (): ReactElement => {
   return <Image size='xs' src={Add} />
