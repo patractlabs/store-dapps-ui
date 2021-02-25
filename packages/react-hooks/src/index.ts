@@ -11,3 +11,7 @@ export * from './useModal';
 export * from './useToast';
 export * from './useTxStatus';
 export * from './useWeight';
+export * from './useAccountInfo';
+export * from './useAccounts';
+export * from './useAddresses';
+export * from './useCall';
