@@ -15,21 +15,22 @@ import {
   HStack,
   FormHelperText,
 } from '@patract/ui-components';
-import React, { FC, ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useAccount, useContractTx } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { api } from '@patract/react-components';
 import { RightSymbol } from './right-symbol';
 import { SystemParams } from './system-params';
+import ApiContext from '@patract/react-components/api/api-context';
 
 const IssueDAI: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: () => void;
-  decimals: number;
+  daiDecimals: number;
   systemParams: SystemParams,
-}> = ({ isOpen, onClose, onSubmit, decimals, systemParams }): ReactElement => {
+}> = ({ isOpen, onClose, onSubmit, daiDecimals, systemParams }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
@@ -38,6 +39,7 @@ const IssueDAI: FC<{
   const [calculation, setCalculation] = useState<string>('');
   const [estimatedIssuance, setEstimatedIssuance] = useState<string>('');
   const [balance, setBalance] = useState<string>('');
+  const { tokenDecimals: dotDecimals } = useContext(ApiContext);
 
   const { currentAccount } = useAccount();
   const close = () => {
@@ -48,7 +50,9 @@ const IssueDAI: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([collateralRatio], parseAmount(collateral, decimals))
+    console.log('issue dai, collateral:', parseAmount(collateral, dotDecimals), 'ratio:', collateralRatio);
+    
+    excute([collateralRatio], parseAmount(collateral, dotDecimals))
       .then(() => {
         close();
         onSubmit && onSubmit();
@@ -65,10 +69,10 @@ const IssueDAI: FC<{
   const disabled = useMemo(() => {
     const _collateral = parseFloat(collateral);
     const ratio = parseFloat(collateralRatio);
-    const times = Math.pow(10, decimals);
+    const times = Math.pow(10, dotDecimals);
     const _balance = parseFloat(balance) / times;
     return `${_collateral}` === 'NaN' || _collateral <= 0 || ratio < systemParams.mcr || _collateral > _balance;
-  }, [collateral, collateralRatio, decimals, balance, systemParams.mcr]);
+  }, [collateral, collateralRatio, dotDecimals, balance, systemParams.mcr]);
 
   useMemo(() => {
     const _collateral = parseFloat(collateral);
@@ -85,9 +89,7 @@ const IssueDAI: FC<{
   }, [collateralRatio, collateral, systemParams.currentPrice]);
 
   useEffect(() => {
-    api.derive.balances.all(currentAccount).then(account => {
-      setBalance(account.availableBalance.toString()); 
-    });
+    api.derive.balances.all(currentAccount).then(account => setBalance(account.availableBalance.toString()));
   }, [currentAccount]);
 
   useMemo(() => {
@@ -123,7 +125,7 @@ const IssueDAI: FC<{
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Collateral</span>
               <span>
-                Balance: <Fixed value={balance} decimals={decimals} /> DOT
+                Balance: <Fixed value={balance} decimals={dotDecimals} /> DOT
               </span>
             </FormLabel>
             <InputGroup>

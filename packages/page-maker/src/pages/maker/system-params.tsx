@@ -3,6 +3,7 @@ import { Image, Box, Button, Grid, GridItem } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo } from 'react';
 import IssueDAI from './issue-dai';
 import Add from '../../images/svgs/add.svg';
+import { fillZero as fillZero } from './cdp-list';
 
 const AddIcon: FC = (): ReactElement => {
   return <Image size='xs' src={Add} />
@@ -43,6 +44,12 @@ const Card: FC<{
     </Box>
   );
 }
+const initialList = [
+  { title: 'Min Collateral Ratio', val: '?', unit: '(MCR)' },
+  { title: 'Min Liquidate Ratio', val: '?', unit: '(MLR)' },
+  { title: 'Liquidater Reward Ratio', val: '?', unit: '(LRR)' },
+  { title: 'Current DOT Price', val: '?', unit: ''},
+];
 
 export const SystemParamsArea: FC<{
   systemParams: SystemParams;
@@ -59,20 +66,14 @@ export const SystemParamsArea: FC<{
     val: string;
     unit: string;
   }[] = useMemo(() => {
-    if (!systemParams) {
-      return [
-        { title: 'Min Collateral Ratio', val: '?', unit: '(MCR)' },
-        { title: 'Min Liquidate Ratio', val: '?', unit: '(MLR)' },
-        { title: 'Liquidater Reward Ratio', val: '?', unit: '(LRR)' },
-        { title: 'Current DOT Price', val: '?', unit: ''},
-      ];
+    const newList = [...initialList];
+    if (systemParams) {
+      newList[0].val = `${systemParams.mcr}%`;
+      newList[1].val = `${systemParams.mlr}%`;
+      newList[2].val = `${systemParams.lrr}%`;
+      newList[3].val = `$${fillZero(systemParams.currentPrice.toString(), 2)}`;
     }
-    return [
-      { title: 'Min Collateral Ratio', val: `${systemParams.mcr}%`, unit: '(MCR)' },
-      { title: 'Min Liquidate Ratio', val: `${systemParams.mlr}%`, unit: '(MLR)' },
-      { title: 'Liquidater Reward Ratio', val: `${systemParams.lrr}%`, unit: '(LRR)' },
-      { title: 'Current DOT Price', val: `$${systemParams.currentPrice}`, unit: ''},
-    ];
+    return newList;
   }, [systemParams]);
 
   const dotYouMayHave = 100;
@@ -146,7 +147,7 @@ export const SystemParamsArea: FC<{
                 Issue DAI
             </Button>
           </Box>
-        <IssueDAI systemParams={ systemParams } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} decimals={decimals} />
+        <IssueDAI systemParams={ systemParams } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} daiDecimals={decimals} />
       </GridItem>
     </Grid>
   )

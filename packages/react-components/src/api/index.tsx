@@ -17,6 +17,9 @@ import ApiContext from './api-context';
 import { ApiSigner } from '../signer/signers/api-signer';
 import { registry } from './type-registry';
 import type { ApiProps, ApiState } from './types';
+import BN from 'bn.js';
+
+export const DEFAULT_AUX = ['Aux1', 'Aux2', 'Aux3', 'Aux4', 'Aux5', 'Aux6', 'Aux7', 'Aux8', 'Aux9'];
 
 interface Props {
   children: React.ReactNode;
@@ -99,7 +102,11 @@ async function retrieve(api: ApiPromise, injectedPromise: Promise<InjectedExtens
 
   // HACK Horrible hack to try and give some window to the DOT denomination
   const ss58Format = api.consts.system?.ss58Prefix || chainProperties.ss58Format;
-  const properties = registry.createType('ChainProperties', { ...chainProperties, ss58Format });
+  const properties = registry.createType('ChainProperties', {
+    ss58Format,
+    tokenDecimals: chainProperties.tokenDecimals,
+    tokenSymbol: chainProperties.tokenSymbol
+  });
 
   return {
     injectedAccounts,
@@ -121,8 +128,8 @@ async function loadOnReady(
     injectedPromise
   );
   const ss58Format = properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber();
-  const tokenSymbol = properties.tokenSymbol.unwrapOr(undefined)?.toString();
-  const tokenDecimals = properties.tokenDecimals.unwrapOr(DEFAULT_DECIMALS).toNumber();
+  const tokenSymbol = properties.tokenSymbol.unwrapOr([formatBalance.getDefaults().unit, ...DEFAULT_AUX]).map(s => s.toString());
+  const tokenDecimals = (properties.tokenDecimals.unwrapOr([DEFAULT_DECIMALS]) as BN[]).map((b) => b.toNumber())[0];
   const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
 
   // explicitly override the ss58Format as specified
@@ -165,7 +172,8 @@ async function loadOnReady(
     isDevelopment,
     systemChain,
     systemName,
-    systemVersion
+    systemVersion,
+    tokenDecimals,
   };
 }
 

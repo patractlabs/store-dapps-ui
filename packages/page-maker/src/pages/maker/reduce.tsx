@@ -1,26 +1,28 @@
 import { useContractTx } from '@patract/react-hooks';
 import { Button, Fixed, FormControl, FormHelperText, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
 import { parseAmount, toFixed } from '@patract/utils';
-import React, { FC, ReactElement, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useContext, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { RightSymbol } from './right-symbol';
 import { SystemParams } from './system-params';
 import { CDP } from './types';
+import ApiContext from '@patract/react-components/api/api-context';
 
 const ReduceCollateral: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: () => void;
   cdp?: CDP;
-  decimals: number;
+  daiDecimals: number;
   systemParams: SystemParams,
-}> = ({ isOpen, onClose, onSubmit, cdp, decimals, systemParams }): ReactElement => {
+}> = ({ isOpen, onClose, onSubmit, cdp, daiDecimals, systemParams }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [ decrease, setCollateral ] = useState<string>('');
   const [ ratio, setCollateralRatio ] = useState<string>('');
   const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Reduce Collateral', contract, method: 'minusCollateral' });
+  const { tokenDecimals: dotDecimals } = useContext(ApiContext);
 
   const close = () => {
     setCollateral('');
@@ -30,7 +32,7 @@ const ReduceCollateral: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, parseAmount(decrease, decimals)])
+    excute([cdp!.id, parseAmount(decrease, dotDecimals)])
       .then((data) => {
         console.log('reduce', data)
         close();
@@ -43,34 +45,35 @@ const ReduceCollateral: FC<{
 
   const disabled = useMemo(() => {
     const _decrease = parseFloat(decrease);
-    const times = Math.pow(10, decimals);
+    const times = Math.pow(10, dotDecimals);
     const _ratio = parseFloat(ratio)
 
     if (!cdp) {
       return false;
     }
-    return `${_decrease}` === 'NaN' || _decrease <= 0 || (_decrease * times) > cdp.collateral_dot || `${_ratio}` === 'NaN' || _ratio < systemParams.mcr;
-  }, [decrease, cdp, decimals, ratio, systemParams.mcr]);
+    return `${_decrease}` === 'NaN' || _decrease <= 0 || (_decrease * times) > cdp.collateral_dot || _ratio < systemParams.mcr;
+  }, [decrease, cdp, daiDecimals, ratio, systemParams.mcr]);
 
   useMemo(() => {
     if (!cdp) {
       return setCollateralRatio('');
     }
     const _decrease = parseFloat(decrease);
-    const times = Math.pow(10, decimals);
-    const estimatedRatio = (cdp!.collateral_dot / times - _decrease) * systemParams.currentPrice / (cdp.issue_dai / times) * 100;
+    const dotTimes = Math.pow(10, dotDecimals);
+    const daiTimes = Math.pow(10, daiDecimals);
+    const estimatedRatio = (cdp.collateral_dot / dotTimes - _decrease) * systemParams.currentPrice / (cdp.issue_dai / daiTimes) * 100;
 
     if (`${estimatedRatio}` === 'NaN') {
       setCollateralRatio('');
       setCalculation(``);
     } else {
-      const collateral = toFixed(cdp.collateral_dot, decimals, false).round(3).toString();
-      const issueDai = toFixed(cdp.issue_dai, decimals, false).round(3).toString();
+      const collateral = toFixed(`${cdp.collateral_dot}`, dotDecimals, false).round(3).toString();
+      const issueDai = toFixed(`${cdp.issue_dai}`, daiDecimals, false).round(3).toString();
 
       setCollateralRatio(estimatedRatio.toFixed(0));
       setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT - ${decrease} DOT) * $${systemParams.currentPrice} / ${issueDai} DAI`);
     }
-  }, [decrease, cdp, systemParams.currentPrice, decimals]);
+  }, [decrease, cdp, systemParams.currentPrice, daiDecimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
@@ -83,7 +86,7 @@ const ReduceCollateral: FC<{
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Reduce Collateral</span>
               <span>
-                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={decimals} /> DOT
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={dotDecimals} /> DOT
               </span>
             </FormLabel>
             <InputGroup>

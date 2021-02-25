@@ -1,11 +1,12 @@
 import { useContractTx } from '@patract/react-hooks';
 import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
-import React, { FC, ReactElement, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useMemo, useContext, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
 import { RightSymbol } from './right-symbol';
 import { toFixed } from '@patract/utils';
+import ApiContext from '@patract/react-components/api/api-context';
 
 const Liquidate: FC<{
   isOpen: boolean;
@@ -13,8 +14,8 @@ const Liquidate: FC<{
   onSubmit?: () => void;
   cdp?: CDP;
   systemParams: SystemParams;
-  decimals: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, systemParams, decimals }): ReactElement => {
+  daiDecimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, systemParams, daiDecimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [maxRedeem, setMaxRedeem] = useState<number>(0);
@@ -22,6 +23,7 @@ const Liquidate: FC<{
   const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Liquidate Collateral', contract, method: 'liquidateCollateral' });
+  const { tokenDecimals: dotDecimals } = useContext(ApiContext);
 
   const close = () => {
     // setRedeem(0);
@@ -43,18 +45,18 @@ const Liquidate: FC<{
   };
 
   useMemo(() => {
-    const times = Math.pow(10, decimals);
+    const times = Math.pow(10, daiDecimals);
     const _dotYouGot = redeem / times / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
 
     if (`${_dotYouGot}` === 'NaN') {
       setDotYouGot('');
       setCalculation(``);
     } else {
-      const _redeem = toFixed(redeem, decimals, false).round(3).toString();
+      const _redeem = toFixed(`${redeem}`, daiDecimals, false).round(3).toString();
       setDotYouGot(`${_dotYouGot.toFixed(3)}`);
       setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${_redeem} DAI / $${systemParams.currentPrice} * (1 + ${systemParams.lrr}%)`);
     }
-  }, [redeem, systemParams, decimals]);
+  }, [redeem, systemParams, daiDecimals]);
 
   useMemo(() => {
     if (!cdp) {
@@ -79,10 +81,10 @@ const Liquidate: FC<{
           <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
-                Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
+                Redeem: <Fixed value={`${redeem}`} decimals={daiDecimals} /> DAI
               </span>
               <span>
-                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={decimals} /> DOT
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={dotDecimals} /> DOT
               </span>
             </FormLabel>
             <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
