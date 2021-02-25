@@ -9,7 +9,7 @@ export const checkContractParams = (abiJSON: AnyJson, message: string, params: a
   if (!message) {
     throw new Error('Unexpected');
   }
-  
+
   messgae.toU8a(params);
 
   return true;
