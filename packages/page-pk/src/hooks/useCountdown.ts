@@ -21,5 +21,4 @@ export const useCountdown = (left: number) => {
   }, []);
 
   return timeLeft;
-}
-
+};

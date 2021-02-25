@@ -20,7 +20,7 @@ import {
   Tr
 } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
-import { truncated } from '@patract/utils';
+import { formatAmount, truncated } from '@patract/utils';
 import React, { ComponentProps, useCallback, useMemo, useReducer, useState } from 'react';
 import { FaChessBoard } from 'react-icons/fa';
 import { usePkContract } from '../../hooks/usePkContract';
@@ -233,6 +233,7 @@ const PK: React.FC = () => {
   const renderGameRow = useCallback(
     (item: any) => {
       const isRevealed = item.salt;
+      const amount = parseInt(formatAmount(item.value, 10));
 
       return (
         <Tr key={item.id}>
@@ -253,7 +254,21 @@ const PK: React.FC = () => {
             {renderChoice(item.create_choice)}
           </Td>
           <Td>
-            <Amount value={item.value} decimals={10} postfix='DOT' />
+            {item.joiner_choice === 'None' ? (
+              <Box fontSize='16px' color='#0058FA' >
+                {amount}
+              </Box>
+            ) : (
+              <Flex fontSize='16px' justifyContent="center" alignItems="center">
+                <Box fontSize='16px' color='#0058FA'>
+                  {amount}
+                </Box>
+                <Box mx="4px">VS</Box>
+                <Box fontSize='16px' color='#0058FA'>
+                  {amount}
+                </Box>
+              </Flex>
+            )}
           </Td>
           <Td sx={{ position: 'relative' }}>
             {getResult(item, 'joiner')}
