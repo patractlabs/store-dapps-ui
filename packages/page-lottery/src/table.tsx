@@ -166,9 +166,11 @@ export const Trr: React.FC<{
       {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
       {row.pool_out !== undefined &&
         (row.pool_out === 0 ? (
-          <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
-            Draw
-          </Button>
+          <Td>
+            <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)} size='xs'>
+              Draw
+            </Button>
+          </Td>
         ) : (
           <Trend v={-row.pool_out / Math.pow(10, decimal)} />
         ))}
