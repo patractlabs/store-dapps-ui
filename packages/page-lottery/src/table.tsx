@@ -113,7 +113,7 @@ export const Trr: React.FC<{
             hash={row.random}
             num={winner ? winner.filter((v) => row.my_num.includes(v)) : []}
             render={renderHash}
-            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 12}
+            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 6}
           />
         </Td>
       )}
@@ -159,7 +159,14 @@ export const Trr: React.FC<{
         </Td>
       )}
       {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
-      {row.pool_out !== undefined && <Trend v={-row.pool_out / Math.pow(10, decimal)} />}
+      {row.pool_out !== undefined &&
+        (row.pool_out === 0 ? (
+          <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)}>
+            Draw
+          </Button>
+        ) : (
+          <Trend v={-row.pool_out / Math.pow(10, decimal)} />
+        ))}
     </Tr>
   );
 };
