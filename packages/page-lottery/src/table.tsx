@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
+import { Box, CloseIcon, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
@@ -138,7 +138,8 @@ export const Trr: React.FC<{
             />
             {row.tickets && (
               <Flex direction='row' alignItems='center' justifyContent='center' lineHeight='2rem'>
-                {` x ${row.tickets}`}
+                <CloseIcon ml='0.5rem' mr='0.5rem' width='0.5rem' />
+                {`${row.tickets}`}
               </Flex>
             )}
           </Flex>
