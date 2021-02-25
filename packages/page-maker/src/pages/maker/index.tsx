@@ -13,7 +13,7 @@ const Maker: FC = (): ReactElement => {
   const { contract: daiContract } = useDaiContract();
   const { read: readDecimals } = useContractQuery({ contract: daiContract, method: 'iErc20,tokenDecimals' });
   const [ signal, forceUpdate ] = useReducer((x) => x + 1, 0);
-  const [ decimals, setDecimals ] = useState<number>(10);
+  const [ decimals, setDecimals ] = useState<number>(18);
   const [ systemParams, setSystemParams ] = useState<SystemParams>({
     mcr: 0,
     mlr: 0,

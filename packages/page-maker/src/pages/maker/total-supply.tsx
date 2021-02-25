@@ -76,7 +76,7 @@ const initialTotal = [
   { title: 'Total Collateral', val: '0' },
   { title: 'Total Issuance', val: '0' },
   { title: 'Average Collateral Ratio', val: '0' },
-  { title: 'Your Balance', val: 0 },
+  { title: 'My Balance', val: 0 },
 ];
 export const TotalSupply: FC<{
   price: number;
@@ -97,13 +97,13 @@ export const TotalSupply: FC<{
   useEffect(() => {
     Promise.all([readTotalSupply(), readBalance(currentAccount)]).then(([total, balance]) => {
       const [totalIssuers, totalCollateral, totalIssuance] = (total as number[]) || [0, 0, 0, 0];
-      console.log('balance:', balance, 'total: ', total, price);
+      console.log('balance:', balance, 'total: ', total, price, daiDecimals);
       const newList = [...initialTotal];
       newList[0].val = totalIssuers;
       newList[1].val = toFixed(totalCollateral, dotDecimals).round(1).toString();
       newList[2].val = toFixed(totalIssuance, daiDecimals).round(1).toString();
       newList[3].val = totalIssuance ? (totalCollateral * price * (Math.pow(10, daiDecimals - dotDecimals)) / totalIssuance * 100).toFixed(0) : '0';
-      newList[4].val = toFixed(balance as number || 0, daiDecimals, false).round(3).toString();
+      newList[4].val = toFixed(balance as number || 0, daiDecimals).round(3).toString();
       setList(newList);
     }).catch((e) => {console.log('err', e)});
   }, [readTotalSupply, price, signal, readBalance, currentAccount, daiDecimals, dotDecimals]);
