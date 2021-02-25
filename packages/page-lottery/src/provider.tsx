@@ -107,7 +107,9 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       curLotteries &&
         setMyLotteries(
           curLotteries.map((l: any) => {
-            l.random = randomMap[l.epoch_id];
+            l.random = randomMap[l.epoch_id]
+              ? randomMap[l.epoch_id]
+              : '0x0000000000000000000000000000000000000000000000000000000000000000';
             return l;
           })
         );
