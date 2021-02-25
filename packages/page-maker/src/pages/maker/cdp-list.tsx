@@ -105,7 +105,7 @@ const CDPList: FC<{
     if (getFixed(ratio) >= getFixed(systemParams.mcr)) {
       return '#25A17C';
     }
-    if (getFixed(ratio) > getFixed(systemParams.mcr)) {
+    if (getFixed(ratio) > getFixed(systemParams.mlr)) {
       return '#F7B500';
     }
     return '#FA1C00';
