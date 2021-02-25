@@ -26,7 +26,7 @@ export const Buyer: React.FC<{ buyers: string[] }> = ({ buyers }) => {
               buyers.map((buyer, i) => (
                 <Box key={i}>
                   <Box>{buyer}</Box>
-                  {i !== buyers.length - 1 ? <Divider /> : ''}
+                  {i !== buyers.length - 1 ? <Divider mt='0.5rem' mb='0.5rem' /> : ''}
                 </Box>
               ))}
           </Flex>

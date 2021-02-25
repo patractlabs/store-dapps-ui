@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
+import { Box, CloseIcon, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
@@ -113,14 +113,14 @@ export const Trr: React.FC<{
             hash={row.random}
             num={winner ? winner.filter((v) => row.my_num.includes(v)) : []}
             render={renderHash}
-            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 12}
+            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 6}
           />
         </Td>
       )}
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
         {(title === 'Biggest Winners' ? winner : true) && row.my_num && row.my_num.length === 3 ? (
-          <Box display='inherit' pt='0.3rem' pb='0.3rem'>
+          <Flex direction='row' alignItems='center' justifyContent='center' pt='0.3rem' pb='0.3rem'>
             <Circle
               v={row.my_num[0]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[0] === winner[0] ? 0 : 1}
@@ -136,7 +136,13 @@ export const Trr: React.FC<{
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[2] === winner[2] ? 0 : 1}
               forceDisabled
             />
-          </Box>
+            {row.tickets && (
+              <Flex direction='row' alignItems='center' justifyContent='center' lineHeight='2rem'>
+                <CloseIcon ml='0.5rem' mr='0.5rem' width='0.5rem' />
+                {`${row.tickets}`}
+              </Flex>
+            )}
+          </Flex>
         ) : (
           <Box>
             {row.random === '0x0000000000000000000000000000000000000000000000000000000000000000' &&
@@ -151,7 +157,6 @@ export const Trr: React.FC<{
           </Box>
         )}
       </Td>
-      {row.tickets && <Td>{row.tickets}</Td>}
       {row.reward !== undefined && <Trend v={row.reward / Math.pow(10, decimal)} />}
       {row.buyers && (
         <Td>
@@ -159,7 +164,16 @@ export const Trr: React.FC<{
         </Td>
       )}
       {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
-      {row.pool_out !== undefined && <Trend v={-row.pool_out / Math.pow(10, decimal)} />}
+      {row.pool_out !== undefined &&
+        (row.pool_out === 0 ? (
+          <Td>
+            <Button bg='rgba(0, 88, 250, 1)' color='#fff' onClick={() => _draw(row.epoch_id)} size='xs'>
+              Draw
+            </Button>
+          </Td>
+        ) : (
+          <Trend v={-row.pool_out / Math.pow(10, decimal)} />
+        ))}
     </Tr>
   );
 };

@@ -54,6 +54,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
   const lotteries = useContractQuery({ contract: contract.contract, method: 'lotteriesOf' });
   const epochHistory = useContractQuery({ contract: contract.contract, method: 'epochHistory' });
   const biggestWinenr = useContractQuery({ contract: contract.contract, method: 'biggestWinner' });
+  const randomnessOf = useContractQuery({ contract: contract.contract, method: 'randomnessOf' });
 
   // Subscribe storage
   React.useEffect(() => {
@@ -66,18 +67,31 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       const dimHis = new Array(epoch.epoch_id - BASE_EPOCH).fill(BASE_EPOCH);
       for (const v in dimHis) {
         const r = await epochHistory.read(Number(BASE_EPOCH) + Number(v));
+        const rand = await randomnessOf.read(Number(BASE_EPOCH) + Number(v));
         if (r && !histories.includes(r as any)) {
+          (r as any).random = `0x${(rand as any)[0]}`;
+          (r as any).win_num = (rand as any)[1];
+
           histories.push(r as any);
         }
       }
 
+      // get random
+      const randomMap: Record<number, string> = {};
+      for (const h in histories) {
+        randomMap[histories[h].epoch_id] = histories[h].random;
+      }
+
       // Get My Lotteries
-      const winners: BiggestWinner[] = ((await biggestWinenr.read()) as any).map((w: any) => {
-        w.epoch_id = w.epoch;
-        w.my_num = w.win_num;
-        w.reward = w.reward * w.tickets;
-        return w;
-      });
+      const bg = await biggestWinenr.read();
+      const winners: BiggestWinner[] = bg
+        ? (bg as any).map((w: any) => {
+            w.epoch_id = w.epoch;
+            w.my_num = w.win_num;
+            w.reward = w.reward;
+            return w;
+          })
+        : [];
       const map: Record<string, number[]> = {};
       for (const w in histories) {
         map[String(histories[w].epoch_id)] = (histories[w] as any).win_num;
@@ -92,7 +106,15 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       setWinnerMap(map);
 
       const curLotteries: any = await lotteries.read(currentAccount);
-      curLotteries && setMyLotteries(curLotteries);
+      curLotteries &&
+        setMyLotteries(
+          curLotteries.map((l: any) => {
+            l.random = randomMap[l.epoch_id]
+              ? randomMap[l.epoch_id]
+              : '0x0000000000000000000000000000000000000000000000000000000000000000';
+            return l;
+          })
+        );
     });
     // eslint-disable-next-line
   }, [trigger, currentAccount]);

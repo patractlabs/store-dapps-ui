@@ -341,16 +341,6 @@ export const theme = extendTheme({
         boxShadow: 'none'
       },
       'select::-ms-expand': { display: 'none' },
-
-      '.chakra-toast .chakra-alert': {
-        paddingLeft: '2rem',
-        paddingRight: '1rem',
-      },
-
-      '.chakra-toast .chakra-alert button': {
-        right: 'unset',
-        left: '0.25rem'
-      }
     }
   }
 });

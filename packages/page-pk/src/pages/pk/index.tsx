@@ -241,7 +241,6 @@ const PK: React.FC = () => {
           <Td
             sx={{
               color: isRevealed ? '#000000' : 'auto',
-              fontWeight: isRevealed ? 'semibold' : 'auto'
             }}
           >
             {!isRevealed ? <Text>{'-'}</Text> : item.salt || ''}
@@ -263,7 +262,7 @@ const PK: React.FC = () => {
                 <Box fontSize='16px' color='#0058FA'>
                   {amount}
                 </Box>
-                <Box mx="4px">VS</Box>
+                <Box mx="4px">vs</Box>
                 <Box fontSize='16px' color='#0058FA'>
                   {amount}
                 </Box>
