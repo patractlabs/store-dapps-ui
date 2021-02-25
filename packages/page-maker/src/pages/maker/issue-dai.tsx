@@ -28,9 +28,9 @@ const IssueDAI: FC<{
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: () => void;
-  daiDecimals: number;
-  systemParams: SystemParams,
-}> = ({ isOpen, onClose, onSubmit, daiDecimals, systemParams }): ReactElement => {
+  systemParams: SystemParams;
+  signal: number;
+}> = ({ isOpen, onClose, onSubmit, systemParams, signal }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
@@ -95,7 +95,7 @@ const IssueDAI: FC<{
 
   useEffect(() => {
     api.derive.balances.all(currentAccount).then(account => setBalance(account.availableBalance.toString()));
-  }, [currentAccount]);
+  }, [currentAccount, signal]);
 
   useMemo(() => {
     setCollateralRatio(`${systemParams.mcr}`);

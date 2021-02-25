@@ -54,11 +54,11 @@ const initialList = [
 export const SystemParamsArea: FC<{
   systemParams: SystemParams;
   onIssueDaiSubmit(): void;
-  decimals: number;
+  signal: number;
 }> = ({
   systemParams,
   onIssueDaiSubmit,
-  decimals,
+  signal,
 }): ReactElement => {
   const { isOpen: isIssueDAIOpen, onOpen: onIssueDAIOpen, onClose: onIssueDAIClose } = useModal();
   const list: {
@@ -147,7 +147,7 @@ export const SystemParamsArea: FC<{
                 Issue DAI
             </Button>
           </Box>
-        <IssueDAI systemParams={ systemParams } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} daiDecimals={decimals} />
+        <IssueDAI systemParams={ systemParams } isOpen={isIssueDAIOpen} onClose={onIssueDAIClose} onSubmit={onIssueDaiSubmit} signal={signal} />
       </GridItem>
     </Grid>
   )

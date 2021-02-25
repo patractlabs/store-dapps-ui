@@ -86,6 +86,8 @@ const CDPList: FC<{
       return;
     }
     const _list: CDP[] = data.filter(
+      item => !!item.collateral_dot
+    ).filter(
       item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount)
     ).map(
       item => ({
