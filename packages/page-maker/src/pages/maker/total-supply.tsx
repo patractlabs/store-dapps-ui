@@ -1,7 +1,8 @@
+import ApiContext from '@patract/react-components/api/api-context';
 import { useAccount, useContractQuery } from '@patract/react-hooks';
 import { Box, SimpleGrid } from '@patract/ui-components';
 import { toFixed } from '@patract/utils';
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
 import { useDaiContract } from '../../hooks/use-dai-contract';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 
@@ -70,41 +71,42 @@ const Card: FC<{
     </Box>
   </Box>);
 }
-
+const initialTotal = [
+  { title: 'Total Issuers', val: '0' },
+  { title: 'Total Collateral', val: '0' },
+  { title: 'Total Issuance', val: '0' },
+  { title: 'Average Collateral Ratio', val: '0' },
+  { title: 'Your Balance', val: 0 },
+];
 export const TotalSupply: FC<{
   price: number;
   signal: number;
-  decimals: number;
-}> = ({ price, signal, decimals }): ReactElement => {
+  daiDecimals: number;
+}> = ({ price, signal, daiDecimals }): ReactElement => {
   const { contract } = useMakerContract();
   const { read: readTotalSupply } = useContractQuery({ contract, method: 'totalSupply' });
   const { contract: daiContract } = useDaiContract();
   const { read: readBalance } = useContractQuery({ contract: daiContract, method: 'iErc20,balanceOf' });
   const { currentAccount } = useAccount();
+  const { tokenDecimals: dotDecimals } = useContext(ApiContext);
   const [ list, setList ] = useState<{
     title: string;
     val: number | string;
-  }[]>([
-    { title: 'Total Issuers', val: '' },
-    { title: 'Total Collateral', val: '' },
-    { title: 'Total Issuance', val: '' },
-    { title: 'Average Collateral Ratio', val: '' },
-    { title: 'Your Balance', val: 0 },
-  ]);
+  }[]>(initialTotal);
 
   useEffect(() => {
     Promise.all([readTotalSupply(), readBalance(currentAccount)]).then(([total, balance]) => {
       const [totalIssuers, totalCollateral, totalIssuance] = (total as number[]) || [0, 0, 0, 0];
-
-      setList([
-        { title: 'Total Issuers', val: totalIssuers },
-        { title: 'Total Collateral', val: toFixed(totalCollateral, decimals).round(1).toString() },
-        { title: 'Total Issuance', val: toFixed(totalIssuance, decimals).round(1).toString() },
-        { title: 'Average Collateral Ratio', val: totalIssuance ? (totalCollateral * price / totalIssuance * 100).toFixed(0) : '0' },
-        { title: 'Your Balance', val: toFixed(balance as number, decimals, false).round(3).toString() },
-      ]);
+      console.log('balance:', balance, 'total: ', total, price);
+      const newList = [...initialTotal];
+      newList[0].val = totalIssuers;
+      newList[1].val = toFixed(totalCollateral, dotDecimals).round(1).toString();
+      newList[2].val = toFixed(totalIssuance, daiDecimals).round(1).toString();
+      newList[3].val = totalIssuance ? (totalCollateral * price * (Math.pow(10, daiDecimals - dotDecimals)) / totalIssuance * 100).toFixed(0) : '0';
+      newList[4].val = toFixed(balance as number || 0, daiDecimals, false).round(3).toString();
+      setList(newList);
     }).catch((e) => {console.log('err', e)});
-  }, [readTotalSupply, price, signal, readBalance, currentAccount, decimals]);
+  }, [readTotalSupply, price, signal, readBalance, currentAccount, daiDecimals, dotDecimals]);
 
   return (
     <SimpleGrid columns={5} spacing={4} sx={{ marginBottom: '1rem' }}>

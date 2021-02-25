@@ -1,10 +1,11 @@
 import { useContractTx } from '@patract/react-hooks';
 import { Button, Fixed, FormControl, FormHelperText, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
-import React, { FC, ReactElement, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useContext, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { RightSymbol } from './right-symbol';
 import { CDP } from './types';
 import { parseAmount, toFixed } from '@patract/utils';
+import ApiContext from '@patract/react-components/api/api-context';
 
 const Increase: FC<{
   isOpen: boolean;
@@ -12,14 +13,15 @@ const Increase: FC<{
   onSubmit?: () => void;
   cdp?: CDP;
   price: number;
-  decimals: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, price, decimals }): ReactElement => {
+  daiDecimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, price, daiDecimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [ increase, setIncrease ] = useState<string>('');
   const [ ratio, setCollateralRatio ] = useState<string>('');
   const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Increase Collateral', contract, method: 'addCollateral' });
+  const { tokenDecimals: dotDecimals } = useContext(ApiContext);
 
   const close = () => {
     setIncrease('');
@@ -29,7 +31,7 @@ const Increase: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id], parseAmount(increase, decimals))
+    excute([cdp!.id], parseAmount(increase, dotDecimals))
       .then(() => {
         close();
         onSubmit && onSubmit();
@@ -49,20 +51,21 @@ const Increase: FC<{
       return setCollateralRatio('');
     }
     const _increase = parseFloat(increase);
-    const times = Math.pow(10, decimals);
-    const estimatedRatio = (cdp.collateral_dot / times + _increase) * price / (cdp.issue_dai / times) * 100;
+    const daiTimes = Math.pow(10, daiDecimals);
+    const dotTimes = Math.pow(10, dotDecimals);
+    const estimatedRatio = (cdp.collateral_dot / dotTimes + _increase) * price / (cdp.issue_dai / daiTimes) * 100;
 
     if (`${estimatedRatio}` === 'NaN') {
       setCollateralRatio('');
       setCalculation(``);
     } else {
-      const collateral = toFixed(cdp.collateral_dot, decimals, false).round(3).toString();
-      const issueDai = toFixed(cdp.issue_dai, decimals, false).round(3).toString();
+      const collateral = toFixed(`${cdp.collateral_dot}`, dotDecimals, false).round(3).toString();
+      const issueDai = toFixed(`${cdp.issue_dai}`, daiDecimals, false).round(3).toString();
 
       setCollateralRatio(estimatedRatio.toFixed(0));
       setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT + ${increase} DOT) * $${price} / ${issueDai} DAI`);
     }
-  }, [increase, cdp, price, decimals]);
+  }, [increase, cdp, price, daiDecimals, dotDecimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
@@ -75,7 +78,7 @@ const Increase: FC<{
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Increase Collateral</span>
               <span>
-                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ decimals } /> DOT
+                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ dotDecimals } /> DOT
               </span>
             </FormLabel>
             <InputGroup>

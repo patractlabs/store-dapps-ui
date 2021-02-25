@@ -23,27 +23,26 @@ const Maker: FC = (): ReactElement => {
   useEffect(() => {
     readSystemParams().then((data) => {
       const [ mcr, mlr, lrr, currentPrice ] = (data as number[]) || [0, 0, 0, 0];
-
       setSystemParams({
         mcr,
         mlr,
         lrr,
-        currentPrice,
+        currentPrice: currentPrice / 100,
       });
     }).catch(() => {});
   }, [readSystemParams, signal]);
 
   useEffect(() => {
-    readDecimals().then((data) => setDecimals(10)).catch(() => {});
+    readDecimals().then((data) => setDecimals(data as number)).catch(() => {});
   }, [setDecimals, readDecimals]);
 
   return (
     <Box>
-      <TotalSupply price={systemParams.currentPrice} signal={signal} decimals={decimals} />
+      <TotalSupply price={systemParams.currentPrice} signal={signal} daiDecimals={decimals} />
       <SystemParamsArea systemParams={systemParams} onIssueDaiSubmit={forceUpdate} decimals={decimals} />
       <Box sx={{ height: '34px' }}></Box>
-      <CDPList systemParams={systemParams} owner={true} decimals={decimals} onSubmit={forceUpdate} signal={signal} />
-      <CDPList systemParams={systemParams} owner={false} decimals={decimals} onSubmit={forceUpdate} signal={signal} />
+      <CDPList systemParams={systemParams} owner={true} daiDecimals={decimals} onSubmit={forceUpdate} signal={signal} />
+      <CDPList systemParams={systemParams} owner={false} daiDecimals={decimals} onSubmit={forceUpdate} signal={signal} />
     </Box>
   );
 };

@@ -12,8 +12,8 @@ const Withdraw: FC<{
   onSubmit?: () => void;
   cdp?: CDP;
   price: number;
-  decimals: number;
-}> = ({ isOpen, onClose, onSubmit, cdp, price, decimals }): ReactElement => {
+  daiDecimals: number;
+}> = ({ isOpen, onClose, onSubmit, cdp, price, daiDecimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
   const [release, setRelease] = useState<string>('');
@@ -29,7 +29,9 @@ const Withdraw: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    excute([cdp!.id, redeem])
+    console.log('withd', cdp!.id, redeem + '');
+    
+    excute([cdp!.id, `${redeem}`])
       .then((data) => {
         console.log('withdraw', data)
         close();
@@ -41,28 +43,25 @@ const Withdraw: FC<{
   };
 
   const disabled = useMemo(() => {
-    if (!cdp) {
-      return false;
-    }
-    return redeem > cdp.issue_dai || redeem <= 0
-  }, [redeem, cdp]);
+    return redeem <= 0;
+  }, [redeem]);
 
   useMemo(() => {
     if (!cdp || !price) {
       return setRelease('');
     }
-    const times = Math.pow(10, decimals);
+    const times = Math.pow(10, daiDecimals);
     const _release = cdp.collateral_ratio / 100 * redeem / times / price;
 
     if (`${_release}` === 'NaN') {
       setRelease('');
       setCalculation(``);
     } else {
-      const _redeem = toFixed(redeem, decimals, false).round(3).toString();
+      const _redeem = toFixed(`${redeem}`, daiDecimals, false).round(3).toString();
       setRelease(`${_release.toFixed(3)}`);
       setCalculation(`${_release.toFixed(3)} DOT = ${_redeem} DAI / $${price} * ${cdp.collateral_ratio.toFixed(1)}%`);
     }
-  }, [redeem, cdp, price, decimals]);
+  }, [redeem, cdp, price, daiDecimals]);
 
   useMemo(() => {
     if (!cdp) {
@@ -81,10 +80,10 @@ const Withdraw: FC<{
           <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
-                Redeem: <Fixed value={redeem} decimals={decimals} /> DAI
+                Redeem: <Fixed value={`${redeem}`} decimals={daiDecimals} /> DAI
               </span>
               <span>
-                Total Issuance: <Fixed value={cdp?.issue_dai} decimals={decimals} /> DAI
+                Total Issuance: <Fixed value={cdp?.issue_dai} decimals={daiDecimals} /> DAI
               </span>
             </FormLabel>
             <Slider min={0} max={(cdp && cdp.issue_dai) || 0} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>

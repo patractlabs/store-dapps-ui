@@ -1,7 +1,7 @@
 import { Pagination } from '@material-ui/lab';
 import { useAccount, useModal } from '@patract/react-hooks';
 import { Address, Flex, Table, Tbody, Td, Th, Thead, Tr, Text, Box } from '@patract/ui-components';
-import React, { FC, ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useCallback, useContext, useMemo, useState } from 'react';
 import { SystemParams } from './system-params';
 import { useCdpList } from '../../hooks/use-cdp-list';
 import Increase from './increase';
@@ -10,7 +10,8 @@ import Reduce from './reduce';
 import { CDP } from './types';
 import Withdraw from './with-draw';
 import styled from 'styled-components';
-import { formatBalance } from '@polkadot/util';
+import ApiContext from '@patract/react-components/api/api-context';
+import { toFixed } from '@patract/utils';
 
 const getDays = (createTime: string): string => {
   const _createTime = parseFloat(createTime);
@@ -36,15 +37,25 @@ const LabelButton = styled.label<{ isDisabled?: boolean }>`
   color: ${props => props.isDisabled ? '#ABB4D0' : '#0058FA'};
   text-decoration: underline;
 `;
-const getZeroFilled = (val: number, decimals: number) => {
-  const zeroFill = ['000', '00', '0'];
-  let result = formatBalance(val, { decimals, withUnit: false });
+const getZeroFilled = (val: number, decimals: number): string => {
+  const result = toFixed(val, decimals, false).round(3).toString();
+  return fillZero(result);
+};
+
+export const fillZero = (result: string, zeroCount = 3): string => {
+  let zeroFill: string[] = [];
+  let ZERO = '0';
+  for (let i = 0; i < zeroCount; i ++) {
+    zeroFill.push(ZERO);
+    ZERO = `${ZERO}0`;
+  }
+  zeroFill = zeroFill.reverse();
   let [ base, decimal ] = result.split('.');
-  decimal = decimal || '';
-  if (decimal.length < 3) {
+  decimal = decimal || ''; 
+  if (decimal.length < zeroCount) {
     decimal = `${decimal}${zeroFill[decimal.length]}`
-  } else if (decimal.length > 3) {
-    decimal = decimal.slice(0, 3);
+  } else if (decimal.length > zeroCount) {
+    decimal = decimal.slice(0, zeroCount);
   }
   return `${base}.${decimal}`;
 };
@@ -56,10 +67,10 @@ const getFixed = (num: number, decimals = 3) => {
 const CDPList: FC<{
   systemParams: SystemParams;
   owner: boolean;
-  decimals: number;
+  daiDecimals: number;
   onSubmit?(): void;
   signal: number;
-}> = ({ systemParams, owner, decimals, onSubmit, signal }): ReactElement => {
+}> = ({ systemParams, owner, daiDecimals, onSubmit, signal }): ReactElement => {
   const { isOpen: isIncreaseOpen, onOpen: onIncreaseOpen, onClose: onIncreaseClose } = useModal();
   const { isOpen: isReduceOpen, onOpen: onReduceOpen, onClose: onReduceClose } = useModal();
   const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useModal();
@@ -68,6 +79,7 @@ const CDPList: FC<{
   const [ choosedCdp, setChoosedCdp ] = useState<CDP>();
   const [ list, setList ] = useState<CDP[]>([]);
   const { currentAccount } = useAccount();
+  const { tokenDecimals: dotDecimals } = useContext(ApiContext);
 
   useMemo(() => {
     if (!data) {
@@ -78,9 +90,11 @@ const CDPList: FC<{
     ).map(
       item => ({
         ...item,
-        collateral_ratio: item.collateral_dot * systemParams.currentPrice / item.issue_dai * 100,
+        collateral_ratio: item.collateral_dot * systemParams.currentPrice / item.issue_dai * 100 * (Math.pow(10, daiDecimals - dotDecimals)),
       })
     );
+    console.log(_list, 'list');
+    
     setList(_list);
   }, [data, currentAccount, owner, systemParams.currentPrice]);
 
@@ -158,18 +172,17 @@ const CDPList: FC<{
     (item: CDP) => {
       return (
         <Tr key={item.id} textAlign="right">
-          <Td textAlign="left" px="4" w="350px">
+          <Td textAlign="left" px="4">
             <Address value={item.issuer} />
           </Td>
           <Td textAlign="right">
             { getDays(item.create_date) }
           </Td>
           <Td textAlign="right">
-            {  }
-            { getZeroFilled(item.collateral_dot, decimals) } DOT
+            { getZeroFilled(item.collateral_dot, dotDecimals) } DOT
           </Td>
           <Td textAlign="right">
-            { getZeroFilled(item.issue_dai, decimals) } DAI
+            { getZeroFilled(item.issue_dai, daiDecimals) } DAI
           </Td>
           <Td textAlign="right">
             <label style={{
@@ -178,11 +191,11 @@ const CDPList: FC<{
               { !item.collateral_dot ? '-' : `${item.collateral_ratio.toFixed(1)}%` }
             </label>
           </Td>
-          <Td textAlign="right" px="6" w="295px">{renderOperations(item)}</Td>
+          <Td textAlign="right" px="6" w={owner ? '295px' : '150px'}>{renderOperations(item)}</Td>
         </Tr>
       );
     },
-    [renderOperations, decimals, getRatioColor]
+    [renderOperations, daiDecimals, getRatioColor, owner, dotDecimals]
   );
 
   const pageSize = 10;
@@ -198,17 +211,16 @@ const CDPList: FC<{
       padding: list.length ? '1rem' : '0px',
       marginBottom: list.length && owner ? '24px' : '0px'
     }}>
-      
       { !!list.length && <Text sx={{ paddingBottom: '1em' }}>{ owner ? 'My' : 'Others' } Collaterals</Text> }
       { !!list.length && <Table variant='maker'>
         <Thead>
           <Tr>
-            <Th textAlign="left" px='4' w="350px">Account</Th>
+            <Th textAlign="left" px='4'>Account</Th>
             <Th textAlign="right">Creation Time</Th>
             <Th textAlign="right">Collateral</Th>
             <Th textAlign="right">Issuance</Th>
             <Th textAlign="right">Collateral Ratio</Th>
-            <Th textAlign="right" px='6' w="295px">Operation</Th>
+            <Th textAlign="right" px='6' w={owner ? '295px' : '150px'}>Operation</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -225,10 +237,10 @@ const CDPList: FC<{
           {isLoading ? <CircularProgress isIndeterminate color='blue.300' /> : <Text>No Data</Text>}
         </Center>
       )} */}
-      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
-      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={onSubmit} systemParams={systemParams} decimals={decimals} />
-      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={onSubmit} price={systemParams.currentPrice} decimals={decimals} />
-      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={onSubmit} systemParams={systemParams} decimals={decimals} />
+      <Increase cdp={choosedCdp} isOpen={isIncreaseOpen && !!choosedCdp} onClose={onIncreaseClose} onSubmit={onSubmit} price={systemParams.currentPrice} daiDecimals={daiDecimals} />
+      <Reduce cdp={choosedCdp} isOpen={isReduceOpen && !!choosedCdp} onClose={onReduceClose} onSubmit={onSubmit} systemParams={systemParams} daiDecimals={daiDecimals} />
+      <Withdraw cdp={choosedCdp} isOpen={isWithdrawOpen && !!choosedCdp} onClose={onWithdrawClose} onSubmit={onSubmit} price={systemParams.currentPrice} daiDecimals={daiDecimals} />
+      <Liquidate cdp={choosedCdp} isOpen={isLiquidateOpen && !!choosedCdp} onClose={onLiquidateClose} onSubmit={onSubmit} systemParams={systemParams} daiDecimals={daiDecimals} />
     </Box>
   );
 };
