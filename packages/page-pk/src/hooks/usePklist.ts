@@ -42,7 +42,7 @@ export const usePklist = (signal = 0) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [readTotal, signal, readDetail]);
+  }, [readTotal, signal, readDetail, readExpireOf]);
 
   return {
     isLoading,
