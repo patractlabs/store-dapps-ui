@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { IdentityIcon, Box, Tag } from '@patract/ui-components';
-import { Flex, Tooltip, Text } from '@chakra-ui/react';
-import { useAccount, useApi, useAccountInfo } from '@patract/react-hooks';
+import { Flex, Text, Tooltip } from '@chakra-ui/react';
+import { useAccount, useAccountInfo, useApi } from '@patract/react-hooks';
+import { Box, IdentityIcon } from '@patract/ui-components';
 import { truncated } from '@patract/utils';
+import React from 'react';
 import Badge from './badge';
 
 type AddressProps = {
@@ -12,15 +12,16 @@ type AddressProps = {
 };
 
 export const Address: React.FC<AddressProps> = ({ hideText = false, value, type, ...rest }) => {
-  const { api } = useApi();
-  const { accountList } = useAccount();
   const accountInfo = useAccountInfo(value || null);
 
   if (!value) return null;
 
-  const account = accountList?.filter((account) => account.address === value)[0];
-  const name = accountInfo.name ? accountInfo.name : `${truncated(value)}`;
-  console.log(accountInfo.name, accountInfo.identity?.display);
+  const name = accountInfo.identity?.display
+    ? accountInfo.identity.display
+    : accountInfo.name
+    ? accountInfo.name
+    : `${truncated(value)}`;
+
   return (
     <Tooltip label={value} aria-label='account address' placement='top' hasArrow {...rest}>
       <Flex display='inline-flex' alignItems='center' textTransform='uppercase'>
