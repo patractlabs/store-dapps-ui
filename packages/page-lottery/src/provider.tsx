@@ -72,14 +72,15 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
       }
 
       // Get My Lotteries
-      const winners: BiggestWinner[] = [];
+      const winners: BiggestWinner[] = ((await biggestWinenr.read()) as any).map((w: any) => {
+        w.epoch_id = w.epoch;
+        w.my_num = w.win_num;
+        w.reward = w.reward * w.tickets;
+        return w;
+      });
       const map: Record<string, number[]> = {};
       for (const w in histories) {
         map[String(histories[w].epoch_id)] = (histories[w] as any).win_num;
-        const r = await biggestWinenr.read(histories[w].epoch_id);
-        if (r) {
-          winners.push({ ...(r as any), epoch_id: histories[w].epoch_id });
-        }
       }
 
       // Prepare winner map

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button, Spinner } from '@patract/ui-components';
+import { Box, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } from '@patract/ui-components';
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
@@ -58,27 +58,17 @@ export const T: React.FC<TableProps> = ({
           </Tr>
         </Thead>
         <Tbody>
-          {rows.length > 0 ? (
-            rows
-              .slice((page - 1) * limit, page * limit)
-              .map((b, i) => (
-                <Trr
-                  title={title}
-                  row={b}
-                  key={i}
-                  decimal={10}
-                  currentEpoch={current_epoch}
-                  renderHash={title !== 'Biggest Winners'}
-                  winner={winnerMap[b.epoch_id]}
-                />
-              ))
-          ) : (
-            <Tr>
-              <Td>
-                <Spinner />
-              </Td>
-            </Tr>
-          )}
+          {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
+            <Trr
+              title={title}
+              row={b}
+              key={i}
+              decimal={10}
+              currentEpoch={current_epoch}
+              renderHash={title !== 'Biggest Winners'}
+              winner={winnerMap[b.epoch_id]}
+            />
+          ))}
         </Tbody>
       </Table>
       {pagin && (
