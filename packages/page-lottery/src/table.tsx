@@ -120,7 +120,7 @@ export const Trr: React.FC<{
       {row.ident && <Td>{row.ident}</Td>}
       <Td display='flex' flexDirection='row'>
         {(title === 'Biggest Winners' ? winner : true) && row.my_num && row.my_num.length === 3 ? (
-          <Box display='inherit' pt='0.3rem' pb='0.3rem'>
+          <Flex direction='row' alignItems='center' justifyContent='center' pt='0.3rem' pb='0.3rem'>
             <Circle
               v={row.my_num[0]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[0] === winner[0] ? 0 : 1}
@@ -136,7 +136,12 @@ export const Trr: React.FC<{
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[2] === winner[2] ? 0 : 1}
               forceDisabled
             />
-          </Box>
+            {row.tickets && (
+              <Flex direction='row' alignItems='center' justifyContent='center' lineHeight='2rem'>
+                {` x ${row.tickets}`}
+              </Flex>
+            )}
+          </Flex>
         ) : (
           <Box>
             {row.random === '0x0000000000000000000000000000000000000000000000000000000000000000' &&
@@ -151,7 +156,6 @@ export const Trr: React.FC<{
           </Box>
         )}
       </Td>
-      {row.tickets && <Td>{row.tickets}</Td>}
       {row.reward !== undefined && <Trend v={row.reward / Math.pow(10, decimal)} />}
       {row.buyers && (
         <Td>
