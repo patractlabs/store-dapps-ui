@@ -4,7 +4,7 @@ import { createClient } from './client';
 
 const linkConfig = {
   http: 'https://api.new.staging.jupiter.patract.cn/v1/graphql',
-  ws: 'wss://api.new.staging.jupiter.patract.cn/v1/graphqll'
+  ws: 'wss://api.new.staging.jupiter.patract.cn/v1/graphql'
 };
 
 export const GraphqlProvider: React.FC = ({ children }) => {
