@@ -26,11 +26,18 @@ export type MenuOption = {
 export type InputAddressSelectProps = {
   value: string;
   options: any;
+  hasDefault?: boolean;
   onChangeValue: (value: string) => void;
   onChangeOption: (value: any) => void;
 } & Omit<React.ComponentProps<typeof Controller>, 'render'>;
 
-const InputAddressSelect: React.FC<InputAddressSelectProps> = ({ value, options, onChangeOption, onChangeValue }) => {
+const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
+  hasDefault,
+  value,
+  options,
+  onChangeOption,
+  onChangeValue
+}) => {
   const { isOpen, onOpen, onClose } = useModal();
   const [inputValue, setInputValue] = useState('');
 
@@ -50,13 +57,21 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({ value, options,
   );
 
   const option = useMemo(() => {
+    if (!value && hasDefault) {
+      return (options || []).find((d: any) => d.contract === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM');
+    }
     return (options || []).find((d: any) => d.contract === value);
-  }, [options, value]);
+  }, [options, value, hasDefault]);
 
   return (
     <Box>
       <Input
-        onChange={(event) => onChangeValue(event.target.value)}
+        onChange={(event) => {
+          if (hasDefault && event.target.value === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+            onChangeValue('');
+          }
+          onChangeValue(event.target.value);
+        }}
         value={value}
         sx={{
           w: 'calc(100% - 160px)',
@@ -82,7 +97,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({ value, options,
               bgColor: '#FFFFFF'
             }}
           >
-            <Flex height='full' alignItems="center" justifyContent="space-between">
+            <Flex height='full' alignItems='center' justifyContent='space-between'>
               <Flex alignItems='center'>
                 <Box mr='1' mt='1'>
                   <IdentityIcon value={option?.contract} theme='polkadot' />

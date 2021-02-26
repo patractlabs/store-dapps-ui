@@ -99,7 +99,7 @@ const CreatePair = React.memo(
     const submit = () => {
       setIsLoading(true);
       let method: any;
-      if (to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+      if (to === '') {
         method = createDot([from, from]);
       } else {
         method = excute([from, to, null]);
@@ -137,6 +137,7 @@ const CreatePair = React.memo(
                 <FormLabel>To</FormLabel>
                 <InputAddressSelect
                   options={contractsWithDot}
+                  hasDefault
                   value={to}
                   onChangeValue={setTo}
                   onChangeOption={(option) => {
@@ -149,7 +150,7 @@ const CreatePair = React.memo(
 
           <ModalFooter py={8}>
             <Stack direction='row' spacing={4} justifyContent='flex-end'>
-              <Button isDisabled={!to || !from} isLoading={isLoading} colorScheme='blue' onClick={submit}>
+              <Button isDisabled={!from} isLoading={isLoading} colorScheme='blue' onClick={submit}>
                 Submit
               </Button>
             </Stack>
