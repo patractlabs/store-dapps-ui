@@ -44,7 +44,7 @@ const IssueDAI: FC<{
   const { currentAccount } = useAccount();
 
   const onRatioChange = (val: string) => {
-    setCollateralRatio(`${parseInt(val)}`);
+    setCollateralRatio(`${parseInt(val)}`  === 'NaN' ? '' : `${parseInt(val)}`);
   };
 
   const close = () => {

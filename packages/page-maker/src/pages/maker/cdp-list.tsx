@@ -153,7 +153,7 @@ const CDPList: FC<{
               setChoosedCdp(item);
               onWithdrawOpen();
             } }>
-              Withdraw
+              Redeem
             </LabelButton>
         </Flex>
         :

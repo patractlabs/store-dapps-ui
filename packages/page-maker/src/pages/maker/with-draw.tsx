@@ -29,7 +29,7 @@ const Withdraw: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    console.log('withd', cdp!.id, redeem + '');
+    console.log('withd', cdp!.id, redeem + '', redeem);
     
     excute([cdp!.id, `${redeem}`])
       .then((data) => {
@@ -74,7 +74,7 @@ const Withdraw: FC<{
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
       <ModalOverlay />
       <ModalContent maxW='2xl'>
-        <ModalHeader>Withdraw</ModalHeader>
+        <ModalHeader>Redeem</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl sx={{ marginBottom: '21px' }}>
