@@ -152,7 +152,7 @@ const PK: React.FC = () => {
   const { contract } = usePkContract();
   const { excute: deleteGame } = useContractTx({ title: 'Delete Game', contract, method: 'delete' });
   const { excute: revealGame } = useContractTx({ title: 'Reveal Game', contract, method: 'reveal' });
-  const { excute: expireGame } = useContractTx({ title: 'Delete Game', contract, method: 'delete' });
+  const { excute: expireGame } = useContractTx({ title: 'Punish Game', contract, method: 'expire' });
   const { excute } = useContractTx({ title: 'Delete Game', contract, method: 'delete' });
   const { data, isLoading } = usePklist(signal);
 
@@ -163,6 +163,15 @@ const PK: React.FC = () => {
       });
     },
     [forceUpdate, deleteGame]
+  );
+
+  const handlePunishGame = useCallback(
+    (id) => {
+      return expireGame([id]).then(() => {
+        forceUpdate();
+      });
+    },
+    [forceUpdate, expireGame]
   );
 
   const getResult = useCallback((item, role) => {
@@ -207,6 +216,7 @@ const PK: React.FC = () => {
           );
         }
       }
+      console.log();
       if (item.status === 'Settle') {
         if (currentAccount === item.creator) {
           return (
@@ -218,7 +228,14 @@ const PK: React.FC = () => {
         } else {
           return (
             <Flex direction='column'>
-              <Text color='gray.700'>{'Waitting'}</Text>
+              {item.expireOf !== 0 ? (
+                <Text color='gray.700'>{'Waitting'}</Text>
+              ) : (
+                <Button colorScheme='red' variant='link' _focus={{ boxShadow: 'none' }} onClick={() => handlePunishGame(item.id)}>
+                  Punish
+                </Button>
+              )}
+
               <Countdown value={item.expireOf} />
             </Flex>
           );
@@ -240,7 +257,7 @@ const PK: React.FC = () => {
           <Td>{item.id}</Td>
           <Td
             sx={{
-              color: isRevealed ? '#000000' : 'auto',
+              color: isRevealed ? '#000000' : 'auto'
             }}
           >
             {!isRevealed ? <Text>{'-'}</Text> : item.salt || ''}
@@ -254,15 +271,15 @@ const PK: React.FC = () => {
           </Td>
           <Td>
             {item.joiner_choice === 'None' ? (
-              <Box fontSize='16px' color='#0058FA' >
+              <Box fontSize='16px' color='#0058FA'>
                 {amount}
               </Box>
             ) : (
-              <Flex fontSize='16px' justifyContent="center" alignItems="center">
+              <Flex fontSize='16px' justifyContent='center' alignItems='center'>
                 <Box fontSize='16px' color='#0058FA'>
                   {amount}
                 </Box>
-                <Box mx="4px">vs</Box>
+                <Box mx='4px'>vs</Box>
                 <Box fontSize='16px' color='#0058FA'>
                   {amount}
                 </Box>
