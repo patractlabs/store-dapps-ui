@@ -34,8 +34,8 @@ const Liquidate: FC<{
   const submit = () => {
     setIsLoading(true);
     console.log(cdp!.issue_dai, parseAmount(`${redeem}`, daiDecimals), 'liqui', redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals))
-    excute([cdp!.id, redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals)])
-    // excute([cdp!.id, parseAmount(`${redeem}`, daiDecimals)])
+    // excute([cdp!.id, redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals)])
+    excute([cdp!.id, parseAmount(`${redeem}`, daiDecimals)])
       .then((data) => {
         console.log('liquidate', data)
         close();
