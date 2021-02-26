@@ -31,10 +31,9 @@ const Withdraw: FC<{
   const submit = () => {
     setIsLoading(true);
     const redeemToSubmit = redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals);
-    console.log('withd', cdp!.id, redeemToSubmit, redeem, cdp?.issue_dai);
+    // console.log('withd', cdp!.id, redeemToSubmit, redeem, cdp?.issue_dai);
     excute([cdp!.id, redeemToSubmit])
       .then((data) => {
-        console.log('withdraw', data)
         close();
         onSubmit && onSubmit();
       })

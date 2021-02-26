@@ -57,13 +57,14 @@ const CDPList: FC<{
   const [ list, setList ] = useState<CDP[]>([]);
   const { currentAccount } = useAccount();
   const { tokenDecimals: dotDecimals } = useContext(ApiContext);
+  const limit = 0.1;
 
   useMemo(() => {
     if (!data) {
       return;
     }
     const _list: CDP[] = data.filter(
-      item => !!item.collateral_dot
+      item => !!item.collateral_dot && (item.collateral_dot / Math.pow(10, dotDecimals)) >= limit &&  (item.issue_dai / Math.pow(10, daiDecimals)) > limit
     ).filter(
       item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount)
     ).map(
@@ -72,7 +73,7 @@ const CDPList: FC<{
         collateral_ratio: item.collateral_dot * systemParams.currentPrice / item.issue_dai * 100 * (Math.pow(10, daiDecimals - dotDecimals)),
       })
     );
-    console.log(_list, 'list');
+    // console.log(_list, 'list');
     
     setList(_list);
   }, [data, currentAccount, owner, systemParams.currentPrice, daiDecimals, dotDecimals]);

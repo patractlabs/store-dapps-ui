@@ -33,11 +33,10 @@ const Liquidate: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    console.log(cdp!.issue_dai, parseAmount(`${redeem}`, daiDecimals), 'liqui', redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals))
+    // console.log(cdp!.issue_dai, parseAmount(`${redeem}`, daiDecimals), 'liqui', redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals))
     // excute([cdp!.id, redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals)])
     excute([cdp!.id, parseAmount(`${redeem}`, daiDecimals)])
       .then((data) => {
-        console.log('liquidate', data)
         close();
         onSubmit && onSubmit();
       })
@@ -74,14 +73,10 @@ const Liquidate: FC<{
     if (cdp.collateral_ratio < 100 + systemParams.lrr ) {
       _maxRedeem = cdp.collateral_dot / dotTimes * systemParams.currentPrice / (100 + systemParams.lrr) * 100;
     }
-    console.log('cdp.collateral_ratio', cdp.collateral_ratio < (100 + systemParams.lrr) / 100, _maxRedeem)
-    // const _maxRedeem = cdp.collateral_dot / times * systemParams.currentPrice * 100 / (100 + systemParams.lrr);
-    // const _maxRedeem = cdp.issue_dai / times
     if (`${_maxRedeem}` === 'NaN') {
       setRedeem(0);
       return setMaxRedeem(0);
     }
-    console.log('_maxredeem  m: ', _maxRedeem, cdp.collateral_dot, cdp.issue_dai)
     setMaxRedeem(_maxRedeem);
     setRedeem(_maxRedeem);
   }, [cdp, systemParams, dotDecimals, daiDecimals]);

@@ -55,7 +55,7 @@ const IssueDAI: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    console.log('issue dai, collateral:', parseAmount(collateral, dotDecimals), 'ratio:', collateralRatio);
+    // console.log('issue dai, collateral:', parseAmount(collateral, dotDecimals), 'ratio:', collateralRatio);
     
     excute([collateralRatio], parseAmount(collateral, dotDecimals))
       .then(() => {

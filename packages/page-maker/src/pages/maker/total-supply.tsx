@@ -97,7 +97,6 @@ export const TotalSupply: FC<{
   useEffect(() => {
     Promise.all([readTotalSupply(), readBalance(currentAccount)]).then(([total, balance]) => {
       const [totalIssuers, totalCollateral, totalIssuance] = (total as number[]) || [0, 0, 0, 0];
-      console.log('balance:', balance, 'total: ', total, price, daiDecimals);
       const newList = [...initialTotal];
       newList[0].val = totalIssuers;
       newList[1].val = toFixed(totalCollateral, dotDecimals).round(1).toString();

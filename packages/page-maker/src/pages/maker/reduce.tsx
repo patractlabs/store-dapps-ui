@@ -34,7 +34,6 @@ const ReduceCollateral: FC<{
     setIsLoading(true);
     excute([cdp!.id, parseAmount(decrease, dotDecimals)])
       .then((data) => {
-        console.log('reduce', data)
         close();
         onSubmit && onSubmit();
       })
