@@ -64,7 +64,7 @@ const CDPList: FC<{
       return;
     }
     const _list: CDP[] = data.filter(
-      item => !!item.collateral_dot && (item.collateral_dot / Math.pow(10, dotDecimals)) >= limit &&  (item.issue_dai / Math.pow(10, daiDecimals)) > limit
+      item => !!item.collateral_dot && (item.collateral_dot / Math.pow(10, dotDecimals)) >= limit &&  (item.issue_dai / Math.pow(10, daiDecimals)) >= limit
     ).filter(
       item => (owner && item.issuer === currentAccount) || (!owner && item.issuer !== currentAccount)
     ).map(
