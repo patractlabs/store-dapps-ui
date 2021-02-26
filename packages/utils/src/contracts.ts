@@ -1,9 +1,9 @@
-export const PatraPK = '5Eds2y12s3dzHhAz3pgvrYzK4M8WvfytSHhvBjv5XQj3Y5yX';
-export const PatraPixel = '5HW6uhysQVU6TYpAykZsMQqwdsGhhHz5Mqjemq5hf19LVUqm';
-export const PatraLottery = '5GsV8tG9BBAhjSRLMzqMWTCP4ZTnPUE6oebf1TdVjJxK6aPR';
-export const PatraSwap = '5CgQg7KiifY82sEDQqBYatGgnP7Ynvd7Z82f3FMa6mwmSsgw';
+export const PatraPK = '5ELRFnm3T9u1PSNaidPUbFj9cSATaYQX5zAeFTfFCFRSFQ4T';
+export const PatraPixel = '5H1b2NdvAJ2wiknBQ9rzryVHgDNBZiYQvRe35fuMSRXNMyEA';
+export const PatraLottery = '5FcjY9tStk6LjTsFCUDZXFPWugrkVaonwcdppVh6xi58QD4j';
+export const PatraSwap = '5DaHvjPkTx9gN48CTCG6HUJqZ8QG1X5RwZTQsW7TLN7Q69m2';
 export const PatraMaker = '5Ci1dxcy8EFozj1Drmri8VE47wx6vgWJVsLawqdNTPupRm2h';
-export const USDT = '5EWH8uG8DYgcurXhJ2GANxeCyRDHgVAK5uupqsQSekPSRM9g';
-export const JBTC = '5GtCRvPhaSo9iUJHcE7TyDsHveh3duEzeike9E8PLoxfUhzL';
-export const JETH = '5DLB2GYTjdQHJigkDx1SWGC4a12VwGAWtuJrnh82Y1BdrKBr';
+export const USDT = '5Fc9VypWmMhsiE6P2BoCVw97Y8KnUFCeP47SZCA1kvLjPXYG';
+export const JBTC = '5DHh9wbUr44NXPgXVaEjQbjBqxbH5PxkrrcW6cNC4xFtaoUo';
+export const JETH = '5DgCR6FJNLZDCUM9sH8rSQuNaXG83ciUzC6yYyoHaz7agkCB';
 export const DAI = '5DTRjukhW6LCDjQc5XXg65b6wPxGgkgGXxPvcRW8TjpnA5b1';

@@ -1,33 +1,31 @@
 import { AddIcon } from '@chakra-ui/icons';
-import { PopoverTrigger, Image } from '@chakra-ui/react';
+import { Image, PopoverTrigger } from '@chakra-ui/react';
 import { useModal } from '@patract/react-hooks';
 import {
-  Fixed,
   Box,
   Button,
   Center,
   CircularProgress,
+  Fixed,
   Flex,
+  IdentityIcon,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
-  Tr,
-  Popover,
-  IdentityIcon,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody
+  Tr
 } from '@patract/ui-components';
 import React, { useReducer } from 'react';
 import { usePairList } from '../../hooks/usePairList';
+import ArrowWebp from '../../images/arrow.svg';
 import Add from './add';
 import CreatePair from './create-pair';
 import Withdraw from './withdraw';
-import UsdtWebp from '../../images/usdt.webp';
-import EthWebp from '../../images/eth.webp';
-import ArrowWebp from '../../images/arrow.svg';
 
 const AddLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
   const { isOpen: isAddOpen, onOpen: onAddOpen, onClose: onAddClose } = useModal();
@@ -50,17 +48,12 @@ const WithdrawLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
       <Button size='sm' mr='4' onClick={onWithdrawOpen}>
         Withdraw
       </Button>
-      <Withdraw
-        onSubmit={onSubmit}
-        item={item}
-        isOpen={isWithdrawOpen}
-        onClose={onWithdrawClose}
-      />
+      <Withdraw onSubmit={onSubmit} item={item} isOpen={isWithdrawOpen} onClose={onWithdrawClose} />
     </Box>
   );
 };
 
-export const PoolList = () => {
+export const PoolList = React.memo(() => {
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
@@ -98,11 +91,18 @@ export const PoolList = () => {
                         justifyContent='space-between'
                         paddingRight='35px'
                       >
-                        <label>{item.from_symbol}</label>
-                        <Image sx={{ width: '20px', height: '20px' }} src={UsdtWebp} />
+                        <Flex alignItems='center'>
+                          <label style={{ marginRight: '16px' }}>{item.from_symbol}</label>
+                          <IdentityIcon value={item.from} theme='polkadot' />
+                        </Flex>
+
+                        {/* <Image sx={{ width: '20px', height: '20px' }} src={UsdtWebp} /> */}
                         <Image size='xs' src={ArrowWebp} />
-                        <label>{item.to_symbol}</label>
-                        <Image sx={{ width: '20px', height: '20px' }} size='xs' src={EthWebp} />
+                        <Flex alignItems='center'>
+                          <label style={{ marginRight: '16px' }}>{item.to_symbol}</label>
+                          {/* <Image sx={{ width: '20px', height: '20px' }} size='xs' src={EthWebp} /> */}
+                          <IdentityIcon value={item.to} theme='polkadot' />
+                        </Flex>
                       </Box>
                     </PopoverTrigger>
                     <PopoverContent sx={{ width: '480px', padding: '16px 12px' }}>
@@ -135,7 +135,6 @@ export const PoolList = () => {
                             justifyContent: 'flex-start'
                           }}
                           alignItems='center'
-
                         >
                           <label style={{ fontWeight: 300, color: '#666', display: 'inline-block', width: '40px' }}>
                             To:{' '}
@@ -143,7 +142,7 @@ export const PoolList = () => {
                           <Box mr={2}>
                             <IdentityIcon value={item.to} theme='polkadot' />
                           </Box>
-                          <label>{item.to}</label>
+                          <label>{item.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ? 'DOT' : item.to}</label>
                         </Box>
                       </PopoverBody>
                     </PopoverContent>
@@ -180,4 +179,4 @@ export const PoolList = () => {
       <CreatePair onSubmit={forceUpdate} isOpen={isCreatePairOpen} onClose={onCreatePairClose} />
     </Box>
   );
-};
+});

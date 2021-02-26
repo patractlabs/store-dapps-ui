@@ -218,7 +218,9 @@ const InputSelect: React.FC<InputSelectProps> = ({
                       </Box>
                     </Flex>
                     <Text ml={4} color='gray.500'>
-                      {truncated(option.address)}
+                      {option.address === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+                        ? 'DOT'
+                        : truncated(option.address)}
                     </Text>
                   </Flex>
                 </Box>
