@@ -142,7 +142,7 @@ export const PoolList = () => {
                           <Box mr={2}>
                             <IdentityIcon value={item.to} theme='polkadot' />
                           </Box>
-                          <label>{item.to}</label>
+                          <label>{item.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ? 'DOT' : item.to}</label>
                         </Box>
                       </PopoverBody>
                     </PopoverContent>
