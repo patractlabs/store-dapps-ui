@@ -53,7 +53,7 @@ const WithdrawLiquidity: React.FC<any> = ({ item, onSubmit, lpBalance }) => {
   );
 };
 
-export const PoolList = () => {
+export const PoolList = React.memo(() => {
   const [signal, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const { isOpen: isCreatePairOpen, onOpen: onCreatePairOpen, onClose: onCreatePairClose } = useModal();
@@ -179,4 +179,4 @@ export const PoolList = () => {
       <CreatePair onSubmit={forceUpdate} isOpen={isCreatePairOpen} onClose={onCreatePairClose} />
     </Box>
   );
-};
+});
