@@ -1,10 +1,10 @@
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { useContractTx } from '@patract/react-hooks';
 import { CDP } from './types';
 import { RightSymbol } from './right-symbol';
-import { toFixed } from '@patract/utils';
+import { parseAmount } from '@patract/utils';
 
 const Withdraw: FC<{
   isOpen: boolean;
@@ -16,6 +16,7 @@ const Withdraw: FC<{
 }> = ({ isOpen, onClose, onSubmit, cdp, price, daiDecimals }): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [redeem, setRedeem] = useState<number>(0);
+  const [maxRedeem, setMaxRedeem] = useState<number>(0);
   const [release, setRelease] = useState<string>('');
   const [calculation, setCalculation] = useState<string>('');
   const { contract } = useMakerContract();
@@ -29,9 +30,12 @@ const Withdraw: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    console.log('withd', cdp!.id, redeem + '', redeem);
-    
-    excute([cdp!.id, `${redeem}`])
+    const redeemToSubmit = parseAmount(`${redeem}`, daiDecimals);
+    console.log('withd', cdp!.id, redeemToSubmit, redeem, cdp?.issue_dai);
+    // if (redeem === maxRedeem) {
+    //   redeemToSubmit = cdp.
+    // }
+    excute([cdp!.id, redeemToSubmit])
       .then((data) => {
         console.log('withdraw', data)
         close();
@@ -43,32 +47,36 @@ const Withdraw: FC<{
   };
 
   const disabled = useMemo(() => {
-    return redeem <= 0;
-  }, [redeem]);
+    return redeem <= 0 || redeem > maxRedeem;
+  }, [redeem, maxRedeem]);
 
   useMemo(() => {
     if (!cdp || !price) {
+      setCalculation(``);
       return setRelease('');
     }
-    const times = Math.pow(10, daiDecimals);
-    const _release = cdp.collateral_ratio / 100 * redeem / times / price;
+    const _release = cdp.collateral_ratio / 100 * redeem / price;
 
     if (`${_release}` === 'NaN') {
       setRelease('');
       setCalculation(``);
     } else {
-      const _redeem = toFixed(`${redeem}`, daiDecimals, false).round(3).toString();
       setRelease(`${_release.toFixed(3)}`);
-      setCalculation(`${_release.toFixed(3)} DOT = ${_redeem} DAI / $${price} * ${cdp.collateral_ratio.toFixed(1)}%`);
+      setCalculation(`${_release.toFixed(3)} DOT = ${redeem} DAI / $${price} * ${cdp.collateral_ratio.toFixed(1)}%`);
     }
-  }, [redeem, cdp, price, daiDecimals]);
+  }, [redeem, cdp, price]);
 
   useMemo(() => {
     if (!cdp) {
+      setMaxRedeem(0);
       return setRedeem(0);
     }
-    setRedeem(cdp.issue_dai);
-  }, [cdp]);
+    const times = Math.pow(10, daiDecimals);
+    let _maxRedeem = cdp.issue_dai / times;
+    _maxRedeem = parseFloat(_maxRedeem.toFixed(3));
+    setMaxRedeem(_maxRedeem);
+    setRedeem(_maxRedeem);
+  }, [cdp, daiDecimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
@@ -80,13 +88,15 @@ const Withdraw: FC<{
           <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
-                Redeem: <Fixed value={`${redeem}`} decimals={daiDecimals} /> DAI
+                
+                Redeem: { redeem } DAI
+                {/* <Fixed value={redeem} decimals={daiDecimals} /> */}
               </span>
               <span>
-                Total Issuance: <Fixed value={cdp?.issue_dai} decimals={daiDecimals} /> DAI
+                Total Issuance: { ((cdp?.issue_dai || 0) / Math.pow(10, daiDecimals)).toFixed(3) } DAI
               </span>
             </FormLabel>
-            <Slider min={0} max={(cdp && cdp.issue_dai) || 0} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>
+            <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" value={redeem} onChange={setRedeem} focusThumbOnChange={false}>
               <SliderTrack h="10px" borderRadius="5px">
                 <SliderFilledTrack bg="linear-gradient(180deg, #25A17C 0%, #008065 100%)" />
               </SliderTrack>
