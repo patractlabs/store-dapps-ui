@@ -1,10 +1,10 @@
 import { useContractTx } from '@patract/react-hooks';
-import { Button, Fixed, FormControl, FormHelperText, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
+import { Button, FormControl, FormHelperText, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@patract/ui-components';
 import React, { FC, ReactElement, useContext, useMemo, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { RightSymbol } from './right-symbol';
 import { CDP } from './types';
-import { parseAmount, toFixed } from '@patract/utils';
+import { parseAmount } from '@patract/utils';
 import ApiContext from '@patract/react-components/api/api-context';
 
 const Increase: FC<{
@@ -59,11 +59,11 @@ const Increase: FC<{
       setCollateralRatio('');
       setCalculation(``);
     } else {
-      const collateral = toFixed(`${cdp.collateral_dot}`, dotDecimals, false).round(3).toString();
-      const issueDai = toFixed(`${cdp.issue_dai}`, daiDecimals, false).round(3).toString();
+      const collateral = cdp.collateral_dot / Math.pow(10, dotDecimals);
+      const issueDai = cdp.issue_dai / Math.pow(10, daiDecimals);
 
-      setCollateralRatio(estimatedRatio.toFixed(0));
-      setCalculation(`${estimatedRatio.toFixed(0)} % = (${collateral} DOT + ${increase} DOT) * $${price} / ${issueDai} DAI`);
+      setCollateralRatio(estimatedRatio.toFixed(1));
+      setCalculation(`${estimatedRatio.toFixed(1)} % = (${collateral.toFixed(3)} DOT + ${increase} DOT) * $${price} / ${issueDai.toFixed(3)} DAI`);
     }
   }, [increase, cdp, price, daiDecimals, dotDecimals]);
 
@@ -78,7 +78,7 @@ const Increase: FC<{
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Increase Collateral</span>
               <span>
-                Current Collateral: <Fixed value={cdp?.collateral_dot} decimals={ dotDecimals } /> DOT
+                Current Collateral: { ((cdp?.collateral_dot || 0) / Math.pow(10, dotDecimals)).toFixed(3) } DOT
               </span>
             </FormLabel>
             <InputGroup>

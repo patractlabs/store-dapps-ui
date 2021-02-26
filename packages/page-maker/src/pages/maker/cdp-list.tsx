@@ -11,7 +11,6 @@ import { CDP } from './types';
 import Withdraw from './with-draw';
 import styled from 'styled-components';
 import ApiContext from '@patract/react-components/api/api-context';
-import { toFixed } from '@patract/utils';
 
 const getDays = (createTime: string): string => {
   const _createTime = parseFloat(createTime);
@@ -37,28 +36,6 @@ const LabelButton = styled.label<{ isDisabled?: boolean }>`
   color: ${props => props.isDisabled ? '#ABB4D0' : '#0058FA'};
   text-decoration: underline;
 `;
-const getZeroFilled = (val: number, decimals: number): string => {
-  const result = toFixed(val, decimals, false).round(3).toString();
-  return fillZero(result);
-};
-
-export const fillZero = (result: string, zeroCount = 3): string => {
-  let zeroFill: string[] = [];
-  let ZERO = '0';
-  for (let i = 0; i < zeroCount; i ++) {
-    zeroFill.push(ZERO);
-    ZERO = `${ZERO}0`;
-  }
-  zeroFill = zeroFill.reverse();
-  let [ base, decimal ] = result.split('.');
-  decimal = decimal || ''; 
-  if (decimal.length < zeroCount) {
-    decimal = `${decimal}${zeroFill[decimal.length]}`
-  } else if (decimal.length > zeroCount) {
-    decimal = decimal.slice(0, zeroCount);
-  }
-  return `${base}.${decimal}`;
-};
 
 const getFixed = (num: number, decimals = 3) => {
   return parseFloat(num.toFixed(decimals));
@@ -181,10 +158,10 @@ const CDPList: FC<{
             { getDays(item.create_date) }
           </Td>
           <Td textAlign="right">
-            { getZeroFilled(item.collateral_dot, dotDecimals) } DOT
+            { (item.collateral_dot / Math.pow(10, dotDecimals)).toFixed(3) } DOT
           </Td>
           <Td textAlign="right">
-            { getZeroFilled(item.issue_dai, daiDecimals) } DAI
+            { (item.issue_dai / Math.pow(10, daiDecimals)).toFixed(3) } DAI
           </Td>
           <Td textAlign="right">
             <label style={{

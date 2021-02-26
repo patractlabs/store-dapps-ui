@@ -130,6 +130,7 @@ const IssueDAI: FC<{
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>Collateral</span>
               <span>
+              {/* { ((balance || 0) / Math.pow(10, dotDecimals)).toFixed(3) } */}
                 Balance: <Fixed value={balance} decimals={dotDecimals} /> DOT
               </span>
             </FormLabel>

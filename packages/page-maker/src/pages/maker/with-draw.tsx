@@ -30,11 +30,8 @@ const Withdraw: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    const redeemToSubmit = parseAmount(`${redeem}`, daiDecimals);
+    const redeemToSubmit = redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals);
     console.log('withd', cdp!.id, redeemToSubmit, redeem, cdp?.issue_dai);
-    // if (redeem === maxRedeem) {
-    //   redeemToSubmit = cdp.
-    // }
     excute([cdp!.id, redeemToSubmit])
       .then((data) => {
         console.log('withdraw', data)
@@ -62,7 +59,7 @@ const Withdraw: FC<{
       setCalculation(``);
     } else {
       setRelease(`${_release.toFixed(3)}`);
-      setCalculation(`${_release.toFixed(3)} DOT = ${redeem} DAI / $${price} * ${cdp.collateral_ratio.toFixed(1)}%`);
+      setCalculation(`${_release.toFixed(3)} DOT = ${redeem.toFixed(3)} DAI / $${price} * ${cdp.collateral_ratio.toFixed(1)}%`);
     }
   }, [redeem, cdp, price]);
 
@@ -88,9 +85,7 @@ const Withdraw: FC<{
           <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
-                
-                Redeem: { redeem } DAI
-                {/* <Fixed value={redeem} decimals={daiDecimals} /> */}
+                Redeem: { redeem.toFixed(3) } DAI
               </span>
               <span>
                 Total Issuance: { ((cdp?.issue_dai || 0) / Math.pow(10, daiDecimals)).toFixed(3) } DAI

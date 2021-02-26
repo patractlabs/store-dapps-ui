@@ -3,7 +3,6 @@ import { Image, Box, Button, Grid, GridItem } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo } from 'react';
 import IssueDAI from './issue-dai';
 import Add from '../../images/svgs/add.svg';
-import { fillZero } from './cdp-list';
 
 const AddIcon: FC = (): ReactElement => {
   return <Image size='xs' src={Add} />
@@ -71,7 +70,7 @@ export const SystemParamsArea: FC<{
       newList[0].val = `${systemParams.mcr}%`;
       newList[1].val = `${systemParams.mlr}%`;
       newList[2].val = `${systemParams.lrr}%`;
-      newList[3].val = `$${fillZero(systemParams.currentPrice.toString(), 2)}`;
+      newList[3].val = `$${systemParams.currentPrice.toFixed(2)}`;
     }
     return newList;
   }, [systemParams]);

@@ -1,12 +1,11 @@
 import { useContractTx } from '@patract/react-hooks';
-import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, Fixed, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
+import { SliderThumb, SliderFilledTrack, SliderTrack, Slider, Button, FormControl, FormLabel, InputGroup, InputNumber, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, FormHelperText } from '@patract/ui-components';
 import React, { FC, ReactElement, useMemo, useContext, useState } from 'react';
 import { useMakerContract } from '../../hooks/use-maker-contract';
 import { CDP } from './types';
 import { SystemParams } from './system-params';
 import { RightSymbol } from './right-symbol';
 import ApiContext from '@patract/react-components/api/api-context';
-import { fillZero } from './cdp-list';
 import { parseAmount } from '@patract/utils';
 
 const Liquidate: FC<{
@@ -34,9 +33,9 @@ const Liquidate: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    console.log(redeem)
-    console.log(parseAmount(`${redeem}`, daiDecimals), 'liqui')
-    excute([cdp!.id, parseAmount(`${redeem}`, daiDecimals)])
+    console.log(cdp!.issue_dai, parseAmount(`${redeem}`, daiDecimals), 'liqui', redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals))
+    excute([cdp!.id, redeem === maxRedeem ? cdp!.issue_dai : parseAmount(`${redeem}`, daiDecimals)])
+    // excute([cdp!.id, parseAmount(`${redeem}`, daiDecimals)])
       .then((data) => {
         console.log('liquidate', data)
         close();
@@ -48,30 +47,44 @@ const Liquidate: FC<{
   };
 
   useMemo(() => {
+    if (!cdp) {
+      setDotYouGot('');
+      return setCalculation(``);
+    }
     const _dotYouGot = redeem / systemParams.currentPrice * (100 + systemParams.lrr) / 100;
+    // const _dotYouGot = cdp.collateral_dot * Math.pow(10, daiDecimals - dotDecimals) / cdp.issue_dai * redeem;
 
     if (`${_dotYouGot}` === 'NaN') {
       setDotYouGot('');
       setCalculation(``);
     } else {
       setDotYouGot(`${_dotYouGot.toFixed(3)}`);
-      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${fillZero(`${redeem}`)} DAI / $${systemParams.currentPrice} * (1 + ${systemParams.lrr}%)`);
+      setCalculation(`${_dotYouGot.toFixed(3)} DOT = ${redeem.toFixed(3)} DAI / $${systemParams.currentPrice} * (1 + ${systemParams.lrr}%)`);
     }
-  }, [redeem, systemParams]);
+  }, [redeem, systemParams, cdp]);
 
   useMemo(() => {
     if (!cdp) {
       return setMaxRedeem(0);
     }
-    const times = Math.pow(10, dotDecimals);
-    const _maxRedeem = cdp.collateral_dot / times * systemParams.currentPrice * 100 / (100 + systemParams.lrr);
+
+    const daiTimes = Math.pow(10, daiDecimals);
+    const dotTimes = Math.pow(10, dotDecimals);
+    let _maxRedeem = cdp.issue_dai / daiTimes;
+    if (cdp.collateral_ratio < 100 + systemParams.lrr ) {
+      _maxRedeem = cdp.collateral_dot / dotTimes * systemParams.currentPrice / (100 + systemParams.lrr) * 100;
+    }
+    console.log('cdp.collateral_ratio', cdp.collateral_ratio < (100 + systemParams.lrr) / 100, _maxRedeem)
+    // const _maxRedeem = cdp.collateral_dot / times * systemParams.currentPrice * 100 / (100 + systemParams.lrr);
+    // const _maxRedeem = cdp.issue_dai / times
     if (`${_maxRedeem}` === 'NaN') {
       setRedeem(0);
       return setMaxRedeem(0);
     }
+    console.log('_maxredeem  m: ', _maxRedeem, cdp.collateral_dot, cdp.issue_dai)
     setMaxRedeem(_maxRedeem);
     setRedeem(_maxRedeem);
-  }, [cdp, systemParams, dotDecimals]);
+  }, [cdp, systemParams, dotDecimals, daiDecimals]);
 
   return (
     <Modal variant="maker" isOpen={ isOpen } onClose={ close }>
@@ -83,10 +96,10 @@ const Liquidate: FC<{
           <FormControl sx={{ marginBottom: '21px' }}>
             <FormLabel sx={{ color: 'brand.grey', fontSize: '12px' }}>
               <span>
-                Redeem: { fillZero(`${redeem}`)} DAI
+                Redeem: { redeem.toFixed(3)} DAI
               </span>
               <span>
-                Current Issuance: <Fixed value={cdp?.issue_dai} decimals={daiDecimals} /> DAI
+                Current Issuance: { ((cdp?.issue_dai || 0) / Math.pow(10, daiDecimals)).toFixed(3) } DAI
               </span>
             </FormLabel>
             <Slider min={0} max={maxRedeem} aria-label="slider-ex-1" defaultValue={redeem} onChange={setRedeem}>
