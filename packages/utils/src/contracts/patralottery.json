@@ -1,21 +1,25 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0xa6ec5f44366fdd75c097c6f34ee99666c819c14a950851dd20735952d27a2c88",
+    "hash": "0x6e015de4e6050d1995accbab1b725dcda8b08c7ef4967542b15c6551cd0c43e5",
     "language": "ink! 3.0.0-rc2",
     "compiler": "rustc 1.52.0-nightly"
   },
   "contract": {
     "name": "patralottery",
     "version": "0.1.0",
-    "authors": ["[your_name] <[your_email]>"]
+    "authors": [
+      "[your_name] <[your_email]>"
+    ]
   },
   "spec": {
     "constructors": [
       {
         "args": [],
         "docs": [],
-        "name": ["new"],
+        "name": [
+          "new"
+        ],
         "selector": "0x9bae9d5e"
       }
     ],
@@ -28,7 +32,9 @@
             "indexed": true,
             "name": "ticket_num",
             "type": {
-              "displayName": ["Vec"],
+              "displayName": [
+                "Vec"
+              ],
               "type": 11
             }
           },
@@ -37,7 +43,9 @@
             "indexed": true,
             "name": "amount",
             "type": {
-              "displayName": ["u32"],
+              "displayName": [
+                "u32"
+              ],
               "type": 2
             }
           },
@@ -46,7 +54,9 @@
             "indexed": true,
             "name": "epoch",
             "type": {
-              "displayName": ["EpochID"],
+              "displayName": [
+                "EpochID"
+              ],
               "type": 4
             }
           }
@@ -61,7 +71,9 @@
             "indexed": true,
             "name": "epoch",
             "type": {
-              "displayName": ["EpochID"],
+              "displayName": [
+                "EpochID"
+              ],
               "type": 4
             }
           },
@@ -70,7 +82,9 @@
             "indexed": true,
             "name": "randomness",
             "type": {
-              "displayName": ["Hash"],
+              "displayName": [
+                "Hash"
+              ],
               "type": 8
             }
           },
@@ -79,7 +93,9 @@
             "indexed": true,
             "name": "win_num",
             "type": {
-              "displayName": ["Vec"],
+              "displayName": [
+                "Vec"
+              ],
               "type": 11
             }
           }
@@ -94,28 +110,36 @@
           {
             "name": "epoch_id",
             "type": {
-              "displayName": ["EpochID"],
+              "displayName": [
+                "EpochID"
+              ],
               "type": 4
             }
           },
           {
             "name": "num",
             "type": {
-              "displayName": ["Vec"],
+              "displayName": [
+                "Vec"
+              ],
               "type": 11
             }
           },
           {
             "name": "amount",
             "type": {
-              "displayName": ["u32"],
+              "displayName": [
+                "u32"
+              ],
               "type": 2
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["buy_tickets"],
+        "name": [
+          "buy_tickets"
+        ],
         "payable": true,
         "returnType": null,
         "selector": "0xe216e90c"
@@ -125,14 +149,18 @@
           {
             "name": "epoch_id",
             "type": {
-              "displayName": ["EpochID"],
+              "displayName": [
+                "EpochID"
+              ],
               "type": 4
             }
           }
         ],
         "docs": [],
         "mutates": true,
-        "name": ["draw_lottery"],
+        "name": [
+          "draw_lottery"
+        ],
         "payable": false,
         "returnType": null,
         "selector": "0x48864b12"
@@ -142,17 +170,25 @@
           {
             "name": "owner",
             "type": {
-              "displayName": ["AccountId"],
+              "displayName": [
+                "AccountId"
+              ],
               "type": 13
             }
           }
         ],
-        "docs": [" Return the account bought lotteries for the specified `owner`."],
+        "docs": [
+          " Return the account bought lotteries for the specified `owner`."
+        ],
         "mutates": false,
-        "name": ["lotteries_of"],
+        "name": [
+          "lotteries_of"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Vec"],
+          "displayName": [
+            "Vec"
+          ],
           "type": 27
         },
         "selector": "0xfdf85bbf"
@@ -162,17 +198,23 @@
           {
             "name": "epoch_id",
             "type": {
-              "displayName": ["EpochID"],
+              "displayName": [
+                "EpochID"
+              ],
               "type": 4
             }
           }
         ],
         "docs": [],
         "mutates": false,
-        "name": ["epoch_history"],
+        "name": [
+          "epoch_history"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Option"],
+          "displayName": [
+            "Option"
+          ],
           "type": 29
         },
         "selector": "0x717a29cb"
@@ -181,10 +223,14 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": ["latest_epoch"],
+        "name": [
+          "latest_epoch"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["EpochInfo"],
+          "displayName": [
+            "EpochInfo"
+          ],
           "type": 30
         },
         "selector": "0x32d82910"
@@ -193,10 +239,14 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": ["biggest_winner"],
+        "name": [
+          "biggest_winner"
+        ],
         "payable": false,
         "returnType": {
-          "displayName": ["Vec"],
+          "displayName": [
+            "Vec"
+          ],
           "type": 25
         },
         "selector": "0xae6fd1ec"
@@ -206,14 +256,20 @@
           {
             "name": "epoch_id",
             "type": {
-              "displayName": ["EpochID"],
+              "displayName": [
+                "EpochID"
+              ],
               "type": 4
             }
           }
         ],
-        "docs": [" The historical randomness function cant get the current epoch and next epoch randomness."],
+        "docs": [
+          " The historical randomness function cant get the current epoch and next epoch randomness."
+        ],
         "mutates": false,
-        "name": ["randomness_of"],
+        "name": [
+          "randomness_of"
+        ],
         "payable": false,
         "returnType": {
           "displayName": [],
@@ -225,7 +281,9 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": ["current_randomness"],
+        "name": [
+          "current_randomness"
+        ],
         "payable": false,
         "returnType": {
           "displayName": [],
@@ -237,7 +295,9 @@
         "args": [],
         "docs": [],
         "mutates": false,
-        "name": ["next_randomness"],
+        "name": [
+          "next_randomness"
+        ],
         "payable": false,
         "returnType": {
           "displayName": [],
@@ -534,7 +594,12 @@
           ]
         }
       },
-      "path": ["ink_storage", "collections", "stash", "Header"]
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Header"
+      ]
     },
     {
       "def": {
@@ -566,8 +631,15 @@
           ]
         }
       },
-      "params": [4],
-      "path": ["ink_storage", "collections", "stash", "Entry"]
+      "params": [
+        4
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
     },
     {
       "def": {
@@ -591,7 +663,12 @@
           ]
         }
       },
-      "path": ["ink_storage", "collections", "stash", "VacantEntry"]
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "VacantEntry"
+      ]
     },
     {
       "def": {
@@ -610,8 +687,15 @@
           ]
         }
       },
-      "params": [7],
-      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
+      "params": [
+        7
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
     },
     {
       "def": {
@@ -655,7 +739,11 @@
           ]
         }
       },
-      "path": ["patralottery", "patralottery", "Lottery"]
+      "path": [
+        "patralottery",
+        "patralottery",
+        "Lottery"
+      ]
     },
     {
       "def": {
@@ -668,7 +756,11 @@
           ]
         }
       },
-      "path": ["ink_env", "types", "Hash"]
+      "path": [
+        "ink_env",
+        "types",
+        "Hash"
+      ]
     },
     {
       "def": {
@@ -708,7 +800,11 @@
           ]
         }
       },
-      "path": ["ink_env", "types", "AccountId"]
+      "path": [
+        "ink_env",
+        "types",
+        "AccountId"
+      ]
     },
     {
       "def": {
@@ -745,12 +841,22 @@
           ]
         }
       },
-      "params": [17],
-      "path": ["ink_storage", "collections", "stash", "Entry"]
+      "params": [
+        17
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
     },
     {
       "def": {
-        "tuple": [4, 13]
+        "tuple": [
+          4,
+          13
+        ]
       }
     },
     {
@@ -770,8 +876,15 @@
           ]
         }
       },
-      "params": [19],
-      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
+      "params": [
+        19
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
     },
     {
       "def": {
@@ -807,7 +920,11 @@
           ]
         }
       },
-      "path": ["patralottery", "patralottery", "Tickets"]
+      "path": [
+        "patralottery",
+        "patralottery",
+        "Tickets"
+      ]
     },
     {
       "def": {
@@ -832,7 +949,11 @@
           ]
         }
       },
-      "path": ["patralottery", "patralottery", "Rank"]
+      "path": [
+        "patralottery",
+        "patralottery",
+        "Rank"
+      ]
     },
     {
       "def": {
@@ -859,8 +980,15 @@
           ]
         }
       },
-      "params": [13],
-      "path": ["ink_storage", "collections", "stash", "Entry"]
+      "params": [
+        13
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
     },
     {
       "def": {
@@ -879,8 +1007,15 @@
           ]
         }
       },
-      "params": [24],
-      "path": ["ink_storage", "collections", "hashmap", "ValueEntry"]
+      "params": [
+        24
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
     },
     {
       "def": {
@@ -928,7 +1063,11 @@
           ]
         }
       },
-      "path": ["patralottery", "patralottery", "BiggestWinner"]
+      "path": [
+        "patralottery",
+        "patralottery",
+        "BiggestWinner"
+      ]
     },
     {
       "def": {
@@ -969,7 +1108,11 @@
           ]
         }
       },
-      "path": ["patralottery", "patralottery", "MyLottery"]
+      "path": [
+        "patralottery",
+        "patralottery",
+        "MyLottery"
+      ]
     },
     {
       "def": {
@@ -990,8 +1133,12 @@
           ]
         }
       },
-      "params": [7],
-      "path": ["Option"]
+      "params": [
+        7
+      ],
+      "path": [
+        "Option"
+      ]
     },
     {
       "def": {
@@ -1025,11 +1172,18 @@
           ]
         }
       },
-      "path": ["patralottery", "patralottery", "EpochInfo"]
+      "path": [
+        "patralottery",
+        "patralottery",
+        "EpochInfo"
+      ]
     },
     {
       "def": {
-        "tuple": [32, 11]
+        "tuple": [
+          32,
+          11
+        ]
       }
     },
     {

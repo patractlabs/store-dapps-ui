@@ -1,8 +1,8 @@
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useEffect, useMemo } from 'react';
-import Erc20fixed from '@patract/utils/contracts/erc20fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20mintable.json';
+import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
+import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
 
 const publicDeployedContractSubscriptionWs = gql`
   subscription Contracts($codeHash1: jsonb!, $codeHash2: jsonb!) {

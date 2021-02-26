@@ -1,15 +1,15 @@
 {
   "metadataVersion": "0.1.0",
   "source": {
-    "hash": "0x2735794dd9b9394e7ea716272ece04074fac54a78106e87bc62f9436f67ce4a5",
+    "hash": "0xc396b7ac7033ea69c4aede939d84e89df1a7245a540736776335b02c28acd105",
     "language": "ink! 3.0.0-rc2",
-    "compiler": "rustc 1.49.0-nightly"
+    "compiler": "rustc 1.52.0-nightly"
   },
   "contract": {
-    "name": "erc20-issue",
+    "name": "erc20_fixed",
     "version": "0.1.0",
     "authors": [
-      "[your_name] <[your_email]>"
+      "Patract Labs <tyler@patract.io>"
     ]
   },
   "spec": {
@@ -31,7 +31,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 15
+              "type": 13
             }
           },
           {
@@ -40,7 +40,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 15
+              "type": 13
             }
           },
           {
@@ -49,7 +49,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 16
+              "type": 14
             }
           }
         ],
@@ -59,15 +59,6 @@
           "new"
         ],
         "selector": "0xba66e576"
-      },
-      {
-        "args": [],
-        "docs": [],
-        "name": [
-          "Ownable",
-          "new"
-        ],
-        "selector": "0x58c987a1"
       }
     ],
     "docs": [],
@@ -82,7 +73,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 20
+              "type": 18
             }
           },
           {
@@ -93,7 +84,7 @@
               "displayName": [
                 "Option"
               ],
-              "type": 20
+              "type": 18
             }
           },
           {
@@ -154,134 +145,6 @@
           " up to the amount of `value` tokens from `owner`."
         ],
         "name": "Approval"
-      },
-      {
-        "args": [],
-        "docs": [],
-        "name": "Pause"
-      },
-      {
-        "args": [],
-        "docs": [],
-        "name": "Unpause"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "blacklisted_user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "balance",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          }
-        ],
-        "docs": [],
-        "name": "DestroyedBlackFunds"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "docs": [],
-        "name": "AddedBlackList"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "docs": [],
-        "name": "RemovedBlackList"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "amount",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          }
-        ],
-        "docs": [],
-        "name": "Mint"
-      },
-      {
-        "args": [
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "docs": [],
-            "indexed": true,
-            "name": "amount",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          }
-        ],
-        "docs": [],
-        "name": "Burn"
       }
     ],
     "messages": [
@@ -300,7 +163,7 @@
           "displayName": [
             "Option"
           ],
-          "type": 15
+          "type": 13
         },
         "selector": "0x6b1bb951"
       },
@@ -319,7 +182,7 @@
           "displayName": [
             "Option"
           ],
-          "type": 15
+          "type": 13
         },
         "selector": "0xb42c3368"
       },
@@ -338,7 +201,7 @@
           "displayName": [
             "Option"
           ],
-          "type": 16
+          "type": 14
         },
         "selector": "0xc64b0eb2"
       },
@@ -431,9 +294,9 @@
         "payable": false,
         "returnType": {
           "displayName": [
-            "IResult"
+            "Result"
           ],
-          "type": 17
+          "type": 15
         },
         "selector": "0x10d455c2"
       },
@@ -531,9 +394,9 @@
         "payable": false,
         "returnType": {
           "displayName": [
-            "IResult"
+            "Result"
           ],
-          "type": 17
+          "type": 15
         },
         "selector": "0xbb399017"
       },
@@ -574,305 +437,11 @@
         "payable": false,
         "returnType": {
           "displayName": [
-            "IResult"
+            "Result"
           ],
-          "type": 17
+          "type": 15
         },
         "selector": "0x4ce0e831"
-      },
-      {
-        "args": [],
-        "docs": [
-          " Contract owner."
-        ],
-        "mutates": false,
-        "name": [
-          "Ownable",
-          "owner"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Option"
-          ],
-          "type": 20
-        },
-        "selector": "0x4fa43c8c"
-      },
-      {
-        "args": [
-          {
-            "name": "new_owner",
-            "type": {
-              "displayName": [
-                "Option"
-              ],
-              "type": 20
-            }
-          }
-        ],
-        "docs": [
-          " transfer contract ownership to new owner."
-        ],
-        "mutates": true,
-        "name": [
-          "Ownable",
-          "transfer_ownership"
-        ],
-        "payable": false,
-        "returnType": null,
-        "selector": "0x11f43efd"
-      },
-      {
-        "args": [],
-        "docs": [
-          " Pause contract transaction."
-        ],
-        "mutates": true,
-        "name": [
-          "Pausable",
-          "pause"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0x397e3639"
-      },
-      {
-        "args": [],
-        "docs": [
-          " Recover paused contract."
-        ],
-        "mutates": true,
-        "name": [
-          "Pausable",
-          "unpause"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0xb3b9f190"
-      },
-      {
-        "args": [],
-        "docs": [
-          " Return contract pause statue."
-        ],
-        "mutates": false,
-        "name": [
-          "Pausable",
-          "pause_state"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "bool"
-          ],
-          "type": 13
-        },
-        "selector": "0x2930c701"
-      },
-      {
-        "args": [
-          {
-            "name": "maker",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "docs": [
-          " Whether the user is blacklisted."
-        ],
-        "mutates": false,
-        "name": [
-          "BlackList",
-          "get_blacklist_status"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "bool"
-          ],
-          "type": 13
-        },
-        "selector": "0x8b1b5c34"
-      },
-      {
-        "args": [
-          {
-            "name": "evil_user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "docs": [
-          " Add illegal user to blacklist."
-        ],
-        "mutates": true,
-        "name": [
-          "BlackList",
-          "add_blacklist"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0x85144a65"
-      },
-      {
-        "args": [
-          {
-            "name": "cleared_user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "docs": [
-          " Remove the user from blacklist."
-        ],
-        "mutates": true,
-        "name": [
-          "BlackList",
-          "remove_blacklist"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0x0d4cd511"
-      },
-      {
-        "args": [
-          {
-            "name": "blacklisted_user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          }
-        ],
-        "docs": [
-          " Destroy blacklisted user funds from total supply."
-        ],
-        "mutates": true,
-        "name": [
-          "BlackList",
-          "destroy_blackfunds"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0xba86d9db"
-      },
-      {
-        "args": [
-          {
-            "name": "user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "name": "amount",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          }
-        ],
-        "docs": [
-          " Mint a new amount of tokens",
-          " these tokens are deposited into the owner address"
-        ],
-        "mutates": true,
-        "name": [
-          "mint"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0xcfdd9aa2"
-      },
-      {
-        "args": [
-          {
-            "name": "user",
-            "type": {
-              "displayName": [
-                "AccountId"
-              ],
-              "type": 5
-            }
-          },
-          {
-            "name": "amount",
-            "type": {
-              "displayName": [
-                "Balance"
-              ],
-              "type": 1
-            }
-          }
-        ],
-        "docs": [
-          " Burn tokens.",
-          " These tokens are withdrawn from the owner address",
-          " if the balance must be enough to cover the redeem",
-          " or the call will fail."
-        ],
-        "mutates": true,
-        "name": [
-          "burn"
-        ],
-        "payable": false,
-        "returnType": {
-          "displayName": [
-            "Result"
-          ],
-          "type": 21
-        },
-        "selector": "0xb1efc17b"
       }
     ]
   },
@@ -1125,104 +694,6 @@
             }
           },
           "name": "decimals"
-        },
-        {
-          "layout": {
-            "cell": {
-              "key": "0x0800000002000000000000000000000000000000000000000000000000000000",
-              "ty": 13
-            }
-          },
-          "name": "pause"
-        },
-        {
-          "layout": {
-            "cell": {
-              "key": "0x0900000002000000000000000000000000000000000000000000000000000000",
-              "ty": 5
-            }
-          },
-          "name": "owner"
-        },
-        {
-          "layout": {
-            "struct": {
-              "fields": [
-                {
-                  "layout": {
-                    "struct": {
-                      "fields": [
-                        {
-                          "layout": {
-                            "cell": {
-                              "key": "0x0a00000002000000000000000000000000000000000000000000000000000000",
-                              "ty": 2
-                            }
-                          },
-                          "name": "header"
-                        },
-                        {
-                          "layout": {
-                            "struct": {
-                              "fields": [
-                                {
-                                  "layout": {
-                                    "cell": {
-                                      "key": "0x0b00000002000000000000000000000000000000000000000000000000000000",
-                                      "ty": 3
-                                    }
-                                  },
-                                  "name": "len"
-                                },
-                                {
-                                  "layout": {
-                                    "array": {
-                                      "cellsPerElem": 1,
-                                      "layout": {
-                                        "cell": {
-                                          "key": "0x0b00000003000000000000000000000000000000000000000000000000000000",
-                                          "ty": 4
-                                        }
-                                      },
-                                      "len": 4294967295,
-                                      "offset": "0x0c00000002000000000000000000000000000000000000000000000000000000"
-                                    }
-                                  },
-                                  "name": "elems"
-                                }
-                              ]
-                            }
-                          },
-                          "name": "entries"
-                        }
-                      ]
-                    }
-                  },
-                  "name": "keys"
-                },
-                {
-                  "layout": {
-                    "hash": {
-                      "layout": {
-                        "cell": {
-                          "key": "0x0c00000003000000000000000000000000000000000000000000000000000000",
-                          "ty": 14
-                        }
-                      },
-                      "offset": "0x0b00000003000000000000000000000000000000000000000000000000000000",
-                      "strategy": {
-                        "hasher": "Blake2x256",
-                        "postfix": "",
-                        "prefix": "0x696e6b20686173686d6170"
-                      }
-                    }
-                  },
-                  "name": "values"
-                }
-              ]
-            }
-          },
-          "name": "blacklisted"
         }
       ]
     }
@@ -1433,38 +904,6 @@
     },
     {
       "def": {
-        "primitive": "bool"
-      }
-    },
-    {
-      "def": {
-        "composite": {
-          "fields": [
-            {
-              "name": "value",
-              "type": 13,
-              "typeName": "V"
-            },
-            {
-              "name": "key_index",
-              "type": 3,
-              "typeName": "KeyIndex"
-            }
-          ]
-        }
-      },
-      "params": [
-        13
-      ],
-      "path": [
-        "ink_storage",
-        "collections",
-        "hashmap",
-        "ValueEntry"
-      ]
-    },
-    {
-      "def": {
         "variant": {
           "variants": [
             {
@@ -1522,7 +961,7 @@
             {
               "fields": [
                 {
-                  "type": 18,
+                  "type": 16,
                   "typeName": "T"
                 }
               ],
@@ -1531,7 +970,7 @@
             {
               "fields": [
                 {
-                  "type": 19,
+                  "type": 17,
                   "typeName": "E"
                 }
               ],
@@ -1541,8 +980,8 @@
         }
       },
       "params": [
-        18,
-        19
+        16,
+        17
       ],
       "path": [
         "Result"
@@ -1598,84 +1037,6 @@
       ],
       "path": [
         "Option"
-      ]
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "fields": [
-                {
-                  "type": 18,
-                  "typeName": "T"
-                }
-              ],
-              "name": "Ok"
-            },
-            {
-              "fields": [
-                {
-                  "type": 22,
-                  "typeName": "E"
-                }
-              ],
-              "name": "Err"
-            }
-          ]
-        }
-      },
-      "params": [
-        18,
-        22
-      ],
-      "path": [
-        "Result"
-      ]
-    },
-    {
-      "def": {
-        "variant": {
-          "variants": [
-            {
-              "discriminant": 0,
-              "name": "InsufficientBalance"
-            },
-            {
-              "discriminant": 1,
-              "name": "InsufficientSupply"
-            },
-            {
-              "discriminant": 2,
-              "name": "InsufficientAllowance"
-            },
-            {
-              "discriminant": 3,
-              "name": "BlacklistedUser"
-            },
-            {
-              "discriminant": 4,
-              "name": "InvalidAmount"
-            },
-            {
-              "discriminant": 5,
-              "name": "OnlyOwnerAccess"
-            },
-            {
-              "discriminant": 6,
-              "name": "InvalidNewOwner"
-            },
-            {
-              "discriminant": 7,
-              "name": "NotBlacklistedUser"
-            }
-          ]
-        }
-      },
-      "path": [
-        "erc20_issue",
-        "erc20",
-        "Error"
       ]
     }
   ]

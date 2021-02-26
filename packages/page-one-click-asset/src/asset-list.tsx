@@ -16,8 +16,8 @@ import {
   Fixed
 } from '@patract/ui-components';
 import React, { useMemo, useState } from 'react';
-import Erc20fixed from '@patract/utils/contracts/erc20fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20mintable.json';
+import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
+import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
 import { useAssetList, useQueryContracts } from './hooks';
 import { IssueAssetButton } from './issue-asset-button';
 

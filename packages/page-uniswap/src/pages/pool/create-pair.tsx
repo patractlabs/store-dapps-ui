@@ -18,8 +18,8 @@ import { useFactoryContract } from '../../hooks/useFactoryContract';
 import InputAddressSelect from '../../components/input-address-select';
 import { useContractTx } from '@patract/react-hooks';
 import { useQueryContracts } from '../../hooks/use-query-contracts';
-import Erc20fixed from '@patract/utils/contracts/erc20fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20mintable.json';
+import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
+import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
 import { Abi } from '@polkadot/api-contract';
 import { hexToU8a, compactAddLength } from '@polkadot/util';
 

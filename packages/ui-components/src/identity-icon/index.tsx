@@ -7,6 +7,7 @@ import UsdtWebp from './images/usdt.webp';
 import EthWebp from './images/eth.webp';
 import Dai from './images/dai.png';
 import BTC from './images/btc.png';
+import { JBTC, JETH, DAI, USDT } from '@patract/utils/contracts';
 
 type IdentityIconProps = {
   size?: number;
@@ -15,10 +16,10 @@ type IdentityIconProps = {
 };
 
 const addressMap: any = {
-  '5DLB2GYTjdQHJigkDx1SWGC4a12VwGAWtuJrnh82Y1BdrKBr': EthWebp,
-  '5GnhhemyFoDQjo53rFZbm6D48rv4EdfjBS3fqGCpQvYWD3jP': Dai,
-  '5EDmv8KGnHP3zy5Cfp64BDg9HvjMCET4TnUbnTyPEmvGp9AN': BTC,
-  '5H3enav9XbGoai3eMCtQeSRSnPmz28mJCwTyTc7YgcanKhKE': UsdtWebp
+  [JBTC]: EthWebp,
+  [JETH]: Dai,
+  [DAI]: BTC,
+  [USDT]: UsdtWebp
 };
 
 export const IdentityIcon: React.FC<IdentityIconProps> = ({ theme = 'polkadot', value, size = 24 }) => {
