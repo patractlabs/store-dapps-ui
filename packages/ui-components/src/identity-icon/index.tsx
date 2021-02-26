@@ -7,7 +7,8 @@ import UsdtWebp from './images/usdt.webp';
 import EthWebp from './images/eth.webp';
 import Dai from './images/dai.png';
 import BTC from './images/btc.png';
-import { JBTC, JETH, DAI, USDT } from '@patract/utils/contracts';
+import Dot from './images/polkadot.png'
+import { JBTC, JETH, DAI, USDT, EMPTY } from '@patract/utils/contracts';
 
 type IdentityIconProps = {
   size?: number;
@@ -16,10 +17,11 @@ type IdentityIconProps = {
 };
 
 const addressMap: any = {
-  [JBTC]: EthWebp,
-  [JETH]: Dai,
-  [DAI]: BTC,
-  [USDT]: UsdtWebp
+  [JETH]: EthWebp,
+  [DAI]: Dai,
+  [JBTC]: BTC,
+  [USDT]: UsdtWebp,
+  [EMPTY]: Dot
 };
 
 export const IdentityIcon: React.FC<IdentityIconProps> = ({ theme = 'polkadot', value, size = 24 }) => {
@@ -37,6 +39,8 @@ export const IdentityIcon: React.FC<IdentityIconProps> = ({ theme = 'polkadot', 
   );
 
   const Custom = theme === 'robohash' ? RoboHash : undefined;
+
+  console.log(value === EMPTY, value, EMPTY)
 
   return (
     <Box
