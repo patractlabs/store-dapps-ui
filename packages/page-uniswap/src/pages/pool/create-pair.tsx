@@ -141,7 +141,11 @@ const CreatePair = React.memo(
                   value={to}
                   onChangeValue={setTo}
                   onChangeOption={(option) => {
-                    setTo(option.contract || '');
+                    if (option.contract === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+                      setTo('');
+                    } else {
+                      setTo(option.contract || '');
+                    }
                   }}
                 />
               </FormControl>
