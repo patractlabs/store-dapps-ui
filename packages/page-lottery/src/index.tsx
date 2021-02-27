@@ -11,7 +11,7 @@ ReactDOM.render(
     <GraphqlProvider>
       <UIProvider>
         <Queue>
-          <Api url='wss://new.staging.jupiter.patract.cn'>
+          <Api url='wss://ws.jupiter-poa.patract.cn/'>
             <AccountProvider>
               <Provider>
                 <Router>
