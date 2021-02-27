@@ -7,3 +7,4 @@ export const USDT = '5EuWbAoT1gRjGxCT1NQV2TtZofoCBQUWvfwUCq3yBAwwc55S';
 export const JBTC = '5D2QZYiR656LJCfde3Bc8GJb6eRe54iepMXTf4dFuqWSpeGq';
 export const JETH = '5DQK1qWnBV5cRhKJEMHoopt8BBxg3xf5WZsyLvpvStjq9AZg';
 export const DAI = '5E2jQmVUemwwWvTVYc2H93Q6G6EwhHag5GopqUANWN2PYEnK';
+export const EMPTY = '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM';

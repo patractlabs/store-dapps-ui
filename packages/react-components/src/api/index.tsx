@@ -1,9 +1,10 @@
 // Copyright 2017-2021 @polkadot/react-api authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import type { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { deriveMapCache, setDeriveCache } from '@polkadot/api-derive/util';
 import { ApiPromise } from '@polkadot/api/promise';
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable, web3ListRpcProviders, web3UseRpcProvider } from '@polkadot/extension-dapp';
 import type { InjectedExtension } from '@polkadot/extension-inject/types';
 import { WsProvider } from '@polkadot/rpc-provider';
 import type { ChainProperties, ChainType } from '@polkadot/types/interfaces';
@@ -58,6 +59,18 @@ function isKeyringLoaded() {
   } catch {
     return false;
   }
+}
+
+function waitWeb3Inject(): Promise<void> {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (Object.keys(((window as unknown) as any).injectedWeb3).length !== 0) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 300);
+  });
 }
 
 async function getInjectedAccounts(injectedPromise: Promise<InjectedExtension[]>): Promise<InjectedAccountExt[]> {
@@ -195,39 +208,58 @@ export const Api = React.memo(function Api({ children, store, url }: Props): Rea
 
   // initial initialization
   useEffect((): void => {
-    const provider = new WsProvider(url);
-    const signer = new ApiSigner(registry, queuePayload, queueSetTxStatus);
+    waitWeb3Inject()
+      .then(() => {
+        return web3Enable('polkadot-js/apps');
+      })
+      .then(async (injected) => {
+        const injectedPromise = Promise.resolve(injected);
 
-    api = new ApiPromise({
-      provider,
-      registry,
-      signer,
-      types: {
-        Address: 'MultiAddress',
-        LookupSource: 'MultiAddress',
-        BlockLength: 'u32',
-        Slot: 'u64'
-      }
-    });
+        let provider: ProviderInterface;
 
-    api.on('connected', () => setIsApiConnected(true));
-    api.on('disconnected', () => setIsApiConnected(false));
-    api.on('error', (error: Error) => setApiError(error.message));
-    api.on('ready', (): void => {
-      const injectedPromise = web3Enable('polkadot-js/apps');
+        if (injected.length > 0) {
+          const providers = await web3ListRpcProviders(injected[0].name);
 
-      injectedPromise.then(setExtensions).catch(console.error);
+          if (providers && Object.keys(providers).length > 0) {
+            provider = (await web3UseRpcProvider(injected[0].name, Object.keys(providers)[0])).provider;
+          } else {
+            provider = new WsProvider(url);
+          }
+        } else {
+          provider = new WsProvider(url);
+        }
 
-      loadOnReady(api, injectedPromise, store)
-        .then(setState)
-        .catch((error): void => {
-          console.error(error);
+        const signer = new ApiSigner(registry, queuePayload, queueSetTxStatus);
 
-          setApiError((error as Error).message);
+        api = new ApiPromise({
+          provider,
+          registry,
+          signer,
+          types: {
+            Address: 'MultiAddress',
+            LookupSource: 'MultiAddress',
+            BlockLength: 'u32',
+            Slot: 'u64'
+          }
         });
-    });
 
-    setIsApiInitialized(true);
+        api.on('connected', () => setIsApiConnected(true));
+        api.on('disconnected', () => setIsApiConnected(false));
+        api.on('error', (error: Error) => setApiError(error.message));
+        api.on('ready', (): void => {
+            injectedPromise.then(setExtensions).catch(console.error);
+
+            loadOnReady(api, injectedPromise, store)
+              .then(setState)
+              .catch((error): void => {
+                console.error(error);
+
+                setApiError((error as Error).message);
+              });
+        });
+
+        setIsApiInitialized(true);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
