@@ -35,6 +35,7 @@
   ],
   "devDependencies": {
     "customize-cra": "^1.0.0",
-    "react-app-rewired": "^2.1.5"
+    "react-app-rewired": "^2.1.5",
+    "webpack-bundle-analyzer": "^4.4.0"
   }
 }
