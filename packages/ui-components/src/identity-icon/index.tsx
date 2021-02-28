@@ -40,8 +40,6 @@ export const IdentityIcon: React.FC<IdentityIconProps> = ({ theme = 'polkadot', 
 
   const Custom = theme === 'robohash' ? RoboHash : undefined;
 
-  console.log(value === EMPTY, value, EMPTY)
-
   return (
     <Box
       marginTop='2px'

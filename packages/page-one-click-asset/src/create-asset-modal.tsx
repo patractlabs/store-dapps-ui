@@ -48,6 +48,14 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
   const [isLoading, setIsLoading] = useState(false);
 
   const deploy = handleSubmit(async (data) => {
+    if (!currentAccount) {
+      toast({
+        status: 'error',
+        description: 'No Account'
+      });
+      throw 'No Account';
+    }
+    
     let toastId: any;
 
     try {

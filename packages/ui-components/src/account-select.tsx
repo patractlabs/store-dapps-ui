@@ -56,6 +56,8 @@ export const AccountSelect: React.FC = () => {
             <Flex sx={{ flex: '1', flexDirection: 'row-reverse' }}>
               <Spinner size='sm' color='blue.500' />
             </Flex>
+          ) : !currentAccount ? (
+            <Flex sx={{ flex: '1' }}>No Account</Flex>
           ) : (
             <>
               <Flex
@@ -78,7 +80,7 @@ export const AccountSelect: React.FC = () => {
           )}
         </Flex>
       </PopoverTrigger>
-      {isApiReady && (
+      {isApiReady && currentAccount && (
         <PopoverContent
           maxW='sm'
           sx={{ textTransform: 'uppercase', minW: 'sm', left: '0', top: '-6px', zIndex: 'dropdown' }}

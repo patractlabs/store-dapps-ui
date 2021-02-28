@@ -35,6 +35,14 @@ export const useContractTx = ({ title, contract, method }: ContractTxProps) => {
 
   const excute = useCallback(
     async (fields: any[], value?: string) => {
+      if (!currentAccount) {
+        toast({
+          status: 'error',
+          description: 'No Account'
+        });
+        throw 'No Account';
+      }
+
       setIsLoading(true);
 
       let toastId: any;
