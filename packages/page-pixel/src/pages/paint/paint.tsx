@@ -1,6 +1,6 @@
 import { SignMessageModal } from '@patract/react-components';
 import { useAccount, useApi, useModal } from '@patract/react-hooks';
-import { Box, Button, Center, Spinner, Text, Fixed } from '@patract/ui-components';
+import { Box, Button, Center, Spinner, Text, Fixed, Stack } from '@patract/ui-components';
 import { useContractTx, useBalance } from '@patract/react-hooks';
 import { parseAmount } from '@patract/utils';
 import React, { useCallback, useRef, useState, useReducer, useEffect } from 'react';
@@ -167,18 +167,23 @@ export const Paint: React.FC = () => {
 
   return (
     <Box justifyContent='center' display='flex' flexDirection='column' mx='auto'>
-      <Box sx={{ position: 'relative', width: 'calc(100% - 122px)' }}>
-        <Box sx={{ position: 'absolute', left: '40px', top: '26px' }}>
+      <Box sx={{ position: 'relative', width: 'calc(100% - 122px)' }} display="flex" justifyContent="space-between">
+        <Stack spacing="0px">
           <Box color='#0058FA' sx={{ display: 'inline-block' }}>
             Pool: <Fixed value={pool || '0'} decimals={10} postfix='DOT' />
           </Box>
-          <Box mt={2}>
+          <Box>
             <Box color='gray.500' sx={{ display: 'inline-block' }}>
               Canvas size: 320 Pixel * 180 Pixel
             </Box>
           </Box>
-        </Box>
-        <Center sx={{ display: 'inline-flex', w: '100%', m: '18px 0 34px' }}>
+          <Box display='inline-block'>
+            <Box color='orange.400' sx={{ display: 'inline-block' }}>
+              You have covered {pixels} pixels (1 Pixel cost 1 DOT)
+            </Box>
+          </Box>
+        </Stack>
+        <Box display='flex' alignItems='center'>
           <ToolBar
             paintMode={paintMode}
             onPenClick={onPenClick}
@@ -186,18 +191,6 @@ export const Paint: React.FC = () => {
             onRevert={onRevert}
             onRefresh={onRefresh}
           />
-        </Center>
-        <Box sx={{ position: 'absolute', right: '16px', top: '26px' }} display='flex' alignItems='center'>
-          <Box display='inline-block'>
-            <Box color='orange.400' sx={{ display: 'inline-block' }}>
-              You have covered {pixels} pixels
-            </Box>
-            <Box mt={2}>
-              <Box color='orange.400' sx={{ display: 'inline-block' }}>
-                1 Pixel cost 1 DOT
-              </Box>
-            </Box>
-          </Box>
           <Box ml={8}>
             <Button
               isDisabled={pixels === 0}
