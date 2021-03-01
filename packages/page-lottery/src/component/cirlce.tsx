@@ -29,6 +29,7 @@ export const Circle: React.FC<{
   key?: string;
   mr?: string;
   onClick?: () => void;
+  active?: boolean;
 }> = ({
   v,
   style = 0,
@@ -38,6 +39,7 @@ export const Circle: React.FC<{
   key = '',
   mr = '3px',
   onClick,
+  active = true,
 }) => {
   const [pallet, setPallet] = React.useState(circleStyle(style));
 
@@ -47,6 +49,10 @@ export const Circle: React.FC<{
 
   return (
     <Box
+      _hover={ active ? { opacity: 0.85 } : {} }
+      _active={ active ? { opacity: 0.7 } : {} }
+      cursor={ active ? 'pointer' : 'default' }
+      userSelect="none"
       fontSize={fontSize}
       mr={mr}
       height={r}

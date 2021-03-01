@@ -122,14 +122,17 @@ export const Trr: React.FC<{
         {(title === 'Biggest Winners' ? winner : true) && row.my_num && row.my_num.length === 3 ? (
           <Flex direction='row' alignItems='center' justifyContent='center' pt='0.3rem' pb='0.3rem'>
             <Circle
+              active={false}
               v={row.my_num[0]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[0] === winner[0] ? 0 : 1}
             />
             <Circle
+              active={false}
               v={row.my_num[1]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[1] === winner[1] ? 0 : 1}
             />
             <Circle
+              active={false}
               v={row.my_num[2]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[2] === winner[2] ? 0 : 1}
             />
