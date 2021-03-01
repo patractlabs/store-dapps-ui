@@ -17,3 +17,4 @@ These include 3 game applications:
 
 PatraStore currently supports Jupiter A1, our PoA test network, and will support our public parallel chains on Kusama and Polkadot in the future Patract K1 and Patract P1, as well as other parallel chains we support that include Wasm contract technology. patraStore currently only supports the PC browser side, and will support mobile wallets in the future.
 
+![image](https://user-images.githubusercontent.com/69485494/109446420-889bbe00-7aa6-11eb-9068-13a38d36d545.png)
