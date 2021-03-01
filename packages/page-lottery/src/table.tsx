@@ -8,6 +8,8 @@ import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
 import { useProvider } from './provider';
 
+import Nyan from '../public/nyan.gif';
+
 /**
  * Custom Table
  *
@@ -59,17 +61,27 @@ export const T: React.FC<TableProps> = ({
           </Tr>
         </Thead>
         <Tbody>
-          {rows.slice((page - 1) * limit, page * limit).map((b, i) => (
-            <Trr
-              title={title}
-              row={b}
-              key={i}
-              decimal={10}
-              currentEpoch={current_epoch}
-              renderHash={title !== 'Biggest Winners'}
-              winner={winnerMap[b.epoch_id]}
-            />
-          ))}
+          {rows.length === 0 ? (
+            <Tr>
+              <Td>
+                <img src={Nyan} alt='loading' />
+              </Td>
+            </Tr>
+          ) : (
+            rows
+              .slice((page - 1) * limit, page * limit)
+              .map((b, i) => (
+                <Trr
+                  title={title}
+                  row={b}
+                  key={i}
+                  decimal={10}
+                  currentEpoch={current_epoch}
+                  renderHash={title !== 'Biggest Winners'}
+                  winner={winnerMap[b.epoch_id]}
+                />
+              ))
+          )}
         </Tbody>
       </Table>
       {pagin && (
@@ -161,7 +173,15 @@ export const Trr: React.FC<{
           </Box>
         )}
       </Td>
-      {row.reward !== undefined && <Trend v={row.reward / Math.pow(10, decimal)} />}
+      {row.reward !== undefined && (
+        <Trend
+          v={
+            title === 'Biggest Winners'
+              ? Math.floor(row.reward / Math.pow(10, decimal))
+              : row.reward / Math.pow(10, decimal)
+          }
+        />
+      )}
       {row.buyers && (
         <Td>
           <Box>{row.buyers.length}</Box>
