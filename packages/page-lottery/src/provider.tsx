@@ -4,7 +4,6 @@ import { BiggestWinner, EpochHistory, MyLottery } from './types';
 import { useLottery } from './hooks';
 import { useApi, useAccount, useContractQuery } from '@patract/react-hooks';
 import { Box } from '@patract/ui-components';
-import { PatraLottery } from '@patract/utils';
 
 import Nyan from '../public/nyan.gif';
 
@@ -16,6 +15,8 @@ export interface Value {
   epochHistories: EpochHistory[];
   openIn: number;
   winnerMap: Record<string, number[]>;
+  trigger: boolean;
+  setTrigger: (trigger: boolean) => void;
 }
 
 const context = React.createContext<Value>({} as Value);
@@ -32,8 +33,6 @@ export const Provider: React.FC<{}> = ({ children }) => {
     );
   }
 };
-
-const BASE_EPOCH = 0;
 
 export const ProviderInner: React.FC<{}> = ({ children }) => {
   // hooks
@@ -58,16 +57,26 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
 
   // Subscribe storage
   React.useEffect(() => {
-    api.api.query.contracts.contractInfoOf(PatraLottery, async () => {
+    (async () => {
       const epoch: any = await latestEpoch.read();
       const currentSlot: any = await api.api.query.babe.currentSlot();
 
+      // Get My Lotteries
+      const bg = await biggestWinenr.read();
+      const winners: BiggestWinner[] = bg
+        ? (bg as any).map((w: any) => {
+            w.epoch_id = w.epoch;
+            w.my_num = w.win_num;
+            return w;
+          })
+        : [];
+
       // Get historires
       const histories: EpochHistory[] = [];
-      const dimHis = new Array(epoch.epoch_id - BASE_EPOCH).fill(BASE_EPOCH);
+      const dimHis = winners.map((w) => w.epoch_id);
       for (const v in dimHis) {
-        const r = await epochHistory.read(Number(BASE_EPOCH) + Number(v));
-        const rand = await randomnessOf.read(Number(BASE_EPOCH) + Number(v));
+        const r = await epochHistory.read(dimHis[v]);
+        const rand = await randomnessOf.read(dimHis[v]);
         if (r && !histories.includes(r as any)) {
           (r as any).random = `0x${(rand as any)[0]}`;
           (r as any).win_num = (rand as any)[1];
@@ -82,15 +91,6 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
         randomMap[histories[h].epoch_id] = histories[h].random;
       }
 
-      // Get My Lotteries
-      const bg = await biggestWinenr.read();
-      const winners: BiggestWinner[] = bg
-        ? (bg as any).map((w: any) => {
-            w.epoch_id = w.epoch;
-            w.my_num = w.win_num;
-            return w;
-          })
-        : [];
       const map: Record<string, number[]> = {};
       for (const w in histories) {
         map[String(histories[w].epoch_id)] = (histories[w] as any).win_num;
@@ -114,7 +114,7 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
             return l;
           })
         );
-    });
+    })();
     // eslint-disable-next-line
   }, [trigger, currentAccount]);
 
@@ -142,7 +142,9 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
         biggestWinners,
         epochHistories,
         openIn,
-        winnerMap
+        winnerMap,
+        trigger,
+        setTrigger
       }}
     >
       {children}

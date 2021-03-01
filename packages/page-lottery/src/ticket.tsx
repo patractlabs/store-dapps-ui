@@ -26,24 +26,29 @@ export const TicketBoard: React.FC<{}> = () => {
   // set state
   const _onClick = React.useCallback(
     (v: number) => {
-      const index = chosen.findIndex(_v => _v === -1);
+      const index = chosen.findIndex((_v) => _v === -1);
       if (index > -1) {
         const newChosen = [...chosen];
         newChosen[index] = v;
         setChosen(newChosen);
-      } 
+      }
     },
-    [chosen],
+    [chosen]
   );
 
-  const cancel = useCallback((index: number) => {
-    const newChosen = [...chosen];
-    newChosen[index] = -1;
-    setChosen(newChosen);
-  }, [chosen]);
+  const cancel = useCallback(
+    (index: number) => {
+      const newChosen = [...chosen];
+      newChosen[index] = -1;
+      setChosen(newChosen);
+    },
+    [chosen]
+  );
 
   const _buyTickets = () => {
-    excute([Number(epoch), chosen, ticket], parseAmount(ticket.toString(), 10));
+    excute([Number(epoch), chosen, ticket], parseAmount(ticket.toString(), 10)).then(() => {
+      context.setTrigger(!context.trigger);
+    });
   };
 
   return (
@@ -58,7 +63,7 @@ export const TicketBoard: React.FC<{}> = () => {
       <Box>
         <span>Select Numbers:</span>
       </Box>
-      <Flex py="1em" flexDir='row' justifyContent='space-around'>
+      <Flex py='1em' flexDir='row' justifyContent='space-around'>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) =>
           Circle({
             v: n,
@@ -71,14 +76,8 @@ export const TicketBoard: React.FC<{}> = () => {
           })
         )}
       </Flex>
-      <Box
-        bg='#fff'
-        rounded='4px'
-        shadow='0px 0px 6px 0px rgba(171, 180, 208, 0.31)'
-        p='1.5rem'
-        mb="1em"
-      >
-        <TicketInput chosen={chosen} ticket={ticket} setTicket={setTicket} onCancel={cancel}/>
+      <Box bg='#fff' rounded='4px' shadow='0px 0px 6px 0px rgba(171, 180, 208, 0.31)' p='1.5rem' mb='1em'>
+        <TicketInput chosen={chosen} ticket={ticket} setTicket={setTicket} onCancel={cancel} />
       </Box>
       <Flex justifyContent='space-between'>
         <Flex alignItems='center'>
@@ -86,7 +85,13 @@ export const TicketBoard: React.FC<{}> = () => {
           <NumberInput disabled={context.epochId} value={epoch} set={setEpoch} />
         </Flex>
         <Flex alignItems='flex-end'>
-          <Button bg='rgba(0, 88, 250, 1)' color='#fff' width='5rem' onClick={_buyTickets} disabled={chosen.length !== 3}>
+          <Button
+            bg='rgba(0, 88, 250, 1)'
+            color='#fff'
+            width='5rem'
+            onClick={_buyTickets}
+            disabled={chosen.length !== 3}
+          >
             Buy
           </Button>
           <Box ml='1rem' color='rgba(37, 161, 124, 1)' fontSize='12px'>
@@ -103,17 +108,9 @@ const TicketInput: React.FC<{
   ticket: number;
   setTicket: (v: number) => void;
   onCancel: (index: number) => void;
-}> = ({
-  chosen,
-  ticket,
-  setTicket,
-  onCancel,
-}) => {
+}> = ({ chosen, ticket, setTicket, onCancel }) => {
   return (
-    <Flex
-      justifyContent='center'
-      alignItems='center'
-    >
+    <Flex justifyContent='center' alignItems='center'>
       <Flex flexDir='row' justifyContent='space-around'>
         {Circle({
           v: chosen[0],
@@ -123,7 +120,9 @@ const TicketInput: React.FC<{
           lineHeight: '3rem',
           mr: '20px',
           key: '0',
-          onClick: () => { onCancel(0) },
+          onClick: () => {
+            onCancel(0);
+          }
         })}
         {Circle({
           v: chosen[1],
@@ -133,7 +132,9 @@ const TicketInput: React.FC<{
           lineHeight: '3rem',
           mr: '20px',
           key: '1',
-          onClick: () => { onCancel(1) },
+          onClick: () => {
+            onCancel(1);
+          }
         })}
         {Circle({
           v: chosen[2],
@@ -143,7 +144,9 @@ const TicketInput: React.FC<{
           lineHeight: '3rem',
           mr: '0px',
           key: '2',
-          onClick: () => { onCancel(2) },
+          onClick: () => {
+            onCancel(2);
+          }
         })}
       </Flex>
       <Spacer />

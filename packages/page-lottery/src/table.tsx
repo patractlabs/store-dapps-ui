@@ -3,9 +3,10 @@ import { Box, CloseIcon, Flex, Table, Tbody, Td, Text, Thead, Th, Tr, Button } f
 import Pagination from '@material-ui/lab/Pagination';
 import { useContractTx } from '@patract/react-hooks';
 
-import { Circle, Hash, Buyer } from './component';
+import { Circle, Hash } from './component';
 import { useLottery } from './hooks';
 import { TableProps, TrProps } from './types';
+import { useProvider } from './provider';
 
 /**
  * Custom Table
@@ -96,12 +97,15 @@ export const Trr: React.FC<{
 }> = ({ row, decimal, currentEpoch, winner, renderHash = true, title }) => {
   const contract = useLottery().contract;
   const { excute } = useContractTx({ title: 'Draw Lottery', contract, method: 'drawLottery' });
+  const context = useProvider();
 
   const _draw = React.useCallback(
     (epoch: number) => {
-      excute([epoch]);
+      excute([epoch]).then(() => {
+        context.setTrigger(!context.trigger);
+      });
     },
-    [excute]
+    [excute, context]
   );
 
   return (
@@ -160,7 +164,7 @@ export const Trr: React.FC<{
       {row.reward !== undefined && <Trend v={row.reward / Math.pow(10, decimal)} />}
       {row.buyers && (
         <Td>
-          <Buyer buyers={row.buyers} />
+          <Box>{row.buyers.length}</Box>
         </Td>
       )}
       {row.pool_in !== undefined && <Trend v={row.pool_in / Math.pow(10, decimal)} />}
