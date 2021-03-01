@@ -113,7 +113,7 @@ export const Trr: React.FC<{
             hash={row.random}
             num={winner ? winner.filter((v) => row.my_num.includes(v)) : []}
             render={renderHash}
-            limit={title === 'Biggest Winners' ? 8 : title === 'Epoch Histories' ? 66 : 6}
+            limit={title === 'Biggest Winners' ? 14 : title === 'Epoch Histories' ? 66 : 12}
           />
         </Td>
       )}

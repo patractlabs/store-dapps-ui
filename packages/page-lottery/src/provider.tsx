@@ -88,7 +88,6 @@ export const ProviderInner: React.FC<{}> = ({ children }) => {
         ? (bg as any).map((w: any) => {
             w.epoch_id = w.epoch;
             w.my_num = w.win_num;
-            w.reward = w.reward;
             return w;
           })
         : [];

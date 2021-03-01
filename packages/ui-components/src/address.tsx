@@ -34,7 +34,9 @@ export const Address: React.FC<AddressProps> = ({ hideText = false, value, type,
               isSmall
             />
           ) : null}
-          <Box>{!hideText ? <Text>{name as string}</Text> : <Text>{(name as string).slice(0, 5) + '...'}</Text>}</Box>
+          <Box>
+            <Text>{name as string}</Text>
+          </Box>
         </Flex>
       </Flex>
     </Tooltip>
