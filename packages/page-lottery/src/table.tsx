@@ -124,17 +124,14 @@ export const Trr: React.FC<{
             <Circle
               v={row.my_num[0]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[0] === winner[0] ? 0 : 1}
-              forceDisabled
             />
             <Circle
               v={row.my_num[1]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[1] === winner[1] ? 0 : 1}
-              forceDisabled
             />
             <Circle
               v={row.my_num[2]}
               style={title === 'Epoch Histories' ? 0 : winner && row.my_num[2] === winner[2] ? 0 : 1}
-              forceDisabled
             />
             {row.tickets && (
               <Flex direction='row' alignItems='center' justifyContent='center' lineHeight='2rem'>

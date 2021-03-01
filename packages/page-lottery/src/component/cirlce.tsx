@@ -28,10 +28,7 @@ export const Circle: React.FC<{
   fontSize?: string;
   key?: string;
   mr?: string;
-  disabled?: boolean;
-  forceDisabled?: boolean;
   onClick?: () => void;
-  inTicket?: boolean;
 }> = ({
   v,
   style = 0,
@@ -40,25 +37,13 @@ export const Circle: React.FC<{
   fontSize = '',
   key = '',
   mr = '3px',
-  disabled = true,
   onClick,
-  forceDisabled = false,
-  inTicket = false
 }) => {
   const [pallet, setPallet] = React.useState(circleStyle(style));
-  const [curStyle, setCurStyle] = React.useState(style);
 
   React.useEffect(() => {
-    if (inTicket) {
-      if (curStyle === 0 && v < 0) setCurStyle(1);
-      if (curStyle === 1 && v > -1) setCurStyle(0);
-    }
-    // eslint-disable-next-line
-  }, [v]);
-
-  React.useEffect(() => {
-    setPallet(circleStyle(curStyle));
-  }, [curStyle]);
+    setPallet(circleStyle(style));
+  }, [style]);
 
   return (
     <Box
@@ -73,20 +58,9 @@ export const Circle: React.FC<{
       color={pallet.font}
       border={pallet.border}
       borderWidth='1px'
-      boxShadow={curStyle === 0 ? '0px 1px 3px 0px rgba(171, 180, 208, 0.5);' : ''}
+      boxShadow={style === 0 ? '0px 1px 3px 0px rgba(171, 180, 208, 0.5);' : ''}
       key={key}
       onClick={() => {
-        if (forceDisabled || inTicket) {
-          return;
-        }
-
-        if (curStyle === 0) {
-          if (disabled) return;
-          setCurStyle(2);
-        } else {
-          setCurStyle(0);
-        }
-
         onClick && onClick();
       }}
     >
