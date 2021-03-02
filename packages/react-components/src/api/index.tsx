@@ -62,7 +62,7 @@ function isKeyringLoaded() {
 }
 
 // FIXME This is not good, may be to upgrade store sdk to fix this
-async function waitWeb3Inject(ms: number = 1000): Promise<void> {
+async function waitWeb3Inject(ms: number = 5000): Promise<void> {
   const delay = () => new Promise((resolve) => setTimeout(resolve, 100));
 
   return new Promise((resolve) => {
