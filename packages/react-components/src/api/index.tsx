@@ -78,7 +78,7 @@ async function waitWeb3Inject(ms: number = 5000): Promise<void> {
             break;
           }
         }
-        delay();
+        await delay();
       }
       resolve();
     }
