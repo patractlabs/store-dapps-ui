@@ -61,15 +61,27 @@ function isKeyringLoaded() {
   }
 }
 
-function waitWeb3Inject(): Promise<void> {
+// FIXME This is not good, may be to upgrade store sdk to fix this
+async function waitWeb3Inject(ms: number = 1000): Promise<void> {
+  const delay = () => new Promise((resolve) => setTimeout(resolve, 100));
+
   return new Promise((resolve) => {
-    const interval = setInterval(() => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (Object.keys(((window as unknown) as any).injectedWeb3).length !== 0) {
-        clearInterval(interval);
-        resolve();
+    window.onload = async () => {
+      const start = Date.now();
+
+      while(true) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (Object.keys(((window as unknown) as any).injectedWeb3).length !== 0) {
+          break;
+        } else {
+          if (Date.now() - ms > start) {
+            break;
+          }
+        }
+        delay();
       }
-    }, 300);
+      resolve();
+    }
   });
 }
 
