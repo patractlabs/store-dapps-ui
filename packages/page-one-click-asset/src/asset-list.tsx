@@ -35,7 +35,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
   );
 
   const page = useMemo(() => {
-    return Math.floor(offset / 5) + 1;
+    return Math.floor(offset / 5);
   }, [offset]);
 
   const handlePage = (_: any, page: number) => {
