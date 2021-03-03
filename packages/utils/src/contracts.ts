@@ -1,7 +1,7 @@
 export const PatraPK = '5ELRFnm3T9u1PSNaidPUbFj9cSATaYQX5zAeFTfFCFRSFQ4T';
 export const PatraPixel = '5H1b2NdvAJ2wiknBQ9rzryVHgDNBZiYQvRe35fuMSRXNMyEA';
 export const PatraLottery = '5FcjY9tStk6LjTsFCUDZXFPWugrkVaonwcdppVh6xi58QD4j';
-export const PatraSwap = '5GHi6bBPnY5ZiaXYKeKKe8ea7x8hGx8MNbQtJ9E6pahK9eDy';
+export const PatraSwap = '5FT3VC9mP7uZd1Nsj5Bm39adPgZeADvtVW84V7tYcci51yHM';
 export const PatraMaker = '5H71R2u6HuKCZVoxHJGK5TjJ5f51hzSvpZwQHo3qpHgyYf1m';
 export const USDT = '5HPfwG4sjRMEDRi1cbotXYfJM9Rxowi6RfX44x5K3CSm827r';
 export const JBTC = '5DXJYYYvN79J2nP3y5FXafUnn432pYgxvmLYEtfoBwTjXBRi';
