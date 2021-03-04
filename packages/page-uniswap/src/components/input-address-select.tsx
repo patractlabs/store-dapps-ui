@@ -58,7 +58,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
 
   const option = useMemo(() => {
     if (!value && hasDefault) {
-      return (options || []).find((d: any) => d.contract === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM');
+      return (options || []).find((d: any) => d.contract === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV');
     }
     return (options || []).find((d: any) => d.contract === value);
   }, [options, value, hasDefault]);
@@ -67,7 +67,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
     <Box>
       <Input
         onChange={(event) => {
-          if (hasDefault && event.target.value === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+          if (hasDefault && event.target.value === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV') {
             onChangeValue('');
           }
           onChangeValue(event.target.value);
@@ -162,7 +162,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
                       </Text>
                     </Flex>
                     <Text ml={4} color='gray.500'>
-                      {option.contract === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+                      {option.contract === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
                         ? 'DOT'
                         : truncated(option.contract || '')}
                     </Text>

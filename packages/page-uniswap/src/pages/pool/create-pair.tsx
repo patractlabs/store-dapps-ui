@@ -85,7 +85,7 @@ const CreatePair = React.memo(
           token_name: 'Polkadot',
           token_symbol: 'DOT',
           token_decimals: 10,
-          contract: '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+          contract: '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
         }
       ].concat(contracts || []);
     }, [contracts]);
@@ -141,7 +141,7 @@ const CreatePair = React.memo(
                   value={to}
                   onChangeValue={setTo}
                   onChangeOption={(option) => {
-                    if (option.contract === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+                    if (option.contract === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV') {
                       setTo('');
                     } else {
                       setTo(option.contract || '');

@@ -291,7 +291,7 @@ const PK: React.FC = () => {
             {item.joiner_choice === 'None' ? <Center>-</Center> : renderChoice(item.joiner_choice, true)}
           </Td>
           <Td sx={{ px: '3', textAlign: 'left' }}>
-            {item.joiner && item.joiner !== '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ? (
+            {item.joiner && item.joiner !== '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ? (
               <Address value={item.joiner} />
             ) : (
               <Center>-</Center>
