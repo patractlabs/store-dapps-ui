@@ -143,7 +143,7 @@ export const PoolList = React.memo(() => {
                             <IdentityIcon value={item.to} theme='polkadot' />
                           </Box>
                           <label>
-                            {item.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ? 'DOT' : item.to}
+                            {item.to === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ? 'DOT' : item.to}
                           </label>
                         </Box>
                       </PopoverBody>

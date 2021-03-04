@@ -18,7 +18,7 @@ export const useApprove = (contract: any) => {
   return useCallback(
     async (spender: string) => {
       // isDot
-      if (contract.address.toString() === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM') {
+      if (contract.address.toString() === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV') {
         return;
       }
 

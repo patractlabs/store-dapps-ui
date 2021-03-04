@@ -49,8 +49,8 @@ const Withdraw = ({
   const [isLoading, setIsLoading] = useState<any>(false);
   const isDot = useMemo(() => {
     return (
-      item.to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ||
-      item.from === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+      item.to === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ||
+      item.from === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
     );
   }, [item.to, item.from]);
   const { contract } = useExchange(item.exchange, isDot);

@@ -10,8 +10,8 @@ export const useExchangeFactory = () => {
   return useCallback(
     (address, from: string, to: string) => {
       const abi =
-        from === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM' ||
-        to === '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM'
+        from === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ||
+        to === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
           ? Exchange2
           : Exchange;
       return attach(address, abi);

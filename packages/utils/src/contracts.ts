@@ -7,7 +7,7 @@
 // export const JBTC = '5DXJYYYvN79J2nP3y5FXafUnn432pYgxvmLYEtfoBwTjXBRi';
 // export const JETH = '5CxdigZ91UXiorv2L3VhGPRd9DafmkARdFHntpShtPQG5rGS';
 // export const DAI = '5GbtNisL8n9ovjJEDN9prGHdvkczbWoy98K8EYA5U14p4ocD';
-// export const EMPTY = '5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM';
+// export const EMPTY = '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV';
 
 
 export const PatraPK = "3djs7v6bJVuNtVuAE7K6YqUMGfskhcLC4wJYQXNRnZudkNUt";
