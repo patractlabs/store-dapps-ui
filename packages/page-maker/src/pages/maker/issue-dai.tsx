@@ -34,13 +34,12 @@ const IssueDAI: FC<{
   const [isLoading, setIsLoading] = useState(false);
   const { contract } = useMakerContract();
   const { excute } = useContractTx({ title: 'Issue DAI', contract, method: 'issueDai' });
-  const [collateral, setCollateral] = useState<string>('');
-  const [collateralRatio, setCollateralRatio] = useState<string>('');
-  const [calculation, setCalculation] = useState<string>('');
-  const [estimatedIssuance, setEstimatedIssuance] = useState<string>('');
-  const [balance, setBalance] = useState<string>('');
+  const [ collateral, setCollateral ] = useState<string>('');
+  const [ collateralRatio, setCollateralRatio ] = useState<string>('');
+  const [ calculation, setCalculation ] = useState<string>('');
+  const [ estimatedIssuance, setEstimatedIssuance ] = useState<string>('');
+  const [ balance, setBalance ] = useState<string>('');
   const { tokenDecimals: dotDecimals } = useContext(ApiContext);
-
   const { currentAccount } = useAccount();
 
   const onRatioChange = (val: string) => {
@@ -55,7 +54,6 @@ const IssueDAI: FC<{
 
   const submit = () => {
     setIsLoading(true);
-    // console.log('issue dai, collateral:', parseAmount(collateral, dotDecimals), 'ratio:', collateralRatio);
     
     excute([collateralRatio], parseAmount(collateral, dotDecimals))
       .then(() => {
@@ -94,7 +92,15 @@ const IssueDAI: FC<{
   }, [collateralRatio, collateral, systemParams.currentPrice]);
 
   useEffect(() => {
-    api.derive.balances.all(currentAccount).then(account => setBalance(account.availableBalance.toString()));
+    api.query.system
+      .account(currentAccount, (info) => {
+        setBalance(info.data.free.toString());
+      })
+      .catch(() => {
+        setBalance('');
+      });
+    // api.query.balances.account(currentAccount).then(x => console.log('ba', x.toHuman()));
+    // api.derive.balances.all(currentAccount).then(account => setBalance(account.availableBalance.toString()));
   }, [currentAccount, signal]);
 
   useMemo(() => {

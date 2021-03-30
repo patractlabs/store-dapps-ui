@@ -59,6 +59,7 @@ export const SystemParamsArea: FC<{
   onIssueDaiSubmit,
   signal,
 }): ReactElement => {
+  const dotYouMayHave = 100;
   const { isOpen: isIssueDAIOpen, onOpen: onIssueDAIOpen, onClose: onIssueDAIClose } = useModal();
   const list: {
     title: string;
@@ -75,7 +76,6 @@ export const SystemParamsArea: FC<{
     return newList;
   }, [systemParams]);
 
-  const dotYouMayHave = 100;
   const estimatedDai = useMemo(() => {
     if (!systemParams.mcr) {
       return '?';
