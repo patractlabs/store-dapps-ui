@@ -1,10 +1,8 @@
-export const PatraPK = "3djs7v6bJVuNtVuAE7K6YqUMGfskhcLC4wJYQXNRnZudkNUt";
-export const PatraPixel = "3gR2tVyU1e3KDpJkudncpZEVLT5UgnU5uNmwEjcY2k1Zrykh";
-export const PatraLottery = "3f2BQHDzk66iEXPphx9BUq8iZva3cejTvZmiyZQHZ2ZKu7Ac";
-export const PatraSwap = "3fh9xiWwdt5wDe47q8EwbiPmnBqzQ242MYYnTCwHQuBWeWCJ";
-export const PatraMaker = "3cMPPKvGsB9SSmLL4oRnRC6Wfqgbu9jSmW5otkxLjd29Jtm3";
-export const USDT = "3eJxTJ8zs2S6n1j2WrL6z3dmTuWVJUQBud5NMtm9mVS972KK";
-export const JBTC = "3cRrRg3xwR6hoGCD9X7E5r3nkt8wC8eKoJfMp8LSW9zeKcEm";
-export const JETH = "3coksxrL2q5yvkqsjqDRmQdKqRfyB2akVX1sVzY73DE2dvnF";
-export const DAI = "3dSBGtq2W7xK1yz545wu6d9HvKxEpMWM4DwizXsZ6gWb346f";
+export const PatraPixel = "3fMQgHfp69V9LcMXA1ZyBCnjxhAaSWh45e8GmVG5zyWy4PjP";
+export const PatraSwap = "3dMNs816F9uLVhX1U5EbdqjvDivju2H1LQ8KU52j1YkkHR5m";
+export const PatraMaker = "3dc7VUAVdvumGFD1tFfnZ91gXSMrbvfN6mjRMLZhGcJ5q1Gj";
+export const USDT = "3gkb2Stx7UQqifuCcRNGPxa5GGxVnPUXVHXgcqrNRT6wrqE3";
+export const JBTC = "3dXfJB15vBDVzaRo5qnQMdAHDKCQ6A3LqWrMfCZrgB3skDsh";
+export const JETH = "3eAuj2q2L8ThpUfqq87cM4dte8g5zdiKxbZ33WiPTzA6RqNa";
+export const DAI = "3fsiYYvyPDkjf8oSSq1wpHTpQuVHTH5ytY5hUzMUJQXGJ5RG";
 export const EMPTY = "3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV";

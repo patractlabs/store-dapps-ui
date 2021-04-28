@@ -8,11 +8,9 @@ These include 3 DeFi applications:
 - [PatraSwap](https://patrastore.io/jupiter-a1/dapps/patraswap.dapps.patrastore.io), a simplified version of Uniswap, based on the AMM model of DEX.
 - [PatraMaker](https://patrastore.io/jupiter-a1/dapps/maker.dapps.patrastore.io), collateralized DOT issuance of stable coins, a simplified version of MakerDAO.
 
-These include 3 game applications:
+These include 1 game application:
 
-- [PatraPK](https://patrastore.io/jupiter-a1/dapps/pk-game.dapps.patrastore.io): two against two, a crypto version of rock-paper-scissors with penalties and incentives.
 - [PatraPixel](https://patrastore.io/jupiter-a1/dapps/patra-pixel.dapps.patrastore.io): public canvas, pay DOT to paint on public advertising boards.
-- [PatraLottery](https://patrastore.io/jupiter-a1/dapps/lottery.dapps.patrastore.io): random lottery, decentralized and secure random numbers generated from the BABE consensus of Polka.
 
 
 PatraStore currently supports Jupiter A1, our PoA test network, and will support our public parallel chains on Kusama and Polkadot in the future Patract K1 and Patract P1, as well as other parallel chains we support that include Wasm contract technology. patraStore currently only supports the PC browser side, and will support mobile wallets in the future.
