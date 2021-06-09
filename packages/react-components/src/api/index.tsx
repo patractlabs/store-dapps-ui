@@ -153,7 +153,7 @@ async function loadOnReady(
     injectedPromise
   );
   const ss58Format = properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber();
-  const tokenSymbol = properties.tokenSymbol.unwrapOr([formatBalance.getDefaults().unit, ...DEFAULT_AUX]).map(s => s.toString());
+  const tokenSymbol = properties.tokenSymbol.unwrapOr([formatBalance.getDefaults().unit, ...DEFAULT_AUX]);
   const tokenDecimals = (properties.tokenDecimals.unwrapOr([DEFAULT_DECIMALS]) as BN[]).map((b) => b.toNumber())[0];
   const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
 
@@ -166,7 +166,7 @@ async function loadOnReady(
   // first setup the UI helpers
   formatBalance.setDefaults({
     decimals: tokenDecimals,
-    unit: tokenSymbol
+    unit: tokenSymbol[0].toString()
   });
 
   // finally load the keyring
@@ -248,10 +248,33 @@ export const Api = React.memo(function Api({ children, store, url }: Props): Rea
           registry,
           signer,
           types: {
-            Address: 'MultiAddress',
             LookupSource: 'MultiAddress',
-            BlockLength: 'u32',
-            Slot: 'u64'
+            Address: 'MultiAddress',
+            AccountInfo: 'AccountInfoWithTripleRefCount',
+            AliveContractInfo: {
+              trieId: 'TrieId',
+              storageSize: 'u32',
+              pairCount: 'u32',
+              codeHash: 'CodeHash',
+              rentAllowance: 'Balance',
+              rentPayed: 'Balance',
+              deductBlock: 'BlockNumber',
+              lastWrite: 'Option<BlockNumber>',
+              _reserved: 'Option<Null>'
+            },
+            FullIdentification: 'AccountId',
+            AuthorityState: {
+              _enum: ['Working', 'Waiting']
+            },
+            EraIndex: 'u32',
+            ActiveEraInfo: {
+              index: 'EraIndex',
+              start: 'Option<u64>'
+            },
+            UnappliedSlash: {
+              validator: 'AccountId',
+              reporters: 'Vec<AccountId>'
+            }
           }
         });
 

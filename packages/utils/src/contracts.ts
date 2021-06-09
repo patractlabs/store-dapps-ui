@@ -1,8 +1,8 @@
 export const PatraPK = "3djs7v6bJVuNtVuAE7K6YqUMGfskhcLC4wJYQXNRnZudkNUt";
 export const PatraPixel = "3gR2tVyU1e3KDpJkudncpZEVLT5UgnU5uNmwEjcY2k1Zrykh";
 export const PatraLottery = "3f2BQHDzk66iEXPphx9BUq8iZva3cejTvZmiyZQHZ2ZKu7Ac";
-export const PatraSwap = "3fh9xiWwdt5wDe47q8EwbiPmnBqzQ242MYYnTCwHQuBWeWCJ";
-export const PatraMaker = "3cMPPKvGsB9SSmLL4oRnRC6Wfqgbu9jSmW5otkxLjd29Jtm3";
+export const PatraSwap = "3e5Cm76isZx7TQUaPoU3QFYVap6RpmkmiEiYwmLFfwbLedPv";
+export const PatraMaker = "3hCyvCT9odKjfuqK1U85cr99sjkuWqahGVQBEyFhehpNzFts";
 export const USDT = "3eJxTJ8zs2S6n1j2WrL6z3dmTuWVJUQBud5NMtm9mVS972KK";
 export const JBTC = "3cRrRg3xwR6hoGCD9X7E5r3nkt8wC8eKoJfMp8LSW9zeKcEm";
 export const JETH = "3coksxrL2q5yvkqsjqDRmQdKqRfyB2akVX1sVzY73DE2dvnF";

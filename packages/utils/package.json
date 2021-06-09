@@ -5,7 +5,7 @@
   "dependencies": {
     "@ethersproject/bignumber": "^5.0.13",
     "@patract/react-components": "workspace:packages/react-components",
-    "@polkadot/api-contract": "^3.9.4-0",
-    "@polkadot/ui-keyring": "^0.66.2"
+    "@polkadot/api-contract": "^4.13.1",
+    "@polkadot/ui-keyring": "^0.79.1"
   }
 }
