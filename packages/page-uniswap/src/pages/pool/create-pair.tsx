@@ -18,10 +18,9 @@ import { useFactoryContract } from '../../hooks/useFactoryContract';
 import InputAddressSelect from '../../components/input-address-select';
 import { useContractTx } from '@patract/react-hooks';
 import { useQueryContracts } from '../../hooks/use-query-contracts';
-import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
 import { Abi } from '@polkadot/api-contract';
 import { hexToU8a, compactAddLength } from '@polkadot/util';
+import { abis, EMPTY } from '@patract/utils';
 
 const CreatePair = React.memo(
   ({ isOpen, onClose, onSubmit }: { isOpen: boolean; onClose: () => void; onSubmit: () => void }) => {
@@ -44,8 +43,8 @@ const CreatePair = React.memo(
         const result: any = [];
         for (const [code_hash, contract, extrinsic] of res) {
           if (!extrinsic?.args?.data) return;
-          if (code_hash === Erc20fixed.source.hash) {
-            const abi = new Abi(Erc20fixed);
+          if (code_hash === abis.Erc20fixed.source.hash) {
+            const abi = new Abi(abis.Erc20fixed);
             try {
               const constructor = abi.decodeConstructor(compactAddLength(hexToU8a(extrinsic.args.data)));
               const data = constructor.args.map((a) => a.toJSON());
@@ -58,8 +57,8 @@ const CreatePair = React.memo(
               });
             } catch {}
           }
-          if (code_hash === Erc20mintable.source.hash) {
-            const abi = new Abi(Erc20fixed);
+          if (code_hash === abis.Erc20issue.source.hash) {
+            const abi = new Abi(abis.Erc20fixed);
             try {
               const constructor = abi.decodeConstructor(compactAddLength(hexToU8a(extrinsic.args.data)));
               const data = constructor.args.map((a) => a.toJSON());
@@ -85,7 +84,7 @@ const CreatePair = React.memo(
           token_name: 'Polkadot',
           token_symbol: 'DOT',
           token_decimals: 10,
-          contract: '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
+          contract: EMPTY
         }
       ].concat(contracts || []);
     }, [contracts]);
@@ -141,7 +140,7 @@ const CreatePair = React.memo(
                   value={to}
                   onChangeValue={setTo}
                   onChangeOption={(option) => {
-                    if (option.contract === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV') {
+                    if (option.contract === EMPTY) {
                       setTo('');
                     } else {
                       setTo(option.contract || '');

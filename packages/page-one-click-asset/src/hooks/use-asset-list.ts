@@ -1,4 +1,5 @@
 import { useApi } from '@patract/react-hooks';
+import { trait } from '@patract/utils';
 import { ContractPromise } from '@polkadot/api-contract';
 import { useCallback, useEffect, useReducer, useState } from 'react';
 import { getTokenAbi } from '../token-types';
@@ -35,16 +36,16 @@ export const useAssetList = (
         const contract = new ContractPromise(api, getTokenAbi(codeHash), address);
 
         return Promise.all([
-          contract.query['iErc20,tokenDecimals'](signer, {}).then((data) => {
+          contract.query[`${trait}tokenDecimals`](signer, {}).then((data) => {
             return data.output?.toString();
           }),
-          contract.query['iErc20,tokenSymbol'](signer, {}).then((data) => {
+          contract.query[`${trait}tokenSymbol`](signer, {}).then((data) => {
             return data.output?.toString();
           }),
-          contract.query['iErc20,totalSupply'](signer, {}).then((data) => {
+          contract.query[`${trait}totalSupply`](signer, {}).then((data) => {
             return data.output?.toString();
           }),
-          contract.query['iErc20,tokenName'](signer, {}).then((data) => {
+          contract.query[`${trait}tokenName`](signer, {}).then((data) => {
             return data.output?.toString();
           })
         ]).then(([tokenDecimals, tokenSymbol, totalSupply, tokenName]) => {

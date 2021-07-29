@@ -21,7 +21,7 @@ import {
   Stack,
   Text
 } from '@patract/ui-components';
-import { formatAmount, parseAmount } from '@patract/utils';
+import { EMPTY, formatAmount, parseAmount } from '@patract/utils';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useApprove } from '../../hooks/useApprove';
 import { useErc20Balance } from '../../hooks/useErc20Balance';
@@ -47,10 +47,7 @@ const Add = ({
   const [toBalance, setToBalance] = useState<string>('');
   const [lpValue, setLpValue] = useState<string>('');
   const isDot = useMemo(() => {
-    return (
-      item.to === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ||
-      item.from === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
-    );
+    return item.to === EMPTY || item.from === EMPTY;
   }, [item.to, item.from]);
   const { currentAccount } = useAccount();
   const { contract: exContract } = useExchange(item.exchange, isDot);
@@ -120,7 +117,7 @@ const Add = ({
     if (isOpen && readFrom) {
       readFrom(currentAccount)
         .then((result) => {
-          result && setFromBalance(result as any);
+          result && setFromBalance(result);
         })
         .catch(() => {
           setFromBalance('');
@@ -148,7 +145,7 @@ const Add = ({
     if (isOpen && readTo) {
       readTo(currentAccount)
         .then((result) => {
-          result && setToBalance(result as any);
+          result && setToBalance(result);
         })
         .catch(() => {
           setToBalance('');

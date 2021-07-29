@@ -18,11 +18,11 @@ export const theme = extendTheme({
     },
     primary: {
       500: '#0058FA',
-      600: '#2B6CB0',
+      600: '#2B6CB0'
     },
     border: {
-      100: '#ABB4D0',
-    },
+      100: '#ABB4D0'
+    }
   },
   sizes: {
     max: '100%'
@@ -39,15 +39,15 @@ export const theme = extendTheme({
         md: { h: '32px' }
       },
       variants: {
-        "maker-modal": {
+        'maker-modal': {
           height: '2em',
           lineHeight: '2em',
           background: '#0058FA',
           borderRadius: '2px',
           color: 'white',
-          padding: '1.125em',
-        },
-      },
+          padding: '1.125em'
+        }
+      }
     },
     FormLabel: {
       baseStyle: {
@@ -128,7 +128,7 @@ export const theme = extendTheme({
             fontWeight: '600',
             lineHeight: '20px',
             bgColor: '#ABB4D0',
-            color: '#000',
+            color: '#000'
           },
           tr: {
             fontSize: '14px',
@@ -140,7 +140,7 @@ export const theme = extendTheme({
             _odd: {
               bgColor: '#F7F9FF'
             }
-          },
+          }
         }
       },
       sizes: {
@@ -185,7 +185,7 @@ export const theme = extendTheme({
         maker: {
           content: {
             background: '#F8F8F8',
-            borderRadius: '4px',
+            borderRadius: '4px'
           },
           header: {
             height: '50px',
@@ -194,14 +194,14 @@ export const theme = extendTheme({
             boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.05)',
             borderRadius: '4px 4px 0px 0px',
             background: '#FFFFFF',
-            color: '#0058FA',
+            color: '#0058FA'
           },
           closeButton: {
             top: '0.75rem'
           },
           body: {
             padding: ' 41px 49px 40px 49px',
-            background: '#F8F8F8',
+            background: '#F8F8F8'
           },
           footer: {
             padding: '11px 0px',
@@ -210,7 +210,7 @@ export const theme = extendTheme({
             justifyContent: 'center',
             color: '#0058FA',
             background: '#FFFFFF',
-            boxShadow: '0px 2px 5px 0px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0px 2px 5px 0px rgba(0, 0, 0, 0.1)'
           }
         }
       }
@@ -340,7 +340,7 @@ export const theme = extendTheme({
         outline: 'none',
         boxShadow: 'none'
       },
-      'select::-ms-expand': { display: 'none' },
+      'select::-ms-expand': { display: 'none' }
     }
   }
 });

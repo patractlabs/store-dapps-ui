@@ -1,8 +1,7 @@
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useEffect, useMemo } from 'react';
-import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
+import { abis } from '@patract/utils';
 
 const publicDeployedContractSubscriptionWs = gql`
   subscription Contracts($codeHash1: jsonb!, $codeHash2: jsonb!) {
@@ -32,10 +31,10 @@ export const useQueryContracts = () => {
   return useSubscription(gql2, {
     variables: {
       codeHash1: {
-        code_hash: Erc20fixed.source.hash
+        code_hash: abis.Erc20fixed.source.hash
       },
       codeHash2: {
-        code_hash: Erc20mintable.source.hash
+        code_hash: abis.Erc20issue.source.hash
       }
     }
   });

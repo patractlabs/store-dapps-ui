@@ -20,6 +20,7 @@ import {
   Thead,
   Tr
 } from '@patract/ui-components';
+import { EMPTY } from '@patract/utils';
 import React, { useReducer } from 'react';
 import { usePairList } from '../../hooks/usePairList';
 import ArrowWebp from '../../images/arrow.svg';
@@ -142,9 +143,7 @@ export const PoolList = React.memo(() => {
                           <Box mr={2}>
                             <IdentityIcon value={item.to} theme='polkadot' />
                           </Box>
-                          <label>
-                            {item.to === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ? 'DOT' : item.to}
-                          </label>
+                          <label>{item.to === EMPTY ? 'DOT' : item.to}</label>
                         </Box>
                       </PopoverBody>
                     </PopoverContent>

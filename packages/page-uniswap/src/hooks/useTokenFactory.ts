@@ -1,15 +1,18 @@
 import { useContractFactory, useContract } from '@patract/react-hooks';
+import { abis } from '@patract/utils';
 import { useCallback } from 'react';
-import ERC20 from '@patract/utils/contracts/erc20_issue.json';
 
 export const useTokenFactory = () => {
   const attach = useContractFactory();
 
-  return useCallback((address) => {
-    return attach(address, ERC20);
-  }, [attach]);
+  return useCallback(
+    (address) => {
+      return attach(address, abis.Erc20issue);
+    },
+    [attach]
+  );
 };
 
 export const useToken = (address: string) => {
-  return useContract(address, ERC20);
+  return useContract(address, abis.Erc20issue);
 };

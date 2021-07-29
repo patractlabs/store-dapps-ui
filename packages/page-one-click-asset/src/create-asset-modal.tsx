@@ -15,7 +15,7 @@ import {
   ModalOverlay,
   SimpleGrid
 } from '@patract/ui-components';
-import { getSigner, handleTxResults, parseAmount } from '@patract/utils';
+import { getSigner, handleTxResults, parseAmount, trait } from '@patract/utils';
 import { BlueprintPromise } from '@polkadot/api-contract';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -55,7 +55,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
       });
       throw 'No Account';
     }
-    
+
     let toastId: any;
 
     try {
@@ -64,7 +64,7 @@ export const CreateAssetModal: React.FC<CreateAssetModalProps> = ({ isOpen, onCl
 
       const blueprint = new BlueprintPromise(api, abi, abi.source.hash);
 
-      const tx = blueprint.tx['iErc20,new'](
+      const tx = blueprint.tx[`${trait}new`](
         {
           gasLimit: '400000000000',
           value: 0

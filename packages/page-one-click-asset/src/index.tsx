@@ -1,5 +1,6 @@
 import { AccountProvider, Api, GraphqlProvider, Queue } from '@patract/react-components';
 import { UIProvider } from '@patract/ui-components';
+import { wsUrl } from '@patract/utils';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -10,7 +11,7 @@ ReactDOM.render(
     <GraphqlProvider>
       <UIProvider>
         <Queue>
-          <Api url='wss://jupiter-poa.elara.patract.io/'>
+          <Api url={wsUrl}>
             <AccountProvider>
               <Router>
                 <App />

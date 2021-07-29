@@ -1,5 +1,4 @@
-import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
+import { abis } from '@patract/utils';
 
 export enum TokenType {
   erc20_1 = 'ERC20_1',
@@ -17,13 +16,13 @@ export const getTokenTypeName = (type: TokenType) => {
 
 export const getTokenAbi = (type: TokenType | string) => {
   if (type === TokenType.erc20_1) {
-    return Erc20fixed;
+    return abis.Erc20fixed;
   } else if (type === TokenType.erc20_2) {
-    return Erc20mintable;
-  } else if (type === Erc20fixed.source.hash) {
-    return Erc20fixed;
-  } else if (type === Erc20mintable.source.hash) {
-    return Erc20mintable;
+    return abis.Erc20issue;
+  } else if (type === abis.Erc20fixed.source.hash) {
+    return abis.Erc20fixed;
+  } else if (type === abis.Erc20issue.source.hash) {
+    return abis.Erc20issue;
   } else {
     throw new Error('Unexpected');
   }

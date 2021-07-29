@@ -62,14 +62,14 @@ function isKeyringLoaded() {
 }
 
 // FIXME This is not good, may be to upgrade store sdk to fix this
-async function waitWeb3Inject(ms: number = 5000): Promise<void> {
+async function waitWeb3Inject(ms = 5000): Promise<void> {
   const delay = () => new Promise((resolve) => setTimeout(resolve, 100));
 
   return new Promise((resolve) => {
     window.onload = async () => {
       const start = Date.now();
 
-      while(true) {
+      while (true) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (Object.keys(((window as unknown) as any).injectedWeb3).length !== 0) {
           break;
@@ -81,7 +81,7 @@ async function waitWeb3Inject(ms: number = 5000): Promise<void> {
         await delay();
       }
       resolve();
-    }
+    };
   });
 }
 
@@ -198,7 +198,7 @@ async function loadOnReady(
     systemChain,
     systemName,
     systemVersion,
-    tokenDecimals,
+    tokenDecimals
   };
 }
 
@@ -282,15 +282,15 @@ export const Api = React.memo(function Api({ children, store, url }: Props): Rea
         api.on('disconnected', () => setIsApiConnected(false));
         api.on('error', (error: Error) => setApiError(error.message));
         api.on('ready', (): void => {
-            injectedPromise.then(setExtensions).catch(console.error);
+          injectedPromise.then(setExtensions).catch(console.error);
 
-            loadOnReady(api, injectedPromise, store)
-              .then(setState)
-              .catch((error): void => {
-                console.error(error);
+          loadOnReady(api, injectedPromise, store)
+            .then(setState)
+            .catch((error): void => {
+              console.error(error);
 
-                setApiError((error as Error).message);
-              });
+              setApiError((error as Error).message);
+            });
         });
 
         setIsApiInitialized(true);

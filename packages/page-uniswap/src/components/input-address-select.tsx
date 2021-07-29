@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
   Text
 } from '@patract/ui-components';
-import { truncated } from '@patract/utils';
+import { EMPTY, truncated } from '@patract/utils';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTokens } from '../hooks/useTokens';
@@ -58,7 +58,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
 
   const option = useMemo(() => {
     if (!value && hasDefault) {
-      return (options || []).find((d: any) => d.contract === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV');
+      return (options || []).find((d: any) => d.contract === EMPTY);
     }
     return (options || []).find((d: any) => d.contract === value);
   }, [options, value, hasDefault]);
@@ -67,7 +67,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
     <Box>
       <Input
         onChange={(event) => {
-          if (hasDefault && event.target.value === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV') {
+          if (hasDefault && event.target.value === EMPTY) {
             onChangeValue('');
           }
           onChangeValue(event.target.value);
@@ -162,9 +162,7 @@ const InputAddressSelect: React.FC<InputAddressSelectProps> = ({
                       </Text>
                     </Flex>
                     <Text ml={4} color='gray.500'>
-                      {option.contract === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
-                        ? 'DOT'
-                        : truncated(option.contract || '')}
+                      {option.contract === EMPTY ? 'DOT' : truncated(option.contract || '')}
                     </Text>
                   </Flex>
                 </Box>

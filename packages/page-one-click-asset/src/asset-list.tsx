@@ -16,10 +16,9 @@ import {
   Fixed
 } from '@patract/ui-components';
 import React, { useMemo, useState } from 'react';
-import Erc20fixed from '@patract/utils/contracts/erc20_fixed.json';
-import Erc20mintable from '@patract/utils/contracts/erc20_issue.json';
 import { useAssetList, useQueryContracts } from './hooks';
 import { IssueAssetButton } from './issue-asset-button';
+import { abis } from '@patract/utils';
 
 export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
   const { currentAccount } = useAccount();
@@ -29,8 +28,8 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
   const { data } = useQueryContracts(
     isPublic,
     currentAccount,
-    Erc20fixed.source.hash,
-    Erc20mintable.source.hash,
+    abis.Erc20fixed.source.hash,
+    abis.Erc20issue.source.hash,
     offset
   );
 
@@ -58,8 +57,8 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
   const { data: list, loading, forceUpdate } = useAssetList(contractList);
 
   return (
-    <Box mt={4} padding={3} background='white' borderRadius='12px' border='1px solid' borderColor='gray.100'>
-      <Table variant='simple' size='md'>
+    <Box background='white' border='1px solid' borderColor='gray.100' borderRadius='12px' mt={4} padding={3}>
+      <Table size='md' variant='simple'>
         <Thead>
           <Tr>
             <Th>Contract Address</Th>
@@ -76,7 +75,7 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
           {list?.map((item) => (
             <Tr key={item.id}>
               <Td>
-                <Address value={item.address} type='contract' />
+                <Address type='contract' value={item.address} />
               </Td>
               <Td>
                 <Address value={item.signer} />
@@ -85,20 +84,24 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
               <Td>{item.tokenSymbol}</Td>
               <Td>{item.tokenDecimals}</Td>
               <Td>
-                {item.tokenDecimals ? <Fixed value={item.totalSupply} decimals={Number(item.tokenDecimals)} /> : null}
+                {item.tokenDecimals ? <Fixed decimals={Number(item.tokenDecimals)} value={item.totalSupply} /> : null}
               </Td>
               <Td>
-                {item.codeHash === Erc20mintable.source.hash
+                {item.codeHash === abis.Erc20issue.source.hash
                   ? 'Mintable'
-                  : item.codeHash === Erc20fixed.source.hash
+                  : item.codeHash === abis.Erc20fixed.source.hash
                   ? 'Fixed Supply'
                   : null}
               </Td>
 
               {isPublic ? null : (
                 <Td>
-                  {item.codeHash === Erc20mintable.source.hash ? (
-                    <IssueAssetButton tokenDecimals={Number(item.tokenDecimals)} contractAddress={item.address} updateView={forceUpdate} />
+                  {item.codeHash === abis.Erc20issue.source.hash ? (
+                    <IssueAssetButton
+                      contractAddress={item.address}
+                      tokenDecimals={Number(item.tokenDecimals)}
+                      updateView={forceUpdate}
+                    />
                   ) : null}
                 </Td>
               )}
@@ -107,11 +110,11 @@ export const AssetList: React.FC<{ isPublic: boolean }> = ({ isPublic }) => {
         </Tbody>
       </Table>
       {(!list || list.length === 0) && (
-        <Center p={16}>{loading ? <CircularProgress isIndeterminate color='blue.300' /> : <Text>No Data</Text>}</Center>
+        <Center p={16}>{loading ? <CircularProgress color='blue.300' isIndeterminate /> : <Text>No Data</Text>}</Center>
       )}
       {((list && list.length !== 0) || page !== 1) && (
-        <Flex mt='4' justifyContent='flex-end'>
-          <Pagination count={count} page={page} onChange={handlePage} shape='rounded' />
+        <Flex justifyContent='flex-end' mt='4'>
+          <Pagination count={count} onChange={handlePage} page={page} shape='rounded' />
         </Flex>
       )}
     </Box>

@@ -1,7 +1,6 @@
 import { useContract } from '@patract/react-hooks';
-import { PatraPixel } from '@patract/utils';
-import Pixel from '@patract/utils/contracts/patrapixel.json'
+import { abis, PatraPixel } from '@patract/utils';
 
 export const usePixelContract = () => {
-  return useContract(PatraPixel, Pixel);
+  return useContract(PatraPixel, abis.Patrapixel);
 };

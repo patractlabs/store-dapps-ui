@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
   Text
 } from '@patract/ui-components';
-import { FixedNumber, toFixed, truncated } from '@patract/utils';
+import { EMPTY, FixedNumber, toFixed, truncated } from '@patract/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { queryBalance } from '../hooks/useErc20Balance';
@@ -218,9 +218,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
                       </Box>
                     </Flex>
                     <Text ml={4} color='gray.500'>
-                      {option.address === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
-                        ? 'DOT'
-                        : truncated(option.address)}
+                      {option.address === EMPTY ? 'DOT' : truncated(option.address)}
                     </Text>
                   </Flex>
                 </Box>

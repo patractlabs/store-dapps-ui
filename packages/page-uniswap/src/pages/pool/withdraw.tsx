@@ -25,7 +25,7 @@ import {
   Text,
   Fixed
 } from '@patract/ui-components';
-import { formatAmount, parseAmount } from '@patract/utils';
+import { EMPTY, formatAmount, parseAmount } from '@patract/utils';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useExchange } from '../../hooks/useExchangeFactory';
 
@@ -37,7 +37,7 @@ const Withdraw = ({
   isOpen,
   onClose,
   onSubmit,
-  item,
+  item
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -48,15 +48,11 @@ const Withdraw = ({
   const [estimated, setEstimated] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<any>(false);
   const isDot = useMemo(() => {
-    return (
-      item.to === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV' ||
-      item.from === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV'
-    );
+    return item.to === EMPTY || item.from === EMPTY;
   }, [item.to, item.from]);
   const { contract } = useExchange(item.exchange, isDot);
   const { read } = useContractQuery({ contract, method: 'estimatedRemoveLiquidity' });
   const { excute } = useContractTx({ title: 'Withdraw', contract, method: 'removeLiquidity' });
-
 
   const balance = useMemo(() => {
     return item.own_lp_token ? formatAmount(item.own_lp_token, item.from_decimals) : 0;
@@ -75,7 +71,9 @@ const Withdraw = ({
 
   useEffect(() => {
     if (isOpen) {
-      read(parseAmount(isNaN(value as any) ? '0' : String(Number(value).toFixed(item.from_decimals)), item.from_decimals)).then((result: any) => {
+      read(
+        parseAmount(isNaN(value as any) ? '0' : String(Number(value).toFixed(item.from_decimals)), item.from_decimals)
+      ).then((result: any) => {
         result &&
           setEstimated([formatAmount(result[0], item.from_decimals), formatAmount(result[1], item.to_decimals)]);
       });
@@ -195,7 +193,7 @@ const Withdraw = ({
                       {item.from_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.from} theme="polkadot" />
+                      <IdentityIcon value={item.from} theme='polkadot' />
                     </Box>
                   </Flex>
                 }
@@ -229,7 +227,7 @@ const Withdraw = ({
                       {item.to_symbol}
                     </Text>
                     <Box mr='1' mt='1'>
-                      <IdentityIcon value={item.to} theme="polkadot" />
+                      <IdentityIcon value={item.to} theme='polkadot' />
                     </Box>
                   </Flex>
                 }

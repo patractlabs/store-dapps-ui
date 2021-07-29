@@ -1,13 +1,14 @@
-import { useApi, useContractQuery } from '@patract/react-hooks';
+import { useApi, useContractQuery, useAccount, useModal, contractQuery } from '@patract/react-hooks';
 import { useCallback } from 'react';
-import { useAccount, useModal, contractQuery } from '@patract/react-hooks';
+
+import { EMPTY, trait } from '@patract/utils';
 
 export const queryBalance = async (api: any, currentAccount: any, contract: any, account: any) => {
-  if (contract.address.toString() === '3bU9io5UzZju4XX4YqscpRv3ocieRmNXuTQQzmiq3ETgKhGV') {
+  if (contract.address.toString() === EMPTY) {
     const info = await api.query.system.account(account);
     return info.data.free.toString();
   } else {
-    return contractQuery(currentAccount, contract, 'iErc20,balanceOf', account);
+    return contractQuery(currentAccount, contract, `${trait}balanceOf`, account);
   }
 };
 
