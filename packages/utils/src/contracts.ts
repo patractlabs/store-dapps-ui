@@ -10,7 +10,7 @@ export const PatraLottery = isPara
   ? '3f2BQHDzk66iEXPphx9BUq8iZva3cejTvZmiyZQHZ2ZKu7Ac'
   : '3f2BQHDzk66iEXPphx9BUq8iZva3cejTvZmiyZQHZ2ZKu7Ac';
 export const PatraSwap = isPara
-  ? '3h7ccmUiPhgN4P7AMYNqC3gXg8sJmrPcKdUmE3ZnCD4NZySU'
+  ? '3d6zXxdiHUXFwg958yS5BeugwYSFxxR8xEBXGUqtqLfR5jfm'
   : '3e5Cm76isZx7TQUaPoU3QFYVap6RpmkmiEiYwmLFfwbLedPv';
 export const PatraMaker = isPara
   ? '3cWch7CFRyhsryFNSBYuK86jpvUYsz4tu1FXXXjbmR4AiDmL'
